@@ -1,2 +1,3 @@
 # E-Commerce-Platform
-CS-3042
+
+Single Vendor E-Commerce Platform for CS3042 - Database Systems 
