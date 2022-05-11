@@ -18,7 +18,7 @@ VALUES (
     'male'
   );
 
-INSERT INTO users (name, password, email, gender)
+INSERT INTO users (name, email, password, gender)
 VALUES (
     'Nipuni Silva',
     'nipuni@gmail.com',
@@ -26,7 +26,7 @@ VALUES (
     'female'
   );
 
-INSERT INTO users (name, password, email, gender)
+INSERT INTO users (name, email, password, gender)
 VALUES (
     'Kumesh Uminda',
     'kumesh@gmail.com',
