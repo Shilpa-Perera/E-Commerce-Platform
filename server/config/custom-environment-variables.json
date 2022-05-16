@@ -1,0 +1,5 @@
+{
+    "jwtPrivateKey": "texas_e_store_jwtPrivateKey",
+    "db_username": "db_username",
+    "db_password": "db_password"
+}
