@@ -1,13 +1,35 @@
 create database if not exists texas_e_store;
 use texas_e_store;
 
-drop table if exists users;
-create table if not exists users (
-    id int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+drop table if exists customer;
+create table if not exists customer (
+    customer_id int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(1024) NOT NULL,
-    gender VARCHAR(8) NOT NULL
+);
+
+drop table if exists customer_address;
+create table if not exists customer_address (
+    address_id int unsigned AUTO_INCREMENT PRIMARY KEY,
+    customer_id int unsigned NOT NULL,
+    po_box varchar(255),
+    street_name varchar(255),
+    city varchar(255),
+    postal_code varchar(255),
+    foreign key (customer_id) 
+        references customer(customer_id)
+        on delete cascade
+);
+
+drop table if exists customer_mobile;
+create table if not exists customer_mobile (
+    telephone_id int unsigned auto_increment primary key,
+    customer_id int unsigned not null,
+    mobile varchar(12),
+    foreign key (customer_id)
+        references customer(customer_id)
+        on delete cascade
 );
 
 drop table if exists product;
