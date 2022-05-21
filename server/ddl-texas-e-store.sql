@@ -96,3 +96,19 @@ create table if not exists cart_product(
     foreign key (variant_id) references variant(variant_id)
 
 );
+
+drop table if exists order ; 
+create table if not exists order(
+    order_id  int unsigned auto_increment primary key ,
+    customer_id int unsigned ,
+    cart_id  int unsigned not null,
+    date date not null,
+    order_name varchar(255),
+    delivery_address varchar(255),
+    phone_number varchar(255),
+    delivery_method varchar(255),
+    payment_method varchar(255),
+    foreign key (cart_id) references cart(cart_id),
+    foreign key (customer_id) references customer(customer_id)
+
+);
