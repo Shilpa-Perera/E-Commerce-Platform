@@ -18,6 +18,14 @@ create table if not exists product (
     product_weight float not null
 );
 
+drop table if exists custom_feature;
+create table if not exists custom_feature (
+    custom_feature_id int unsigned auto_increment primary key,
+    product_id int unsigned not null,
+    custom_feature_name varchar(255) not null,
+    custom_feature_val varchar(255) not null
+);
+
 drop table if exists variant;
 create table if not exists variant (
     variant_id int unsigned auto_increment primary key,
@@ -34,12 +42,4 @@ create table if not exists variant_option (
     product_id int unsigned not null,
     variant_name varchar(255),
     foreign key (product_id) references product(product_id)
-);
-
-drop table if exists custom_feature;
-create table if not exists custom_feature (
-    custom_feature_id int unsigned auto_increment primary key,
-    product_id int unsigned not null,
-    custom_feature_name varchar(255) not null,
-    custom_feature_val varchar(255) not null
 );
