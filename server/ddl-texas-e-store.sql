@@ -54,3 +54,11 @@ create table if not exists variant_option_values(
     foreign key (option_id) references variant_option(option_id)
 
 ) ;
+
+
+drop table if exists cart; 
+create table if not exists cart(
+    cart_id int unsigned auto_increment primary key ,
+    customer_id int unsigned not null ,
+    state int unsigned not null
+) ;
