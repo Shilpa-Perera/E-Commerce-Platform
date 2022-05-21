@@ -62,6 +62,17 @@ drop table if exists variant_option;
 create table if not exists variant_option (
     option_id int unsigned auto_increment primary key,
     product_id int unsigned not null,
-    variant_name varchar(255),
+    option_name varchar(255),
     foreign key (product_id) references product(product_id)
 );
+
+drop table if exists variant_option_values ; 
+create table if not exists variant_option_values(
+    value_id int unsigned auto_increment primary key ,
+    product_id int unsigned not null ,
+    option_id int unsigned not null ,
+    value_name varchar(255),
+    foreign key (product_id) references product(product_id),
+    foreign key (option_id) references variant_option(option_id)
+
+) ;
