@@ -113,6 +113,17 @@ create table if not exists order(
 
 );
 
+drop table if exists sell ; 
+create table if not exists sell(
+    sell_id  int unsigned auto_increment primary key ,
+    date_time datetime not null,
+    order_id int unsigned not null,
+    delivery_state int unsigned,
+    payment_state int unsigned,
+    foreign key (order_id) references order(order_id)
+
+);
+
 drop table if exists variant_values;
 create table if not exists variant_values (
     product_id int unsigned not null,
