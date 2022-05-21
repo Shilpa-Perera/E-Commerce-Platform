@@ -71,7 +71,7 @@ create table if not exists variant_option_values(
     value_id int unsigned auto_increment primary key ,
     product_id int unsigned not null ,
     option_id int unsigned not null ,
-    value_name varchar(255),
+    value_name varchar(255) not null,
     foreign key (product_id) references product(product_id),
     foreign key (option_id) references variant_option(option_id)
 
@@ -82,5 +82,17 @@ drop table if exists cart;
 create table if not exists cart(
     cart_id int unsigned auto_increment primary key ,
     customer_id int unsigned not null ,
-    state int unsigned not null
+    state int unsigned not null,
+    foreign key (customer_id) references customer(customer_id)
 ) ;
+
+drop table if exists cart_product ; 
+create table if not exists cart_product(
+    cart_id  int unsigned  ,
+    variant_id int unsigned ,
+    number_of_items int unsigned , 
+    primary key (cart_id,variant_id) ,
+    foreign key (cart_id) references cart(cart_id),
+    foreign key (variant_id) references variant(variant_id)
+
+);
