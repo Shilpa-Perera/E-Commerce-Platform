@@ -112,3 +112,16 @@ create table if not exists order(
     foreign key (customer_id) references customer(customer_id)
 
 );
+
+drop table if exists variant_values;
+create table if not exists variant_values (
+    product_id int unsigned not null,
+    variant_id int unsigned not null,
+    option_id int unsigned not null,
+    value_id int unsigned not null,
+    primary key (product_id, variant_id, option_id, value_id),
+    foreign key (product_id) references product(product_id),
+    foreign key (variant_id) references variant(variant_id),
+    foreign key (option_id) references variant_option(option_id),
+    foreign key (value_id) references variant_option_values(value_id)
+);
