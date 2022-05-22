@@ -97,7 +97,7 @@ create table if not exists cart_product(
 
 );
 
-drop table if exists order ; 
+drop table if exists `order` ; 
 create table if not exists order(
     order_id  int unsigned auto_increment primary key ,
     customer_id int unsigned ,
