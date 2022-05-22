@@ -83,7 +83,7 @@ create table if not exists cart(
     cart_id int unsigned auto_increment primary key ,
     customer_id int unsigned not null ,
     state int unsigned not null,
-    foreign key (customer_id) references customer(customer_id)
+    foreign key (customer_id) references customer(customer_id) on delete cascade
 ) ;
 
 drop table if exists cart_product ; 
@@ -108,8 +108,8 @@ create table if not exists `order`(
     phone_number varchar(255),
     delivery_method varchar(255),
     payment_method varchar(255),
-    foreign key (cart_id) references cart(cart_id),
-    foreign key (customer_id) references customer(customer_id)
+    foreign key (cart_id) references cart(cart_id) on delete cascade,
+    foreign key (customer_id) references customer(customer_id) on delete cascade
 
 );
 
@@ -120,7 +120,7 @@ create table if not exists sell(
     order_id int unsigned not null,
     delivery_state int unsigned,
     payment_state int unsigned,
-    foreign key (order_id) references `order`(order_id)
+    foreign key (order_id) references `order`(order_id) on delete cascade
 
 );
 
@@ -131,8 +131,8 @@ create table if not exists variant_values (
     option_id int unsigned not null,
     value_id int unsigned not null,
     primary key (product_id, variant_id, option_id, value_id),
-    foreign key (product_id) references product(product_id),
-    foreign key (variant_id) references variant(variant_id),
-    foreign key (option_id) references variant_option(option_id),
-    foreign key (value_id) references variant_option_values(value_id)
+    foreign key (product_id) references product(product_id) on delete cascade,
+    foreign key (variant_id) references variant(variant_id) on delete cascade,
+    foreign key (option_id) references variant_option(option_id) on delete cascade,
+    foreign key (value_id) references variant_option_values(value_id) on delete cascade
 );
