@@ -11,7 +11,36 @@ class Product {
         this.sku = productDetails.sku;
         this.product_weight = productDetails.product_weight;
         this.custom_features = productDetails.custom_features;
-        this.variants = productDetails.variants;
+        this.options = productDetails.options;
+    }
+
+    static fetchAll() {
+        const select_all_query = "select * from product";
+        return db.execute(select_all_query);
+    }
+
+    static async getProductById(productId) {
+        const product = await Product.getProduct(productId);
+
+        if (product) {
+            product.custom_features = await Product.getCustomFeatures(
+                productId
+            );
+            product.options = await Product.getOptions(productId);
+        }
+
+        return product;
+    }
+
+    static async getProduct(productId) {
+        const get_product_query = "select * from product where product_id=?";
+        const [products, _] = await db.execute(get_product_query, [productId]);
+
+        if (products.length > 0) {
+            return products[0];
+        }
+
+        return false;
     }
 
     static async getCustomFeatures(productId) {
@@ -45,22 +74,6 @@ class Product {
             );
         }
         return options;
-    }
-
-    static fetchAll() {
-        const select_all_query = "select * from product";
-        return db.execute(select_all_query);
-    }
-
-    static async getProductById(productId) {
-        const get_product_query = "select * from product where product_id=?";
-        const [products, _] = await db.execute(get_product_query, [productId]);
-
-        if (products.length > 0) {
-            return products[0];
-        }
-
-        return false;
     }
 }
 

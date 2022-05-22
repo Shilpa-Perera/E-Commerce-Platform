@@ -1,4 +1,3 @@
-const bcrypt = require("bcrypt");
 const _ = require("lodash");
 const { Product } = require("../models/Product");
 
@@ -17,8 +16,6 @@ class ProductController {
                 .status(404)
                 .send("The product with the given ID was not found");
 
-        product.custom_features = await Product.getCustomFeatures(productId);
-        product.options = await Product.getOptions(productId);
         res.send(product);
     }
 }
