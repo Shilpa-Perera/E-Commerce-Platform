@@ -19,6 +19,7 @@ class VariantController {
             for (const variant of variantIdResults) {
                 variantIds.push(variant.variant_id);
             }
+            if (variantIds.length === 0) break;
         }
         if (variantIds.length === 1) {
             const variant = await Variant.getVariant(variantIds[0]);
@@ -27,6 +28,17 @@ class VariantController {
         return res
             .status(404)
             .send("The variant with the given parameters was not found");
+    }
+
+    static async postVariants(req, res, next) {
+        const variants = new Variant(
+            _.pick(req.body, ["product_id", "variants"])
+        );
+        const success = await variants.saveAll();
+
+        if (!success) return res.status(500).send("Something failed.");
+
+        res.send(variants);
     }
 }
 
