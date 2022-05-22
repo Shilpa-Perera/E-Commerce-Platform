@@ -87,7 +87,6 @@ class Product {
             await connection.commit();
         } catch (e) {
             await connection.rollback();
-            console.error(e);
             await connection.release();
             throw e;
         }

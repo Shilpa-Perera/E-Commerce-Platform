@@ -34,7 +34,6 @@ class Variant {
 
     async saveAll() {
         const connection = await db.getConnection();
-        let success = true;
 
         try {
             await connection.beginTransaction();
@@ -42,7 +41,6 @@ class Variant {
             await connection.commit();
         } catch (e) {
             await connection.rollback();
-            console.error(e);
             await connection.release();
             throw e;
         }
