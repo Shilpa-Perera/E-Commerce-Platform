@@ -18,6 +18,23 @@ class ProductController {
 
         res.send(product);
     }
+
+    static async postProduct(req, res, next) {
+        let product = new Product(
+            _.pick(req.body, [
+                "product_title",
+                "sku",
+                "product_weight",
+                "custom_features",
+                "options",
+            ])
+        );
+        const success = await product.save();
+
+        if (!success) return res.status(500).send("Something failed.");
+
+        res.send(product);
+    }
 }
 
 module.exports.ProductController = ProductController;

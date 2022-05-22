@@ -75,6 +75,81 @@ class Product {
         }
         return options;
     }
+
+    async save() {
+        const connection = await db.getConnection();
+        let success = true;
+
+        try {
+            await connection.beginTransaction();
+            await this.saveProduct(connection);
+            await this.saveCustomFeatures(connection);
+            await this.saveOptions(connection);
+            await connection.commit();
+        } catch (e) {
+            await connection.rollback();
+            console.error(e);
+            success = false;
+        } finally {
+            await connection.release();
+        }
+
+        return success;
+    }
+
+    async saveProduct(connection) {
+        const insert_product_query =
+            "insert into product (product_title, sku, product_weight) values (?, ?, ?)";
+        const result = await connection.execute(insert_product_query, [
+            this.product_title,
+            this.sku,
+            this.product_weight,
+        ]);
+        this.product_id = result[0].insertId;
+        connection.unprepare(insert_product_query);
+    }
+
+    async saveCustomFeatures(connection) {
+        for (const custom_feature of this.custom_features) {
+            const insert_custom_feature_query =
+                "insert into custom_feature (product_id, custom_feature_name, custom_feature_val) values (?, ?, ?)";
+            const result = await connection.execute(
+                insert_custom_feature_query,
+                [
+                    this.product_id,
+                    custom_feature.custom_feature_name,
+                    custom_feature.custom_feature_val,
+                ]
+            );
+            custom_feature.custom_feature_id = result[0].insertId;
+            connection.unprepare(insert_custom_feature_query);
+        }
+    }
+
+    async saveOptions(connection) {
+        for (const option of this.options) {
+            const insert_option_query =
+                "insert into variant_option (product_id, option_name) values (?, ?)";
+            const result = await connection.execute(insert_option_query, [
+                this.product_id,
+                option.option_name,
+            ]);
+            option.option_id = result[0].insertId;
+            connection.unprepare(insert_option_query);
+
+            for (const value of option.values) {
+                const insert_value_query =
+                    "insert into variant_option_values (product_id, option_id, value_name) values (?, ?, ?)";
+                const result = await connection.execute(insert_value_query, [
+                    this.product_id,
+                    option.option_id,
+                    value.value_name,
+                ]);
+                value.value_id = result[0].insertId;
+                connection.unprepare(insert_value_query);
+            }
+        }
+    }
 }
 
 module.exports.Product = Product;
