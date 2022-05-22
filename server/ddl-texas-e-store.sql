@@ -98,7 +98,7 @@ create table if not exists cart_product(
 );
 
 drop table if exists `order` ; 
-create table if not exists order(
+create table if not exists `order`(
     order_id  int unsigned auto_increment primary key ,
     customer_id int unsigned ,
     cart_id  int unsigned not null,
@@ -120,7 +120,7 @@ create table if not exists sell(
     order_id int unsigned not null,
     delivery_state int unsigned,
     payment_state int unsigned,
-    foreign key (order_id) references order(order_id)
+    foreign key (order_id) references `order`(order_id)
 
 );
 
