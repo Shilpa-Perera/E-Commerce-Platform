@@ -2,6 +2,7 @@ require("dotenv").config();
 const config = require("config");
 const users = require("./routes/users");
 const products = require("./routes/products");
+const variants = require("./routes/variants");
 const express = require("express");
 const app = express();
 
@@ -13,6 +14,7 @@ if (!config.get("jwtPrivateKey")) {
 app.use(express.json());
 app.use("/texas-e-store/api/users", users);
 app.use("/api/products", products);
+app.use("/api/variants", variants);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
