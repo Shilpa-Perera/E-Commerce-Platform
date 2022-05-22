@@ -29,9 +29,7 @@ class ProductController {
                 "options",
             ])
         );
-        const success = await product.save();
-
-        if (!success) return res.status(500).send("Something failed.");
+        await product.save();
 
         res.send(product);
     }

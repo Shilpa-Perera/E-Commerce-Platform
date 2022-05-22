@@ -1,4 +1,3 @@
-const bcrypt = require("bcrypt");
 const _ = require("lodash");
 const { Variant } = require("../models/Variant");
 
@@ -34,9 +33,7 @@ class VariantController {
         const variants = new Variant(
             _.pick(req.body, ["product_id", "variants"])
         );
-        const success = await variants.saveAll();
-
-        if (!success) return res.status(500).send("Something failed.");
+        await variants.saveAll();
 
         res.send(variants);
     }

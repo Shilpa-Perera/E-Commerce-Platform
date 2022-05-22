@@ -78,7 +78,6 @@ class Product {
 
     async save() {
         const connection = await db.getConnection();
-        let success = true;
 
         try {
             await connection.beginTransaction();
@@ -89,12 +88,11 @@ class Product {
         } catch (e) {
             await connection.rollback();
             console.error(e);
-            success = false;
-        } finally {
             await connection.release();
+            throw e;
         }
 
-        return success;
+        await connection.release();
     }
 
     async saveProduct(connection) {

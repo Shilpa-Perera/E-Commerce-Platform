@@ -43,12 +43,11 @@ class Variant {
         } catch (e) {
             await connection.rollback();
             console.error(e);
-            success = false;
-        } finally {
             await connection.release();
+            throw e;
         }
 
-        return success;
+        await connection.release();
     }
 
     async saveVariants(connection) {
