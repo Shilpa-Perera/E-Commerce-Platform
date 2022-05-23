@@ -98,7 +98,7 @@ create table if not exists cart_product(
     number_of_items int unsigned,
     primary key (cart_id, variant_id),
     foreign key (cart_id) references cart(cart_id),
-    foreign key (variant_id) references variant(variant_id)
+    foreign key (variant_id) references variant(vacart_idriant_id)
 );
 
 drop table if exists `order`;
