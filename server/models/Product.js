@@ -1,4 +1,3 @@
-const jwt = require("jsonwebtoken");
 const Joi = require("joi");
 const db = require("../util/database");
 const dotenv = require("dotenv");
@@ -45,7 +44,7 @@ class Product {
 
     static async getCustomFeatures(productId) {
         const get_custom_features_query =
-            "select custom_feature_name, custom_feature_val from custom_feature where product_id=?";
+            "select custom_feature_id, custom_feature_name, custom_feature_val from custom_feature where product_id=?";
         const custom_features = await db.execute(get_custom_features_query, [
             productId,
         ]);
@@ -74,6 +73,46 @@ class Product {
             );
         }
         return options;
+    }
+
+    static async getCustomFeature(customFeatureId) {
+        const get_custom_feature_query =
+            "select * from custom_feature where custom_feature_id=?";
+        const result = await db.execute(get_custom_feature_query, [
+            customFeatureId,
+        ]);
+        return result[0];
+    }
+
+    static async addCustomFeature(productId, customFeature) {
+        const insert_custom_feature_query =
+            "insert into custom_feature (product_id, custom_feature_name, custom_feature_val) values (?, ?, ?)";
+        const result = await db.execute(insert_custom_feature_query, [
+            productId,
+            customFeature.custom_feature_name,
+            customFeature.custom_feature_val,
+        ]);
+        customFeature.custom_feature_id = result[0].insertId;
+    }
+
+    static async updateCustomFeature(customFeature) {
+        const { custom_feature_id, custom_feature_name, custom_feature_val } =
+            customFeature;
+        const { old_id, old_name, old_val } =
+            Product.getCustomFeature(custom_feature_id);
+
+        if (
+            custom_feature_name !== old_name ||
+            custom_feature_val !== old_val
+        ) {
+            const update_custom_feature_query =
+                "update custom_feature set custom_feature_name=?, custom_feature_val=? where custom_feature_id=?";
+            await db.execute(update_custom_feature_query, [
+                custom_feature_name,
+                custom_feature_val,
+                custom_feature_id,
+            ]);
+        }
     }
 
     async save() {

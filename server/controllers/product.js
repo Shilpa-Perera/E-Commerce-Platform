@@ -33,6 +33,24 @@ class ProductController {
 
         res.send(product);
     }
+
+    static async postCustomFeature(req, res, next) {
+        const { product_id, custom_feature } = req.body;
+        await Product.addCustomFeature(product_id, custom_feature);
+
+        res.send(custom_feature);
+    }
+
+    static async putCustomFeature(req, res, next) {
+        const customFeature = _.pick(req.body, [
+            "custom_feature_name",
+            "custom_feature_val",
+        ]);
+        customFeature.custom_feature_id = req.params.id;
+        await Product.updateCustomFeature(customFeature);
+
+        res.send(customFeature);
+    }
 }
 
 module.exports.ProductController = ProductController;

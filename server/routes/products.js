@@ -4,6 +4,8 @@ const router = express();
 
 router.get("/", ProductController.getAllProducts);
 router.get("/:id", ProductController.getProduct);
+router.post("/feature", ProductController.postCustomFeature);
 router.post("/", ProductController.postProduct);
+router.put("/feature/:id", ProductController.putCustomFeature);
 
 module.exports = router;
