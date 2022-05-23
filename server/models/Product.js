@@ -98,7 +98,7 @@ class Product {
     static async updateCustomFeature(customFeature) {
         const { custom_feature_id, custom_feature_name, custom_feature_val } =
             customFeature;
-        const { old_id, old_name, old_val } =
+        const { custom_feature_name: old_name, custom_feature_val: old_val } =
             Product.getCustomFeature(custom_feature_id);
 
         if (
