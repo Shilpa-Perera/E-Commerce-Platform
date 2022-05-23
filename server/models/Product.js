@@ -186,6 +186,29 @@ class Product {
             }
         }
     }
+
+    async update() {
+        const {
+            product_title: old_title,
+            sku: old_sku,
+            product_weight: old_weight,
+        } = Product.getProduct(this.product_id);
+
+        if (
+            this.product_title !== old_title ||
+            this.sku !== old_sku ||
+            this.product_weight !== old_weight
+        ) {
+            const update_product_query =
+                "update product set product_title=?, sku=?, product_weight=? where product_id=?";
+            await db.execute(update_product_query, [
+                this.product_title,
+                this.sku,
+                this.product_weight,
+                this.product_id,
+            ]);
+        }
+    }
 }
 
 module.exports.Product = Product;

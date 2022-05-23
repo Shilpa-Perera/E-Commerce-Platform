@@ -51,6 +51,18 @@ class ProductController {
 
         res.send(customFeature);
     }
+
+    static async putProduct(req, res, next) {
+        const product = new Product({
+            product_id: req.params.id,
+            ..._.pick(req.body, ["product_title", "sku", "product_weight"]),
+            custom_features: null,
+            options: null,
+        });
+        await product.update();
+
+        res.send(product);
+    }
 }
 
 module.exports.ProductController = ProductController;
