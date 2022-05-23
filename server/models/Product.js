@@ -45,10 +45,11 @@ class Product {
     static async getCustomFeatures(productId) {
         const get_custom_features_query =
             "select custom_feature_id, custom_feature_name, custom_feature_val from custom_feature where product_id=?";
-        const custom_features = await db.execute(get_custom_features_query, [
-            productId,
-        ]);
-        return custom_features[0];
+        const [custom_features, _] = await db.execute(
+            get_custom_features_query,
+            [productId]
+        );
+        return custom_features;
     }
 
     static async getOptionValues(productId, optionId) {
@@ -78,10 +79,10 @@ class Product {
     static async getCustomFeature(customFeatureId) {
         const get_custom_feature_query =
             "select * from custom_feature where custom_feature_id=?";
-        const result = await db.execute(get_custom_feature_query, [
+        const [customFeature, _] = await db.execute(get_custom_feature_query, [
             customFeatureId,
         ]);
-        return result[0];
+        return customFeature[0];
     }
 
     static async addCustomFeature(productId, customFeature) {
@@ -99,7 +100,7 @@ class Product {
         const { custom_feature_id, custom_feature_name, custom_feature_val } =
             customFeature;
         const { custom_feature_name: old_name, custom_feature_val: old_val } =
-            Product.getCustomFeature(custom_feature_id);
+            await Product.getCustomFeature(custom_feature_id);
 
         if (
             custom_feature_name !== old_name ||

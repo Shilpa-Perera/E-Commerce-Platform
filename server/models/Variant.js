@@ -30,10 +30,11 @@ class Variant {
         ]);
     }
 
-    static getVariant(variantId) {
+    static async getVariant(variantId) {
         const get_variant_query =
-            "select variant_name, price, quantity from variant where variant_id=?";
-        return db.execute(get_variant_query, [variantId]);
+            "select variant_id, variant_name, price, quantity from variant where variant_id=?";
+        const [variant, _] = await db.execute(get_variant_query, [variantId]);
+        return variant[0];
     }
 
     async save() {
@@ -88,7 +89,7 @@ class Variant {
             variant_name: old_name,
             price: old_price,
             quantity: old_quantity,
-        } = Variant.getVariant(this.variant_id);
+        } = await Variant.getVariant(this.variant_id);
 
         if (
             this.variant_name !== old_name ||

@@ -22,7 +22,7 @@ class VariantController {
         }
         if (variantIds.length === 1) {
             const variant = await Variant.getVariant(variantIds[0]);
-            return res.send(variant[0]);
+            return res.send(variant);
         }
         return res
             .status(404)
@@ -54,7 +54,9 @@ class VariantController {
         });
         await variant.update();
 
-        res.send(variant);
+        res.send(
+            _.pick(variant, ["variant_id", "variant_name", "price", "quantity"])
+        );
     }
 }
 
