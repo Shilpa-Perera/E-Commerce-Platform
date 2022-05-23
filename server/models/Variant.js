@@ -82,6 +82,29 @@ class Variant {
             connection.unprepare(insert_variant_value_query);
         }
     }
+
+    async update() {
+        const {
+            variant_name: old_name,
+            price: old_price,
+            quantity: old_quantity,
+        } = Variant.getVariant(this.variant_id);
+
+        if (
+            this.variant_name !== old_name ||
+            this.price !== old_price ||
+            this.quantity !== old_quantity
+        ) {
+            const update_variant_query =
+                "update variant set variant_name=?, price=?, quantity=? where variant_id=?";
+            await db.execute(update_variant_query, [
+                this.variant_name,
+                this.price,
+                this.quantity,
+                this.variant_id,
+            ]);
+        }
+    }
 }
 
 module.exports.Variant = Variant;

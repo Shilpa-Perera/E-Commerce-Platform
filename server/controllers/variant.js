@@ -29,7 +29,7 @@ class VariantController {
             .send("The variant with the given parameters was not found");
     }
 
-    static async postVariants(req, res, next) {
+    static async postVariant(req, res, next) {
         const variant = new Variant({
             variant_id: null,
             ..._.pick(req.body, [
@@ -41,6 +41,18 @@ class VariantController {
             ]),
         });
         await variant.save();
+
+        res.send(variant);
+    }
+
+    static async putVariant(req, res, next) {
+        const variant = new Variant({
+            variant_id: req.params.id,
+            ..._.pick(req.body, ["variant_name", "price", "quantity"]),
+            product_id: null,
+            options: null,
+        });
+        await variant.update();
 
         res.send(variant);
     }
