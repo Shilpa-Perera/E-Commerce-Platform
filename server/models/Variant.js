@@ -7,7 +7,11 @@ dotenv.config();
 class Variant {
     constructor(variantDetails) {
         this.product_id = variantDetails.product_id;
-        this.variants = variantDetails.variants;
+        this.variant_id = variantDetails.variant_id;
+        this.options = variantDetails.options;
+        this.price = variantDetails.price;
+        this.quantity = variantDetails.quantity;
+        this.variant_name = variantDetails.variant_name;
     }
 
     static getVariantIds(productId, optionId, valueId, ids) {
@@ -32,12 +36,12 @@ class Variant {
         return db.execute(get_variant_query, [variantId]);
     }
 
-    async saveAll() {
+    async save() {
         const connection = await db.getConnection();
 
         try {
             await connection.beginTransaction();
-            await this.saveVariants(connection);
+            await this.saveVariant(connection);
             await connection.commit();
         } catch (e) {
             await connection.rollback();
@@ -48,38 +52,30 @@ class Variant {
         await connection.release();
     }
 
-    async saveVariants(connection) {
-        for (const variant of this.variants) {
-            const { options, price, quantity, variant_name } = variant;
+    async saveVariant(connection) {
+        const insert_variant_query =
+            "insert into variant (product_id, variant_name, price, quantity) values (?, ?, ?, ?)";
+        const result = await connection.execute(insert_variant_query, [
+            this.product_id,
+            this.variant_name,
+            this.price,
+            this.quantity,
+        ]);
+        this.variant_id = result[0].insertId;
+        connection.unprepare(insert_variant_query);
 
-            const insert_variant_query =
-                "insert into variant (product_id, variant_name, price, quantity) values (?, ?, ?, ?)";
-            const result = await connection.execute(insert_variant_query, [
-                this.product_id,
-                variant_name,
-                price,
-                quantity,
-            ]);
-            variant.variant_id = result[0].insertId;
-            connection.unprepare(insert_variant_query);
-
-            await this.saveVariantValues(
-                connection,
-                variant.variant_id,
-                options
-            );
-        }
+        await this.saveVariantValues(connection);
     }
 
-    async saveVariantValues(connection, variantId, options) {
-        for (const option of options) {
+    async saveVariantValues(connection) {
+        for (const option of this.options) {
             const { option_id, value_id } = option;
 
             const insert_variant_value_query =
                 "insert into variant_values (product_id, variant_id, option_id, value_id) values (?, ?, ?, ?)";
             await connection.execute(insert_variant_value_query, [
                 this.product_id,
-                variantId,
+                this.variant_id,
                 option_id,
                 value_id,
             ]);

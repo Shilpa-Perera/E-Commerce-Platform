@@ -30,12 +30,19 @@ class VariantController {
     }
 
     static async postVariants(req, res, next) {
-        const variants = new Variant(
-            _.pick(req.body, ["product_id", "variants"])
-        );
-        await variants.saveAll();
+        const variant = new Variant({
+            variant_id: null,
+            ..._.pick(req.body, [
+                "product_id",
+                "variant_name",
+                "price",
+                "quantity",
+                "options",
+            ]),
+        });
+        await variant.save();
 
-        res.send(variants);
+        res.send(variant);
     }
 }
 
