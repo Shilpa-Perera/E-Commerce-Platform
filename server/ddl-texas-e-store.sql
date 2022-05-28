@@ -47,7 +47,8 @@ create table if not exists custom_feature (
     custom_feature_id int unsigned auto_increment primary key,
     product_id int unsigned not null,
     custom_feature_name varchar(255) not null,
-    custom_feature_val varchar(255) not null
+    custom_feature_val varchar(255) not null,
+    foreign key (product_id) references product(product_id) on delete cascade
 );
 
 drop table if exists variant;
@@ -97,8 +98,8 @@ create table if not exists cart_product(
     variant_id int unsigned,
     number_of_items int unsigned,
     primary key (cart_id, variant_id),
-    foreign key (cart_id) references cart(cart_id),
-    foreign key (variant_id) references variant(vacart_idriant_id)
+    foreign key (cart_id) references cart(cart_id) on delete cascade,
+    foreign key (variant_id) references variant(variant_id) on delete cascade
 );
 
 drop table if exists `order`;
