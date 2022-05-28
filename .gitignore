@@ -1,8 +1,6 @@
-server/.env
-client/node_modules/
-server/node_modules/
-client/package-lock.json
-server/package-lock.json
+.env
+node_modules/
+package-lock.json
 .vscode/
 .prettierrc
 .idea/
