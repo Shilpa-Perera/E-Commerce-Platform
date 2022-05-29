@@ -8,7 +8,7 @@ export default function ProductCard({ data }) {
     return (
         <div className="col" key={product_id}>
             <div className="card shadow text-center align-items-center h-100 hover-focus" style={{borderRadius: "5%"}}>
-                <div>
+                <div className="p-3">
                     <img
                         src={image}
                         className="card-img-top"
