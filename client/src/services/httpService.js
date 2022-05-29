@@ -15,7 +15,7 @@ axios.interceptors.response.use(null, (error) => {
         toast.error("An unexpected error occurred", {});
         console.log(error);
     }
-    // return Promise.reject(error);
+    return Promise.reject(error);
 });
 
 function setJwt(jwt) {
