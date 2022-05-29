@@ -1,6 +1,7 @@
 require("express-async-errors");
 require("dotenv").config();
 const config = require("config");
+const cors = require("cors");
 const error = require("./middleware/error");
 const users = require("./routes/users");
 const products = require("./routes/products");
@@ -15,6 +16,8 @@ if (!config.get("jwtPrivateKey")) {
 }
 
 app.use(express.json());
+app.options("*", cors());
+app.use(cors());
 app.use("/texas-e-store/api/users", users);
 app.use("/api/products", products);
 app.use("/api/variants", variants);
