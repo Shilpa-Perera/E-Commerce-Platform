@@ -22,7 +22,7 @@ class ProductFormBody extends Form {
             product_id: 0,
             product_title: "",
             category_id: 0,
-            subcategory_id: 0,
+            sub_category_id: 0,
             sku: "",
             product_weight: 0,
             custom_features: [],
@@ -56,7 +56,7 @@ class ProductFormBody extends Form {
             .max(50)
             .label("Product Title"),
         category_id: Joi.number().min(1).required().label("Category"),
-        subcategory_id: Joi.number().min(1).required().label("Subcategory"),
+        sub_category_id: Joi.number().min(1).required().label("Subcategory"),
         sku: Joi.string().required().min(5).max(20).label("SKU"),
         product_weight: Joi.number().required().min(1).label("Product Weight"),
         custom_features: Joi.array(),
@@ -65,7 +65,7 @@ class ProductFormBody extends Form {
     };
 
     async populateCategories() {
-        const { data: categories } = getCategories();
+        const { data: categories } = await getCategories();
         this.setState({ categories });
     }
 
@@ -94,7 +94,7 @@ class ProductFormBody extends Form {
         const { category_id } = this.state.data;
         let subCategories = [];
         if (category_id > 0) {
-            const { data } = getSubCategories(category_id);
+            const { data } = await getSubCategories(category_id);
             subCategories = data;
         }
         this.setState({ subCategories });
@@ -142,7 +142,7 @@ class ProductFormBody extends Form {
         }
     };
 
-    handleCategoryChange = ({ currentTarget: input }) => {
+    handleCategoryChange = async ({ currentTarget: input }) => {
         const errors = { ...this.state.errors };
         const errorMessage = this.validateProperty(input);
         if (errorMessage) errors[input.name] = errorMessage;
@@ -154,7 +154,7 @@ class ProductFormBody extends Form {
 
         let subCategories = [];
         if (category_id > 0) {
-            const { data: sub } = getSubCategories(category_id);
+            const { data: sub } = await getSubCategories(category_id);
             subCategories = sub;
         }
 
@@ -246,8 +246,8 @@ class ProductFormBody extends Form {
         let subCategories = [];
         for (const category of this.state.subCategories) {
             subCategories.push({
-                id: category.subcategory_id,
-                name: category.subcategory_name,
+                id: category.sub_category_id,
+                name: category.sub_category_name,
             });
         }
 
@@ -265,7 +265,7 @@ class ProductFormBody extends Form {
                                 this.handleCategoryChange
                             )}
                             {this.renderSelect(
-                                "subcategory_id",
+                                "sub_category_id",
                                 "Subcategory",
                                 [{ id: 0, value: "" }, ...subCategories]
                             )}

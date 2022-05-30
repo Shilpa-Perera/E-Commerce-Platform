@@ -16,12 +16,14 @@ class Products extends Component {
 
     async componentDidMount() {
         const { data: products } = await getProducts();
-        const { data: categories } = getCategories();
+        const { data: categories } = await getCategories();
         this.setState({ products, categories });
     }
 
-    handleCategorySelect = (category) => {
-        const { data: subCategories } = getSubCategories(category.category_id);
+    handleCategorySelect = async (category) => {
+        const { data: subCategories } = await getSubCategories(
+            category.category_id
+        );
         this.setState({
             selectedCategory: category,
             subCategories: subCategories,
@@ -40,7 +42,13 @@ class Products extends Component {
     };
 
     render() {
-        const { products, categories, selectedCategory, subCategories, selectedSubCategory } = this.state;
+        const {
+            products,
+            categories,
+            selectedCategory,
+            subCategories,
+            selectedSubCategory,
+        } = this.state;
         return (
             <div className="container-fluid">
                 <div className="row">
@@ -52,7 +60,15 @@ class Products extends Component {
                         />
                     </div>
                     <div className="col-md-8 col-lg-9 col-xxl-10">
-                        {selectedCategory && <SubCategoryList subCategories={subCategories} handleSubCategorySelect={this.handleSubCategorySelect} selectedSubCategory={selectedSubCategory} />}
+                        {selectedCategory && (
+                            <SubCategoryList
+                                subCategories={subCategories}
+                                handleSubCategorySelect={
+                                    this.handleSubCategorySelect
+                                }
+                                selectedSubCategory={selectedSubCategory}
+                            />
+                        )}
                         <ProductAlbum products={products} />
                     </div>
                 </div>

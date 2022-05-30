@@ -14,8 +14,8 @@ export default function SubCategoryList({
                     items={subCategories}
                     onItemSelect={handleSubCategorySelect}
                     selectedItem={selectedSubCategory}
-                    textProperty={"subcategory_name"}
-                    valueProperty={"subcategory_id"}
+                    textProperty={"sub_category_name"}
+                    valueProperty={"sub_category_id"}
                     additionalClasses={"flex-column flex-sm-row"}
                     additionalItemClasses={"border-0 rounded-pill"}
                 />
