@@ -100,10 +100,11 @@ class Products extends Component {
                     .toLowerCase()
                     .startsWith(searchQuery.toLowerCase())
             );
-        else if (selectedSubCategory && selectedSubCategory.sub_category_id)
+        else if (selectedSubCategory && selectedSubCategory.sub_category_id) {
             filtered = allProducts.filter(
-                (p) => p.sub_category_id === selectedCategory.sub_category_id
+                (p) => p.sub_category_id === selectedSubCategory.sub_category_id && p.category_id === selectedCategory.category_id
             );
+        }
         else if (selectedCategory && selectedCategory.category_id) {
             filtered = allProducts.filter(
                 (p) => p.category_id === selectedCategory.category_id

@@ -42,6 +42,7 @@ export default function ProductAlbum({
                                             id={option.id}
                                             name="sort"
                                             checked={sortBy.field === option.id}
+                                            onChange={()=>{}}
                                         />
                                         <label
                                             className="ms-1"
@@ -70,6 +71,7 @@ export default function ProductAlbum({
                                             id={option.id}
                                             name="option"
                                             checked={sortBy.order === option.id}
+                                            onChange={()=>{}}
                                         />
                                         <label
                                             className="ms-1"
