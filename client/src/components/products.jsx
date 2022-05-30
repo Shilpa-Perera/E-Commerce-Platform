@@ -60,7 +60,7 @@ class Products extends Component {
                         />
                     </div>
                     <div className="col-md-8 col-lg-9 col-xxl-10">
-                        {selectedCategory && (
+                        {selectedCategory && subCategories && (
                             <SubCategoryList
                                 subCategories={subCategories}
                                 handleSubCategorySelect={
