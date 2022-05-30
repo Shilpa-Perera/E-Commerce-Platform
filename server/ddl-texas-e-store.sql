@@ -38,7 +38,8 @@ create table if not exists product (
     product_id int unsigned auto_increment primary key,
     product_title varchar(255) not null,
     sku varchar(32) not null,
-    product_weight float not null
+    product_weight float not null,
+    default_variant_id int unsigned
 );
 
 drop table if exists custom_feature;
@@ -177,3 +178,5 @@ create table if not exists category_link(
     foreign key (sub_category_id) references sub_category(sub_category_id) on delete cascade
 );
 
+alter table product
+add foreign key (default_variant_id) references variant(variant_id);
