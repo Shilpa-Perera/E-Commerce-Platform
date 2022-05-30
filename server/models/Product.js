@@ -14,7 +14,8 @@ class Product {
     }
 
     static fetchAll() {
-        const select_all_query = "select * from product p join variant v on p.default_variant_id = v.variant_id join product_category pc on p.product_id = pc.product_id";
+        const select_all_query =
+            "select * from product p join variant v on p.default_variant_id = v.variant_id join product_category pc on p.product_id = pc.product_id";
         return db.execute(select_all_query);
     }
 
@@ -32,7 +33,8 @@ class Product {
     }
 
     static async getProduct(productId) {
-        const get_product_query = "select * from product p join variant v on p.default_variant_id = v.variant_id join product_category pc on p.product_id = pc.product_id where p.product_id=?";
+        const get_product_query =
+            "select * from product p join variant v on p.default_variant_id = v.variant_id join product_category pc on p.product_id = pc.product_id where p.product_id=?";
         const [products, _] = await db.execute(get_product_query, [productId]);
 
         if (products.length > 0) {
