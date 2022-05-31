@@ -38,7 +38,8 @@ create table if not exists product (
     product_id int unsigned auto_increment primary key,
     product_title varchar(255) not null,
     sku varchar(32) not null,
-    product_weight float not null
+    product_weight float not null,
+    default_variant_id int unsigned
 );
 
 drop table if exists custom_feature;
@@ -47,7 +48,8 @@ create table if not exists custom_feature (
     custom_feature_id int unsigned auto_increment primary key,
     product_id int unsigned not null,
     custom_feature_name varchar(255) not null,
-    custom_feature_val varchar(255) not null
+    custom_feature_val varchar(255) not null,
+    foreign key (product_id) references product(product_id) on delete cascade
 );
 
 drop table if exists variant;
@@ -97,8 +99,8 @@ create table if not exists cart_product(
     variant_id int unsigned,
     number_of_items int unsigned,
     primary key (cart_id, variant_id),
-    foreign key (cart_id) references cart(cart_id),
-    foreign key (variant_id) references variant(variant_id)
+    foreign key (cart_id) references cart(cart_id) on delete cascade,
+    foreign key (variant_id) references variant(variant_id) on delete cascade
 );
 
 drop table if exists `order`;
@@ -141,3 +143,40 @@ create table if not exists variant_values (
     foreign key (option_id) references variant_option(option_id) on delete cascade,
     foreign key (value_id) references variant_option_values(value_id) on delete cascade
 );
+
+drop table if exists category;
+
+create table if not exists category(
+    category_id int unsigned auto_increment primary key,
+    category_name varchar(255) not null
+);
+
+drop table if exists product_category;
+
+create table if not exists product_category(
+    product_id int unsigned not null,
+    category_id int unsigned not null,
+    primary key (product_id, category_id),
+    foreign key (product_id) references product(product_id) on delete cascade,
+    foreign key (category_id) references category(category_id) on delete cascade
+);
+
+drop table if exists sub_category;
+
+create table if not exists sub_category(
+    sub_category_id int unsigned auto_increment primary key,
+    sub_category_name varchar(255) not null
+);
+
+drop table if exists category_link;
+
+create table if not exists category_link(
+    category_id int unsigned not null,
+    sub_category_id int unsigned not null,
+    primary key (category_id, sub_category_id),
+    foreign key (category_id) references category(category_id) on delete cascade,
+    foreign key (sub_category_id) references sub_category(sub_category_id) on delete cascade
+);
+
+alter table product
+add foreign key (default_variant_id) references variant(variant_id);

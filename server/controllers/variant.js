@@ -22,20 +22,41 @@ class VariantController {
         }
         if (variantIds.length === 1) {
             const variant = await Variant.getVariant(variantIds[0]);
-            return res.send(variant[0]);
+            return res.send(variant);
         }
         return res
             .status(404)
             .send("The variant with the given parameters was not found");
     }
 
-    static async postVariants(req, res, next) {
-        const variants = new Variant(
-            _.pick(req.body, ["product_id", "variants"])
-        );
-        await variants.saveAll();
+    static async postVariant(req, res, next) {
+        const variant = new Variant({
+            variant_id: null,
+            ..._.pick(req.body, [
+                "product_id",
+                "variant_name",
+                "price",
+                "quantity",
+                "options",
+            ]),
+        });
+        await variant.save();
 
-        res.send(variants);
+        res.send(variant);
+    }
+
+    static async putVariant(req, res, next) {
+        const variant = new Variant({
+            variant_id: req.params.id,
+            ..._.pick(req.body, ["variant_name", "price", "quantity"]),
+            product_id: null,
+            options: null,
+        });
+        await variant.update();
+
+        res.send(
+            _.pick(variant, ["variant_id", "variant_name", "price", "quantity"])
+        );
     }
 }
 

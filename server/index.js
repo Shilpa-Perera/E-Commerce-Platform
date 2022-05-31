@@ -1,11 +1,13 @@
 require("express-async-errors");
 require("dotenv").config();
 const config = require("config");
+const cors = require("cors");
 const error = require("./middleware/error");
 const customers = require("./routes/customers");
-const customerAddresses = require("./routes/customerAddresses");
 const products = require("./routes/products");
 const variants = require("./routes/variants");
+const categories = require("./routes/category");
+const cart = require("./routes/cart");
 const express = require("express");
 const app = express();
 
@@ -14,11 +16,15 @@ if (!config.get("jwtPrivateKey")) {
   process.exit(1);
 }
 
+app.options("*", cors());
+app.use(cors());
 app.use(express.json());
+
 app.use("/api/customers", customers);
-app.use("/api/customer-address", customerAddresses);
 app.use("/api/products", products);
 app.use("/api/variants", variants);
+app.use("/api/categories", categories);
+app.use("/api/cart", cart);
 app.use(error);
 
 const port = process.env.PORT || 3000;

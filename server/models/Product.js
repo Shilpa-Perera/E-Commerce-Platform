@@ -1,4 +1,3 @@
-const jwt = require("jsonwebtoken");
 const Joi = require("joi");
 const db = require("../util/database");
 const dotenv = require("dotenv");
@@ -15,7 +14,8 @@ class Product {
     }
 
     static fetchAll() {
-        const select_all_query = "select * from product";
+        const select_all_query =
+            "select * from product p join variant v on p.default_variant_id = v.variant_id join product_category pc on p.product_id = pc.product_id";
         return db.execute(select_all_query);
     }
 
@@ -33,7 +33,8 @@ class Product {
     }
 
     static async getProduct(productId) {
-        const get_product_query = "select * from product where product_id=?";
+        const get_product_query =
+            "select * from product p join variant v on p.default_variant_id = v.variant_id join product_category pc on p.product_id = pc.product_id where p.product_id=?";
         const [products, _] = await db.execute(get_product_query, [productId]);
 
         if (products.length > 0) {
@@ -45,11 +46,12 @@ class Product {
 
     static async getCustomFeatures(productId) {
         const get_custom_features_query =
-            "select custom_feature_name, custom_feature_val from custom_feature where product_id=?";
-        const custom_features = await db.execute(get_custom_features_query, [
-            productId,
-        ]);
-        return custom_features[0];
+            "select custom_feature_id, custom_feature_name, custom_feature_val from custom_feature where product_id=?";
+        const [custom_features, _] = await db.execute(
+            get_custom_features_query,
+            [productId]
+        );
+        return custom_features;
     }
 
     static async getOptionValues(productId, optionId) {
@@ -74,6 +76,46 @@ class Product {
             );
         }
         return options;
+    }
+
+    static async getCustomFeature(customFeatureId) {
+        const get_custom_feature_query =
+            "select * from custom_feature where custom_feature_id=?";
+        const [customFeature, _] = await db.execute(get_custom_feature_query, [
+            customFeatureId,
+        ]);
+        return customFeature[0];
+    }
+
+    static async addCustomFeature(productId, customFeature) {
+        const insert_custom_feature_query =
+            "insert into custom_feature (product_id, custom_feature_name, custom_feature_val) values (?, ?, ?)";
+        const result = await db.execute(insert_custom_feature_query, [
+            productId,
+            customFeature.custom_feature_name,
+            customFeature.custom_feature_val,
+        ]);
+        customFeature.custom_feature_id = result[0].insertId;
+    }
+
+    static async updateCustomFeature(customFeature) {
+        const { custom_feature_id, custom_feature_name, custom_feature_val } =
+            customFeature;
+        const { custom_feature_name: old_name, custom_feature_val: old_val } =
+            await Product.getCustomFeature(custom_feature_id);
+
+        if (
+            custom_feature_name !== old_name ||
+            custom_feature_val !== old_val
+        ) {
+            const update_custom_feature_query =
+                "update custom_feature set custom_feature_name=?, custom_feature_val=? where custom_feature_id=?";
+            await db.execute(update_custom_feature_query, [
+                custom_feature_name,
+                custom_feature_val,
+                custom_feature_id,
+            ]);
+        }
     }
 
     async save() {
@@ -145,6 +187,29 @@ class Product {
                 value.value_id = result[0].insertId;
                 connection.unprepare(insert_value_query);
             }
+        }
+    }
+
+    async update() {
+        const {
+            product_title: old_title,
+            sku: old_sku,
+            product_weight: old_weight,
+        } = Product.getProduct(this.product_id);
+
+        if (
+            this.product_title !== old_title ||
+            this.sku !== old_sku ||
+            this.product_weight !== old_weight
+        ) {
+            const update_product_query =
+                "update product set product_title=?, sku=?, product_weight=? where product_id=?";
+            await db.execute(update_product_query, [
+                this.product_title,
+                this.sku,
+                this.product_weight,
+                this.product_id,
+            ]);
         }
     }
 }
