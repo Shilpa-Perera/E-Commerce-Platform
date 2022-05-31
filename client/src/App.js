@@ -6,6 +6,8 @@ import NavBar from "./components/navBar";
 import "react-toastify/dist/ReactToastify.css";
 import ProductForm from "./components/productForm";
 import Footer from "./components/footer";
+import Product from "./components/product";
+import VariantForm from "./components/variantForm";
 
 function App() {
     return (
@@ -15,6 +17,9 @@ function App() {
             <Routes>
                 <Route path="/products">
                     <Route index element={<Products />}></Route>
+                    <Route path=":id">
+                        <Route index element={<Product />}></Route>
+                    </Route>
                     <Route path="edit/:id" element={<ProductForm />}></Route>
                 </Route>
             </Routes>
