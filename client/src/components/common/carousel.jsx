@@ -5,7 +5,7 @@ function Carousel({ id, images }) {
         <div>
             <div
                 id={id}
-                className="carousel slide"
+                className="carousel carousel-dark slide"
                 data-bs-ride="carousel"
             >
                 <div className="carousel-indicators">
