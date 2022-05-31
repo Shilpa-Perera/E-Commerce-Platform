@@ -82,6 +82,14 @@ class Products extends Component {
         this.setState({ currentPage: page });
     };
 
+    handleClearCategorySelection = () => {
+        this.setState({ selectedCategory: null, selectedSubCategory: null });
+    };
+
+    handleClearSubCategorySelection = () => {
+        this.setState({ selectedSubCategory: null });
+    };
+
     getPagedData = () => {
         const {
             products: allProducts,
@@ -102,10 +110,11 @@ class Products extends Component {
             );
         else if (selectedSubCategory && selectedSubCategory.sub_category_id) {
             filtered = allProducts.filter(
-                (p) => p.sub_category_id === selectedSubCategory.sub_category_id && p.category_id === selectedCategory.category_id
+                (p) =>
+                    p.sub_category_id === selectedSubCategory.sub_category_id &&
+                    p.category_id === selectedCategory.category_id
             );
-        }
-        else if (selectedCategory && selectedCategory.category_id) {
+        } else if (selectedCategory && selectedCategory.category_id) {
             filtered = allProducts.filter(
                 (p) => p.category_id === selectedCategory.category_id
             );
@@ -156,6 +165,9 @@ class Products extends Component {
                             categories={categories}
                             handleCategorySelect={this.handleCategorySelect}
                             selectedCategory={selectedCategory}
+                            handleClearSelection={
+                                this.handleClearCategorySelection
+                            }
                         />
                     </div>
                     <div className="col-md-8 col-lg-9 col-xxl-10">
@@ -172,6 +184,9 @@ class Products extends Component {
                                     this.handleSubCategorySelect
                                 }
                                 selectedSubCategory={selectedSubCategory}
+                                handleClearSelection={
+                                    this.handleClearSubCategorySelection
+                                }
                             />
                         )}
                         <ProductAlbum

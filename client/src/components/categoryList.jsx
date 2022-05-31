@@ -6,11 +6,22 @@ export default function CategoryList({
     categories,
     handleCategorySelect,
     selectedCategory,
+    handleClearSelection,
 }) {
     return (
         <div className="pb-5">
             <div className="container">
-                <h2 className="mb-3">Categories</h2>
+                <div className="mb-3">
+                    <h2 className="d-inline-block">Categories</h2>
+                    {selectedCategory && (
+                        <span
+                            className="btn btn-outline-warning btn-sm rounded-pill ms-3 h5"
+                            onClick={handleClearSelection}
+                        >
+                            Clear
+                        </span>
+                    )}
+                </div>
                 <ListGroup
                     items={categories}
                     onItemSelect={handleCategorySelect}

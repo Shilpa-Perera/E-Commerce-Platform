@@ -13,7 +13,7 @@ export default function ProductAlbum({
     return (
         <div className="album pb-5">
             <div className="container">
-                <div className="mb-4 d-flex justify-content-between">
+                <div className="mb-4 d-flex justify-content-between flex-column flex-lg-row">
                     <span>
                         <h2 className="d-inline-block">Products</h2>
                         <Link
@@ -25,64 +25,82 @@ export default function ProductAlbum({
                         </Link>
                     </span>
                     <span>
-                        <div>
-                            <h6 className="d-inline-block fw-bold">
-                                Sort by:{" "}
-                            </h6>
-                            {sortOptions.map((option) => (
-                                <div
-                                    className="d-inline-block h6 ms-2"
-                                    key={option.id}
-                                >
-                                    <span
-                                        onClick={() => onSortClick(option.id)}
-                                    >
-                                        <input
-                                            type="radio"
-                                            id={option.id}
-                                            name="sort"
-                                            checked={sortBy.field === option.id}
-                                            onChange={()=>{}}
-                                        />
-                                        <label
-                                            className="ms-1"
-                                            htmlFor={option.id}
-                                        >
-                                            {option.name}
-                                        </label>
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
-                        <div>
-                            <h6 className="d-inline-block fw-bold">
-                                Order by:{" "}
-                            </h6>
-                            {orderOptions.map((option) => (
-                                <div
-                                    className="d-inline-block h6 ms-2"
-                                    key={option.id}
-                                >
-                                    <span
-                                        onClick={() => onOptionClick(option.id)}
-                                    >
-                                        <input
-                                            type="radio"
-                                            id={option.id}
-                                            name="option"
-                                            checked={sortBy.order === option.id}
-                                            onChange={()=>{}}
-                                        />
-                                        <label
-                                            className="ms-1"
-                                            htmlFor={option.id}
-                                        >
-                                            {option.name}
-                                        </label>
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
+                        <table className="table table-borderless table-sm">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <h6 className="d-inline-block fw-bold me-2">
+                                            Sort by
+                                        </h6>
+                                    </td>
+                                    {sortOptions.map((option) => (
+                                        <td key={option.id}>
+                                            <div className="form-check form-check-inline">
+                                                <span
+                                                    onClick={() =>
+                                                        onSortClick(option.id)
+                                                    }
+                                                >
+                                                    <input
+                                                        type="radio"
+                                                        id={option.id}
+                                                        name="sort"
+                                                        checked={
+                                                            sortBy.field ===
+                                                            option.id
+                                                        }
+                                                        onChange={() => {}}
+                                                        className="form-check-input"
+                                                    />
+                                                    <label
+                                                        className="ms-1 form-check-label"
+                                                        htmlFor={option.id}
+                                                    >
+                                                        {option.name}
+                                                    </label>
+                                                </span>
+                                            </div>
+                                        </td>
+                                    ))}
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h6 className="d-inline-block fw-bold me-2">
+                                            Order by
+                                        </h6>
+                                    </td>
+                                    {orderOptions.map((option) => (
+                                        <td key={option.id}>
+                                            <div className="form-check form-check-inline">
+                                                <span
+                                                    onClick={() =>
+                                                        onOptionClick(option.id)
+                                                    }
+                                                >
+                                                    <input
+                                                        type="radio"
+                                                        id={option.id}
+                                                        name="option"
+                                                        checked={
+                                                            sortBy.order ===
+                                                            option.id
+                                                        }
+                                                        onChange={() => {}}
+                                                        className="form-check-input"
+                                                    />
+                                                    <label
+                                                        className="ms-1 form-check-label"
+                                                        htmlFor={option.id}
+                                                    >
+                                                        {option.name}
+                                                    </label>
+                                                </span>
+                                            </div>
+                                        </td>
+                                    ))}
+                                </tr>
+                            </tbody>
+                        </table>
                     </span>
                 </div>
                 <div className="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3">

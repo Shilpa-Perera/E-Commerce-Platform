@@ -5,11 +5,22 @@ export default function SubCategoryList({
     subCategories,
     handleSubCategorySelect,
     selectedSubCategory,
+    handleClearSelection,
 }) {
     return (
         <div className="pb-5">
             <div className="container">
-                <h2 className="mb-3">Sub Categories</h2>
+                <div className="mb-3">
+                    <h2 className="d-inline-block">Sub Categories</h2>
+                    {selectedSubCategory && (
+                        <span
+                            className="btn btn-outline-warning btn-sm rounded-pill ms-3 h5"
+                            onClick={handleClearSelection}
+                        >
+                            Clear
+                        </span>
+                    )}
+                </div>
                 <ListGroup
                     items={subCategories}
                     onItemSelect={handleSubCategorySelect}
