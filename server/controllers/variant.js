@@ -3,7 +3,9 @@ const { Variant } = require("../models/Variant");
 
 class VariantController {
     static async getVariant(req, res, next) {
-        const { product_id, options } = req.body;
+        const { body }  = req.query;
+        const { product_id, options } = JSON.parse(body);
+
         let variantIds = false;
         let variantIdResults = [];
         for (const { option_id, value_id } of options) {
