@@ -210,7 +210,7 @@ class ProductBody extends Component {
                                 {variant && inStock && (
                                     <div className="d-flex flex-row-reverse mt-5">
                                         <div>
-                                            <button className="btn btn-outline-success">
+                                            <button className="btn btn-outline-success hover-focus">
                                                 Add to cart
                                                 <span className="ms-2">
                                                     <i className="fa fa-cart-plus"></i>
