@@ -214,11 +214,9 @@ class Product {
     }
 
     static async makeDefault(productId, variantId) {
-        const make_default_query = "update product set default_variant_id=? where product_id=?"
-        await db.execute(make_default_query, [
-            variantId,
-            productId,
-        ]);
+        const make_default_query =
+            "update product set default_variant_id=? where product_id=?";
+        await db.execute(make_default_query, [variantId, productId]);
     }
 }
 

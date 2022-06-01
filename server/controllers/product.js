@@ -69,7 +69,7 @@ class ProductController {
         const variantId = req.body.variant_id;
         await Product.makeDefault(productId, variantId);
 
-        res.send({variant_id: variantId});
+        res.send({ variant_id: variantId });
     }
 }
 
