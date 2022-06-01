@@ -24,8 +24,6 @@ class EditVariantForm extends Form {
     };
 
     doSubmit = async () => {
-        const data = { ...this.state.data };
-        data.options = this.props.options;
         await this.props.updateVariant({ ...this.state.data });
 
         const state = {
