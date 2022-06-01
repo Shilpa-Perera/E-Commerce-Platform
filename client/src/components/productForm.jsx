@@ -15,6 +15,7 @@ import {
     updateCustomFeature,
 } from "../services/customFeatureService";
 import EditCustomFeaturesForm from "./editCustomFeatureForm";
+import _ from "lodash";
 
 class ProductFormBody extends Form {
     state = {
@@ -78,7 +79,17 @@ class ProductFormBody extends Form {
                 return;
             }
 
-            const { data } = await getProduct(productId);
+            const { data: product } = await getProduct(productId);
+            const data = _.pick(product, [
+                "product_id",
+                "product_title",
+                "category_id",
+                "sub_category_id",
+                "sku",
+                "product_weight",
+                "custom_features",
+                "options",
+            ]);
             const current_custom_features = data.custom_features;
             const current_options = data.options;
             data.custom_features = [];
@@ -230,8 +241,8 @@ class ProductFormBody extends Form {
     };
 
     doSubmit = async () => {
-        const product = await saveProduct(this.state.data);
-        this.props.push("/products");
+        const { data } = await saveProduct(this.state.data);
+        this.props.push(`/products/${data.product_id}/variants`);
     };
 
     render() {
