@@ -105,7 +105,9 @@ class Products extends Component {
         if (searchQuery)
             filtered = allProducts.filter((p) => {
                 const title = p.product_title.toLowerCase();
-                const queryRegEx = new RegExp(`.*${searchQuery.toLowerCase()}.*`);
+                const queryRegEx = new RegExp(
+                    `.*${searchQuery.toLowerCase()}.*`
+                );
                 return queryRegEx.test(title);
             });
         else if (selectedSubCategory && selectedSubCategory.sub_category_id) {
