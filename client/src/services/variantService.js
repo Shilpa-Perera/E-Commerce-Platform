@@ -19,3 +19,16 @@ export function updateVariant(variant) {
         _.pick(variant, ["variant_name", "price", "quantity"])
     );
 }
+
+export function saveVariant(variant) {
+    return http.post(
+        apiEndpoint,
+        _.pick(variant, [
+            "product_id",
+            "variant_name",
+            "price",
+            "quantity",
+            "options",
+        ])
+    );
+}
