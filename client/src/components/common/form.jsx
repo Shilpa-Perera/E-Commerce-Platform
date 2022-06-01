@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Joi from "joi-browser";
 import Input from "./input";
 import Select from "./select";
+import FloatingInput from "./floatingInput";
 
 class Form extends Component {
     state = {
@@ -57,11 +58,39 @@ class Form extends Component {
         );
     }
 
-    renderInput(name, label, type = "text", disabled= false) {
+    renderStyledButton(label, additionalClasses = "", callback = null) {
+        return (
+            <button
+                disabled={this.validate()}
+                className={`btn btn-primary ${additionalClasses}`}
+            >
+                <span className="me-2">{label}</span>
+                {callback && callback()}
+            </button>
+        );
+    }
+
+    renderInput(name, label, type = "text", disabled = false) {
         const { data, errors } = this.state;
 
         return (
             <Input
+                type={type}
+                name={name}
+                value={data[name]}
+                label={label}
+                onChange={this.handleChange}
+                error={errors[name]}
+                disabled={disabled}
+            />
+        );
+    }
+
+    renderFloatingInput(name, label, type = "text", disabled = false) {
+        const { data, errors } = this.state;
+
+        return (
+            <FloatingInput
                 type={type}
                 name={name}
                 value={data[name]}
