@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Table from "./common/table";
+import OptionTable from "./optionTable";
 
 class AddedVariantsTable extends Component {
     columns = [
@@ -11,18 +12,7 @@ class AddedVariantsTable extends Component {
         { path: "quantity", label: "Quantity" },
         {
             key: "Options",
-            content: ({ options }) => (
-                <table className="table table-hover table-sm table-borderless">
-                    <tbody>
-                        {options.map((option, index) => (
-                            <tr key={index}>
-                                <th scope="row">{option.option_name}</th>
-                                <td>{option.value_name}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            ),
+            content: ({ options }) => <OptionTable options={options} />,
             label: "Options",
         },
         {
@@ -62,7 +52,7 @@ class AddedVariantsTable extends Component {
         const { options, onSort, sortColumn } = this.props;
 
         return (
-            <React.Fragment>
+            <div>
                 <h3 className="text-muted mb-4">Added Variants</h3>
                 <Table
                     columns={this.columns}
@@ -70,7 +60,7 @@ class AddedVariantsTable extends Component {
                     sortColumn={sortColumn}
                     onSort={onSort}
                 />
-            </React.Fragment>
+            </div>
         );
     }
 }
