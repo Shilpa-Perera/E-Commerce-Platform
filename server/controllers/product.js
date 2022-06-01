@@ -63,6 +63,14 @@ class ProductController {
 
         res.send(product);
     }
+
+    static async putDefault(req, res, next) {
+        const productId = req.params.id;
+        const variantId = req.body.variant_id;
+        await Product.makeDefault(productId, variantId);
+
+        res.send({variant_id: variantId});
+    }
 }
 
 module.exports.ProductController = ProductController;
