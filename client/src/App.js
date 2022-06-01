@@ -19,6 +19,7 @@ function App() {
                     <Route index element={<Products />}></Route>
                     <Route path=":id">
                         <Route index element={<Product />}></Route>
+                        <Route path="variants" element={<VariantForm />} />
                     </Route>
                     <Route path="edit/:id" element={<ProductForm />}></Route>
                 </Route>
