@@ -24,3 +24,9 @@ export function saveProduct(product) {
         return http.post(apiEndpoint, product);
     }
 }
+
+export function updateDefault(productId, variantId) {
+    return http.put(`${apiEndpoint}/default/${productId}`, {
+        variant_id: variantId,
+    });
+}
