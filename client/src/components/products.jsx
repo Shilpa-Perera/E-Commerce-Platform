@@ -126,7 +126,7 @@ class Products extends Component {
                 if (sortBy.field === "price") {
                     return +product.price;
                 }
-                return product.price;
+                return product[sortBy.field];
             },
             [sortBy.order]
         );
