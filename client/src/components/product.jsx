@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getProduct } from "../services/productService";
 import { getVariant } from "../services/variantService";
 import Carousel from "./common/carousel";
+import { toast } from "react-toastify";
 
 class ProductBody extends Component {
     state = {
@@ -30,7 +31,6 @@ class ProductBody extends Component {
 
             try {
                 const { data: variant } = await getVariant(product_id, options);
-                console.log(variant);
                 this.setState({ variant });
             } catch (e) {
                 if (e.response && e.response.status === 404)
@@ -57,7 +57,9 @@ class ProductBody extends Component {
         await this.populateVariant();
     };
 
-    handleAddToCart = () => {};
+    handleAddToCart = () => {
+        toast.success("Item added to cart!");
+    };
 
     async componentDidMount() {
         const { id } = this.props;
@@ -210,7 +212,10 @@ class ProductBody extends Component {
                                 {variant && inStock && (
                                     <div className="d-flex flex-row-reverse mt-5">
                                         <div>
-                                            <button className="btn btn-outline-success hover-focus">
+                                            <button
+                                                className="btn btn-outline-success hover-focus"
+                                                onClick={this.handleAddToCart}
+                                            >
                                                 Add to cart
                                                 <span className="ms-2">
                                                     <i className="fa fa-cart-plus"></i>
