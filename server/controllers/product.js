@@ -27,6 +27,8 @@ class ProductController {
                 "product_weight",
                 "custom_features",
                 "options",
+                "category_id",
+                "sub_category_id",
             ])
         );
         await product.save();
@@ -55,7 +57,13 @@ class ProductController {
     static async putProduct(req, res, next) {
         const product = new Product({
             product_id: req.params.id,
-            ..._.pick(req.body, ["product_title", "sku", "product_weight"]),
+            ..._.pick(req.body, [
+                "product_title",
+                "sku",
+                "product_weight",
+                "category_id",
+                "sub_category_id",
+            ]),
             custom_features: null,
             options: null,
         });

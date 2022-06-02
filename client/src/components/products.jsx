@@ -8,6 +8,7 @@ import SubCategoryList from "./subCategoryList";
 import SearchBox from "./common/searchBox";
 import { paginate } from "../utils/paginate";
 import Pagination from "./common/pagination";
+import ProductsTable from "./productsTable";
 
 class Products extends Component {
     state = {
@@ -19,7 +20,7 @@ class Products extends Component {
         searchQuery: "",
         currentPage: 1,
         pageSize: 24,
-        sortBy: { field: "product_title", order: "asc" },
+        sortBy: { path: "product_title", order: "asc" },
     };
 
     sortOptions = [
@@ -69,13 +70,17 @@ class Products extends Component {
     };
 
     handleSortClick = (id) => {
-        this.setState({ sortBy: { field: id, order: "asc" } });
+        this.setState({ sortBy: { path: id, order: "asc" } });
     };
 
     handleOptionClick = (id) => {
         const sortBy = { ...this.state.sortBy };
         sortBy.order = id;
         this.setState({ sortBy });
+    };
+
+    handleSort = (sortBy) => {
+        if (sortBy.path) this.setState({ sortBy });
     };
 
     handlePageChange = (page) => {
@@ -125,10 +130,12 @@ class Products extends Component {
         const sorted = _.orderBy(
             filtered,
             (product) => {
-                if (sortBy.field === "price") {
+                if (sortBy.path === "price") {
                     return +product.price;
+                } else if (sortBy.path === "quantity") {
+                    return +product.quantity;
                 }
-                return product[sortBy.field];
+                return product[sortBy.path];
             },
             [sortBy.order]
         );
@@ -139,10 +146,11 @@ class Products extends Component {
     };
 
     render() {
+        const { isAlbum, isTable } = this.props;
         const { length: count } = this.state.products;
         if (count === 0)
             return (
-                <div className="container-fluid">
+                <div className="container-fluid mb-5">
                     <p className="h4">There are no products in the database</p>
                 </div>
             );
@@ -160,7 +168,7 @@ class Products extends Component {
         const { totalCount, data: products } = this.getPagedData();
 
         return (
-            <div className="container-fluid">
+            <div className="container-fluid mb-5">
                 <div className="row">
                     <div className="col-md-4 col-lg-3 col-xxl-2">
                         <CategoryList
@@ -191,14 +199,23 @@ class Products extends Component {
                                 }
                             />
                         )}
-                        <ProductAlbum
-                            products={products}
-                            sortBy={this.state.sortBy}
-                            sortOptions={this.sortOptions}
-                            onSortClick={this.handleSortClick}
-                            orderOptions={this.orderOptions}
-                            onOptionClick={this.handleOptionClick}
-                        />
+                        {isAlbum && (
+                            <ProductAlbum
+                                products={products}
+                                sortBy={this.state.sortBy}
+                                sortOptions={this.sortOptions}
+                                onSortClick={this.handleSortClick}
+                                orderOptions={this.orderOptions}
+                                onOptionClick={this.handleOptionClick}
+                            />
+                        )}
+                        {isTable && (
+                            <ProductsTable
+                                products={products}
+                                sortBy={this.state.sortBy}
+                                onSort={this.handleSort}
+                            />
+                        )}
                         <Pagination
                             itemsCount={totalCount}
                             pageSize={pageSize}

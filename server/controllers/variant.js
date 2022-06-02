@@ -3,7 +3,7 @@ const { Variant } = require("../models/Variant");
 
 class VariantController {
     static async getVariant(req, res, next) {
-        const { body }  = req.query;
+        const { body } = req.query;
         const { product_id, options } = JSON.parse(body);
 
         let variantIds = false;
@@ -26,9 +26,7 @@ class VariantController {
             const variant = await Variant.getVariant(variantIds[0]);
             return res.send(variant);
         }
-        return res
-            .status(404)
-            .send("The variant with the given parameters was not found");
+        return res.send({ variant_id: 0 });
     }
 
     static async postVariant(req, res, next) {

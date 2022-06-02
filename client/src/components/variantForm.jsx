@@ -4,9 +4,14 @@ import _ from "lodash";
 import { toast } from "react-toastify";
 import { Collapse } from "bootstrap";
 import { getProduct, updateDefault } from "../services/productService";
-import { getVariant, updateVariant } from "../services/variantService";
+import {
+    getVariant,
+    saveVariant,
+    updateVariant,
+} from "../services/variantService";
 import AddedVariantsTable from "./addedVariantsTable";
 import EditVariantForm from "./editVariantForm";
+import NotAddedVariantsTable from "./notAddedVariantsTable";
 
 class VariantFormBody extends Component {
     state = {
@@ -48,6 +53,61 @@ class VariantFormBody extends Component {
                 toast.error("This variant was not found on the server.");
 
             this.setState({ addedVariants: originalAddedVariants });
+        }
+    };
+
+    addVariant = async (variant) => {
+        const addedVariants = [...this.state.addedVariants];
+        const originalAddedVariants = [...addedVariants];
+        const availableVariants = [...this.state.availableVariants];
+        const originalAvailableVariants = [...availableVariants];
+
+        variant.isDefault = addedVariants.length === 0;
+        variant.product_id = this.state.product.product_id;
+
+        availableVariants.splice(variant.index, 1);
+
+        variant.index = addedVariants.length;
+        addedVariants.push(variant);
+
+        this.setState({ addedVariants, availableVariants });
+
+        try {
+            const { data } = await saveVariant(variant);
+            variant.variant_id = data.variant_id;
+            if (variant.isDefault) await this.handleMakeDefault(variant);
+        } catch (e) {
+            toast.error("Adding variant failed!");
+
+            this.setState({
+                addedVariants: originalAddedVariants,
+                availableVariants: originalAvailableVariants,
+            });
+        }
+    };
+
+    addDefaultVariant = async (variant) => {
+        const addedVariants = [...this.state.addedVariants];
+        const originalAddedVariants = [...addedVariants];
+
+        variant.isDefault = true;
+        variant.product_id = this.state.product.product_id;
+        variant.index = addedVariants.length;
+        variant.options = [];
+        addedVariants.push(variant);
+
+        this.setState({ addedVariants });
+
+        try {
+            const { data } = await saveVariant(variant);
+            variant.variant_id = data.variant_id;
+            await this.handleMakeDefault(variant);
+        } catch (e) {
+            toast.error("Adding variant failed!");
+
+            this.setState({
+                addedVariants: originalAddedVariants,
+            });
         }
     };
 
@@ -118,55 +178,83 @@ class VariantFormBody extends Component {
         let availableVariants = [];
         const addedVariants = [];
 
-        for (const option of product.options) {
-            const { option_id, option_name } = option;
-            const values = [...option.values];
-            if (availableVariants.length > 0) {
-                const newAvailableVariants = [];
-                for (const value of values) {
-                    const { value_id, value_name } = value;
-                    for (let i = 0; i < availableVariants.length; ++i) {
-                        const variant = [...availableVariants[i]];
-                        variant.push({
-                            option_id,
-                            option_name,
-                            value_id,
-                            value_name,
-                        });
-                        newAvailableVariants.push(variant);
+        if (product.options.length > 0) {
+            for (const option of product.options) {
+                const { option_id, option_name } = option;
+                const values = [...option.values];
+                if (availableVariants.length > 0) {
+                    const newAvailableVariants = [];
+                    for (const value of values) {
+                        const { value_id, value_name } = value;
+                        for (let i = 0; i < availableVariants.length; ++i) {
+                            const variant = [...availableVariants[i]];
+                            variant.push({
+                                option_id,
+                                option_name,
+                                value_id,
+                                value_name,
+                            });
+                            newAvailableVariants.push(variant);
+                        }
+                    }
+                    availableVariants = newAvailableVariants;
+                } else {
+                    for (const value of values) {
+                        const { value_id, value_name } = value;
+                        const variant = [
+                            { option_id, option_name, value_id, value_name },
+                        ];
+                        availableVariants.push(variant);
                     }
                 }
-                availableVariants = newAvailableVariants;
-            } else {
-                for (const value of values) {
-                    const { value_id, value_name } = value;
-                    const variant = [
-                        { option_id, option_name, value_id, value_name },
-                    ];
-                    availableVariants.push(variant);
+            }
+
+            const newAvailableVariants = [];
+            let addedIndex = 0;
+            let notAddedIndex = 0;
+            for (let i = 0; i < availableVariants.length; ++i) {
+                const options = availableVariants[i];
+                try {
+                    let { data: variant } = await getVariant(
+                        product_id,
+                        options
+                    );
+                    variant.options = options;
+
+                    if (variant.variant_id > 0) {
+                        variant.isDefault =
+                            variant.variant_id === product.default_variant_id;
+                        variant.index = addedIndex;
+                        addedVariants.push(variant);
+                        ++addedIndex;
+                    } else {
+                        variant.index = notAddedIndex;
+                        variant.variant_name = "";
+                        variant.price = 0;
+                        variant.quantity = 0;
+                        newAvailableVariants.push(variant);
+                        ++notAddedIndex;
+                    }
+                } catch (e) {
+                    toast.error("An error occurred.");
                 }
             }
+            availableVariants = newAvailableVariants;
+        } else if (
+            product.default_variant_id &&
+            product.default_variant_id > 0
+        ) {
+            const variant = {
+                options: [],
+                variant_id: product.default_variant_id,
+                variant_name: product.variant_name,
+                price: product.price,
+                quantity: product.quantity,
+                isDefault: true,
+                index: 0,
+            };
+            addedVariants.push(variant);
         }
-
-        const newAvailableVariants = [...availableVariants];
-        let index = 0;
-        for (let i = 0; i < availableVariants.length; ++i) {
-            const options = availableVariants[i];
-            try {
-                let { data: variant } = await getVariant(product_id, options);
-                variant.options = options;
-                variant.isDefault =
-                    variant.variant_id === product.default_variant_id;
-                variant.index = index;
-                addedVariants.push(variant);
-                newAvailableVariants[i] = null;
-                ++index;
-            } catch (e) {}
-        }
-
-        availableVariants = [];
-        for (const variant of newAvailableVariants)
-            if (variant !== null) availableVariants.push(variant);
 
         this.setState({ product, availableVariants, addedVariants });
     }
@@ -186,7 +274,7 @@ class VariantFormBody extends Component {
         if (product) {
             const { editVariant } = this.state;
             return (
-                <div className="container">
+                <div className="container mb-5">
                     <h1>{product.product_title}</h1>
                     <h2 className="text-muted mt-4">Manage variants</h2>
                     <div className="container-fluid">
@@ -211,6 +299,18 @@ class VariantFormBody extends Component {
                                         cancel={this.cancelEditVariant}
                                     />
                                 )}
+                            </div>
+                        </div>
+                        <div className="row row-cols-1">
+                            <div className="col mb-3 p-5">
+                                <NotAddedVariantsTable
+                                    options={availableVariants}
+                                    addVariant={this.addVariant}
+                                    addDefaultVariant={this.addDefaultVariant}
+                                    defaultUnavailable={
+                                        addedVariants.length === 0
+                                    }
+                                />
                             </div>
                         </div>
                     </div>

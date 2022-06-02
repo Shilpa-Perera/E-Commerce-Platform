@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Table from "./common/table";
+import OptionTable from "./optionTable";
 
 class AddedVariantsTable extends Component {
     columns = [
@@ -11,18 +12,11 @@ class AddedVariantsTable extends Component {
         { path: "quantity", label: "Quantity" },
         {
             key: "Options",
-            content: ({ options }) => (
-                <table className="table table-hover table-sm table-borderless">
-                    <tbody>
-                        {options.map((option, index) => (
-                            <tr key={index}>
-                                <th scope="row">{option.option_name}</th>
-                                <td>{option.value_name}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            ),
+            content: ({ options }) => {
+                if (options.length > 0)
+                    return <OptionTable options={options} />;
+                return <span className="fw-bold">Default</span>;
+            },
             label: "Options",
         },
         {
@@ -59,18 +53,27 @@ class AddedVariantsTable extends Component {
     ];
 
     render() {
-        const { options, onSort, sortColumn } = this.props;
+        const { options, onSort, sortColumn, defaultAvailable } = this.props;
+        const variantsNotAdded = options.length === 0;
 
         return (
-            <React.Fragment>
+            <div>
                 <h3 className="text-muted mb-4">Added Variants</h3>
+                {variantsNotAdded && (
+                    <div className="my-5">
+                        <span className="alert alert-warning">
+                            No variants added. The product will not be shown to
+                            customer.
+                        </span>
+                    </div>
+                )}
                 <Table
                     columns={this.columns}
                     data={options}
                     sortColumn={sortColumn}
                     onSort={onSort}
                 />
-            </React.Fragment>
+            </div>
         );
     }
 }
