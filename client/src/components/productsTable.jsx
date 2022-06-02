@@ -12,7 +12,7 @@ class ProductsTable extends Component {
             content: ({ product_id }) => (
                 <div className="d-flex flex-column flex-lg-row mb-3">
                     <span className="me-2 my-2 my-lg-0">
-                        <Link to={`products/${product_id}`}>
+                        <Link to={`/products/${product_id}/`}>
                             <button className="btn btn-success btn-sm hover-focus">
                                 <span className="me-2">View Product</span>
                                 <i className="fa fa-eye"></i>
@@ -20,7 +20,7 @@ class ProductsTable extends Component {
                         </Link>
                     </span>
                     <span className="me-2 my-2 my-lg-0">
-                        <Link to={`products/${product_id}`}>
+                        <Link to={`/products/edit/${product_id}/`}>
                             <button className="btn btn-warning btn-sm hover-focus">
                                 <span className="me-2">Edit Product</span>
                                 <i className="fa fa-edit"></i>
@@ -28,7 +28,7 @@ class ProductsTable extends Component {
                         </Link>
                     </span>
                     <span className="me-2 my-2 my-lg-0">
-                        <Link to={`products/${product_id}`}>
+                        <Link to={`/products/${product_id}/variants/`}>
                             <button className="btn btn-primary btn-sm hover-focus">
                                 <span className="me-2">Manage Variants</span>
                                 <i className="fa fa-edit"></i>
