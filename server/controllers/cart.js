@@ -8,6 +8,25 @@ class CartController{
         res.send(allCarts[0]);
     }
 
+    static async getCartByID(req ,res ,next){
+        const cart = await Cart.getCartByID(req.params.id) ;
+        res.send(cart) ;
+    }
+
+    // static async getCartByUserID(req,res,next){
+    //     const cart = await Cart.getCartByUserID(req.params.user_id) ;
+    //     res.send(cart);
+
+    // }
+
+    static async getCartProducts(req,res,next){
+
+        const products = await Cart.getCartProducts(req.params.id) ;
+        res.send(products);
+    }
+
+    
+
 }
 
 module.exports.CartController = CartController;

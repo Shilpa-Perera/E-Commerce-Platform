@@ -3,5 +3,8 @@ const express = require('express');
 const router = express();
 
 router.get('/', CartController.getAllCarts);
-
+router.get('/:id',CartController.getCartByID);
+// router.get('/:user_id' , CartController.getCartByUserID) ;
+router.get('/products/:id' , CartController.getCartProducts) ;
+ 
 module.exports = router; 
