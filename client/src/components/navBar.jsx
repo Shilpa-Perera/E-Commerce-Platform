@@ -14,9 +14,53 @@ export default function NavBar() {
                 >
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                            <NavLink className="nav-link hover-focus" to="/products">
+                            <NavLink
+                                className="nav-link hover-focus"
+                                to="/products/"
+                            >
                                 Products
                             </NavLink>
+                        </li>
+                        <li className="nav-item dropdown">
+                            <span
+                                className="nav-link dropdown-toggle hover-focus"
+                                role="button"
+                                id="navbarDropdown"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                            >
+                                Products
+                            </span>
+                            <ul
+                                className="dropdown-menu collapsed"
+                                id="product-list-collapse"
+                                aria-labelledby="navbarDropdown"
+                            >
+                                <li>
+                                    <NavLink
+                                        className="dropdown-item hover-focus"
+                                        to="/products/"
+                                    >
+                                        Product Album
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink
+                                        className="dropdown-item hover-focus"
+                                        to="/products/edit/new"
+                                    >
+                                        New Product
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink
+                                        className="dropdown-item hover-focus"
+                                        to="/products/edit/"
+                                    >
+                                        Manage Products
+                                    </NavLink>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
