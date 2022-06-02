@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import OptionTable from "./optionTable";
 import { Link } from "react-router-dom";
 import Table from "./common/table";
 
@@ -48,7 +47,7 @@ class ProductsTable extends Component {
         return (
             <div className="pb-5">
                 <div className="container">
-                    <h3 className="text-muted mb-4">Manage Products</h3>
+                    <h3 className="mb-4">Manage Products</h3>
                     <div className="my-5">
                         <Table
                             columns={this.columns}

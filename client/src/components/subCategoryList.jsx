@@ -21,15 +21,17 @@ export default function SubCategoryList({
         <div className="pb-5">
             <div className="container">
                 <div className="mb-3 d-flex justify-content-between">
-                    <h2 className="d-inline-block">Sub Categories</h2>
-                    {selectedSubCategory && (
-                        <span
-                            className="btn btn-outline-warning btn-sm rounded-pill ms-3 h5"
-                            onClick={handleClearSelection}
-                        >
-                            Clear
-                        </span>
-                    )}
+                    <div>
+                        <h2 className="d-inline-block">Sub Categories</h2>
+                        {selectedSubCategory && (
+                            <span
+                                className="btn btn-outline-warning btn-sm rounded-pill ms-3 h5"
+                                onClick={handleClearSelection}
+                            >
+                                Clear
+                            </span>
+                        )}
+                    </div>
                     <button
                         className="btn btn-outline-dark d-md-none"
                         type="button"
