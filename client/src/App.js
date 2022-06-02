@@ -17,7 +17,10 @@ function App() {
             <ToastContainer />
             <Routes>
                 <Route path="/products">
-                    <Route index element={<Products />}></Route>
+                    <Route
+                        index
+                        element={<Products isAlbum={true} isTable={false} />}
+                    ></Route>
                     <Route
                         path="new"
                         element={<Navigate to="/products/edit/new" />}
@@ -26,7 +29,15 @@ function App() {
                         <Route index element={<Product />}></Route>
                         <Route path="variants" element={<VariantForm />} />
                     </Route>
-                    <Route path="edit/:id" element={<ProductForm />}></Route>
+                    <Route path="edit">
+                        <Route
+                            index
+                            element={
+                                <Products isAlbum={false} isTable={true} />
+                            }
+                        ></Route>
+                        <Route path=":id" element={<ProductForm />}></Route>
+                    </Route>
                 </Route>
                 <Route path="/" element={<Home />}></Route>
                 <Route path="*" element={<NotFound />} />
