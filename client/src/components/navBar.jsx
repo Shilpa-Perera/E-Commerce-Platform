@@ -8,32 +8,79 @@ export default function NavBar() {
                 <NavLink to="/" className="navbar-brand hover-focus">
                     {process.env.REACT_APP_SITE_NAME}
                 </NavLink>
-                <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                <div
+                    className="collapse navbar-collapse"
+                    id="navbarSupportedContent"
+                >
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                            <NavLink className="nav-link hover-focus" to="/products">
+                            <NavLink
+                                className="nav-link hover-focus"
+                                to="/products"
+                            >
                                 Products
                             </NavLink>
                         </li>
+                        <li className="nav-item dropdown">
+                            <span
+                                className="nav-link dropdown-toggle hover-focus"
+                                role="button"
+                                id="navbarDropdown"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                            >
+                                Products
+                            </span>
+                            <ul
+                                className="dropdown-menu collapsed"
+                                id="product-list-collapse"
+                                aria-labelledby="navbarDropdown"
+                            >
+                                <li>
+                                    <NavLink
+                                        className="dropdown-item hover-focus"
+                                        to="/products/"
+                                    >
+                                        Product Album
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink
+                                        className="dropdown-item hover-focus"
+                                        to="/products/edit/new"
+                                    >
+                                        New Product
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink
+                                        className="dropdown-item hover-focus"
+                                        to="/products/edit/"
+                                    >
+                                        Manage Products
+                                    </NavLink>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
-
-                <div className="collapse navbar-collapse " id="navbarSupportedContent">
+                <div
+                    className="collapse navbar-collapse "
+                    id="navbarSupportedContent"
+                >
                     <ul className="navbar-nav ms-auto">
                         <li className="nav-item">
                             <NavLink className="nav-link hover-focus" to="/">
                                 <span className="ms-2">
-                                        <i className="fa fa-shopping-cart fa-2x "></i>
-                                        <span class="badge rounded-pill badge-notification bg-primary">1</span>
-
+                                    <i className="fa fa-shopping-cart fa-2x "></i>
+                                    <span className="badge rounded-pill badge-notification bg-primary">
+                                        1
+                                    </span>
                                 </span>
-                                    
-                                              
                             </NavLink>
                         </li>
                     </ul>
                 </div>
-
             </div>
         </nav>
     );
