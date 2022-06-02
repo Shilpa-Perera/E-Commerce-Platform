@@ -274,7 +274,7 @@ class VariantFormBody extends Component {
         if (product) {
             const { editVariant } = this.state;
             return (
-                <div className="container">
+                <div className="container mb-5">
                     <h1>{product.product_title}</h1>
                     <h2 className="text-muted mt-4">Manage variants</h2>
                     <div className="container-fluid">

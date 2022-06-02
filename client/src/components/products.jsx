@@ -142,7 +142,7 @@ class Products extends Component {
         const { length: count } = this.state.products;
         if (count === 0)
             return (
-                <div className="container-fluid">
+                <div className="container-fluid mb-5">
                     <p className="h4">There are no products in the database</p>
                 </div>
             );
@@ -160,7 +160,7 @@ class Products extends Component {
         const { totalCount, data: products } = this.getPagedData();
 
         return (
-            <div className="container-fluid">
+            <div className="container-fluid mb-5">
                 <div className="row">
                     <div className="col-md-4 col-lg-3 col-xxl-2">
                         <CategoryList

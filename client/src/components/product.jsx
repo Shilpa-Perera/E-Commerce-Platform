@@ -108,7 +108,7 @@ class ProductBody extends Component {
             const outOfStock = inStock ? null : true;
 
             return (
-                <div className="container-fluid">
+                <div className="container-fluid mb-5">
                     <div className="row row-cols-1 row-cols-sm-1 row-cols-lg-2">
                         <div className="col mb-3 p-5">
                             <div

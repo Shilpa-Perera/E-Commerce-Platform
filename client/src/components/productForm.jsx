@@ -263,7 +263,7 @@ class ProductFormBody extends Form {
         }
 
         return (
-            <div className="container">
+            <div className="container mb-5">
                 <h1>Product</h1>
                 <div className="row row-cols-1 row-cols-sm-1 row-cols-md-2">
                     <div className="col mb-3">

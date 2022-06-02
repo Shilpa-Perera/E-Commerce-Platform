@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Products from "./components/products";
@@ -13,7 +12,7 @@ import Home from "./components/home";
 
 function App() {
     return (
-        <Fragment>
+        <div className="d-flex flex-column min-vh-100">
             <NavBar />
             <ToastContainer />
             <Routes>
@@ -33,7 +32,7 @@ function App() {
                 <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />
-        </Fragment>
+        </div>
     );
 }
 
