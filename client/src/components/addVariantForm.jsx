@@ -19,17 +19,25 @@ class AddVariantForm extends Form {
             .max(50)
             .label("Variant Name"),
         price: Joi.number().required().min(1).label("Price"),
-        quantity: Joi.number().required().min(1).label("Quantity"),
+        quantity: Joi.number().required().min(0).label("Quantity"),
         options: Joi.array(),
     };
 
     doSubmit = async () => {
-        const variant = { ...this.props.variant };
-        const { variant_name, price, quantity } = { ...this.state.data };
-        variant.variant_name = variant_name;
-        variant.price = price;
-        variant.quantity = quantity;
-        await this.props.addVariant(variant);
+        const variantData = this.props.variant;
+
+        if (variantData !== null) {
+            const variant = { ...variantData };
+            const { variant_name, price, quantity } = { ...this.state.data };
+
+            variant.variant_name = variant_name;
+            variant.price = price;
+            variant.quantity = quantity;
+
+            await this.props.addVariant(variant);
+        } else {
+            await this.props.addVariant({ ...this.state.data });
+        }
 
         const data = {
             variant_name: "",

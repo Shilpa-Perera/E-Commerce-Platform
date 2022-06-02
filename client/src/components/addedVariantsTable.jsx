@@ -12,7 +12,11 @@ class AddedVariantsTable extends Component {
         { path: "quantity", label: "Quantity" },
         {
             key: "Options",
-            content: ({ options }) => <OptionTable options={options} />,
+            content: ({ options }) => {
+                if (options.length > 0)
+                    return <OptionTable options={options} />;
+                return <span className="fw-bold">Default</span>;
+            },
             label: "Options",
         },
         {
@@ -49,11 +53,20 @@ class AddedVariantsTable extends Component {
     ];
 
     render() {
-        const { options, onSort, sortColumn } = this.props;
+        const { options, onSort, sortColumn, defaultAvailable } = this.props;
+        const variantsNotAdded = options.length === 0;
 
         return (
             <div>
                 <h3 className="text-muted mb-4">Added Variants</h3>
+                {variantsNotAdded && (
+                    <div className="my-5">
+                        <span className="alert alert-warning">
+                            No variants added. The product will not be shown to
+                            customer.
+                        </span>
+                    </div>
+                )}
                 <Table
                     columns={this.columns}
                     data={options}

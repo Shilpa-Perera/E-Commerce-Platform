@@ -66,11 +66,28 @@ class ProductBody extends Component {
 
         try {
             const { data: product } = await getProduct(id);
+            let variant = null;
             const selectedOptions = [];
-            for (const { option_id } of product.options) {
-                selectedOptions.push({ option_id, value_id: 0 });
+
+            if (product.options.length > 0) {
+                for (const { option_id } of product.options) {
+                    selectedOptions.push({ option_id, value_id: 0 });
+                }
+            } else if (
+                product.default_variant_id &&
+                product.default_variant_id > 0
+            ) {
+                variant = {
+                    options: [],
+                    variant_id: product.default_variant_id,
+                    variant_name: product.variant_name,
+                    price: product.price,
+                    quantity: product.quantity,
+                    isDefault: true,
+                };
             }
-            this.setState({ product, selectedOptions });
+
+            this.setState({ product, selectedOptions, variant });
         } catch (e) {
             if (e.response && e.response.status === 404)
                 this.props.replace("/not-found");
@@ -82,6 +99,8 @@ class ProductBody extends Component {
         const { product, variant } = this.state;
 
         if (product) {
+            const optionsAvailable =
+                product.options && product.options.length > 0;
             const price = variant === null ? product.price : variant.price;
             const noVariant = variant === null ? true : null;
             const inStock =
@@ -139,65 +158,71 @@ class ProductBody extends Component {
                                         </tbody>
                                     </table>
                                 </div>
-                                <div>
-                                    <h5 className="text-muted mt-5 mb-3">
-                                        Select your options
-                                    </h5>
-                                    <table className="table table-borderless">
-                                        <tbody>
-                                            {product.options.map(
-                                                (option, index) => (
-                                                    <tr key={index}>
-                                                        <th scope="row">
-                                                            {option.option_name}
-                                                        </th>
-                                                        <td>
-                                                            <select
-                                                                onChange={
-                                                                    this
-                                                                        .handleSelect
+                                {optionsAvailable && (
+                                    <div>
+                                        <h5 className="text-muted mt-5 mb-3">
+                                            Select your options
+                                        </h5>
+                                        <table className="table table-borderless">
+                                            <tbody>
+                                                {product.options.map(
+                                                    (option, index) => (
+                                                        <tr key={index}>
+                                                            <th scope="row">
+                                                                {
+                                                                    option.option_name
                                                                 }
-                                                                className="form-select"
-                                                                name={
-                                                                    option.option_id
-                                                                }
-                                                                id={
-                                                                    option.option_id
-                                                                }
-                                                            >
-                                                                <option
-                                                                    value={0}
-                                                                ></option>
-                                                                {option.values.map(
-                                                                    (
-                                                                        value,
-                                                                        idx
-                                                                    ) => (
-                                                                        <option
-                                                                            id={
-                                                                                value.value_id
-                                                                            }
-                                                                            value={
-                                                                                value.value_id
-                                                                            }
-                                                                            key={
-                                                                                idx
-                                                                            }
-                                                                        >
-                                                                            {
-                                                                                value.value_name
-                                                                            }
-                                                                        </option>
-                                                                    )
-                                                                )}
-                                                            </select>
-                                                        </td>
-                                                    </tr>
-                                                )
-                                            )}
-                                        </tbody>
-                                    </table>
-                                </div>
+                                                            </th>
+                                                            <td>
+                                                                <select
+                                                                    onChange={
+                                                                        this
+                                                                            .handleSelect
+                                                                    }
+                                                                    className="form-select"
+                                                                    name={
+                                                                        option.option_id
+                                                                    }
+                                                                    id={
+                                                                        option.option_id
+                                                                    }
+                                                                >
+                                                                    <option
+                                                                        value={
+                                                                            0
+                                                                        }
+                                                                    ></option>
+                                                                    {option.values.map(
+                                                                        (
+                                                                            value,
+                                                                            idx
+                                                                        ) => (
+                                                                            <option
+                                                                                id={
+                                                                                    value.value_id
+                                                                                }
+                                                                                value={
+                                                                                    value.value_id
+                                                                                }
+                                                                                key={
+                                                                                    idx
+                                                                                }
+                                                                            >
+                                                                                {
+                                                                                    value.value_name
+                                                                                }
+                                                                            </option>
+                                                                        )
+                                                                    )}
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                )}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                )}
                                 <div className="d-flex flex-row-reverse mt-5">
                                     <div>
                                         <h4>

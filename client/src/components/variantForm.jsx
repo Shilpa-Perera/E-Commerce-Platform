@@ -78,9 +78,35 @@ class VariantFormBody extends Component {
             if (variant.isDefault) await this.handleMakeDefault(variant);
         } catch (e) {
             toast.error("Adding variant failed!");
+
             this.setState({
                 addedVariants: originalAddedVariants,
                 availableVariants: originalAvailableVariants,
+            });
+        }
+    };
+
+    addDefaultVariant = async (variant) => {
+        const addedVariants = [...this.state.addedVariants];
+        const originalAddedVariants = [...addedVariants];
+
+        variant.isDefault = true;
+        variant.product_id = this.state.product.product_id;
+        variant.index = addedVariants.length;
+        variant.options = [];
+        addedVariants.push(variant);
+
+        this.setState({ addedVariants });
+
+        try {
+            const { data } = await saveVariant(variant);
+            variant.variant_id = data.variant_id;
+            await this.handleMakeDefault(variant);
+        } catch (e) {
+            toast.error("Adding variant failed!");
+
+            this.setState({
+                addedVariants: originalAddedVariants,
             });
         }
     };
@@ -152,64 +178,83 @@ class VariantFormBody extends Component {
         let availableVariants = [];
         const addedVariants = [];
 
-        for (const option of product.options) {
-            const { option_id, option_name } = option;
-            const values = [...option.values];
-            if (availableVariants.length > 0) {
-                const newAvailableVariants = [];
-                for (const value of values) {
-                    const { value_id, value_name } = value;
-                    for (let i = 0; i < availableVariants.length; ++i) {
-                        const variant = [...availableVariants[i]];
-                        variant.push({
-                            option_id,
-                            option_name,
-                            value_id,
-                            value_name,
-                        });
-                        newAvailableVariants.push(variant);
+        if (product.options.length > 0) {
+            for (const option of product.options) {
+                const { option_id, option_name } = option;
+                const values = [...option.values];
+                if (availableVariants.length > 0) {
+                    const newAvailableVariants = [];
+                    for (const value of values) {
+                        const { value_id, value_name } = value;
+                        for (let i = 0; i < availableVariants.length; ++i) {
+                            const variant = [...availableVariants[i]];
+                            variant.push({
+                                option_id,
+                                option_name,
+                                value_id,
+                                value_name,
+                            });
+                            newAvailableVariants.push(variant);
+                        }
+                    }
+                    availableVariants = newAvailableVariants;
+                } else {
+                    for (const value of values) {
+                        const { value_id, value_name } = value;
+                        const variant = [
+                            { option_id, option_name, value_id, value_name },
+                        ];
+                        availableVariants.push(variant);
                     }
                 }
-                availableVariants = newAvailableVariants;
-            } else {
-                for (const value of values) {
-                    const { value_id, value_name } = value;
-                    const variant = [
-                        { option_id, option_name, value_id, value_name },
-                    ];
-                    availableVariants.push(variant);
+            }
+
+            const newAvailableVariants = [];
+            let addedIndex = 0;
+            let notAddedIndex = 0;
+            for (let i = 0; i < availableVariants.length; ++i) {
+                const options = availableVariants[i];
+                try {
+                    let { data: variant } = await getVariant(
+                        product_id,
+                        options
+                    );
+                    variant.options = options;
+
+                    if (variant.variant_id > 0) {
+                        variant.isDefault =
+                            variant.variant_id === product.default_variant_id;
+                        variant.index = addedIndex;
+                        addedVariants.push(variant);
+                        ++addedIndex;
+                    } else {
+                        variant.index = notAddedIndex;
+                        variant.variant_name = "";
+                        variant.price = 0;
+                        variant.quantity = 0;
+                        newAvailableVariants.push(variant);
+                        ++notAddedIndex;
+                    }
+                } catch (e) {
+                    toast.error("An error occurred.");
                 }
             }
+            availableVariants = newAvailableVariants;
+        } else if (
+            product.default_variant_id &&
+            product.default_variant_id > 0
+        ) {
+            const variant = {
+                options: [],
+                variant_id: product.default_variant_id,
+                variant_name: product.variant_name,
+                price: product.price,
+                quantity: product.quantity,
+                isDefault: true,
+                index: 0,
+            };
+            addedVariants.push(variant);
         }
-
-        const newAvailableVariants = [];
-        let addedIndex = 0;
-        let notAddedIndex = 0;
-        for (let i = 0; i < availableVariants.length; ++i) {
-            const options = availableVariants[i];
-            try {
-                let { data: variant } = await getVariant(product_id, options);
-                variant.options = options;
-
-                if (variant.variant_id > 0) {
-                    variant.isDefault =
-                        variant.variant_id === product.default_variant_id;
-                    variant.index = addedIndex;
-                    addedVariants.push(variant);
-                    ++addedIndex;
-                } else {
-                    variant.index = notAddedIndex;
-                    variant.variant_name = "";
-                    variant.price = 0;
-                    variant.quantity = 0;
-                    newAvailableVariants.push(variant);
-                    ++notAddedIndex;
-                }
-            } catch (e) {
-                toast.error("An error occurred.");
-            }
-        }
-        availableVariants = newAvailableVariants;
 
         this.setState({ product, availableVariants, addedVariants });
     }
@@ -261,6 +306,10 @@ class VariantFormBody extends Component {
                                 <NotAddedVariantsTable
                                     options={availableVariants}
                                     addVariant={this.addVariant}
+                                    addDefaultVariant={this.addDefaultVariant}
+                                    defaultUnavailable={
+                                        addedVariants.length === 0
+                                    }
                                 />
                             </div>
                         </div>

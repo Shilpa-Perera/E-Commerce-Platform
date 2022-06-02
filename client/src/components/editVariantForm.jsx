@@ -19,7 +19,7 @@ class EditVariantForm extends Form {
             .max(50)
             .label("Variant Name"),
         price: Joi.number().required().min(1).label("Price"),
-        quantity: Joi.number().required().min(1).label("Quantity"),
+        quantity: Joi.number().required().min(0).label("Quantity"),
         options: Joi.array(),
     };
 

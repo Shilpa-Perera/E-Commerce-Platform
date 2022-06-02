@@ -16,10 +16,20 @@ class NotAddedVariantsTable extends Component {
     ];
 
     render() {
-        const { options: variants } = this.props;
+        const { options: variants, defaultUnavailable } = this.props;
+        const optionsAvailable = variants.length > 0;
+        const optionsUnavailable = variants.length === 0;
+
         return (
             <div>
                 <h3 className="text-muted mb-4">Variants available to add</h3>
+                {optionsUnavailable && defaultUnavailable && (
+                    <div className="my-5">
+                        <span className="alert alert-danger">
+                            No options added. Please add a default variant.
+                        </span>
+                    </div>
+                )}
                 <table className="table table-hover">
                     <TableHeader
                         columns={this.columns}
@@ -27,19 +37,37 @@ class NotAddedVariantsTable extends Component {
                         onSort={null}
                     />
                     <tbody>
-                        {variants.map((variant, index) => (
-                            <tr key={index}>
+                        {optionsAvailable &&
+                            variants.map((variant, index) => (
+                                <tr key={index}>
+                                    <td>
+                                        <OptionTable
+                                            options={variant.options}
+                                        />
+                                    </td>
+                                    <td>
+                                        <AddVariantForm
+                                            variant={variant}
+                                            addVariant={this.props.addVariant}
+                                        />
+                                    </td>
+                                </tr>
+                            ))}
+                        {optionsUnavailable && defaultUnavailable && (
+                            <tr>
                                 <td>
-                                    <OptionTable options={variant.options} />
+                                    <span className="fw-bold">Default</span>
                                 </td>
                                 <td>
                                     <AddVariantForm
-                                        variant={variant}
-                                        addVariant={this.props.addVariant}
+                                        variant={null}
+                                        addVariant={
+                                            this.props.addDefaultVariant
+                                        }
                                     />
                                 </td>
                             </tr>
-                        ))}
+                        )}
                     </tbody>
                 </table>
             </div>
