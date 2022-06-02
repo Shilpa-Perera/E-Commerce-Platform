@@ -46,7 +46,7 @@ export default function ProductAlbum({
                                                         id={option.id}
                                                         name="sort"
                                                         checked={
-                                                            sortBy.field ===
+                                                            sortBy.path ===
                                                             option.id
                                                         }
                                                         onChange={() => {}}

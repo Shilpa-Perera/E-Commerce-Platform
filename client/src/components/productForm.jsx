@@ -15,6 +15,7 @@ import {
     updateCustomFeature,
 } from "../services/customFeatureService";
 import EditCustomFeaturesForm from "./editCustomFeatureForm";
+import _ from "lodash";
 
 class ProductFormBody extends Form {
     state = {
@@ -24,7 +25,7 @@ class ProductFormBody extends Form {
             category_id: 0,
             sub_category_id: 0,
             sku: "",
-            product_weight: 0,
+            product_weight: "",
             custom_features: [],
             options: [],
         },
@@ -78,7 +79,17 @@ class ProductFormBody extends Form {
                 return;
             }
 
-            const { data } = await getProduct(productId);
+            const { data: product } = await getProduct(productId);
+            const data = _.pick(product, [
+                "product_id",
+                "product_title",
+                "category_id",
+                "sub_category_id",
+                "sku",
+                "product_weight",
+                "custom_features",
+                "options",
+            ]);
             const current_custom_features = data.custom_features;
             const current_options = data.options;
             data.custom_features = [];
@@ -230,8 +241,8 @@ class ProductFormBody extends Form {
     };
 
     doSubmit = async () => {
-        const product = await saveProduct(this.state.data);
-        this.props.push("/products");
+        const { data } = await saveProduct(this.state.data);
+        this.props.push(`/products/${data.product_id}/variants`);
     };
 
     render() {
@@ -252,7 +263,7 @@ class ProductFormBody extends Form {
         }
 
         return (
-            <div className="container">
+            <div className="container mb-5">
                 <h1>Product</h1>
                 <div className="row row-cols-1 row-cols-sm-1 row-cols-md-2">
                     <div className="col mb-3">
@@ -274,6 +285,15 @@ class ProductFormBody extends Form {
                                 "product_weight",
                                 "Product Weight",
                                 "number"
+                            )}
+                            {this.state.isNew && (
+                                <div className="alert alert-warning">
+                                    <i className="fa fa-warning"></i>
+                                    <span className="ms-2">
+                                        Make sure to add all the options for
+                                        variants before saving!
+                                    </span>
+                                </div>
                             )}
                             {this.renderButton("Save")}
                         </form>

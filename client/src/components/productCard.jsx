@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function ProductCard({ data }) {
     const { product_id, product_title, price } = data;
@@ -26,9 +27,11 @@ export default function ProductCard({ data }) {
                         RS. {price}
                     </h6>
                     <div className="d-flex justify-content-center align-items-center">
-                        <button type="button" className="btn btn-primary my-2">
-                            View
-                        </button>
+                        <Link to={`/products/${product_id}`}>
+                            <button type="button" className="btn btn-primary my-2">
+                                View
+                            </button>
+                        </Link>
                     </div>
                 </div>
             </div>

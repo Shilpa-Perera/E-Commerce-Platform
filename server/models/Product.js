@@ -11,6 +11,8 @@ class Product {
         this.product_weight = productDetails.product_weight;
         this.custom_features = productDetails.custom_features;
         this.options = productDetails.options;
+        this.category_id = productDetails.category_id;
+        this.sub_category_id = productDetails.sub_category_id;
     }
 
     static fetchAll() {
@@ -34,7 +36,7 @@ class Product {
 
     static async getProduct(productId) {
         const get_product_query =
-            "select * from product p join variant v on p.default_variant_id = v.variant_id join product_category pc on p.product_id = pc.product_id where p.product_id=?";
+            "select * from product p left outer join variant v on p.default_variant_id = v.variant_id join product_category pc on p.product_id = pc.product_id where p.product_id=?";
         const [products, _] = await db.execute(get_product_query, [productId]);
 
         if (products.length > 0) {
@@ -124,6 +126,7 @@ class Product {
         try {
             await connection.beginTransaction();
             await this.saveProduct(connection);
+            await this.saveCategory(connection);
             await this.saveCustomFeatures(connection);
             await this.saveOptions(connection);
             await connection.commit();
@@ -146,6 +149,17 @@ class Product {
         ]);
         this.product_id = result[0].insertId;
         connection.unprepare(insert_product_query);
+    }
+
+    async saveCategory(connection) {
+        const insert_product_category_query =
+            "insert into product_category (product_id, category_id, sub_category_id) values (?, ?, ?)";
+        await connection.execute(insert_product_category_query, [
+            this.product_id,
+            this.category_id,
+            this.sub_category_id,
+        ]);
+        connection.unprepare(insert_product_category_query);
     }
 
     async saveCustomFeatures(connection) {
@@ -191,6 +205,23 @@ class Product {
     }
 
     async update() {
+        const connection = await db.getConnection();
+
+        try {
+            await connection.beginTransaction();
+            await this.updateProduct(connection);
+            await this.updateCategory(connection);
+            await connection.commit();
+        } catch (e) {
+            await connection.rollback();
+            await connection.release();
+            throw e;
+        }
+
+        await connection.release();
+    }
+
+    async updateProduct(connection) {
         const {
             product_title: old_title,
             sku: old_sku,
@@ -204,13 +235,31 @@ class Product {
         ) {
             const update_product_query =
                 "update product set product_title=?, sku=?, product_weight=? where product_id=?";
-            await db.execute(update_product_query, [
+            await connection.execute(update_product_query, [
                 this.product_title,
                 this.sku,
                 this.product_weight,
                 this.product_id,
             ]);
+            connection.unprepare(update_product_query);
         }
+    }
+
+    async updateCategory(connection) {
+        const update_product_category_query =
+            "update product_category set category_id=?, sub_category_id=? where product_id=?";
+        await connection.execute(update_product_category_query, [
+            this.category_id,
+            this.sub_category_id,
+            this.product_id,
+        ]);
+        connection.unprepare(update_product_category_query);
+    }
+
+    static async makeDefault(productId, variantId) {
+        const make_default_query =
+            "update product set default_variant_id=? where product_id=?";
+        await db.execute(make_default_query, [variantId, productId]);
     }
 }
 
