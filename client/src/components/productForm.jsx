@@ -25,7 +25,7 @@ class ProductFormBody extends Form {
             category_id: 0,
             sub_category_id: 0,
             sku: "",
-            product_weight: 0,
+            product_weight: "",
             custom_features: [],
             options: [],
         },
@@ -285,6 +285,15 @@ class ProductFormBody extends Form {
                                 "product_weight",
                                 "Product Weight",
                                 "number"
+                            )}
+                            {this.state.isNew && (
+                                <div className="alert alert-warning">
+                                    <i className="fa fa-warning"></i>
+                                    <span className="ms-2">
+                                        Make sure to add all the options for
+                                        variants before saving!
+                                    </span>
+                                </div>
                             )}
                             {this.renderButton("Save")}
                         </form>
