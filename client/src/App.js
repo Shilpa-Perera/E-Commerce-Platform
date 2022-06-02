@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Products from "./components/products";
 import NavBar from "./components/navBar";
@@ -17,6 +17,10 @@ function App() {
             <Routes>
                 <Route path="/products">
                     <Route index element={<Products />}></Route>
+                    <Route
+                        path="new"
+                        element={<Navigate to="/products/edit/new" />}
+                    ></Route>
                     <Route path=":id">
                         <Route index element={<Product />}></Route>
                         <Route path="variants" element={<VariantForm />} />
