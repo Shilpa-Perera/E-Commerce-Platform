@@ -8,6 +8,8 @@ import ProductForm from "./components/productForm";
 import Footer from "./components/footer";
 import Product from "./components/product";
 import VariantForm from "./components/variantForm";
+import NotFound from "./components/notFound";
+import Home from "./components/home";
 
 function App() {
     return (
@@ -27,6 +29,8 @@ function App() {
                     </Route>
                     <Route path="edit/:id" element={<ProductForm />}></Route>
                 </Route>
+                <Route path="/" element={<Home />}></Route>
+                <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />
         </Fragment>
