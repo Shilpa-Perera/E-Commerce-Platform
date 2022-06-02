@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const _ = require("lodash");
 const { Customer, validate } = require("../models/Customer");
+const { CustomerAddress } = require("../models/CustomerAddress");
 
 class CustomerController {
   static async getAllCustomers(req, res, next) {
@@ -20,18 +21,28 @@ class CustomerController {
     let customer = await Customer.findByEmail(req.body.email);
     if (customer)
       return res.status(400).send("Customer email already registered");
+    console.log("no customer");
+    customer = new Customer(_.pick(req.body, ["name", "email", "password"]));
 
-    customer = new Customer(
-      _.pick(req.body, ["name", "email", "password", "gender"])
-    );
+    // hash password
     const salt = await bcrypt.genSalt(10);
     customer.password = await bcrypt.hash(customer.password, salt);
-    await customer.save();
+
+    // create address objects - without "customer_id"
+    const addresses = req.body.addresses;
+    addresses.forEach((address) => {
+      const addressObj = new CustomerAddress(address);
+      customer.addresses.push(addressObj);
+    });
+
+    // await customer.save();
+    // await customer.saveMobiles();
+    // await customer.saveAddresses();
 
     const token = customer.generateAuthToken();
     res
       .header("x-auth-token", token)
-      .send(_.pick(customer, ["id", "name", "email", "gender"]));
+      .send(_.pick(customer, ["customer_id", "name", "email"]));
   }
 }
 

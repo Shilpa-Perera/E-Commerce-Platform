@@ -14,11 +14,11 @@ class CustomerAddress {
     this.postal_code = customerAddressDetails.postal_code;
   }
 
-  static fetchAll() {
-    return db.execute("select * from customer_address");
+  static async fetchAll() {
+    return await db.execute("select * from customer_address");
   }
 
-  static findById(id) {
+  static async findById(id) {
     const sql = `select * from customer_address where address_id=?;`;
     const [customer_addresses, _] = await db.execute(sql, [id]);
 
