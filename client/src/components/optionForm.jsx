@@ -113,7 +113,8 @@ class OptionsForm extends Form {
                             className="input-group-text btn btn-danger"
                             id="discard-button"
                         >
-                            Discard
+                            <span className="me-2">Discard</span>
+                            <i className="fa fa-trash-o"></i>
                         </span>
                     </div>
                     <label htmlFor="value_name" className="form-label">
@@ -129,16 +130,23 @@ class OptionsForm extends Form {
                         ></input>
                         <span
                             onClick={this.handleAddValue}
-                            className="input-group-text btn btn-warning"
+                            className="input-group-text btn btn-warning hover-focus"
                             id="value-button"
                         >
-                            Add Value
+                            <span className="me-2">Add Value</span>
+                            <i className="fa fa-plus-circle"></i>
                         </span>
                     </div>
                     {valueError && (
                         <div className="alert alert-danger">{valueError}</div>
                     )}
-                    {this.renderButton("Add Option")}
+                    {this.renderStyledButton(
+                        "Add Option",
+                        "hover-focus",
+                        () => (
+                            <i className="fa fa-plus-circle"></i>
+                        )
+                    )}
                 </form>
             </div>
         );

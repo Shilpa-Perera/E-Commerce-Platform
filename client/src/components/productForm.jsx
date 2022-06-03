@@ -295,7 +295,13 @@ class ProductFormBody extends Form {
                                     </span>
                                 </div>
                             )}
-                            {this.renderButton("Save")}
+                            {this.renderStyledButton(
+                                "Save",
+                                "hover-focus",
+                                () => (
+                                    <i className="fa fa-save"></i>
+                                )
+                            )}
                         </form>
                     </div>
                     <div className="col justify-content-center mb-3">

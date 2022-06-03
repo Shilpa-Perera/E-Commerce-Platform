@@ -31,7 +31,7 @@ class ProductsTable extends Component {
                         <Link to={`/products/${product_id}/variants/`}>
                             <button className="btn btn-primary btn-sm hover-focus">
                                 <span className="me-2">Manage Variants</span>
-                                <i className="fa fa-edit"></i>
+                                <i className="fa fa-gears"></i>
                             </button>
                         </Link>
                     </span>

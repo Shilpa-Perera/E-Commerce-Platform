@@ -58,7 +58,13 @@ class CustomFeaturesForm extends Form {
                         "custom_feature_val",
                         "Custom Feature Value"
                     )}
-                    {this.renderButton("Add Custom Feature")}
+                    {this.renderStyledButton(
+                        "Add Custom Feature",
+                        "hover-focus",
+                        () => (
+                            <i className="fa fa-plus-circle"></i>
+                        )
+                    )}
                 </form>
             </div>
         );

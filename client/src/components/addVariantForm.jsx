@@ -68,7 +68,7 @@ class AddVariantForm extends Form {
                         )}
                     </div>
                     <div>
-                        {this.renderStyledButton("Add", "", () => (
+                        {this.renderStyledButton("Add", "hover-focus", () => (
                             <i className="fa fa-plus-circle"></i>
                         ))}
                     </div>
