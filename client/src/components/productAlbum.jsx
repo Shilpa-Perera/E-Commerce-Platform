@@ -1,6 +1,7 @@
 import React from "react";
 import ProductCard from "./productCard";
 import { Link } from "react-router-dom";
+import ProductAlbumGrid from "./productAlbumGrid";
 
 export default function ProductAlbum({
     products,
@@ -11,7 +12,7 @@ export default function ProductAlbum({
     onOptionClick,
 }) {
     return (
-        <div className="album pb-5">
+        <div className="pb-5">
             <div className="container">
                 <div className="mb-4 d-flex justify-content-between flex-column flex-lg-row">
                     <span>
@@ -103,11 +104,7 @@ export default function ProductAlbum({
                         </table>
                     </span>
                 </div>
-                <div className="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3">
-                    {products.map((product) => (
-                        <ProductCard data={product} key={product.product_id} />
-                    ))}
-                </div>
+                <ProductAlbumGrid products={products} />
             </div>
         </div>
     );
