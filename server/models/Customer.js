@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken");
 const Joi = require("joi");
 const db = require("../util/database");
-const dotenv = require("dotenv");
-dotenv.config();
+require("dotenv").config();
+const config = require("config");
 
 class Customer {
   constructor(customerDetails) {
@@ -10,9 +10,9 @@ class Customer {
     this.name = customerDetails.name;
     this.email = customerDetails.email;
     this.password = customerDetails.password;
+    this.mobiles = customerDetails.mobiles;
 
     this.addresses = [];
-    this.mobiles = [];
   }
 
   static fetchAll() {
@@ -39,7 +39,15 @@ class Customer {
     return false;
   }
 
+  // inside awaits should call within a transaction
   async save() {
+    console.log("start saving");
+    await this.saveCustomer();
+    await this.saveMobiles();
+    await this.saveAddresses();
+  }
+
+  async saveCustomer() {
     let sql = "insert into customer (name,email,password) values (?,?,?);";
 
     await db.execute(
@@ -49,17 +57,20 @@ class Customer {
         if (err) {
           throw err;
         } else {
-          console.log(results);
+          console.log("results: ", results);
         }
       }
     );
-    this.id = (await Customer.findByEmail(this.email)).id;
+    this.customer_id = (await Customer.findByEmail(this.email)).customer_id;
   }
 
   // before executing "cusomter_id" should be SET
   async saveMobiles() {
     // this.mobiles not include "customer_id"
-    this.mobiles.forEach(async (mobile) => {
+
+    for (let i = 0; i < this.mobiles.length; i++) {
+      const mobile = this.mobiles[i];
+
       let sql =
         "insert into customer_mobile (customer_id,mobile) values (?,?);";
 
@@ -70,14 +81,17 @@ class Customer {
           console.log(results);
         }
       });
-    });
+    }
   }
 
   // before executing "cusomter_id" should be SET
   async saveAddresses() {
-    this.addresses.forEach(async (address) => {
+
+    for (let i = 0; i < this.addresses.length; i++) {
+      const address = this.addresses[i];
+
       const sql =
-        "insert into customer_address (customer_id,po_box,street_name,city,postal_code) values (?,?,?,?,?,?);";
+        "insert into customer_address (customer_id,po_box,street_name,city,postal_code) values (?,?,?,?,?);";
 
       await db.execute(
         sql,
@@ -96,7 +110,7 @@ class Customer {
           }
         }
       );
-    });
+    }
   }
 
   updateCustomer(id) {}
@@ -104,7 +118,7 @@ class Customer {
   generateAuthToken() {
     const token = jwt.sign(
       { id: this.id, name: this.name, email: this.email },
-      process.env.jwtPrivateKey
+      config.get("jwtPrivateKey")
     );
     return token;
   }

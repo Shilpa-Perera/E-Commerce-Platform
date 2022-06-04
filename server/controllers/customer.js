@@ -22,7 +22,7 @@ class CustomerController {
     if (customer)
       return res.status(400).send("Customer email already registered");
     console.log("no customer");
-    customer = new Customer(_.pick(req.body, ["name", "email", "password"]));
+    customer = new Customer(_.pick(req.body, ["name", "email", "password", "mobiles"]));
 
     // hash password
     const salt = await bcrypt.genSalt(10);
@@ -35,10 +35,8 @@ class CustomerController {
       customer.addresses.push(addressObj);
     });
 
-    // await customer.save();
-    // await customer.saveMobiles();
-    // await customer.saveAddresses();
-
+    await customer.save();
+    console.log("customer saved");
     const token = customer.generateAuthToken();
     res
       .header("x-auth-token", token)
