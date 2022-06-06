@@ -34,7 +34,7 @@ export default function CategoryList({
                         )}
                     </div>
                     <button
-                        className="btn btn-outline-light d-md-none"
+                        className="btn btn-outline-dark d-md-none"
                         type="button"
                         onClick={() => setCollapse(!collapsed)}
                     >

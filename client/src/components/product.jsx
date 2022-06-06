@@ -124,8 +124,8 @@ class ProductBody extends Component {
                         <div className="col mb-3">
                             <div className="container">
                                 <h2>{product.product_title}</h2>
-                                <div className="mt-5 div-dark">
-                                    <h5 className="text-muted mb-3">
+                                <div className="mt-4">
+                                    <h5 className="text-muted mt-5 mb-3">
                                         Features
                                     </h5>
                                     <table className="table table-borderless">
@@ -159,8 +159,8 @@ class ProductBody extends Component {
                                     </table>
                                 </div>
                                 {optionsAvailable && (
-                                    <div className="div-dark mt-5 mb-3">
-                                        <h5 className="text-muted">
+                                    <div>
+                                        <h5 className="text-muted mt-5 mb-3">
                                             Select your options
                                         </h5>
                                         <table className="table table-borderless">

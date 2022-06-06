@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 export default function NavBar() {
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark mb-5">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light mb-5">
             <div className="container-fluid">
                 <NavLink to="/" className="navbar-brand hover-focus">
                     {process.env.REACT_APP_SITE_NAME}

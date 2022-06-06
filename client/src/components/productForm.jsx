@@ -263,9 +263,9 @@ class ProductFormBody extends Form {
         }
 
         return (
-            <div className="container mb-5 div-dark">
-                <div className="p-4"><h1>Product</h1></div>
-                <div className="row row-cols-1 row-cols-sm-1 row-cols-md-2 p-5">
+            <div className="container mb-5">
+                <h1>Product</h1>
+                <div className="row row-cols-1 row-cols-sm-1 row-cols-md-2">
                     <div className="col mb-3">
                         <form onSubmit={this.handleSubmit}>
                             {this.renderInput("product_title", "Product Title")}
@@ -321,7 +321,7 @@ class ProductFormBody extends Form {
                         </div>
                     </div>
                 </div>
-                <div className="mt-5 div-dark">
+                <div className="mt-5">
                     <h3>Custom Features</h3>
                     <div className="row row-cols-1 row-cols-sm-1 row-cols-md-2">
                         <div className="col mb-3">
@@ -436,7 +436,7 @@ class ProductFormBody extends Form {
                         </div>
                     </div>
                 </div>
-                <div className="mt-5 div-dark">
+                <div className="mt-5">
                     <h3>Options</h3>
                     <div className="row row-cols-1 row-cols-sm-1 row-cols-md-2 mt-2">
                         <div className="col mb-3">
