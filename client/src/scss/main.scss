@@ -1,16 +1,23 @@
-$body-bg: #121212;
-$body-color: #FFFFFF;
+$bg_dark: #121212;
+$bg_dark_muted_1: #222222;
+$bg_dark_muted_2: #333333;
+$bg_dark_disabled: #444444;
+$color_white: #FFFFFF;
+$color_white_disabled: #EEEEEE;
 
-$card-bg: #333333;
-$card-color: #FFFFFF;
+$body-bg: $bg_dark;
+$body-color: $color_white;
 
-$list-group-bg: #333333;
-$list-group-color: #FFFFFF;
+$card-bg: $bg_dark_muted_2;
+$card-color: $color_white;
 
-$input-bg: #121212;
-$input-color: #FFFFFF;
-$input-disabled-bg: #444444;
-$input-disabled-color: #EEEEEE;
+$list-group-bg: $bg_dark_muted_2;
+$list-group-color: $color_white;
+
+$input-bg: $bg-dark;
+$input-color: $color_white;
+$input-disabled-bg: $bg_dark_disabled;
+$input-disabled-color: $color_white_disabled;
 
 $alert-bg-scale: -50%;
 
@@ -24,11 +31,7 @@ h1, h2, h3, h4 {
 }
 
 .div-dark {
-  .card {
-    background-color: #121212;
-  }
-
-  background-color: #222222;
+  background-color: $bg_dark_muted_1;
   padding: 3%;
   border-radius: 2%;
 }
@@ -41,6 +44,10 @@ h1, h2, h3, h4 {
 .hover-color:hover {
   background-color: silver;
   color: black;
+}
+
+.pointer {
+  cursor: pointer !important;
 }
 
 @import '~bootstrap/scss/bootstrap';

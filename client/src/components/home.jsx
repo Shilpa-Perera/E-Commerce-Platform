@@ -30,7 +30,7 @@ function Home(props) {
                 </div>
             </div>
             <div className="row mx-2 mb-5 px-sm-1 px-md-3 py-5">
-                <div className="border border-2 p-5 rounded-3">
+                <div className="p-5 div-dark">
                     <div className="mb-5">
                         <h2>Products</h2>
                     </div>
