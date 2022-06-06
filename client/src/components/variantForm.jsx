@@ -266,8 +266,8 @@ class VariantFormBody extends Component {
 
         const addedVariantsClasses =
             editVariant === null
-                ? "row row-cols-1"
-                : "row row-cols-1 row-cols-sm-1 row-cols-lg-2";
+                ? "row row-cols-1 div-dark pt-2 mb-5"
+                : "row row-cols-1 row-cols-sm-1 row-cols-lg-2 div-dark pt-2 mb-5";
         const addedVariantsTableClasses =
             editVariant === null ? "col mb-3 p-5" : "col mb-3 p-5 col-lg-8";
 
@@ -276,7 +276,7 @@ class VariantFormBody extends Component {
             return (
                 <div className="container mb-5">
                     <h1>{product.product_title}</h1>
-                    <h2 className="text-muted mt-4">Manage variants</h2>
+                    <h2 className="mt-4 mb-5">Manage variants</h2>
                     <div className="container-fluid">
                         <div className={addedVariantsClasses}>
                             <div className={addedVariantsTableClasses}>
@@ -302,7 +302,7 @@ class VariantFormBody extends Component {
                             </div>
                         </div>
                         <div className="row row-cols-1">
-                            <div className="col mb-3 p-5">
+                            <div className="col mb-3 p-5 div-dark">
                                 <NotAddedVariantsTable
                                     options={availableVariants}
                                     addVariant={this.addVariant}

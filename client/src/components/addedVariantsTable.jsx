@@ -22,8 +22,17 @@ class AddedVariantsTable extends Component {
         {
             key: "Default",
             content: (variant) => {
-                if (variant.isDefault) return <i className="fa fa-check"></i>;
-                return <i className="fa fa-close"></i>;
+                if (variant.isDefault)
+                    return (
+                        <span className="text-success">
+                            <i className="fa fa-check"></i>
+                        </span>
+                    );
+                return (
+                    <span className="text-danger">
+                        <i className="fa fa-close"></i>
+                    </span>
+                );
             },
             label: "Default",
         },
@@ -58,7 +67,7 @@ class AddedVariantsTable extends Component {
 
         return (
             <div>
-                <h3 className="text-muted mb-4">Added Variants</h3>
+                <h3 className="text-success mb-4">Added Variants</h3>
                 {variantsNotAdded && (
                     <div className="my-5">
                         <span className="alert alert-warning">

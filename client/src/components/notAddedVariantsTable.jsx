@@ -22,7 +22,7 @@ class NotAddedVariantsTable extends Component {
 
         return (
             <div>
-                <h3 className="text-muted mb-4">Variants available to add</h3>
+                <h3 className="text-warning mb-4">Variants available to add</h3>
                 {optionsUnavailable && defaultUnavailable && (
                     <div className="my-5">
                         <span className="alert alert-danger">

@@ -1,0 +1,60 @@
+$bg_dark: #121212;
+$bg_dark_muted_1: #222222;
+$bg_dark_muted_2: #333333;
+$bg_dark_disabled: #444444;
+$color_white: #FFFFFF;
+$color_white_disabled: #EEEEEE;
+
+$body-bg: $bg_dark;
+$body-color: $color_white;
+
+$card-bg: $bg_dark_muted_2;
+$card-color: $color_white;
+
+$list-group-bg: $bg_dark_muted_2;
+$list-group-color: $color_white;
+
+$input-bg: $bg-dark;
+$input-color: $color_white;
+$input-disabled-bg: $bg_dark_disabled;
+$input-disabled-color: $color_white_disabled;
+
+$alert-bg-scale: -50%;
+
+$primary: #BB86FC;
+$success: #03DAC5;
+$danger: #CF6679;
+$warning: #e7bf8e;
+
+h1,
+h2,
+h3,
+h4,
+.h1,
+.h2,
+.h3,
+.h4 {
+  color: $primary;
+}
+
+.div-dark {
+  background-color: $bg_dark_muted_1;
+  padding: 3%;
+  border-radius: 2%;
+}
+
+.hover-focus:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease-in-out;
+}
+
+.hover-color:hover {
+  background-color: silver;
+  color: black;
+}
+
+.pointer {
+  cursor: pointer !important;
+}
+
+@import '~bootstrap/scss/bootstrap';

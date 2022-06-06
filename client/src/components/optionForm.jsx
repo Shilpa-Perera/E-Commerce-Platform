@@ -91,7 +91,7 @@ class OptionsForm extends Form {
         const valueError = this.state.errors["value_name"];
         return (
             <div>
-                <h4>Add Option</h4>
+                <h4 className="text-success">Add Option</h4>
                 <form onSubmit={this.handleSubmit}>
                     {this.renderInput("option_name", "Option Name")}
                     <label htmlFor="values" className="form-label">
