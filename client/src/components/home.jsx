@@ -26,7 +26,7 @@ function Home(props) {
                     </div>
                 </div>
                 <div className="col col-md-6 col-lg-4">
-                    <img className="img-fluid p-3" style={{objectFit: "cover"}} src="https://images.unsplash.com/photo-1554415707-6e8cfc93fe23?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="title-image"/>
+                    <img className="img-fluid p-3" style={{objectFit: "cover"}} src={process.env.PUBLIC_URL + '/sitedata/logo512.png'} alt="title-image"/>
                 </div>
             </div>
             <div className="row mx-2 mb-5 px-sm-1 px-md-3 py-5">
