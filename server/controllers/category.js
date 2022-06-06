@@ -7,13 +7,14 @@ class CategoryController {
     res.send(allCategories[0]);
   }
 
+  static async getAllSubCategories(res, req, next) {
+    const allSubCategories = await Category.getAllSubCategories();
+    res.send(allSubCategories[0]);
+  }
+
   static async getSubCategories(req, res, next) {
     const { id: category_id } = req.params;
     const sub_category = await Category.getSubCategories(category_id);
-
-    // if (!sub_category)
-    //   return res.status(404).send("The given category ID is invalid");
-
     res.send(sub_category);
   }
 
@@ -22,6 +23,14 @@ class CategoryController {
     await Category.addCategory(new_category_name);
     res.send(new_category_name);
   }
+
+  static async addSubCategory(req, res, next) {
+    const { new_sub_category_name } = req.body;
+    await Category.addSubCategory(new_sub_category_name);
+    res.send(new_sub_category_name);
+  }
+
+  // static async linkSubCategory() {}
 }
 
 module.exports.CategoryController = CategoryController;
