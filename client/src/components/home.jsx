@@ -22,7 +22,7 @@ function Home(props) {
             <div className="row row-cols-1 row-cols-lg-2 mx-2 mb-5 px-3 bg-dark text-white py-5 shadow">
                 <div className="col col-md-6 col-lg-8">
                     <div>
-                        <h1 style={{fontSize: "9vw"}}>Texas' Popular<br />E-store</h1>
+                        <h1 style={{fontSize: "9vw", color: "white"}}>Texas' Popular<br />E-store</h1>
                     </div>
                 </div>
                 <div className="col col-md-6 col-lg-4">

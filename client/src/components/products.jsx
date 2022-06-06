@@ -182,10 +182,12 @@ class Products extends Component {
                     </div>
                     <div className="col-md-8 col-lg-9 col-xxl-10">
                         <div className="container w-75 mb-5">
-                            <SearchBox
-                                value={searchQuery}
-                                onChange={this.handleSearch}
-                            />
+                            <div className="p-3 div-dark">
+                                <SearchBox
+                                    value={searchQuery}
+                                    onChange={this.handleSearch}
+                                />
+                            </div>
                         </div>
                         {selectedCategory && subCategories && (
                             <SubCategoryList
