@@ -6,12 +6,28 @@ export default function NavBar() {
         <nav className="navbar navbar-expand-lg navbar-dark mb-5">
             <div className="container-fluid">
                 <NavLink to="/" className="navbar-brand hover-focus">
-                    {process.env.REACT_APP_SITE_NAME}
+                    <img
+                        src={process.env.PUBLIC_URL + "/sitedata/logo192.png"}
+                        alt=""
+                        height="24"
+                        className="d-inline-block align-text-top"
+                    />
+                    <span className="ms-2">
+                        {process.env.REACT_APP_SITE_NAME}
+                    </span>
                 </NavLink>
-                <div
-                    className="collapse navbar-collapse"
-                    id="navbarSupportedContent"
+                <button
+                    className="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#nav-body"
+                    aria-controls="nav-body"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
                 >
+                    <span className="navbar-toggler-icon"></span>
+                </button>
+                <div className="collapse navbar-collapse" id="nav-body">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
                             <NavLink
