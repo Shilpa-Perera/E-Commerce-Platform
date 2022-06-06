@@ -32,7 +32,7 @@ export default function NavBar() {
                         <li className="nav-item">
                             <NavLink
                                 className="nav-link hover-focus"
-                                to="/products"
+                                to="/products/"
                             >
                                 Products
                             </NavLink>
