@@ -41,9 +41,9 @@ class EditVariantForm extends Form {
         const { options } = this.props;
         return (
             <div className="mt-5">
-                <h4 className="text-muted mb-5">Edit Variant</h4>
+                <h4 className="text-warning mb-5">Edit Variant</h4>
                 <div>
-                    <h5 className="text-muted mb-4">Selected Options</h5>
+                    <h5 className="text-danger mb-4">Selected Options</h5>
                     <table className="table table-hover mb-5">
                         <thead>
                             <tr>
@@ -61,7 +61,7 @@ class EditVariantForm extends Form {
                         </tbody>
                     </table>
                 </div>
-                <h5 className="text-muted mb-4">New values</h5>
+                <h5 className="text-success mb-4">New values</h5>
                 <form onSubmit={this.handleSubmit}>
                     {this.renderInput("variant_name", "Variant Name")}
                     {this.renderInput("price", "Price", "number")}

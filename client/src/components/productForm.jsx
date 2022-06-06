@@ -263,9 +263,15 @@ class ProductFormBody extends Form {
         }
 
         return (
-            <div className="container mb-5 div-dark">
-                <div className="p-4"><h1>Product</h1></div>
-                <div className="row row-cols-1 row-cols-sm-1 row-cols-md-2 p-5">
+            <div className="container mb-5">
+                <div className="p-4">
+                    <h1>
+                        {this.state.isNew
+                            ? "New Product"
+                            : this.state.data.product_title}
+                    </h1>
+                </div>
+                <div className="row row-cols-1 row-cols-sm-1 row-cols-md-2 p-5 div-dark">
                     <div className="col mb-3">
                         <form onSubmit={this.handleSubmit}>
                             {this.renderInput("product_title", "Product Title")}
