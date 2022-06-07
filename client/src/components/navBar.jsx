@@ -70,7 +70,7 @@ export default function NavBar() {
                 >
                     <ul className="navbar-nav ms-auto">
                         <li className="nav-item">
-                            <NavLink className="nav-link hover-focus" to="/">
+                            <NavLink className="nav-link hover-focus" to="/cart">
                                 <span className="ms-2">
                                     <i className="fa fa-shopping-cart fa-2x "></i>
                                     <span className="badge rounded-pill badge-notification bg-primary">

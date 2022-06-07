@@ -9,6 +9,7 @@ import Product from "./components/product";
 import VariantForm from "./components/variantForm";
 import NotFound from "./components/notFound";
 import Home from "./components/home";
+import Cart from "./components/cart"
 
 function App() {
     return (
@@ -39,6 +40,7 @@ function App() {
                         <Route path=":id" element={<ProductForm />}></Route>
                     </Route>
                 </Route>
+                <Route path="/cart" element={<Cart />}></Route>
                 <Route path="/" element={<Home />}></Route>
                 <Route path="*" element={<NotFound />} />
             </Routes>
