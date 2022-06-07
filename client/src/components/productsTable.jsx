@@ -46,9 +46,9 @@ class ProductsTable extends Component {
 
         return (
             <div className="pb-5">
-                <div className="container">
+                <div className="container div-dark">
                     <h3 className="mb-4">Manage Products</h3>
-                    <div className="my-5">
+                    <div className="mt-5">
                         <Table
                             columns={this.columns}
                             data={products}

@@ -47,7 +47,7 @@ class EditCustomFeaturesForm extends Form {
     render() {
         return (
             <div>
-                <h4>Edit Custom Feature</h4>
+                <h4 className="text-warning mt-5">Edit Custom Feature</h4>
                 <form onSubmit={this.handleSubmit}>
                     {this.renderInput(
                         "custom_feature_name",

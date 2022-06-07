@@ -54,7 +54,7 @@ export default function ProductAlbum({
                                                         className="form-check-input"
                                                     />
                                                     <label
-                                                        className="ms-1 form-check-label"
+                                                        className="ms-1 form-check-label pointer hover-focus"
                                                         htmlFor={option.id}
                                                     >
                                                         {option.name}
@@ -90,7 +90,7 @@ export default function ProductAlbum({
                                                         className="form-check-input"
                                                     />
                                                     <label
-                                                        className="ms-1 form-check-label"
+                                                        className="ms-1 form-check-label pointer hover-focus"
                                                         htmlFor={option.id}
                                                     >
                                                         {option.name}

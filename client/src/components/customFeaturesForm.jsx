@@ -48,7 +48,7 @@ class CustomFeaturesForm extends Form {
         const valueError = this.state.errors["value_name"];
         return (
             <div>
-                <h4>Add Custom Feature</h4>
+                <h4 className="text-success">Add Custom Feature</h4>
                 <form onSubmit={this.handleSubmit}>
                     {this.renderInput(
                         "custom_feature_name",
