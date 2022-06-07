@@ -13,7 +13,7 @@ export default function Footer() {
                     className="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"
                 >
                     <img
-                        src={process.env.PUBLIC_URL + "/sitedata/logo192.png"}
+                        src={`${process.env.PUBLIC_URL}/logo192.png`}
                         alt=""
                         width="40"
                         className="d-inline-block align-text-top"
