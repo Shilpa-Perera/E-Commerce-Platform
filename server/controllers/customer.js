@@ -1,7 +1,6 @@
 const bcrypt = require("bcrypt");
 const _ = require("lodash");
-const { Customer, validate } = require("../models/Customer");
-const { CustomerAddress } = require("../models/CustomerAddress");
+const { Customer, CustomerAddress, validate } = require("../models/Customer");
 
 class CustomerController {
   static async getAllCustomers(req, res, next) {
@@ -12,6 +11,19 @@ class CustomerController {
   static async getCustomer(req, res, next) {
     const customer = await Customer.findById(req.params.id);
     res.send(customer);
+  }
+
+  static async getCustomerAddresses(req, res, next) {
+    const user = req.user;
+    console.log("getCustomerAddresses", user);
+    const customerAddresses = await Customer.fetchAddresses(user.customer_id);
+    res.send(customerAddresses);
+  }
+
+  static async getCustomerMobiles(req, res, next) {
+    const user = req.user;
+    const customerMobiles = await Customer.fetchMobiles(user.customer_id);
+    res.send(customerMobiles);
   }
 
   static async postCustomer(req, res, next) {
