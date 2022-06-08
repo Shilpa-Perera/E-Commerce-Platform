@@ -5,6 +5,7 @@ const cors = require("cors");
 const error = require("./middleware/error");
 const users = require("./routes/users");
 const products = require("./routes/products");
+const orders = require("./routes/orders");
 const variants = require("./routes/variants");
 const categories = require("./routes/category");
 const cart = require("./routes/cart");
@@ -24,6 +25,7 @@ app.use("/api/products", products);
 app.use("/api/variants", variants);
 app.use("/api/categories", categories);
 app.use("/api/cart", cart);
+app.use("/api/orders", orders);
 app.use(error);
 
 const port = process.env.PORT || 3000;
