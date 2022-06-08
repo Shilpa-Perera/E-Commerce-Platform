@@ -17,16 +17,16 @@ class Order{
     }
 
     static fetchAll() {
-        const select_all_query = 'select * from order;'
+        const select_all_query = "SELECT * FROM `order`;";
         return db.execute(select_all_query);
     }
 
     static async getOrderById(orderId){
-        const product_values_query = "select * from order where order_id = ?";
+        const product_values_query = "select * from `order` where order_id = ?";
         const result = await db.execute(product_values_query, [orderId]); 
         return result[0];
     }
     
 }
 
-module.exports.Cart = Cart;
+module.exports.Order = Order;
