@@ -9,6 +9,7 @@ import Product from "./components/product";
 import VariantForm from "./components/variantForm";
 import NotFound from "./components/notFound";
 import Home from "./components/home";
+import Orders from "./components/orders";
 
 function App() {
     return (
@@ -38,6 +39,8 @@ function App() {
                         ></Route>
                         <Route path=":id" element={<ProductForm />}></Route>
                     </Route>
+                </Route>
+                <Route path="/orders" element={<Orders />}>
                 </Route>
                 <Route path="/" element={<Home />}></Route>
                 <Route path="*" element={<NotFound />} />
