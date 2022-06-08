@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ListGroup from "./common/listGroup";
-import { Collapse } from "bootstrap";
 
 export default function SubCategoryList({
     subCategories,
@@ -8,15 +7,6 @@ export default function SubCategoryList({
     selectedSubCategory,
     handleClearSelection,
 }) {
-    const [collapsed, setCollapse] = useState(true);
-
-    useEffect(() => {
-        const collapse = document.getElementById("sub-category-collapse");
-        const bsCollapse = new Collapse(collapse, { toggle: false });
-        if (collapsed) bsCollapse.hide();
-        else bsCollapse.show();
-    });
-
     return (
         <div className="pb-5">
             <div className="container">
@@ -35,7 +25,11 @@ export default function SubCategoryList({
                     <button
                         className="btn btn-outline-dark d-md-none"
                         type="button"
-                        onClick={() => setCollapse(!collapsed)}
+                        data-bs-toggle="collapse"
+                        data-bs-target="#sub-category-collapse"
+                        aria-controls="sub-category-collapse"
+                        aria-expanded="false"
+                        aria-label="Toggle subcategory"
                     >
                         <span className="navbar-light">
                             <i className="fa fa-bars"></i>
@@ -50,7 +44,7 @@ export default function SubCategoryList({
                         textProperty={"sub_category_name"}
                         valueProperty={"sub_category_id"}
                         additionalClasses={"flex-column flex-sm-row"}
-                        additionalItemClasses={"border-0 rounded-pill"}
+                        additionalItemClasses={"border-0 rounded-pill mb-2 me-2"}
                     />
                 </div>
             </div>

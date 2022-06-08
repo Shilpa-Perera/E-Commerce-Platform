@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ListGroup from "./common/listGroup";
 import { Link } from "react-router-dom";
-import { Collapse } from "bootstrap";
 
 export default function CategoryList({
     categories,
@@ -9,15 +8,6 @@ export default function CategoryList({
     selectedCategory,
     handleClearSelection,
 }) {
-    const [collapsed, setCollapse] = useState(true);
-
-    useEffect(() => {
-        const collapse = document.getElementById("category-collapse");
-        const bsCollapse = new Collapse(collapse, { toggle: false });
-        if (collapsed) bsCollapse.hide();
-        else bsCollapse.show();
-    });
-
     return (
         <div className="pb-5">
             <div className="container">
@@ -34,9 +24,13 @@ export default function CategoryList({
                         )}
                     </div>
                     <button
-                        className="btn btn-outline-light d-md-none"
+                        className="btn btn-outline-dark d-md-none"
                         type="button"
-                        onClick={() => setCollapse(!collapsed)}
+                        data-bs-toggle="collapse"
+                        data-bs-target="#category-collapse"
+                        aria-controls="category-collapse"
+                        aria-expanded="false"
+                        aria-label="Toggle category"
                     >
                         <span className="navbar-light">
                             <i className="fa fa-bars"></i>
@@ -51,7 +45,7 @@ export default function CategoryList({
                         textProperty={"category_name"}
                         valueProperty={"category_id"}
                         additionalClasses={""}
-                        additionalItemClasses={"border-0 rounded-pill my-sm-1"}
+                        additionalItemClasses={"border-0 rounded-pill mb-2"}
                     />
                     <Link
                         className="btn btn-primary h5 mt-3 hover-focus"
