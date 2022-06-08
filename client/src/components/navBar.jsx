@@ -7,7 +7,7 @@ export default function NavBar() {
             <div className="container-fluid">
                 <NavLink to="/" className="navbar-brand hover-focus">
                     <img
-                        src={process.env.PUBLIC_URL + "/sitedata/logo192.png"}
+                        src={`${process.env.PUBLIC_URL}/logo192.png`}
                         alt=""
                         height="24"
                         className="d-inline-block align-text-top"

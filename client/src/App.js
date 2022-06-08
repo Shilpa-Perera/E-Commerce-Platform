@@ -10,6 +10,7 @@ import VariantForm from "./components/variantForm";
 import NotFound from "./components/notFound";
 import Home from "./components/home";
 import Orders from "./components/orders";
+import Cart from "./components/cart"
 
 function App() {
     return (
@@ -42,6 +43,7 @@ function App() {
                 </Route>
                 <Route path="/orders" element={<Orders />}>
                 </Route>
+                <Route path="/cart" element={<Cart />}></Route>
                 <Route path="/" element={<Home />}></Route>
                 <Route path="*" element={<NotFound />} />
             </Routes>

@@ -3,7 +3,7 @@ require("dotenv").config();
 const config = require("config");
 const cors = require("cors");
 const error = require("./middleware/error");
-const users = require("./routes/users");
+const customers = require("./routes/customers");
 const products = require("./routes/products");
 const orders = require("./routes/orders");
 const variants = require("./routes/variants");
@@ -17,10 +17,11 @@ if (!config.get("jwtPrivateKey")) {
   process.exit(1);
 }
 
-app.use(express.json());
 app.options("*", cors());
 app.use(cors());
-app.use("/texas-e-store/api/users", users);
+app.use(express.json());
+
+app.use("/api/customers", customers);
 app.use("/api/products", products);
 app.use("/api/variants", variants);
 app.use("/api/categories", categories);
