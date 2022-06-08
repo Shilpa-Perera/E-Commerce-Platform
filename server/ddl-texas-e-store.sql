@@ -2,7 +2,19 @@ create database if not exists texas_e_store;
 
 use texas_e_store;
 
+drop table if exists customer_mobile;
+drop table if exists customer_address;
+drop table if exists cart_product;
+drop table if exists sell;
+drop table if exists `order`;
+drop table if exists cart;
 drop table if exists customer;
+drop table if exists variant_values;
+drop table if exists variant_option_values;
+drop table if exists variant_option;
+drop table if exists variant;
+drop table if exists product;
+drop table if exists custom_feature;
 
 create table if not exists customer (
     customer_id int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -11,7 +23,7 @@ create table if not exists customer (
     password VARCHAR(1024) NOT NULL
 );
 
-drop table if exists customer_address;
+
 
 create table if not exists customer_address (
     address_id int unsigned AUTO_INCREMENT PRIMARY KEY,
@@ -23,7 +35,7 @@ create table if not exists customer_address (
     foreign key (customer_id) references customer(customer_id) on delete cascade
 );
 
-drop table if exists customer_mobile;
+
 
 create table if not exists customer_mobile (
     telephone_id int unsigned auto_increment primary key,
@@ -32,7 +44,7 @@ create table if not exists customer_mobile (
     foreign key (customer_id) references customer(customer_id) on delete cascade
 );
 
-drop table if exists product;
+
 
 create table if not exists product (
     product_id int unsigned auto_increment primary key,
@@ -42,7 +54,7 @@ create table if not exists product (
     default_variant_id int unsigned
 );
 
-drop table if exists custom_feature;
+
 
 create table if not exists custom_feature (
     custom_feature_id int unsigned auto_increment primary key,
@@ -52,7 +64,7 @@ create table if not exists custom_feature (
     foreign key (product_id) references product(product_id) on delete cascade
 );
 
-drop table if exists variant;
+
 
 create table if not exists variant (
     variant_id int unsigned auto_increment primary key,
@@ -63,7 +75,7 @@ create table if not exists variant (
     foreign key (product_id) references product(product_id) on delete cascade
 );
 
-drop table if exists variant_option;
+
 
 create table if not exists variant_option (
     option_id int unsigned auto_increment primary key,
@@ -72,7 +84,7 @@ create table if not exists variant_option (
     foreign key (product_id) references product(product_id) on delete cascade
 );
 
-drop table if exists variant_option_values;
+
 
 create table if not exists variant_option_values(
     value_id int unsigned auto_increment primary key,
@@ -83,7 +95,7 @@ create table if not exists variant_option_values(
     foreign key (option_id) references variant_option(option_id) on delete cascade
 );
 
-drop table if exists cart;
+
 
 create table if not exists cart(
     cart_id int unsigned auto_increment primary key,
@@ -92,7 +104,7 @@ create table if not exists cart(
     foreign key (customer_id) references customer(customer_id) on delete cascade
 );
 
-drop table if exists cart_product;
+
 
 create table if not exists cart_product(
     cart_id int unsigned,
@@ -103,7 +115,7 @@ create table if not exists cart_product(
     foreign key (variant_id) references variant(variant_id) on delete cascade
 );
 
-drop table if exists `order`;
+
 
 create table if not exists `order`(
     order_id int unsigned auto_increment primary key,
@@ -119,7 +131,7 @@ create table if not exists `order`(
     foreign key (customer_id) references customer(customer_id) on delete cascade
 );
 
-drop table if exists sell;
+
 
 create table if not exists sell(
     sell_id int unsigned auto_increment primary key,
@@ -130,7 +142,7 @@ create table if not exists sell(
     foreign key (order_id) references `order`(order_id) on delete cascade
 );
 
-drop table if exists variant_values;
+
 
 create table if not exists variant_values (
     product_id int unsigned not null,
