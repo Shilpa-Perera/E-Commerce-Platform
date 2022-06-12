@@ -16,6 +16,7 @@ import {
 } from "../services/customFeatureService";
 import EditCustomFeaturesForm from "./editCustomFeatureForm";
 import _ from "lodash";
+import ProductImage from "./productImage";
 
 class ProductFormBody extends Form {
     state = {
@@ -28,6 +29,7 @@ class ProductFormBody extends Form {
             product_weight: "",
             custom_features: [],
             options: [],
+            product_image_url: ""
         },
         categories: [],
         subCategories: [],
@@ -311,20 +313,7 @@ class ProductFormBody extends Form {
                         </form>
                     </div>
                     <div className="col justify-content-center mb-3">
-                        <div
-                            className="card shadow text-center align-items-center hover-focus"
-                            style={{ borderRadius: "5%" }}
-                        >
-                            <div>
-                                <img
-                                    src={
-                                        "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE4QWs8?ver=95ec&q=90&m=6&h=270&w=270&b=%23FFFFFFFF&f=jpg&o=f&aim=true"
-                                    }
-                                    className="card-img-top"
-                                    alt=""
-                                ></img>
-                            </div>
-                        </div>
+                        <ProductImage />
                     </div>
                 </div>
                 <div className="mt-5 div-dark">

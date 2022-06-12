@@ -57,4 +57,15 @@ h4,
   cursor: pointer !important;
 }
 
+.cropper {
+  position: relative;
+  height: 50vh;
+  background-color: $bg_dark_muted_1;
+}
+
+.form-control::file-selector-button {
+  background-color: $success !important;
+  color: black !important;
+}
+
 @import '~bootstrap/scss/bootstrap';
