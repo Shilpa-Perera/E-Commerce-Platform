@@ -51,7 +51,8 @@ create table if not exists product (
     product_title varchar(255) not null,
     sku varchar(32) not null,
     product_weight float not null,
-    default_variant_id int unsigned
+    default_variant_id int unsigned,
+    image_name varchar(255)
 );
 
 
