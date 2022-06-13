@@ -4,6 +4,13 @@ dotenv.config();
 
 class Cart{
 
+    constructor(cartDetails){
+        /* Single Cart */
+        this.cart_id = cartDetails.cart_id ;
+        this.customer_id = cartDetails.customer_id ;
+        this.state = cartDetails.state ;
+    }
+
     static fetchAll() {
         return db.execute('select * from cart;');
     }
