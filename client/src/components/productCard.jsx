@@ -1,10 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { productImageUrl } from "../services/imageService";
 
 export default function ProductCard({ data }) {
-    const { product_id, product_title, price } = data;
+    const { product_id, product_title, price, image_name } = data;
     const image =
-        "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE4QWs8?ver=95ec&q=90&m=6&h=270&w=270&b=%23FFFFFFFF&f=jpg&o=f&aim=true";
+        image_name === null
+            ? "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE4QWs8?ver=95ec&q=90&m=6&h=270&w=270&b=%23FFFFFFFF&f=jpg&o=f&aim=true"
+            : productImageUrl(image_name);
     return (
         <div className="col" key={product_id}>
             <div
@@ -28,7 +31,10 @@ export default function ProductCard({ data }) {
                     </h6>
                     <div className="d-flex justify-content-center align-items-center">
                         <Link to={`/products/${product_id}`}>
-                            <button type="button" className="btn btn-primary my-2">
+                            <button
+                                type="button"
+                                className="btn btn-primary my-2"
+                            >
                                 View
                             </button>
                         </Link>
