@@ -23,7 +23,10 @@ class VariantController {
             if (variantIds.length === 0) break;
         }
         if (variantIds.length === 1) {
-            const variant = await Variant.getVariant(variantIds[0]);
+            const variantId = variantIds[0];
+            const variant = await Variant.getVariant(variantId);
+            const allImages = await Variant.fetchAllImages(variantId);
+            variant.images = allImages[0];
             return res.send(variant);
         }
         return res.send({ variant_id: 0 });
