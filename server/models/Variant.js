@@ -1,5 +1,3 @@
-const jwt = require("jsonwebtoken");
-const Joi = require("joi");
 const db = require("../util/database");
 const dotenv = require("dotenv");
 dotenv.config();
@@ -105,6 +103,18 @@ class Variant {
                 this.variant_id,
             ]);
         }
+    }
+
+    static async saveVariantImage(variantId, imageName) {
+        const insert_image_query =
+            "insert into variant_image (variant_id, image_name) values (?, ?)";
+        await db.execute(insert_image_query, [variantId, imageName]);
+    }
+
+    static async fetchAllImages(variantId) {
+        const get_all_images_query =
+            "select image_name from variant_image where variant_id=?";
+        return db.execute(get_all_images_query, [variantId]);
     }
 }
 

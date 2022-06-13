@@ -14,6 +14,12 @@ $card-color: $color_white;
 $list-group-bg: $bg_dark_muted_2;
 $list-group-color: $color_white;
 
+$dropdown-bg: $bg_dark_muted_1;
+$dropdown-link-hover-bg: $bg_dark_muted_2;
+$dropdown-link-color: $color_white_disabled;
+$dropdown-link-hover-color: $color_white;
+$dropdown-link-active-color: black;
+
 $input-bg: $bg-dark;
 $input-color: $color_white;
 $input-disabled-bg: $bg_dark_disabled;
@@ -55,6 +61,21 @@ h4,
 
 .pointer {
   cursor: pointer !important;
+}
+
+.cropper {
+  position: relative;
+  height: 50vh;
+  background-color: $bg_dark_muted_1;
+}
+
+.form-control::file-selector-button {
+  background-color: $success !important;
+  color: black !important;
+}
+
+.hr-white {
+  color: $color_white_disabled;
 }
 
 @import '~bootstrap/scss/bootstrap';

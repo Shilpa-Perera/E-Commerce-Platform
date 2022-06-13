@@ -15,6 +15,7 @@ drop table if exists variant_option;
 drop table if exists variant;
 drop table if exists product;
 drop table if exists custom_feature;
+drop table if exists variant_image;
 
 create table if not exists customer (
     customer_id int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -51,7 +52,8 @@ create table if not exists product (
     product_title varchar(255) not null,
     sku varchar(32) not null,
     product_weight float not null,
-    default_variant_id int unsigned
+    default_variant_id int unsigned,
+    image_name varchar(255)
 );
 
 
@@ -93,6 +95,14 @@ create table if not exists variant_option_values(
     value_name varchar(255) not null,
     foreign key (product_id) references product(product_id) on delete cascade,
     foreign key (option_id) references variant_option(option_id) on delete cascade
+);
+
+
+
+create table if not exists variant_image(
+    variant_id int unsigned not null,
+    image_name varchar(255) primary key,
+    foreign key (variant_id) references variant(variant_id) on delete cascade
 );
 
 
