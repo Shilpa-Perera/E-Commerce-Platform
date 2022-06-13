@@ -15,7 +15,7 @@ class AddImage extends React.Component {
     render() {
         const { crop, zoom, imageToCrop, imageToCropUrl } = this.state;
 
-        const { saveImage, removeImage } = this.props;
+        const { saveImage, removeImage, aspectRatio } = this.props;
 
         return (
             <div>
@@ -28,7 +28,7 @@ class AddImage extends React.Component {
                                     image={imageToCropUrl}
                                     crop={crop}
                                     zoom={zoom}
-                                    aspect={1}
+                                    aspect={aspectRatio}
                                     onCropChange={(crop) =>
                                         this.setState({ crop })
                                     }
@@ -61,7 +61,12 @@ class AddImage extends React.Component {
                                             croppedImage
                                         );
                                         this.setState({
-                                            hasCropped: true,
+                                            imageToCrop: null,
+                                            imageToCropUrl: "",
+                                            hasCropped: false,
+                                            pixelCrop: null,
+                                            crop: { x: 0, y: 0 },
+                                            zoom: 1,
                                         });
                                     }}
                                 >
@@ -96,7 +101,7 @@ class AddImage extends React.Component {
                         <input
                             className="form-control"
                             type="file"
-                            accept="image/jpeg,image/png"
+                            accept="image/jpeg,image/png,image/webp"
                             name="product-title-image"
                             onChange={(event) => {
                                 const imageToCrop = event.target.files[0];

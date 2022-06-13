@@ -55,6 +55,17 @@ class AddedVariantsTable extends Component {
                             Make Default
                         </button>
                     )}
+                    <button
+                        className="btn btn-primary btn-sm hover-focus"
+                        onClick={() =>
+                            this.props.push(
+                                `/products/variants/${variant.variant_id}/images`
+                            )
+                        }
+                    >
+                        <span className="me-2">Images</span>
+                        <i className="fa fa-image"></i>
+                    </button>
                 </div>
             ),
             label: "Actions",
@@ -62,7 +73,7 @@ class AddedVariantsTable extends Component {
     ];
 
     render() {
-        const { options, onSort, sortColumn, defaultAvailable } = this.props;
+        const { options, onSort, sortColumn } = this.props;
         const variantsNotAdded = options.length === 0;
 
         return (

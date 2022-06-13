@@ -403,6 +403,7 @@ class ProductFormBody extends Form {
                             <AddImage
                                 saveImage={this.handleSaveImage}
                                 removeImage={this.handleRemoveImage}
+                                aspectRatio={1}
                             />
                         )}
                     </div>

@@ -286,6 +286,7 @@ class VariantFormBody extends Component {
                                     onMakeDefault={this.handleMakeDefault}
                                     sortColumn={addedSortColumn}
                                     onSort={this.handleAddedVariantsSort}
+                                    push={this.props.push}
                                 />
                             </div>
                             <div
