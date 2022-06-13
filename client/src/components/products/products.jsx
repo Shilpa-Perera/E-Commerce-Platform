@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import _ from "lodash";
-import { getProducts } from "../services/productService";
+import { getProducts } from "../../services/productService";
 import ProductAlbum from "./productAlbum";
-import { getCategories, getSubCategories } from "../services/categoryService";
+import { getCategories, getSubCategories } from "../../services/categoryService";
 import CategoryList from "./categoryList";
 import SubCategoryList from "./subCategoryList";
-import SearchBox from "./common/searchBox";
-import { paginate } from "../utils/paginate";
-import Pagination from "./common/pagination";
+import SearchBox from "../common/searchBox";
+import { paginate } from "../../utils/paginate";
+import Pagination from "../common/pagination";
 import ProductsTable from "./productsTable";
 
 class Products extends Component {

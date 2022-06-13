@@ -21,6 +21,9 @@ app.options("*", cors());
 app.use(cors());
 app.use(express.json());
 
+app.use('/images/products', express.static('images/products'));
+app.use('/images/variants', express.static('images/variants'));
+
 app.use("/api/customers", customers);
 app.use("/api/products", products);
 app.use("/api/variants", variants);

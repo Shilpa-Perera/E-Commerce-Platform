@@ -79,6 +79,14 @@ class ProductController {
 
         res.send({ variant_id: variantId });
     }
+
+    static async putImage(req, res, next) {
+        const productId = req.params.id;
+        const { filename } = req.file;
+        await Product.saveProductImage(productId, filename);
+
+        res.send({ filename });
+    }
 }
 
 module.exports.ProductController = ProductController;
