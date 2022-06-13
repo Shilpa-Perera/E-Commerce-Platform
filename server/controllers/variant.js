@@ -32,6 +32,21 @@ class VariantController {
         return res.send({ variant_id: 0 });
     }
 
+    static async getVariantById(req, res, next) {
+        const variantId = req.params.id;
+        const variant = await Variant.getVariant(variantId);
+
+        if (!variant)
+            return res
+                .status(404)
+                .send("The variant with the given ID was not found");
+
+        const allImages = await Variant.fetchAllImages(variantId);
+        variant.images = allImages[0];
+
+        return res.send(variant);
+    }
+
     static async postVariant(req, res, next) {
         const variant = new Variant({
             variant_id: null,
