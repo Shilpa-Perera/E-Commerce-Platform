@@ -58,6 +58,21 @@ class VariantController {
             _.pick(variant, ["variant_id", "variant_name", "price", "quantity"])
         );
     }
+
+    static async postImage(req, res, body) {
+        const variantId = req.params.id;
+        const { filename } = req.file;
+        await Variant.saveVariantImage(variantId, filename);
+
+        res.send({ filename });
+    }
+
+    static async getImages(req, res, next) {
+        const variantId = req.params.id;
+        const allImages = await Variant.fetchAllImages(variantId);
+
+        res.send(allImages[0]);
+    }
 }
 
 module.exports.VariantController = VariantController;
