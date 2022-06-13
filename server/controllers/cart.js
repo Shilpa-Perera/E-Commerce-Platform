@@ -21,6 +21,7 @@ class CartController{
 
     static async getCartProducts(req,res,next){
 
+        
         const products = await Cart.getCartProducts(req.params.id) ;
         res.send(products);
     }

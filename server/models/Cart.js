@@ -37,8 +37,6 @@ class Cart{
         if (products.length > 0) {
             return products;
         }
-
-        
         return false;
     }
     
