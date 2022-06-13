@@ -11,6 +11,7 @@ import NotFound from "./components/notFound";
 import Home from "./components/home";
 import Orders from "./components/orders";
 import Cart from "./components/cart"
+import VariantImages from "./components/variantImages";
 
 function App() {
     return (
@@ -27,6 +28,11 @@ function App() {
                         path="new"
                         element={<Navigate to="/products/edit/new" />}
                     ></Route>
+                    <Route path="variants">
+                        <Route path=":id">
+                            <Route path="images" element={<VariantImages />}></Route>
+                        </Route>
+                    </Route>
                     <Route path=":id">
                         <Route index element={<Product />}></Route>
                         <Route path="variants" element={<VariantForm />} />
