@@ -19,7 +19,7 @@ export default function ProductCard({ data }) {
                     ></img>
                 </div>
                 <div className="text-dark" style={{ width: "80%" }}>
-                    <hr />
+                    <hr className="hr-white" />
                 </div>
                 <div className="card-body">
                     <h5 className="card-title">{product_title}</h5>

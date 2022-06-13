@@ -68,4 +68,8 @@ h4,
   color: black !important;
 }
 
+.hr-white {
+  color: $color_white_disabled;
+}
+
 @import '~bootstrap/scss/bootstrap';
