@@ -261,6 +261,12 @@ class Product {
             "update product set default_variant_id=? where product_id=?";
         await db.execute(make_default_query, [variantId, productId]);
     }
+
+    static async saveProductImage(productId, imageName) {
+        const save_image_query =
+            "update product set image_name=? where product_id=?";
+        await db.execute(save_image_query, [imageName, productId]);
+    }
 }
 
 module.exports.Product = Product;
