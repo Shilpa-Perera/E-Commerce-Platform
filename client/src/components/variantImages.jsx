@@ -53,7 +53,7 @@ class VariantImagesBody extends React.Component {
             this.setState({ variant, images });
         } catch (e) {
             console.error(e);
-            toast.error("Could not upload image");
+            toast.error("Could not upload image", { theme: "dark" });
             this.setState({ variant: originalVariant, images: originalImages });
         }
     };

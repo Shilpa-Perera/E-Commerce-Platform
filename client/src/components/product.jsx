@@ -68,7 +68,7 @@ class ProductBody extends Component {
     };
 
     handleAddToCart = () => {
-        toast.success("Item added to cart!");
+        toast.success("Item added to cart!", { theme: "dark" });
     };
 
     async componentDidMount() {

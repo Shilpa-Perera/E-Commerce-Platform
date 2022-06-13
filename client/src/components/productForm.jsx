@@ -168,7 +168,9 @@ class ProductFormBody extends Form {
                     this.state.data.product_id
                 );
             } catch (ex) {
-                toast.error("An error occurred while saving the feature.");
+                toast.error("An error occurred while saving the feature.", {
+                    theme: "dark",
+                });
                 this.setState({ current_custom_features: originalFeatures });
             }
         }
@@ -218,7 +220,9 @@ class ProductFormBody extends Form {
             try {
                 await deleteCustomFeature(custom_feature_id);
             } catch (ex) {
-                toast.error("An error occurred while deleting the feature.");
+                toast.error("An error occurred while deleting the feature.", {
+                    theme: "dark",
+                });
                 this.setState({ current_custom_features: originalFeatures });
             }
         }
@@ -245,7 +249,9 @@ class ProductFormBody extends Form {
             try {
                 await updateCustomFeature(customFeature, custom_feature_id);
             } catch (ex) {
-                toast.error("An error occurred while updating the feature.");
+                toast.error("An error occurred while updating the feature.", {
+                    theme: "dark",
+                });
                 this.setState({ current_custom_features: originalFeatures });
             }
         }
@@ -268,7 +274,7 @@ class ProductFormBody extends Form {
             await putProductImage(product_id, this.state.product_image);
             this.props.push(`/products/${product_id}/variants`);
         } else {
-            toast.warn("Product image is not added!");
+            toast.warn("Product image is not added!", { theme: "dark" });
         }
     };
 
@@ -295,7 +301,7 @@ class ProductFormBody extends Form {
             }
         } catch (e) {
             console.error(e);
-            toast.error("Could not upload image");
+            toast.error("Could not upload image", { theme: "dark" });
             this.setState({ product_image_url: originalUrl });
         }
     };
