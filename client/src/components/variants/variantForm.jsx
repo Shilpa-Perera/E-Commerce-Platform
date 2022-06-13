@@ -3,12 +3,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import _ from "lodash";
 import { toast } from "react-toastify";
 import { Collapse } from "bootstrap";
-import { getProduct, updateDefault } from "../services/productService";
+import { getProduct, updateDefault } from "../../services/productService";
 import {
     getVariant,
     saveVariant,
     updateVariant,
-} from "../services/variantService";
+} from "../../services/variantService";
 import AddedVariantsTable from "./addedVariantsTable";
 import EditVariantForm from "./editVariantForm";
 import NotAddedVariantsTable from "./notAddedVariantsTable";

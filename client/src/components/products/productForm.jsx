@@ -2,26 +2,26 @@ import React from "react";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import Joi from "joi-browser";
-import Form from "./common/form";
-import { getCategories, getSubCategories } from "../services/categoryService";
+import Form from "../common/form";
+import { getCategories, getSubCategories } from "../../services/categoryService";
 import {
     getProduct,
     putProductImage,
     saveProduct,
-} from "../services/productService";
+} from "../../services/productService";
 import { Collapse } from "bootstrap";
 import OptionForm from "./optionForm";
 import CustomFeaturesForm from "./customFeaturesForm";
-import TableHeader from "./common/tableHeader";
+import TableHeader from "../common/tableHeader";
 import {
     deleteCustomFeature,
     saveCustomFeature,
     updateCustomFeature,
-} from "../services/customFeatureService";
+} from "../../services/customFeatureService";
 import EditCustomFeaturesForm from "./editCustomFeatureForm";
 import _ from "lodash";
-import AddImage from "./addImage";
-import { productImageUrl } from "../services/imageService";
+import AddImage from "../addImage";
+import { productImageUrl } from "../../services/imageService";
 
 class ProductFormBody extends Form {
     state = {

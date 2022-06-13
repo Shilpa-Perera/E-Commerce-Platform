@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { productImageUrl } from "../services/imageService";
+import { productImageUrl } from "../../services/imageService";
 
 export default function ProductCard({ data }) {
     const { product_id, product_title, price, image_name } = data;

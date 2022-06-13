@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import TableHeader from "./common/tableHeader";
-import OptionTable from "./optionTable";
+import TableHeader from "../common/tableHeader";
+import OptionTable from "../products/optionTable";
 import AddVariantForm from "./addVariantForm";
 
 class NotAddedVariantsTable extends Component {

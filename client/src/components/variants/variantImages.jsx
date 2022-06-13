@@ -1,9 +1,9 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getVariantById, postVariantImage } from "../services/variantService";
-import { variantImageUrl } from "../services/imageService";
-import Carousel from "./common/carousel";
-import AddImage from "./addImage";
+import { getVariantById, postVariantImage } from "../../services/variantService";
+import { variantImageUrl } from "../../services/imageService";
+import Carousel from "../common/carousel";
+import AddImage from "../addImage";
 import { toast } from "react-toastify";
 
 class VariantImagesBody extends React.Component {

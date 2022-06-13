@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ProductAlbumGrid from "./productAlbumGrid";
+import ProductAlbumGrid from "./products/productAlbumGrid";
 import { getProducts } from "../services/productService";
 import { toast } from "react-toastify";
 

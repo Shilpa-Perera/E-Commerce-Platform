@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import Table from "./common/table";
-import OptionTable from "./optionTable";
+import Table from "../common/table";
+import OptionTable from "../products/optionTable";
 
 class AddedVariantsTable extends Component {
     columns = [

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getProduct } from "../services/productService";
-import { getVariant, getVariantById } from "../services/variantService";
-import Carousel from "./common/carousel";
+import { getProduct } from "../../services/productService";
+import { getVariant, getVariantById } from "../../services/variantService";
+import Carousel from "../common/carousel";
 import { toast } from "react-toastify";
-import { variantImageUrl } from "../services/imageService";
+import { variantImageUrl } from "../../services/imageService";
 
 class ProductBody extends Component {
     state = {
