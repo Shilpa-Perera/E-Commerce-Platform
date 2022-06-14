@@ -1,5 +1,5 @@
 import React from "react";
-import ListGroup from "./common/listGroup";
+import ListGroup from "../common/listGroup";
 import { Link } from "react-router-dom";
 
 export default function CategoryList({

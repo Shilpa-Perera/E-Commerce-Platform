@@ -12,7 +12,7 @@ axios.interceptors.response.use(null, (error) => {
     // - Display generic and friendly error message to user
 
     if (!expectedError) {
-        toast.error("An unexpected error occurred", {});
+        toast.error("An unexpected error occurred", { theme: "dark" });
         console.log(error);
     }
     return Promise.reject(error);

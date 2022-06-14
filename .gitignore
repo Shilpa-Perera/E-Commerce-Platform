@@ -4,6 +4,7 @@ package-lock.json
 .vscode/
 .prettierrc
 .idea/
+server/images
 client/public/sitedata
 client/public/logo192.png
 client/public/logo512.png

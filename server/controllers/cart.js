@@ -20,9 +20,14 @@ class CartController{
     // }
 
     static async getCartProducts(req,res,next){
-
         const products = await Cart.getCartProducts(req.params.id) ;
         res.send(products);
+    }
+
+    static async addProductToCart(req,res,next){
+        console.log(req.body.cart_id) ;
+        res.status(201).send("Success");
+
     }
 
     

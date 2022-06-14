@@ -1,7 +1,28 @@
 import React from "react";
+import { useEffect, useNavigate, useState } from "react-router-dom";
+import { getCartProducts } from "../services/cartService";
+
+
 
 function CartCard(){
+
+  
+    // const [product, setProduct] = useState(null);
+
+    // useEffect(async () => {
+    //     try {
+    //         const { data } = await getCartProducts(1);
+    //         setProduct(data);
+    //     } catch (e) {
+    //         if (e.response && e.response.status === 404)
+    //             useNavigate()("/not-found", { replace: true });
+    // }
+
+    // },[])
+        
+    
     return(
+      
         <div className="card rounded-3 mb-4">
         <div className="card-body p-4">
           <div className="row d-flex justify-content-between align-items-center">

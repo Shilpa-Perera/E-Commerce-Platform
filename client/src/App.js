@@ -1,19 +1,21 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import Products from "./components/products";
+import Products from "./components/products/products";
 import NavBar from "./components/navBar";
 import "react-toastify/dist/ReactToastify.css";
-import ProductForm from "./components/productForm";
+import ProductForm from "./components/products/productForm";
 import Footer from "./components/footer";
-import Product from "./components/product";
-import VariantForm from "./components/variantForm";
+import Product from "./components/products/product";
+import VariantForm from "./components/variants/variantForm";
 import NotFound from "./components/notFound";
 import Home from "./components/home";
 import Orders from "./components/orders";
-import Cart from "./components/cart"
 import LoginForm from "./components/loginForm";
 import RegisterForm from "./components/customer/registerForm";
 import Logout from './components/logout';
+import Cart from "./components/cart";
+import VariantImages from "./components/variants/variantImages";
+import ScrollToTop from "./components/scrollToTop";
 
 function App() {
     return (
@@ -30,6 +32,14 @@ function App() {
                         path="new"
                         element={<Navigate to="/products/edit/new" />}
                     ></Route>
+                    <Route path="variants">
+                        <Route path=":id">
+                            <Route
+                                path="images"
+                                element={<VariantImages />}
+                            ></Route>
+                        </Route>
+                    </Route>
                     <Route path=":id">
                         <Route index element={<Product />}></Route>
                         <Route path="variants" element={<VariantForm />} />
@@ -44,8 +54,7 @@ function App() {
                         <Route path=":id" element={<ProductForm />}></Route>
                     </Route>
                 </Route>
-                <Route path="/orders" element={<Orders />}>
-                </Route>
+                <Route path="/orders" element={<Orders />}></Route>
                 <Route path="/cart" element={<Cart />}></Route>
                 
                 <Route path="/login" element={<LoginForm />}></Route>
@@ -57,6 +66,7 @@ function App() {
                 <Route path="/" element={<Home />}></Route>
                 <Route path="*" element={<NotFound />} />
             </Routes>
+            <ScrollToTop />
             <Footer />
         </div>
     );

@@ -4,6 +4,13 @@ dotenv.config();
 
 class Cart{
 
+    constructor(cartDetails){
+        /* Single Cart */
+        this.cart_id = cartDetails.cart_id ;
+        this.customer_id = cartDetails.customer_id ;
+        this.state = cartDetails.state ;
+    }
+
     static fetchAll() {
         return db.execute('select * from cart;');
     }
@@ -31,10 +38,11 @@ class Cart{
 
     static async getCartProducts(id){
 
-        let stmt = `select * from cart_product where cart_id=? ;` ;
+        // To be refined
+        let stmt = `select * from cart_product natural join variant join product where cart_id=? ;` ;
         const [products, _] = await db.execute(stmt, [id]);
         if (products.length > 0) {
-            return products[0];
+            return products;
         }
         return false;
     }

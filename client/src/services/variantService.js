@@ -13,6 +13,10 @@ export function getVariant(product_id, options) {
     return http.get(apiEndpoint, { params: { body } });
 }
 
+export function getVariantById(variant_id) {
+    return http.get(variantUrl(variant_id));
+}
+
 export function updateVariant(variant) {
     return http.put(
         variantUrl(variant.variant_id),
@@ -31,4 +35,12 @@ export function saveVariant(variant) {
             "options",
         ])
     );
+}
+
+export function postVariantImage(variantId, image) {
+    const formData = new FormData();
+
+    formData.append("variant_img", image, "variant_img.png");
+
+    return http.post(`${apiEndpoint}/images/${variantId}`, formData);
 }
