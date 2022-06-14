@@ -62,12 +62,12 @@ class ProductFormBody extends Form {
         product_id: Joi.number(),
         product_title: Joi.string()
             .required()
-            .min(5)
-            .max(50)
+            .min(3)
+            .max(250)
             .label("Product Title"),
         category_id: Joi.number().min(1).required().label("Category"),
         sub_category_id: Joi.number().min(1).required().label("Subcategory"),
-        sku: Joi.string().required().min(5).max(20).label("SKU"),
+        sku: Joi.string().required().min(5).max(30).label("SKU"),
         product_weight: Joi.number().required().min(1).label("Product Weight"),
         custom_features: Joi.array(),
         options: Joi.array(),
