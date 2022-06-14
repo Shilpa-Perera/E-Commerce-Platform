@@ -89,6 +89,8 @@ class ProductFormBody extends Form {
             if (productId === "new") {
                 const isNew = true;
                 this.setState({ isNew });
+                if (this.option_columns.length === 2)
+                    this.option_columns.push({ path: "", label: "Actions" });
                 return;
             }
 
@@ -272,6 +274,14 @@ class ProductFormBody extends Form {
         const collapse = document.getElementById("collapseTarget");
         const bsCollapse = new Collapse(collapse, { toggle: false });
         bsCollapse.hide();
+    };
+
+    handleDeleteOption = (index) => {
+        if (this.state.isNew) {
+            const data = { ...this.state.data };
+            data.options.splice(index, 1);
+            this.setState({ data });
+        }
     };
 
     doSubmit = async () => {
@@ -586,6 +596,20 @@ class ProductFormBody extends Form {
                                                         )
                                                         .join(", ")}
                                                 </td>
+                                                {this.state.isNew && (
+                                                    <td>
+                                                        <button
+                                                            className="btn btn-sm btn-danger"
+                                                            onClick={() =>
+                                                                this.handleDeleteOption(
+                                                                    index
+                                                                )
+                                                            }
+                                                        >
+                                                            <i className="fa fa-trash-o"></i>
+                                                        </button>
+                                                    </td>
+                                                )}
                                             </tr>
                                         )
                                     )}
