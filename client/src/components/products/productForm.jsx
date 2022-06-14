@@ -3,7 +3,10 @@ import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import Joi from "joi-browser";
 import Form from "../common/form";
-import { getCategories, getSubCategories } from "../../services/categoryService";
+import {
+    getCategories,
+    getSubCategories,
+} from "../../services/categoryService";
 import {
     getProduct,
     putProductImage,
@@ -90,6 +93,10 @@ class ProductFormBody extends Form {
             }
 
             const { data: product } = await getProduct(productId);
+
+            if (product.availability === "UNAVAILABLE")
+                this.props.replace("/products/deleted");
+
             const data = _.pick(product, [
                 "product_id",
                 "product_title",
@@ -268,7 +275,12 @@ class ProductFormBody extends Form {
     };
 
     doSubmit = async () => {
-        if (this.state.product_image !== null) {
+        const { isNew, product_image } = this.state;
+        if (!isNew) {
+            const { data } = await saveProduct(this.state.data);
+            const { product_id } = data;
+            this.props.push(`/products/${product_id}/variants`);
+        } else if (product_image !== null) {
             const { data } = await saveProduct(this.state.data);
             const { product_id } = data;
             await putProductImage(product_id, this.state.product_image);

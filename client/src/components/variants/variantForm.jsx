@@ -177,6 +177,9 @@ class VariantFormBody extends Component {
         const { id: product_id } = this.props;
         const { data: product } = await getProduct(product_id);
 
+        if (product.availability === "UNAVAILABLE")
+            this.props.replace("/products/deleted");
+
         let availableVariants = [];
         const addedVariants = [];
 
