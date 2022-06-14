@@ -86,6 +86,22 @@ export default function NavBar() {
                                 Orders
                             </NavLink>
                         </li>
+                        <li className="nav-item">
+                            <NavLink
+                                className="nav-link hover-focus"
+                                to="/login"
+                            >
+                                Login
+                            </NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink
+                                className="nav-link hover-focus"
+                                to="/logout"
+                            >
+                                Logout
+                            </NavLink>
+                        </li>
                     </ul>
                 </div>
                 <div

@@ -11,6 +11,9 @@ import NotFound from "./components/notFound";
 import Home from "./components/home";
 import Orders from "./components/orders";
 import Cart from "./components/cart"
+import LoginForm from "./components/loginForm";
+import RegisterForm from "./components/customer/registerForm";
+import Logout from './components/logout';
 
 function App() {
     return (
@@ -44,6 +47,13 @@ function App() {
                 <Route path="/orders" element={<Orders />}>
                 </Route>
                 <Route path="/cart" element={<Cart />}></Route>
+                
+                <Route path="/login" element={<LoginForm />}></Route>
+                <Route path="/logout" element={<Logout />}></Route>
+
+                <Route path="/customers/*">
+                    <Route path="register" element={<RegisterForm />}></Route>
+                </Route>
                 <Route path="/" element={<Home />}></Route>
                 <Route path="*" element={<NotFound />} />
             </Routes>
