@@ -10,8 +10,9 @@ import VariantForm from "./components/variants/variantForm";
 import NotFound from "./components/notFound";
 import Home from "./components/home";
 import Orders from "./components/orders";
-import Cart from "./components/cart"
+import Cart from "./components/cart";
 import VariantImages from "./components/variants/variantImages";
+import ScrollToTop from "./components/scrollToTop";
 
 function App() {
     return (
@@ -30,7 +31,10 @@ function App() {
                     ></Route>
                     <Route path="variants">
                         <Route path=":id">
-                            <Route path="images" element={<VariantImages />}></Route>
+                            <Route
+                                path="images"
+                                element={<VariantImages />}
+                            ></Route>
                         </Route>
                     </Route>
                     <Route path=":id">
@@ -47,12 +51,12 @@ function App() {
                         <Route path=":id" element={<ProductForm />}></Route>
                     </Route>
                 </Route>
-                <Route path="/orders" element={<Orders />}>
-                </Route>
+                <Route path="/orders" element={<Orders />}></Route>
                 <Route path="/cart" element={<Cart />}></Route>
                 <Route path="/" element={<Home />}></Route>
                 <Route path="*" element={<NotFound />} />
             </Routes>
+            <ScrollToTop />
             <Footer />
         </div>
     );
