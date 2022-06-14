@@ -11,6 +11,10 @@ export function getCategories() {
   return http.get(`${apiEndpoint}/category`);
 }
 
+export function getAllSubCategories() {
+  return http.get(`${apiEndpoint}/sub-category`);
+}
+
 export function getSubCategories(category_id) {
   return http.get(categoryUrl(category_id));
 }

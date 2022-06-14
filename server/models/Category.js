@@ -14,17 +14,8 @@ class Category {
   }
 
   static async getAllSubCategories() {
-    const get_all_sub_categories_query =
-      "select * from category_link natural join sub_category";
-    const [all_sub_categories, _] = await db.execute(
-      get_all_sub_categories_query
-    );
-
-    if (all_sub_categories.length > 0) {
-      return all_sub_categories;
-    }
-
-    return false;
+    const get_all_sub_categories_query = "select * from sub_category";
+    return db.execute(get_all_sub_categories_query);
   }
 
   static async getSubCategories(categoryId) {
