@@ -1,5 +1,5 @@
 const _ = require("lodash");
-const { Variant } = require("../models/Variant");
+const { Variant, validateVariant } = require("../models/Variant");
 
 class VariantController {
     static async getVariant(req, res, next) {
@@ -48,33 +48,44 @@ class VariantController {
     }
 
     static async postVariant(req, res, next) {
+        const props = [
+            "product_id",
+            "variant_name",
+            "price",
+            "quantity",
+            "options",
+        ];
+
         const variant = new Variant({
             variant_id: null,
-            ..._.pick(req.body, [
-                "product_id",
-                "variant_name",
-                "price",
-                "quantity",
-                "options",
-            ]),
+            ..._.pick(req.body, props),
         });
+
+        const { error } = validateVariant(variant, props);
+        if (error) return res.status(400).send(error.details[0].message);
+
         await variant.save();
 
         res.send(variant);
     }
 
     static async putVariant(req, res, next) {
+        const props = ["variant_name", "price", "quantity"];
+
         const variant = new Variant({
             variant_id: req.params.id,
-            ..._.pick(req.body, ["variant_name", "price", "quantity"]),
+            ..._.pick(req.body, props),
             product_id: null,
             options: null,
         });
+
+        props.push("variant_id");
+        const { error } = validateVariant(variant, props);
+        if (error) return res.status(400).send(error.details[0].message);
+
         await variant.update();
 
-        res.send(
-            _.pick(variant, ["variant_id", "variant_name", "price", "quantity"])
-        );
+        res.send(_.pick(variant, props));
     }
 
     static async postImage(req, res, body) {
