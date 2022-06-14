@@ -53,7 +53,8 @@ create table if not exists product (
     sku varchar(32) not null,
     product_weight float not null,
     default_variant_id int unsigned,
-    image_name varchar(255)
+    image_name varchar(255),
+    availability enum('AVAILABLE', 'UNAVAILABLE') not null default 'AVAILABLE'
 );
 
 

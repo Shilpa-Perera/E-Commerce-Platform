@@ -87,6 +87,16 @@ class ProductController {
 
         res.send({ filename });
     }
+
+    static async deleteFeature(req, res, next) {
+        const featureId = req.params.id;
+        await Product.deleteCustomFeature(featureId);
+    }
+
+    static async deleteProduct(req, res, next) {
+        const productId = req.params.id;
+        await Product.deleteProduct(productId);
+    }
 }
 
 module.exports.ProductController = ProductController;
