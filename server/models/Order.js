@@ -17,13 +17,25 @@ class Order{
     }
 
     static fetchAll() {
-        const select_all_query = "SELECT * FROM `order`;";
+        const select_all_query = "SELECT * FROM `order` ORDER BY date ASC;";
         return db.execute(select_all_query);
     }
 
     static async getOrderById(orderId){
-        const product_values_query = "select * from `order` where order_id = ?";
+        const product_values_query = "SELECT * FROM `order` WHERE order_id = ?";
         const result = await db.execute(product_values_query, [orderId]); 
+        return result[0];
+    }
+
+    static async updateOrderStatus(orderStatus, orderId){
+        const update_status_query = "UPDATE sell SET delivery_state = ? WHERE order_id = ?";
+        const result = await db.execute(update_status_query, [orderStatus, orderId]);
+        return result;
+    }
+
+    static async getMostPurchasedCatergory(){
+        const mostOrderedCatergory = "";
+        const result = await db.execute(mostOrderedCatergory);
         return result[0];
     }
     
