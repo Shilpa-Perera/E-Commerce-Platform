@@ -1,5 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { ImSun } from "react-icons/im";
+import { BsFillMoonFill } from "react-icons/bs";
 
 export default function NavBar({ theme, toggleTheme }) {
     const nextTheme = theme ? "light" : "dark";
@@ -115,10 +117,10 @@ export default function NavBar({ theme, toggleTheme }) {
                                 title={`Switch to ${nextTheme} theme`}
                             >
                                 {theme && (
-                                    <i className="fa fa-sun-o fa-2x text-warning"></i>
+                                    <ImSun className="text-warning h3 d-inline m-0" />
                                 )}
                                 {!theme && (
-                                    <i className="fa fa-moon-o fa-2x text-primary"></i>
+                                    <BsFillMoonFill className="text-info h3 d-inline m-0" />
                                 )}
                             </span>
                         </li>
