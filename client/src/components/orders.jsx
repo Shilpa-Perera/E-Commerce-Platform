@@ -36,6 +36,20 @@ class Orders extends Component {
         });
     };
 
+    handleSortClick = (id) => {
+        this.setState({ sortBy: { path: id, order: "asc" } });
+    };
+
+    handleOptionClick = (id) => {
+        const sortBy = { ...this.state.sortBy };
+        sortBy.order = id;
+        this.setState({ sortBy });
+    };
+
+    handleSort = (sortBy) => {
+        if (sortBy.path) this.setState({ sortBy });
+    };
+
     getPagedData = () => {
         const {
             orders: allOrders,
