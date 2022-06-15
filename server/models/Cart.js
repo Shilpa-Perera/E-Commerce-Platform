@@ -31,11 +31,14 @@ class Cart{
 
     static async getCartProducts(id){
 
-        let stmt = `select * from cart_product where cart_id=? ;` ;
+        // To be refined
+        let stmt = `select * from cart_product natural join variant join product where cart_id=? ;` ;
         const [products, _] = await db.execute(stmt, [id]);
         if (products.length > 0) {
-            return products[0];
+            return products;
         }
+
+        
         return false;
     }
     
