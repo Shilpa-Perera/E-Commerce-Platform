@@ -16,6 +16,7 @@ import Logout from "./components/logout";
 import Cart from "./components/cart";
 import VariantImages from "./components/variants/variantImages";
 import ScrollToTop from "./components/scrollToTop";
+import DeletedProduct from "./components/products/deletedProduct";
 
 function App() {
     return (
@@ -33,6 +34,8 @@ function App() {
                         path="new"
                         element={<Navigate to="/products/edit/new" />}
                     ></Route>
+
+                    <Route path="deleted" element={<DeletedProduct />}></Route>
 
                     <Route path="variants">
                         <Route path=":id">

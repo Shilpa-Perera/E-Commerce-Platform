@@ -17,7 +17,7 @@ class Product {
 
     static fetchAll() {
         const select_all_query =
-            "select * from product p join variant v on p.default_variant_id = v.variant_id join product_category pc on p.product_id = pc.product_id";
+            "select * from product p join variant v on p.default_variant_id = v.variant_id join product_category pc on p.product_id = pc.product_id where p.availability='AVAILABLE'";
         return db.execute(select_all_query);
     }
 
@@ -266,6 +266,18 @@ class Product {
         const save_image_query =
             "update product set image_name=? where product_id=?";
         await db.execute(save_image_query, [imageName, productId]);
+    }
+
+    static async deleteCustomFeature(featureId) {
+        const delete_custom_feature_query =
+            "delete from custom_feature where custom_feature_id=?";
+        await db.execute(delete_custom_feature_query, [featureId])
+    }
+
+    static async deleteProduct(productId) {
+        const delete_product_query =
+            "update product set availability='UNAVAILABLE' where product_id=?";
+        await db.execute(delete_product_query, [productId]);
     }
 }
 

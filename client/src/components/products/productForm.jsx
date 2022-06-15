@@ -3,7 +3,10 @@ import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import Joi from "joi-browser";
 import Form from "../common/form";
-import { getCategories, getSubCategories } from "../../services/categoryService";
+import {
+    getCategories,
+    getSubCategories,
+} from "../../services/categoryService";
 import {
     getProduct,
     putProductImage,
@@ -86,10 +89,16 @@ class ProductFormBody extends Form {
             if (productId === "new") {
                 const isNew = true;
                 this.setState({ isNew });
+                if (this.option_columns.length === 2)
+                    this.option_columns.push({ path: "", label: "Actions" });
                 return;
             }
 
             const { data: product } = await getProduct(productId);
+
+            if (product.availability === "UNAVAILABLE")
+                this.props.replace("/products/deleted");
+
             const data = _.pick(product, [
                 "product_id",
                 "product_title",
@@ -267,8 +276,21 @@ class ProductFormBody extends Form {
         bsCollapse.hide();
     };
 
+    handleDeleteOption = (index) => {
+        if (this.state.isNew) {
+            const data = { ...this.state.data };
+            data.options.splice(index, 1);
+            this.setState({ data });
+        }
+    };
+
     doSubmit = async () => {
-        if (this.state.product_image !== null) {
+        const { isNew, product_image } = this.state;
+        if (!isNew) {
+            const { data } = await saveProduct(this.state.data);
+            const { product_id } = data;
+            this.props.push(`/products/${product_id}/variants`);
+        } else if (product_image !== null) {
             const { data } = await saveProduct(this.state.data);
             const { product_id } = data;
             await putProductImage(product_id, this.state.product_image);
@@ -574,6 +596,20 @@ class ProductFormBody extends Form {
                                                         )
                                                         .join(", ")}
                                                 </td>
+                                                {this.state.isNew && (
+                                                    <td>
+                                                        <button
+                                                            className="btn btn-sm btn-danger"
+                                                            onClick={() =>
+                                                                this.handleDeleteOption(
+                                                                    index
+                                                                )
+                                                            }
+                                                        >
+                                                            <i className="fa fa-trash-o"></i>
+                                                        </button>
+                                                    </td>
+                                                )}
                                             </tr>
                                         )
                                     )}

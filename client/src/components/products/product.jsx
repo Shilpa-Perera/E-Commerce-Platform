@@ -113,6 +113,8 @@ class ProductBody extends Component {
         const { product, variant, images } = this.state;
 
         if (product) {
+            const availabile = product.availability === "AVAILABLE";
+
             const optionsAvailable =
                 product.options && product.options.length > 0;
             const price = variant === null ? product.price : variant.price;
@@ -237,33 +239,55 @@ class ProductBody extends Component {
                                         </table>
                                     </div>
                                 )}
-                                <div className="d-flex flex-row-reverse mt-5">
-                                    <div>
-                                        <h4>
-                                            <span className="text-muted me-3">
-                                                {noVariant && "Base "}Price:
-                                            </span>
-                                            Rs. {price}
-                                        </h4>
-                                    </div>
-                                </div>
-
-                                {variant && inStock && (
-                                    <div className="d-flex flex-row-reverse mt-5">
-                                        <div>
-                                            <button
-                                                className="btn btn-outline-success hover-focus"
-                                                onClick={this.handleAddToCart}
-                                            >
-                                                Add to cart
-                                                <span className="ms-2">
-                                                    <i className="fa fa-cart-plus"></i>
-                                                </span>
-                                            </button>
+                                {availabile && (
+                                    <React.Fragment>
+                                        <div className="d-flex flex-row-reverse mt-5">
+                                            <div>
+                                                <h4>
+                                                    <span className="text-muted me-3">
+                                                        {noVariant && "Base "}
+                                                        Price:
+                                                    </span>
+                                                    Rs. {price}
+                                                </h4>
+                                            </div>
                                         </div>
-                                    </div>
+                                        {variant && inStock && (
+                                            <div className="d-flex flex-row-reverse mt-5">
+                                                <div>
+                                                    <button
+                                                        className="btn btn-outline-success hover-focus"
+                                                        onClick={
+                                                            this.handleAddToCart
+                                                        }
+                                                    >
+                                                        Add to cart
+                                                        <span className="ms-2">
+                                                            <i className="fa fa-cart-plus"></i>
+                                                        </span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        )}
+                                        {variant && outOfStock && (
+                                            <div className="container mt-5">
+                                                <div
+                                                    className="alert alert-danger d-flex align-items-center"
+                                                    role="alert"
+                                                >
+                                                    <div className="bi flex-shrink-0 me-2">
+                                                        <i className="fa fa-warning"></i>
+                                                    </div>
+                                                    <div>
+                                                        Item is currently out of
+                                                        stock!
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </React.Fragment>
                                 )}
-                                {variant && outOfStock && (
+                                {!availabile && (
                                     <div className="container mt-5">
                                         <div
                                             className="alert alert-danger d-flex align-items-center"
@@ -273,7 +297,7 @@ class ProductBody extends Component {
                                                 <i className="fa fa-warning"></i>
                                             </div>
                                             <div>
-                                                Item is currently out of stock!
+                                                Item is currently unavailable!
                                             </div>
                                         </div>
                                     </div>

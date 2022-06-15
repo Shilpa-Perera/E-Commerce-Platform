@@ -59,3 +59,7 @@ export function putProductImage(productId, image) {
 
     return http.put(`${apiEndpoint}/image/${productId}`, formData);
 }
+
+export function deleteProduct(productId) {
+    return http.delete(productUrl(productId));
+}
