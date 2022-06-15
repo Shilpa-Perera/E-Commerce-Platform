@@ -1,4 +1,4 @@
-create database if not exists texas_e_store_extra;
+create database if not exists texas_e_store;
 
 use texas_e_store;
 
