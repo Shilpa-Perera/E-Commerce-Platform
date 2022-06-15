@@ -21,11 +21,11 @@ import DeletedProduct from "./components/products/deletedProduct";
 import ThemeSelector from "./components/themeSelector";
 
 function App() {
-    const [theme, setTheme] = useState(false);
+    const [theme, toggleTheme] = useState(true);
     return (
         <div className="d-flex flex-column min-vh-100">
             <ThemeSelector theme={theme} />
-            <NavBar theme={theme} setTheme={setTheme} />
+            <NavBar theme={theme} toggleTheme={toggleTheme} />
             <ToastContainer />
             <Routes>
                 <Route path="/products">

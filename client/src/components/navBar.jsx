@@ -1,7 +1,9 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-export default function NavBar({ theme, setTheme }) {
+export default function NavBar({ theme, toggleTheme }) {
+    const nextTheme = theme ? "light" : "dark";
+
     return (
         <nav className="navbar navbar-expand-lg navbar-custom mb-5">
             <div className="container-fluid">
@@ -107,7 +109,10 @@ export default function NavBar({ theme, setTheme }) {
                         <li className="nav-item d-flex align-items-center">
                             <span
                                 className="ms-2 pointer"
-                                onClick={() => setTheme(!theme)}
+                                onClick={() => toggleTheme(!theme)}
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="bottom"
+                                title={`Switch to ${nextTheme} theme`}
                             >
                                 {theme && (
                                     <i className="fa fa-sun-o fa-2x text-warning"></i>
