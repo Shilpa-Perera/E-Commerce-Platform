@@ -68,6 +68,9 @@ class VariantFormBody extends Component {
         variant.product_id = this.state.product.product_id;
 
         availableVariants.splice(variant.index, 1);
+        for (let i = variant.index; i < availableVariants.length; ++i) {
+            availableVariants[i].index = i;
+        }
 
         variant.index = addedVariants.length;
         addedVariants.push(variant);
