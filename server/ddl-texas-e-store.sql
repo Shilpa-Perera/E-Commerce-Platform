@@ -9,13 +9,13 @@ drop table if exists sell;
 drop table if exists `order`;
 drop table if exists cart;
 drop table if exists customer;
+drop table if exists variant_image;
 drop table if exists variant_values;
 drop table if exists variant_option_values;
 drop table if exists variant_option;
 drop table if exists variant;
-drop table if exists product;
 drop table if exists custom_feature;
-drop table if exists variant_image;
+drop table if exists product;
 
 create table if not exists customer (
     customer_id int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -48,62 +48,82 @@ create table if not exists customer_mobile (
 
 
 create table if not exists product (
-    product_id int unsigned auto_increment primary key,
-    product_title varchar(255) not null,
-    sku varchar(32) not null,
-    product_weight float not null,
-    default_variant_id int unsigned,
-    image_name varchar(255),
-    availability enum('AVAILABLE', 'UNAVAILABLE') not null default 'AVAILABLE'
+    product_id          int unsigned                        auto_increment  primary key,
+    product_title       varchar(255)                        not null,
+    sku                 varchar(32)                         not null,
+    product_weight      float                               not null,
+    default_variant_id  int unsigned,
+    image_name          varchar(255),
+    availability        enum('AVAILABLE', 'UNAVAILABLE')    not null        default 'AVAILABLE'
 );
 
 
 
 create table if not exists custom_feature (
-    custom_feature_id int unsigned auto_increment primary key,
-    product_id int unsigned not null,
-    custom_feature_name varchar(255) not null,
-    custom_feature_val varchar(255) not null,
-    foreign key (product_id) references product(product_id) on delete cascade
+    custom_feature_id       int unsigned    auto_increment primary key,
+    product_id              int unsigned    not null,
+    custom_feature_name     varchar(255)    not null,
+    custom_feature_val      varchar(255)    not null,
+
+    foreign key (product_id)    references      product(product_id)     on delete cascade
 );
 
 
 
 create table if not exists variant (
-    variant_id int unsigned auto_increment primary key,
-    product_id int unsigned not null,
-    variant_name varchar(255) not null,
-    price decimal(15, 2) not null,
-    quantity int not null,
-    foreign key (product_id) references product(product_id) on delete cascade
+    variant_id      int unsigned    auto_increment  primary key,
+    product_id      int unsigned    not null,
+    variant_name    varchar(255)    not null,
+    price           decimal(15, 2)  not null,
+    quantity        int not null,
+
+    foreign key (product_id)    references      product(product_id)     on delete cascade
 );
 
 
 
 create table if not exists variant_option (
-    option_id int unsigned auto_increment primary key,
-    product_id int unsigned not null,
-    option_name varchar(255),
-    foreign key (product_id) references product(product_id) on delete cascade
+    option_id       int unsigned    auto_increment  primary key,
+    product_id      int unsigned    not null,
+    option_name     varchar(255),
+
+    foreign key (product_id)    references      product(product_id)     on delete cascade
 );
 
 
 
-create table if not exists variant_option_values(
-    value_id int unsigned auto_increment primary key,
-    product_id int unsigned not null,
-    option_id int unsigned not null,
-    value_name varchar(255) not null,
-    foreign key (product_id) references product(product_id) on delete cascade,
-    foreign key (option_id) references variant_option(option_id) on delete cascade
+create table if not exists variant_option_values (
+    value_id        int unsigned    auto_increment      primary key,
+    product_id      int unsigned    not null,
+    option_id       int unsigned    not null,
+    value_name      varchar(255)    not null,
+
+    foreign key (product_id)    references  product(product_id)         on delete cascade,
+    foreign key (option_id)     references  variant_option(option_id)   on delete cascade
+);
+
+
+create table if not exists variant_values (
+    product_id      int unsigned    not null,
+    variant_id      int unsigned    not null,
+    option_id       int unsigned    not null,
+    value_id        int unsigned    not null,
+
+    primary key (product_id, variant_id, option_id, value_id),
+
+    foreign key (product_id)    references      product(product_id)                 on delete cascade,
+    foreign key (variant_id)    references      variant(variant_id)                 on delete cascade,
+    foreign key (option_id)     references      variant_option(option_id)           on delete cascade,
+    foreign key (value_id)      references      variant_option_values(value_id)     on delete cascade
 );
 
 
 
 create table if not exists variant_image(
-    variant_id int unsigned not null,
-    image_name varchar(255) primary key,
-    foreign key (variant_id) references variant(variant_id) on delete cascade
+    variant_id      int unsigned    not null,
+    image_name      varchar(255)    primary key,
+
+    foreign key (variant_id)    references      variant(variant_id)     on delete cascade
 );
 
 
@@ -153,19 +173,6 @@ create table if not exists sell(
     foreign key (order_id) references `order`(order_id) on delete cascade
 );
 
-
-
-create table if not exists variant_values (
-    product_id int unsigned not null,
-    variant_id int unsigned not null,
-    option_id int unsigned not null,
-    value_id int unsigned not null,
-    primary key (product_id, variant_id, option_id, value_id),
-    foreign key (product_id) references product(product_id) on delete cascade,
-    foreign key (variant_id) references variant(variant_id) on delete cascade,
-    foreign key (option_id) references variant_option(option_id) on delete cascade,
-    foreign key (value_id) references variant_option_values(value_id) on delete cascade
-);
 
 drop table if exists category;
 
