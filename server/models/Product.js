@@ -1,3 +1,4 @@
+const _ = require("lodash");
 const Joi = require("joi");
 const db = require("../util/database");
 const dotenv = require("dotenv");
@@ -14,6 +15,23 @@ class Product {
         this.category_id = productDetails.category_id;
         this.sub_category_id = productDetails.sub_category_id;
     }
+
+    static #schema = {
+        product_id: Joi.number().min(1).label("Product ID"),
+        product_title: Joi.string()
+            .required()
+            .min(3)
+            .max(250)
+            .label("Product Title"),
+        category_id: Joi.number().min(1).required().label("Category"),
+        sub_category_id: Joi.number().min(1).required().label("Subcategory"),
+        sku: Joi.string().required().min(5).max(30).label("SKU"),
+        product_weight: Joi.number().required().min(1).label("Product Weight"),
+        custom_features: Joi.array(),
+        options: Joi.array(),
+        isNew: Joi.bool(),
+        image_name: Joi.string().allow(""),
+    };
 
     static fetchAll() {
         const select_all_query =
@@ -271,7 +289,7 @@ class Product {
     static async deleteCustomFeature(featureId) {
         const delete_custom_feature_query =
             "delete from custom_feature where custom_feature_id=?";
-        await db.execute(delete_custom_feature_query, [featureId])
+        await db.execute(delete_custom_feature_query, [featureId]);
     }
 
     static async deleteProduct(productId) {
@@ -279,7 +297,54 @@ class Product {
             "update product set availability='UNAVAILABLE' where product_id=?";
         await db.execute(delete_product_query, [productId]);
     }
+
+    static getSchema() {
+        return Product.#schema;
+    }
+}
+
+function validateProduct(product, props) {
+    const schema = _.pick(Product.getSchema(), props);
+    const object = _.pick(product, props);
+
+    return Joi.object(schema).validate(object);
+}
+
+function validateCustomFeature(feature) {
+    const schema = {
+        custom_feature_name: Joi.string()
+            .required()
+            .min(3)
+            .max(100)
+            .label("Custom Feature Name"),
+        custom_feature_val: Joi.string()
+            .required()
+            .min(3)
+            .max(250)
+            .label("Custom Feature Value"),
+    };
+
+    return Joi.object(schema).validate(
+        _.pick(feature, "custom_feature_name", "custom_feature_val")
+    );
+}
+
+function validateOption(option) {
+    const schema = {
+        option_name: Joi.string()
+            .required()
+            .min(3)
+            .max(250)
+            .label("Option Name"),
+        values: Joi.array().items(Joi.object({ value_name: Joi.string() })),
+    };
+
+    return Joi.object(schema).validate(
+        _.pick(option, ["option_name", "values"])
+    );
 }
 
 module.exports.Product = Product;
-// module.exports.validate = validateUser;
+module.exports.validateProduct = validateProduct;
+module.exports.validateCustomFeature = validateCustomFeature;
+module.exports.validateOption = validateOption;
