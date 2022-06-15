@@ -90,7 +90,7 @@ class ProductFormBody extends Form {
                 const isNew = true;
                 this.setState({ isNew });
                 if (this.option_columns.length === 2)
-                    this.option_columns.push({ path: "", label: "Actions" });
+                    this.option_columns.push({ key: "actions_op", label: "Actions" });
                 return;
             }
 
