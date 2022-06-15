@@ -10,44 +10,80 @@ class Form extends Component {
         errors: {},
     };
 
+    initiateErrors = () => {
+        return {};
+    };
+
     validate = () => {
-        const options = { abortEarly: false };
-        const { error } = Joi.object(this.schema).validate(
-            this.state.data,
-            options
-        );
+        const { error } = Joi.validate(this.state.data, this.schema, {
+            abortEarly: false,
+        });
+
         if (!error) return null;
 
-        const errors = {};
-        for (let item of error.details) errors[item.path[0]] = item.message;
+        const errors = this.initiateErrors();
+
+        for (let item of error.details) {
+            if (item.path.length > 1) {
+                errors[item.path[0]][item.path[1]][item.path[2]] = item.message;
+            } else {
+                errors[item.path[0]] = item.message;
+            }
+        }
         return errors;
     };
 
-    validateProperty = ({ name, value }) => {
+    validateProperty = ({ name, value }, fromAdditional = false) => {
         const obj = { [name]: value };
-        const { error } = Joi.object({ [name]: this.schema[name] }).validate(
-            obj
-        );
-        return error ? error.details[0].message : null;
+        if (!fromAdditional) {
+            const { error } = Joi.object({
+                [name]: this.schema[name],
+            }).validate(obj);
+            return error ? error.details[0].message : null;
+        } else {
+            console.log("validateProperty", obj);
+            const { error } = Joi.object({
+                [name]: this.additionalSchema[name],
+            }).validate(obj);
+            return error ? error.details[0].message : null;
+        }
     };
 
     handleSubmit = (e) => {
         e.preventDefault();
         const errors = this.validate();
-        this.setState({ errors: errors || {} });
-        if (errors) return;
+        this.setState({ errors: errors || { ...this.initiateErrors() } });
+        if (errors) {
+            console.log("inside handle submit: ", errors);
+            return;
+        }
+        console.log("inside handle submit outside ", errors);
         this.doSubmit();
     };
 
     handleChange = ({ currentTarget: input }) => {
         const errors = { ...this.state.errors };
-        const errorMessage = this.validateProperty(input);
-        if (errorMessage) errors[input.name] = errorMessage;
-        else delete errors[input.name];
-
         const data = { ...this.state.data };
-        data[input.name] = input.value;
-        this.setState({ data, errors });
+        const { arrayName, elementId } = input.dataset;
+
+        if (arrayName) {
+            const errorMessage = this.validateProperty(input, true);
+            if (errorMessage)
+                errors[arrayName][elementId][input.name] = errorMessage;
+            else delete errors[arrayName][elementId][input.name];
+
+            const element = { ...data[arrayName][elementId] };
+            element[input.name] = input.value;
+            data[arrayName][elementId] = element;
+            this.setState({ data, errors });
+        } else {
+            const errorMessage = this.validateProperty(input);
+            if (errorMessage) errors[input.name] = errorMessage;
+            else delete errors[input.name];
+
+            data[input.name] = input.value;
+            this.setState({ data, errors });
+        }
     };
 
     renderButton(label) {

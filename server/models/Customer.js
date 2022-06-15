@@ -34,7 +34,8 @@ class Customer {
   static async findByEmail(email) {
     let sql = `select * from customer where email=?;`;
     const [customers, _] = await db.execute(sql, [email]);
-    return (customers.length > 0) ? customers[0] : false;
+
+    return (customers.length > 0) ? new Customer(customers[0]) : false;
   }
 
   static async findById(id) {
@@ -191,10 +192,10 @@ function validateCustomer(customer) {
         city: Joi.string(),
         postal_code: Joi.string(),
       })
-      .required(),
+      .required().min(1),
     mobiles: Joi.array()
       .items(Joi.string().pattern(new RegExp("^[+0][0-9]+")))
-      .required(),
+      .required().min(1),
   });
 
   return schema.validate(customer);

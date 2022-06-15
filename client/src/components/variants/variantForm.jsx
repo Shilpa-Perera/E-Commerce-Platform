@@ -68,6 +68,9 @@ class VariantFormBody extends Component {
         variant.product_id = this.state.product.product_id;
 
         availableVariants.splice(variant.index, 1);
+        for (let i = variant.index; i < availableVariants.length; ++i) {
+            availableVariants[i].index = i;
+        }
 
         variant.index = addedVariants.length;
         addedVariants.push(variant);
@@ -176,6 +179,9 @@ class VariantFormBody extends Component {
     async componentDidMount() {
         const { id: product_id } = this.props;
         const { data: product } = await getProduct(product_id);
+
+        if (product.availability === "UNAVAILABLE")
+            this.props.replace("/products/deleted");
 
         let availableVariants = [];
         const addedVariants = [];

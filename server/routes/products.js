@@ -32,5 +32,7 @@ router.put(
     ProductController.putImage
 );
 router.put("/:id", ProductController.putProduct);
+router.delete("/feature/:id", ProductController.deleteFeature);
+router.delete("/:id", ProductController.deleteProduct)
 
 module.exports = router;

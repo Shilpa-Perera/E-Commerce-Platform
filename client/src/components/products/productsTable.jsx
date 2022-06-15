@@ -35,6 +35,15 @@ class ProductsTable extends Component {
                             </button>
                         </Link>
                     </span>
+                    <span className="me-2 my-2 my-lg-0">
+                        <button
+                            className="btn btn-danger btn-sm hover-focus"
+                            onClick={() => this.props.deleteProduct(product_id)}
+                        >
+                            <span className="me-2">Delete Product</span>
+                            <i className="fa fa-trash-o"></i>
+                        </button>
+                    </span>
                 </div>
             ),
             label: "Actions",

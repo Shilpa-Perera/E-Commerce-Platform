@@ -78,4 +78,17 @@ h4,
   color: $color_white_disabled;
 }
 
+#scroll-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  padding: 5px 6px;
+}
+
+#scroll-to-top:hover {
+  transform: scale(1.2);
+  transition: transform 0.3s ease-in-out;
+}
+
 @import '~bootstrap/scss/bootstrap';

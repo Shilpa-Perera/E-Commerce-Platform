@@ -15,14 +15,14 @@ class OptionsForm extends Form {
     schema = {
         option_name: Joi.string()
             .required()
-            .min(5)
-            .max(50)
+            .min(3)
+            .max(250)
             .label("Option Name"),
         values: Joi.array().items(Joi.object({ value_name: Joi.string() })),
     };
 
     valueSchema = {
-        value_name: Joi.string().min(1).max(50).required().label("Value Name"),
+        value_name: Joi.string().min(1).max(250).required().label("Value Name"),
     };
 
     handleAddValue = () => {
