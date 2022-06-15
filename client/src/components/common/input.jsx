@@ -5,10 +5,10 @@ const Input = ({ name, label, error, id, ...rest }) => {
         <div className="form-group mb-3">
             <label htmlFor={name}>{label}</label>
             {/* <input {...rest} name={name} id={name} className="form-control" /> */}
-            {id !== null && (
+            {id !== null && id !== undefined && (
                 <input {...rest} name={name} id={id} className="form-control" />
             )}
-            {id === null && (
+            {(id === null || id === undefined) && (
                 <input
                     {...rest}
                     name={name}

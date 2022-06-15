@@ -12,6 +12,7 @@ class ProductBody extends Component {
         variant: null,
         selectedOptions: [],
         images: [],
+        defaultImages: [],
     };
 
     async populateVariant() {
@@ -29,16 +30,12 @@ class ProductBody extends Component {
                 const { data: variant } = await getVariant(product_id, options);
 
                 let images = [];
-                if (variant.images.length > 0) {
+                if (variant.variant_id !== 0 && variant.images.length > 0) {
                     for (const { image_name } of variant.images) {
                         images.push(variantImageUrl(image_name));
                     }
                 } else {
-                    images = [
-                        "https://c.s-microsoft.com/en-us/CMSImages/1920_Panel03_DeviceFamily_Pro7Plus.jpg?version=f4411094-f2e1-b89b-41d1-4517624580ae",
-                        "https://c.s-microsoft.com/en-us/CMSImages/Surface_F21_DeviceFamily_Studio2_V1_Blackfriday.jpg?version=72d8410c-3280-67f2-5c7a-c516caa6c728",
-                        "https://c.s-microsoft.com/en-us/CMSImages/Surface_F21_DeviceFamily_Laptop4_V1_Blackfriday.jpg?version=4258b51c-655a-37d6-fbd3-b8138d84dcae",
-                    ];
+                    images = [...this.state.defaultImages];
                 }
 
                 this.setState({ variant, images });
@@ -101,7 +98,15 @@ class ProductBody extends Component {
                 ];
             }
 
-            this.setState({ product, selectedOptions, variant, images });
+            const defaultImages = [...images];
+
+            this.setState({
+                product,
+                selectedOptions,
+                variant: null,
+                images,
+                defaultImages,
+            });
         } catch (e) {
             if (e.response && e.response.status === 404)
                 this.props.replace("/not-found");
