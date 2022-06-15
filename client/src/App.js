@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Products from "./components/products/products";
@@ -17,11 +18,14 @@ import Cart from "./components/cart";
 import VariantImages from "./components/variants/variantImages";
 import ScrollToTop from "./components/scrollToTop";
 import DeletedProduct from "./components/products/deletedProduct";
+import ThemeSelector from "./components/themeSelector";
 
 function App() {
+    const [theme, setTheme] = useState(false);
     return (
         <div className="d-flex flex-column min-vh-100">
-            <NavBar />
+            <ThemeSelector theme={theme} />
+            <NavBar theme={theme} setTheme={setTheme} />
             <ToastContainer />
             <Routes>
                 <Route path="/products">

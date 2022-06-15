@@ -1,9 +1,9 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-export default function NavBar() {
+export default function NavBar({ theme, setTheme }) {
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark mb-5">
+        <nav className="navbar navbar-expand-lg navbar-custom mb-5">
             <div className="container-fluid">
                 <NavLink to="/" className="navbar-brand hover-focus">
                     <img
@@ -103,14 +103,25 @@ export default function NavBar() {
                             </NavLink>
                         </li>
                     </ul>
-                </div>
-                <div
-                    className="collapse navbar-collapse "
-                    id="navbarSupportedContent"
-                >
                     <ul className="navbar-nav ms-auto">
+                        <li className="nav-item d-flex align-items-center">
+                            <span
+                                className="ms-2 pointer"
+                                onClick={() => setTheme(!theme)}
+                            >
+                                {theme && (
+                                    <i className="fa fa-sun-o fa-2x text-warning"></i>
+                                )}
+                                {!theme && (
+                                    <i className="fa fa-moon-o fa-2x text-primary"></i>
+                                )}
+                            </span>
+                        </li>
                         <li className="nav-item">
-                            <NavLink className="nav-link hover-focus" to="/cart">
+                            <NavLink
+                                className="nav-link hover-focus"
+                                to="/cart"
+                            >
                                 <span className="ms-2">
                                     <i className="fa fa-shopping-cart fa-2x "></i>
                                     <span className="badge rounded-pill badge-notification bg-primary">
