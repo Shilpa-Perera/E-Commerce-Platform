@@ -1,6 +1,22 @@
-create database if not exists texas_e_store;
+create database if not exists texas_e_store_extra;
 
 use texas_e_store;
+
+set @var = if (
+    (
+        select true from information_schema.TABLE_CONSTRAINTS where
+            CONSTRAINT_SCHEMA = DATABASE() AND
+            TABLE_NAME        = 'product' AND
+            CONSTRAINT_NAME   = 'product_ibfk_1' AND
+            CONSTRAINT_TYPE   = 'FOREIGN KEY'
+    ) = true,
+        'alter table product
+            drop foreign key product_ibfk_1', 'select 1
+');
+
+prepare stmt from @var;
+execute stmt;
+deallocate prepare stmt;
 
 drop table if exists customer_mobile;
 drop table if exists customer_address;
