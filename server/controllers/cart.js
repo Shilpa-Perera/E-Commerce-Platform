@@ -25,9 +25,17 @@ class CartController{
     }
 
     static async addProductToCart(req,res,next){
-        console.log(req.body.cart_id) ;
+        
         res.status(201).send("Success");
 
+    }
+
+    static async updateItemCount(req,res,next){
+        const cart_id    = req.body.cart_id ;
+        const variant_id = req.body.variant_id ;
+        const number_of_items = req.body.number_of_items ;
+        await Cart.updateItemCount(cart_id , variant_id , number_of_items );
+        res.status(201).send("Success");
     }
 
     

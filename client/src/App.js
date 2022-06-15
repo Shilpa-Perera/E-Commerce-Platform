@@ -12,6 +12,7 @@ import Home from "./components/home";
 import Orders from "./components/orders";
 import Cart from "./components/cart"
 import VariantImages from "./components/variants/variantImages";
+import CartCard from "./components/cartCard";
 
 function App() {
     return (
