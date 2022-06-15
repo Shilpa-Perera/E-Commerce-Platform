@@ -21,11 +21,20 @@ import DeletedProduct from "./components/products/deletedProduct";
 import ThemeSelector from "./components/themeSelector";
 
 function App() {
-    const [theme, toggleTheme] = useState(true);
+    const [theme, toggleTheme] = useState(
+        localStorage.getItem("theme") === "dark"
+    );
+
     return (
         <div className="d-flex flex-column min-vh-100">
             <ThemeSelector theme={theme} />
-            <NavBar theme={theme} toggleTheme={toggleTheme} />
+            <NavBar
+                theme={theme}
+                toggleTheme={(theme) => {
+                    toggleTheme(theme);
+                    localStorage.setItem("theme", theme ? "dark" : "light");
+                }}
+            />
             <ToastContainer />
             <Routes>
                 <Route path="/products">
