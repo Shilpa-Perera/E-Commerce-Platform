@@ -7,11 +7,11 @@ set @var = if (
         select true from information_schema.TABLE_CONSTRAINTS where
             CONSTRAINT_SCHEMA = DATABASE() AND
             TABLE_NAME        = 'product' AND
-            CONSTRAINT_NAME   = 'product_ibfk_1' AND
+            CONSTRAINT_NAME   = 'FK_Product_DefaultVariant' AND
             CONSTRAINT_TYPE   = 'FOREIGN KEY'
     ) = true,
         'alter table product
-            drop foreign key product_ibfk_1', 'select 1
+            drop foreign key FK_Product_DefaultVariant', 'select 1
 ');
 
 prepare stmt from @var;
@@ -237,5 +237,6 @@ create table if not exists sell(
 
 
 alter table product
-    add foreign key (default_variant_id)
-    references variant(variant_id);
+    add constraint FK_Product_DefaultVariant
+        foreign key (default_variant_id)
+        references variant(variant_id);
