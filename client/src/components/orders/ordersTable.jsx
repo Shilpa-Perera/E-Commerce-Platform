@@ -7,9 +7,33 @@ class OrdersTable extends Component {
         { path: "order_id", label: "Order Id" },
         { path: "date", label: "Date" },
         { path: "order_name", label: "Name" },
-        { path: "payment_method", label: "payment method" },
-        { path: "delivery_method", label: "Delivery Method" },
-        { path: "phone_number", label: "Phone number" },
+        {
+            content: ({ payment_method }) => (
+                <div className="d-flex flex-column flex-lg-row mb-3">
+                    <span className="me-2 my-2 my-lg-0">
+                        {payment_method}
+                    </span>
+                </div>
+            ), label: "payment method"
+        },
+        {
+            content: ({ delivery_method }) => (
+                <div className="d-flex flex-column flex-lg-row mb-3">
+                    <span className="me-2 my-2 my-lg-0">
+                        {delivery_method}
+                    </span>
+                </div>
+            ), label: "Delivery Method"
+        },
+        {
+            content: ({ phone_number }) => (
+                <div className="d-flex flex-column flex-lg-row mb-3">
+                    <span className="me-2 my-2 my-lg-0">
+                        {phone_number}
+                    </span>
+                </div>
+            ), label: "Phone number"
+        },
     ];
 
     render() {
