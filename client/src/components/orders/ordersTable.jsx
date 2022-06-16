@@ -8,37 +8,32 @@ class OrdersTable extends Component {
         { path: "date", label: "Date" },
         { path: "order_name", label: "Name" },
         {
+            key: "payment_method",
             content: ({ payment_method }) => (
-                <div className="d-flex flex-column flex-lg-row mb-3">
-                    <span className="me-2 my-2 my-lg-0">
-                        {payment_method}
-                    </span>
-                </div>
-            ), label: "payment method"
+                <span className="me-2 my-2 my-lg-0">{payment_method}</span>
+            ),
+            label: "payment method",
         },
         {
+            key: "delivery_method",
             content: ({ delivery_method }) => (
-                <div className="d-flex flex-column flex-lg-row mb-3">
-                    <span className="me-2 my-2 my-lg-0">
-                        {delivery_method}
-                    </span>
-                </div>
-            ), label: "Delivery Method"
+                <span className="me-2 my-2 my-lg-0">{delivery_method}</span>
+            ),
+            label: "Delivery Method",
         },
         {
+            key: "phone_number",
             content: ({ phone_number }) => (
-                <div className="d-flex flex-column flex-lg-row mb-3">
-                    <span className="me-2 my-2 my-lg-0">
-                        {phone_number}
-                    </span>
-                </div>
-            ), label: "Phone number"
+                <span className="me-2 my-2 my-lg-0">{phone_number}</span>
+            ),
+            label: "Phone number",
         },
         {
+            key: "order_idK",
             content: ({ order_id }) => (
                 <div className="d-flex flex-column flex-lg-row mb-3">
                     <span className="me-2 my-2 my-lg-0">
-                        <Link to={`/orders/${order_id}/`}>
+                        <Link to={`/orders/${order_id}`}>
                             <button className="btn btn-success btn-sm hover-focus">
                                 <span className="me-2">View Order</span>
                                 <i className="fa fa-eye"></i>
@@ -46,8 +41,9 @@ class OrdersTable extends Component {
                         </Link>
                     </span>
                 </div>
-            ), label: "Action"
-        }
+            ),
+            label: "Action",
+        },
     ];
 
     render() {
