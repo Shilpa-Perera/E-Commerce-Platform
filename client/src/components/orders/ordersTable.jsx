@@ -4,7 +4,7 @@ import Table from "../common/table";
 
 class OrdersTable extends Component {
     columns = [
-        { path: "order_id", label: "Order Id" },
+        { path: "order_id", label: "Order ID" },
         { path: "date", label: "Date" },
         { path: "order_name", label: "Name" },
         {
@@ -34,15 +34,28 @@ class OrdersTable extends Component {
                 </div>
             ), label: "Phone number"
         },
+        {
+            content: ({ order_id }) => (
+                <div className="d-flex flex-column flex-lg-row mb-3">
+                    <span className="me-2 my-2 my-lg-0">
+                        <Link to={`/orders/${order_id}/`}>
+                            <button className="btn btn-success btn-sm hover-focus">
+                                <span className="me-2">View Order</span>
+                                <i className="fa fa-eye"></i>
+                            </button>
+                        </Link>
+                    </span>
+                </div>
+            ), label: "Action"
+        }
     ];
 
     render() {
         const { orders, sortBy, onSort } = this.props;
-        console.log(orders);
         return (
             <div className="pb-5">
                 <div className="container div-dark">
-                    <h3 className="mb-4">Manage Order</h3>
+                    <h3 className="mb-4">Manage Orders</h3>
                     <div className="mt-5">
                         <div className="table-responsive">
                             <Table
