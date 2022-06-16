@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import _ from "lodash";
-import { Link } from "react-router-dom";
 import { getOrders } from "../../services/orderService";
 import { paginate } from "../../utils/paginate";
 import OrdersTable from "./ordersTable";
