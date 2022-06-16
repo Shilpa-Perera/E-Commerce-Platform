@@ -10,6 +10,7 @@ import VariantForm from "./components/variants/variantForm";
 import NotFound from "./components/notFound";
 import Home from "./components/home";
 import Orders from "./components/orders/orders";
+import Order from "./components/orders/order";
 import LoginForm from "./components/loginForm";
 import RegisterForm from "./components/customer/registerForm";
 import Logout from "./components/logout";
@@ -17,6 +18,7 @@ import Cart from "./components/cart";
 import VariantImages from "./components/variants/variantImages";
 import ScrollToTop from "./components/scrollToTop";
 import DeletedProduct from "./components/products/deletedProduct";
+
 
 function App() {
     return (
@@ -63,7 +65,10 @@ function App() {
                     </Route>
                 </Route>
 
-                <Route path="/orders" element={<Orders />}></Route>
+                <Route path="/orders" >
+                    <Route index element={<Orders />}></Route>
+                    <Route path=":id" element={<Order />}></Route>
+                </Route>
 
                 <Route path="/cart" element={<Cart />}></Route>
 
