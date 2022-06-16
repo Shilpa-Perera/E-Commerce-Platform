@@ -14,16 +14,7 @@ class Orders extends Component {
         pageSize: 24,
         sortBy: { path: "order_id", order: "asc" },
     };
-    // sortOptions = [
-    //     { id: "order_id", name: "Order" },
-    //     { id: "date", name: "Date" },
-    // ];
-
-    // orderOptions = [
-    //     { id: "asc", name: "Ascending" },
-    //     { id: "desc", name: "Descending" },
-    // ];
-
+    
     async componentDidMount() {
         const { data: orders } = await getOrders();
         this.setState({ orders });
