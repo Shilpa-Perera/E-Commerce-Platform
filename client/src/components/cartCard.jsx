@@ -9,7 +9,8 @@ class CartCard extends Component {
       title , 
       variant_name , 
       onDecrement ,
-      onIncrement , 
+      onIncrement ,
+      onDelete, 
       variant_id , 
       number_of_items,
       price}  = this.props ;
@@ -35,7 +36,7 @@ class CartCard extends Component {
               </button>
 
               <span id="form1" min="0" name="quantity"  type="number"
-                className="form-control form-control-sm" >{number_of_items}</span>
+                className="form-control form-control-sm " >{number_of_items}</span>
 
               <button className="btn btn-link px-2" onClick={() => onIncrement(variant_id)}
                >
@@ -46,7 +47,7 @@ class CartCard extends Component {
               <h5 className="mb-0">{price}</h5>
             </div>
             <div className="col-md-1 col-lg-1 col-xl-1 text-end">
-            <button type="button" class="btn btn-default " aria-label="Left Align" >
+            <button type="button" class="btn btn-default " aria-label="Left Align" onClick={() => onDelete(variant_id)} >
                 <span class="fa fa-trash fa-lg" aria-hidden="true"></span>
             </button>
               {/* <a onClick={this.handleDecrement} className="text-danger"><i className="fa fa-trash fa-lg"></i></a> */}

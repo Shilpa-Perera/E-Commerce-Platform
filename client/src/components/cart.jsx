@@ -17,6 +17,10 @@ class Cart extends Component {
        await this.CartProducts();
    }
 
+  async componentDidUpdate(){
+    await this.CartProducts();
+  }
+
    handleIncrement = (variant_id) => {
         const products = [...this.state.variant];
         const index = products.findIndex(item => item.variant_id === variant_id);
@@ -29,6 +33,15 @@ class Cart extends Component {
     const products = [...this.state.variant];
     const index = products.findIndex(item => item.variant_id === variant_id);
     products[index].number_of_items --  ;
+    this.setState({variant:products});
+    updateItemCount(products[index].cart_id , products[index].variant_id , products[index].number_of_items ) ; 
+
+ }
+
+ handleDelete = (variant_id) => {
+    const products = [...this.state.variant];
+    const index = products.findIndex(item => item.variant_id === variant_id);
+    products[index].number_of_items = 0  ;
     this.setState({variant:products});
     updateItemCount(products[index].cart_id , products[index].variant_id , products[index].number_of_items ) ; 
 
@@ -48,7 +61,7 @@ class Cart extends Component {
               </div>
           </div>
 
-          {this.state.variant.map(product => (
+          {this.state.variant.length > 0  && this.state.variant.map(product => (
             <CartCard 
             key = {product.variant_id} 
             cart_id = {product.cart_id} 
@@ -58,7 +71,8 @@ class Cart extends Component {
             price = {product.price} 
             number_of_items= {product.number_of_items}
             onIncrement = {this.handleIncrement}
-            onDecrement = {this.handleDecrement} />
+            onDecrement = {this.handleDecrement} 
+            onDelete = {this.handleDelete}/>
           )
         )}
 
