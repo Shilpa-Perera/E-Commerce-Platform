@@ -14,15 +14,15 @@ class Orders extends Component {
         pageSize: 24,
         sortBy: { path: "order_id", order: "asc" },
     };
-    sortOptions = [
-        { id: "order_id", name: "Order" },
-        { id: "date", name: "Date" },
-    ];
+    // sortOptions = [
+    //     { id: "order_id", name: "Order" },
+    //     { id: "date", name: "Date" },
+    // ];
 
-    orderOptions = [
-        { id: "asc", name: "Ascending" },
-        { id: "desc", name: "Descending" },
-    ];
+    // orderOptions = [
+    //     { id: "asc", name: "Ascending" },
+    //     { id: "desc", name: "Descending" },
+    // ];
 
     async componentDidMount() {
         const { data: orders } = await getOrders();
@@ -69,7 +69,20 @@ class Orders extends Component {
                 return queryRegEx.test(title);
             });
 
-        const orders = paginate(filtered, currentPage, pageSize);
+            const sorted = _.orderBy(
+                filtered,
+                (order) => {
+                    if (sortBy.path === "price") {
+                        return +order.price;
+                    } else if (sortBy.path === "quantity") {
+                        return +order.quantity;
+                    }
+                    return order[sortBy.path];
+                },
+                [sortBy.order]
+            );
+
+        const orders = paginate(sorted, currentPage, pageSize);
         return { totalCount: 10, data: orders };
     };
 
@@ -83,7 +96,7 @@ class Orders extends Component {
         return (
             <div className="container-fluid mb-5">
                 <div className="row">
-                    <div className="col-md-8 col-lg-9 col-xxl-10">
+                    <div className="col-md-12 col-lg-9 col-xxl-10">
                         <div className="container w-75 mb-5">
                             <div className="p-3 div-dark">
                                 <SearchBox

@@ -9,7 +9,7 @@ import Product from "./components/products/product";
 import VariantForm from "./components/variants/variantForm";
 import NotFound from "./components/notFound";
 import Home from "./components/home";
-import Orders from "./components/orders";
+import Orders from "./components/orders/orders";
 import LoginForm from "./components/loginForm";
 import RegisterForm from "./components/customer/registerForm";
 import Logout from "./components/logout";
