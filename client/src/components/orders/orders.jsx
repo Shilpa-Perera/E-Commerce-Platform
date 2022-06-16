@@ -62,12 +62,8 @@ class Orders extends Component {
 
             const sorted = _.orderBy(
                 filtered,
-                (order) => {
-                    if (sortBy.path === "price") {
-                        return +order.price;
-                    } else if (sortBy.path === "quantity") {
-                        return +order.quantity;
-                    }
+                (order) => {           
+                    console.log("sortby path: ", sortBy.path)
                     return order[sortBy.path];
                 },
                 [sortBy.order]
