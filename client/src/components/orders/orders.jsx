@@ -77,7 +77,7 @@ class Orders extends Component {
             searchQuery,
         } = this.state;
         const { totalCount, data: orders } = this.getPagedData();
-        const plh = "Enter Order Id";
+        const plh = "Enter order ID";
         return (
             <div className="container-fluid mb-5">
                 <div className="row">
