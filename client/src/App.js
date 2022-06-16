@@ -21,6 +21,7 @@ import DeletedProduct from "./components/products/deletedProduct";
 
 
 function App() {
+    
     return (
         <div className="d-flex flex-column min-vh-100">
             <NavBar />
@@ -70,7 +71,7 @@ function App() {
                     <Route path=":id" element={<Order />}></Route>
                 </Route>
 
-                <Route path="/cart" element={<Cart />}></Route>
+                <Route path="/cart" element={<Cart cart_id = {localStorage.getItem("cart_id")}/>}></Route>
 
                 <Route path="/login" element={<LoginForm />}></Route>
                 <Route path="/logout" element={<Logout />}></Route>
@@ -88,5 +89,8 @@ function App() {
         </div>
     );
 }
+
+
+
 
 export default App;

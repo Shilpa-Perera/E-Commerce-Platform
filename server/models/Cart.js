@@ -25,16 +25,13 @@ class Cart{
         return false;
     }
 
-    // static async getCartByUserID(user_id){
+    static async getNewGuestCart(){
 
-    //     let stmt = `select * from cart where customer_id=? ;` ;
-    //     const [cart,_] = await db.execute(stmt,[user_id]) ;
-    //     if (cart.length > 0) {
-    //         return cart[0];
-    //     }
-    //     return false;
-
-    // }
+        const newCartQuery = "insert into cart (customer_id , state) values (null , ?) ; " ;
+        const result = await db.execute(newCartQuery , [1]);
+        const cart = {cart_id : result[0].insertId} ;
+        return (cart) ;
+    }
 
     static async getCartProducts(id){
 
@@ -53,6 +50,12 @@ class Cart{
 
         let stmt = `update cart_product set number_of_items = ? where cart_id = ? and variant_id = ? `
         await db.execute(stmt , [number_of_items , cart_id , variant_id ]) ; 
+    }
+
+    static async addProductToCart(cart_id,variant_id){
+
+        let stmt = `insert into cart_product values(? , ? , ?) ;` ;
+        await db.execute(stmt , [cart_id,variant_id,1]);
     }
     
 }

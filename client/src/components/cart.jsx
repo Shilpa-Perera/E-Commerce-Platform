@@ -3,19 +3,26 @@ import { getCartProducts } from "../services/cartService";
 import CartCard from "./cartCard";
 import { updateItemCount } from "../services/cartService";
 
+
 class Cart extends Component {
   state = { 
     variant :  [] 
    } 
 
   async CartProducts(){
-      const { data: variant } = await getCartProducts(1);
+      const { data: variant } = await getCartProducts(this.props.cart_id);
       this.setState({variant}) ;
 
    }
   async componentDidMount() {
        await this.CartProducts();
    }
+
+  async componentDidUpdate(){
+    await this.CartProducts();
+  }
+
+
 
    handleIncrement = (variant_id) => {
         const products = [...this.state.variant];
@@ -33,22 +40,31 @@ class Cart extends Component {
     updateItemCount(products[index].cart_id , products[index].variant_id , products[index].number_of_items ) ; 
 
  }
+
+ handleDelete = (variant_id) => {
+    const products = [...this.state.variant];
+    const index = products.findIndex(item => item.variant_id === variant_id);
+    products[index].number_of_items = 0  ;
+    this.setState({variant:products});
+    updateItemCount(products[index].cart_id , products[index].variant_id , products[index].number_of_items ) ; 
+
+ }
   render() { 
     return (
 
-    <div class="container h-100 py-5">
-      <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-10">
+    <div className="container h-100 py-5">
+      <div className="row d-flex justify-content-center align-items-center h-100">
+        <div className="col-10">
 
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <h3 class="fw-normal mb-0 text-white">Shopping Cart</h3>
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <h3 className="fw-normal mb-0 text-white">Shopping Cart</h3>
               <div>
-                <p class="mb-0"><span class="text-muted">Sort by:</span> <a href="#!" class="text-body">price <i
-                  class="fa fa-angle-down mt-1"></i></a></p>
+                <p className="mb-0"><span className="text-muted">Sort by:</span> <a href="#!" className="text-body">price <i
+                  className="fa fa-angle-down mt-1"></i></a></p>
               </div>
           </div>
 
-          {this.state.variant.map(product => (
+          {this.state.variant.length > 0  && this.state.variant.map(product => (
             <CartCard 
             key = {product.variant_id} 
             cart_id = {product.cart_id} 
@@ -58,7 +74,8 @@ class Cart extends Component {
             price = {product.price} 
             number_of_items= {product.number_of_items}
             onIncrement = {this.handleIncrement}
-            onDecrement = {this.handleDecrement} />
+            onDecrement = {this.handleDecrement} 
+            onDelete = {this.handleDelete}/>
           )
         )}
 
