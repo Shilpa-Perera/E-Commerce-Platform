@@ -30,7 +30,7 @@ class CartCard extends Component {
               <p><span className="text-muted">{variant_name} </span></p>
             </div>
             <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
-              <button className="btn btn-link px-2" onClick={() => onDecrement(variant_id)} 
+              <button className="btn btn-link px-2" onClick={() => onDecrement(variant_id)} disabled = {number_of_items == 1 ? 'disabled' : ""}
                 >
                 <i className="fa fa-minus"></i>
               </button>
@@ -47,8 +47,8 @@ class CartCard extends Component {
               <h5 className="mb-0">{price}</h5>
             </div>
             <div className="col-md-1 col-lg-1 col-xl-1 text-end">
-            <button type="button" class="btn btn-default " aria-label="Left Align" onClick={() => onDelete(variant_id)} >
-                <span class="fa fa-trash fa-lg" aria-hidden="true"></span>
+            <button type="button" className="btn btn-default " aria-label="Left Align" onClick={() => onDelete(variant_id)} >
+                <span className="fa fa-trash fa-lg" aria-hidden="true"></span>
             </button>
               {/* <a onClick={this.handleDecrement} className="text-danger"><i className="fa fa-trash fa-lg"></i></a> */}
             </div>
