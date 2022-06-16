@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import _ from "lodash";
 import { Link } from "react-router-dom";
-import { getOrders } from "../services/orderService";
-import { paginate } from "../utils/paginate";
+import { getOrders } from "../../services/orderService";
+import { paginate } from "../../utils/paginate";
 import OrdersTable from "./ordersTable";
-import SearchBox from "./common/searchBox";
+import SearchBox from "../common/searchBox";
 
 class Orders extends Component {
     state = {
