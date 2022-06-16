@@ -1,6 +1,6 @@
 import React from "react";
 import Joi from "joi-browser";
-import Form from "./common/form";
+import Form from "../common/form";
 
 class AddVariantForm extends Form {
     state = {
@@ -15,8 +15,8 @@ class AddVariantForm extends Form {
     schema = {
         variant_name: Joi.string()
             .required()
-            .min(5)
-            .max(50)
+            .min(3)
+            .max(250)
             .label("Variant Name"),
         price: Joi.number().required().min(1).label("Price"),
         quantity: Joi.number().required().min(0).label("Quantity"),

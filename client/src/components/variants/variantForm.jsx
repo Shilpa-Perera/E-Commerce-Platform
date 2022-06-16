@@ -3,12 +3,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import _ from "lodash";
 import { toast } from "react-toastify";
 import { Collapse } from "bootstrap";
-import { getProduct, updateDefault } from "../services/productService";
+import { getProduct, updateDefault } from "../../services/productService";
 import {
     getVariant,
     saveVariant,
     updateVariant,
-} from "../services/variantService";
+} from "../../services/variantService";
 import AddedVariantsTable from "./addedVariantsTable";
 import EditVariantForm from "./editVariantForm";
 import NotAddedVariantsTable from "./notAddedVariantsTable";
@@ -50,7 +50,9 @@ class VariantFormBody extends Component {
             await updateVariant(variant);
         } catch (e) {
             if (e.response && e.response.status === 404)
-                toast.error("This variant was not found on the server.");
+                toast.error("This variant was not found on the server.", {
+                    theme: "dark",
+                });
 
             this.setState({ addedVariants: originalAddedVariants });
         }
@@ -66,6 +68,9 @@ class VariantFormBody extends Component {
         variant.product_id = this.state.product.product_id;
 
         availableVariants.splice(variant.index, 1);
+        for (let i = variant.index; i < availableVariants.length; ++i) {
+            availableVariants[i].index = i;
+        }
 
         variant.index = addedVariants.length;
         addedVariants.push(variant);
@@ -77,7 +82,7 @@ class VariantFormBody extends Component {
             variant.variant_id = data.variant_id;
             if (variant.isDefault) await this.handleMakeDefault(variant);
         } catch (e) {
-            toast.error("Adding variant failed!");
+            toast.error("Adding variant failed!", { theme: "dark" });
 
             this.setState({
                 addedVariants: originalAddedVariants,
@@ -103,7 +108,7 @@ class VariantFormBody extends Component {
             variant.variant_id = data.variant_id;
             await this.handleMakeDefault(variant);
         } catch (e) {
-            toast.error("Adding variant failed!");
+            toast.error("Adding variant failed!", { theme: "dark" });
 
             this.setState({
                 addedVariants: originalAddedVariants,
@@ -145,7 +150,7 @@ class VariantFormBody extends Component {
         try {
             await updateDefault(product.product_id, variant.variant_id);
         } catch (e) {
-            toast.error("An error has occurred");
+            toast.error("An error has occurred", { theme: "dark" });
             this.setState({
                 product: originalProduct,
                 addedVariants: originalAddedVariants,
@@ -174,6 +179,9 @@ class VariantFormBody extends Component {
     async componentDidMount() {
         const { id: product_id } = this.props;
         const { data: product } = await getProduct(product_id);
+
+        if (product.availability === "UNAVAILABLE")
+            this.props.replace("/products/deleted");
 
         let availableVariants = [];
         const addedVariants = [];
@@ -236,7 +244,7 @@ class VariantFormBody extends Component {
                         ++notAddedIndex;
                     }
                 } catch (e) {
-                    toast.error("An error occurred.");
+                    toast.error("An error occurred.", { theme: "dark" });
                 }
             }
             availableVariants = newAvailableVariants;
@@ -286,6 +294,7 @@ class VariantFormBody extends Component {
                                     onMakeDefault={this.handleMakeDefault}
                                     sortColumn={addedSortColumn}
                                     onSort={this.handleAddedVariantsSort}
+                                    push={this.props.push}
                                 />
                             </div>
                             <div

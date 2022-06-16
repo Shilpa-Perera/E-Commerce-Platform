@@ -51,3 +51,15 @@ export function updateDefault(productId, variantId) {
         variant_id: variantId,
     });
 }
+
+export function putProductImage(productId, image) {
+    const formData = new FormData();
+
+    formData.append("product_img", image, "product_img.png");
+
+    return http.put(`${apiEndpoint}/image/${productId}`, formData);
+}
+
+export function deleteProduct(productId) {
+    return http.delete(productUrl(productId));
+}

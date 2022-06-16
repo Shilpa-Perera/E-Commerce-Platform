@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import Table from "./common/table";
+import Table from "../common/table";
 
 class ProductsTable extends Component {
     columns = [
@@ -34,6 +34,15 @@ class ProductsTable extends Component {
                                 <i className="fa fa-gears"></i>
                             </button>
                         </Link>
+                    </span>
+                    <span className="me-2 my-2 my-lg-0">
+                        <button
+                            className="btn btn-danger btn-sm hover-focus"
+                            onClick={() => this.props.deleteProduct(product_id)}
+                        >
+                            <span className="me-2">Delete Product</span>
+                            <i className="fa fa-trash-o"></i>
+                        </button>
                     </span>
                 </div>
             ),

@@ -1,5 +1,5 @@
 import React from "react";
-import ListGroup from "./common/listGroup";
+import ListGroup from "../common/listGroup";
 
 export default function SubCategoryList({
     subCategories,

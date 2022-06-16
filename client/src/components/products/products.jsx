@@ -1,14 +1,18 @@
 import React, { Component } from "react";
 import _ from "lodash";
-import { getProducts } from "../services/productService";
+import { deleteProduct, getProducts } from "../../services/productService";
 import ProductAlbum from "./productAlbum";
-import { getCategories, getSubCategories } from "../services/categoryService";
+import {
+    getCategories,
+    getSubCategories,
+} from "../../services/categoryService";
 import CategoryList from "./categoryList";
 import SubCategoryList from "./subCategoryList";
-import SearchBox from "./common/searchBox";
-import { paginate } from "../utils/paginate";
-import Pagination from "./common/pagination";
+import SearchBox from "../common/searchBox";
+import { paginate } from "../../utils/paginate";
+import Pagination from "../common/pagination";
 import ProductsTable from "./productsTable";
+import { toast } from "react-toastify";
 
 class Products extends Component {
     state = {
@@ -93,6 +97,26 @@ class Products extends Component {
 
     handleClearSubCategorySelection = () => {
         this.setState({ selectedSubCategory: null });
+    };
+
+    handleDeleteProduct = async (productId) => {
+        const products = [...this.state.products];
+        const originalProducts = [...products];
+
+        for (let i = 0; i < products.length; ++i) {
+            if (products[i].product_id === productId) {
+                products.splice(i, 1);
+                break;
+            }
+        }
+        this.setState({ products });
+
+        try {
+            await deleteProduct(productId);
+        } catch (e) {
+            toast.error("Could not delete the product", { theme: "dark" });
+            this.setState({ products: originalProducts });
+        }
     };
 
     getPagedData = () => {
@@ -216,6 +240,7 @@ class Products extends Component {
                                 products={products}
                                 sortBy={this.state.sortBy}
                                 onSort={this.handleSort}
+                                deleteProduct={this.handleDeleteProduct}
                             />
                         )}
                         <Pagination

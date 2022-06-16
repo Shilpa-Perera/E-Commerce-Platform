@@ -2,20 +2,29 @@ import React from "react";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import Joi from "joi-browser";
-import Form from "./common/form";
-import { getCategories, getSubCategories } from "../services/categoryService";
-import { getProduct, saveProduct } from "../services/productService";
+import Form from "../common/form";
+import {
+    getCategories,
+    getSubCategories,
+} from "../../services/categoryService";
+import {
+    getProduct,
+    putProductImage,
+    saveProduct,
+} from "../../services/productService";
 import { Collapse } from "bootstrap";
 import OptionForm from "./optionForm";
 import CustomFeaturesForm from "./customFeaturesForm";
-import TableHeader from "./common/tableHeader";
+import TableHeader from "../common/tableHeader";
 import {
     deleteCustomFeature,
     saveCustomFeature,
     updateCustomFeature,
-} from "../services/customFeatureService";
+} from "../../services/customFeatureService";
 import EditCustomFeaturesForm from "./editCustomFeatureForm";
 import _ from "lodash";
+import AddImage from "../addImage";
+import { productImageUrl } from "../../services/imageService";
 
 class ProductFormBody extends Form {
     state = {
@@ -28,6 +37,7 @@ class ProductFormBody extends Form {
             product_weight: "",
             custom_features: [],
             options: [],
+            image_name: "",
         },
         categories: [],
         subCategories: [],
@@ -35,6 +45,8 @@ class ProductFormBody extends Form {
         current_options: [],
         isNew: false,
         edit_custom_feature: {},
+        product_image_url: "",
+        product_image: null,
         errors: {},
     };
 
@@ -44,7 +56,7 @@ class ProductFormBody extends Form {
     ];
 
     custom_features_columns = [
-        { path: "custom_feature_name", label: "name" },
+        { path: "custom_feature_name", label: "Name" },
         { path: "custom_feature_val", label: "Value" },
         { key: "edit", label: "" },
     ];
@@ -53,16 +65,17 @@ class ProductFormBody extends Form {
         product_id: Joi.number(),
         product_title: Joi.string()
             .required()
-            .min(5)
-            .max(50)
+            .min(3)
+            .max(250)
             .label("Product Title"),
         category_id: Joi.number().min(1).required().label("Category"),
         sub_category_id: Joi.number().min(1).required().label("Subcategory"),
-        sku: Joi.string().required().min(5).max(20).label("SKU"),
+        sku: Joi.string().required().min(5).max(30).label("SKU"),
         product_weight: Joi.number().required().min(1).label("Product Weight"),
         custom_features: Joi.array(),
         options: Joi.array(),
         isNew: Joi.bool(),
+        image_name: Joi.string().allow(""),
     };
 
     async populateCategories() {
@@ -76,10 +89,16 @@ class ProductFormBody extends Form {
             if (productId === "new") {
                 const isNew = true;
                 this.setState({ isNew });
+                if (this.option_columns.length === 2)
+                    this.option_columns.push({ key: "actions_op", label: "Actions" });
                 return;
             }
 
             const { data: product } = await getProduct(productId);
+
+            if (product.availability === "UNAVAILABLE")
+                this.props.replace("/products/deleted");
+
             const data = _.pick(product, [
                 "product_id",
                 "product_title",
@@ -89,12 +108,23 @@ class ProductFormBody extends Form {
                 "product_weight",
                 "custom_features",
                 "options",
+                "image_name",
             ]);
             const current_custom_features = data.custom_features;
             const current_options = data.options;
             data.custom_features = [];
             data.options = [];
-            this.setState({ data, current_custom_features, current_options });
+
+            const { image_name } = product;
+            const product_image_url =
+                image_name === null ? "" : productImageUrl(image_name);
+
+            this.setState({
+                data,
+                current_custom_features,
+                current_options,
+                product_image_url,
+            });
         } catch (e) {
             if (e.response && e.response.status === 404)
                 this.props.replace("/not-found");
@@ -147,7 +177,9 @@ class ProductFormBody extends Form {
                     this.state.data.product_id
                 );
             } catch (ex) {
-                toast.error("An error occurred while saving the feature.");
+                toast.error("An error occurred while saving the feature.", {
+                    theme: "dark",
+                });
                 this.setState({ current_custom_features: originalFeatures });
             }
         }
@@ -197,7 +229,9 @@ class ProductFormBody extends Form {
             try {
                 await deleteCustomFeature(custom_feature_id);
             } catch (ex) {
-                toast.error("An error occurred while deleting the feature.");
+                toast.error("An error occurred while deleting the feature.", {
+                    theme: "dark",
+                });
                 this.setState({ current_custom_features: originalFeatures });
             }
         }
@@ -224,7 +258,9 @@ class ProductFormBody extends Form {
             try {
                 await updateCustomFeature(customFeature, custom_feature_id);
             } catch (ex) {
-                toast.error("An error occurred while updating the feature.");
+                toast.error("An error occurred while updating the feature.", {
+                    theme: "dark",
+                });
                 this.setState({ current_custom_features: originalFeatures });
             }
         }
@@ -240,9 +276,61 @@ class ProductFormBody extends Form {
         bsCollapse.hide();
     };
 
+    handleDeleteOption = (index) => {
+        if (this.state.isNew) {
+            const data = { ...this.state.data };
+            data.options.splice(index, 1);
+            this.setState({ data });
+        }
+    };
+
     doSubmit = async () => {
-        const { data } = await saveProduct(this.state.data);
-        this.props.push(`/products/${data.product_id}/variants`);
+        const { isNew, product_image } = this.state;
+        if (!isNew) {
+            const { data } = await saveProduct(this.state.data);
+            const { product_id } = data;
+            this.props.push(`/products/${product_id}/variants`);
+        } else if (product_image !== null) {
+            const { data } = await saveProduct(this.state.data);
+            const { product_id } = data;
+            await putProductImage(product_id, this.state.product_image);
+            this.props.push(`/products/${product_id}/variants`);
+        } else {
+            toast.warn("Product image is not added!", { theme: "dark" });
+        }
+    };
+
+    handleSaveImage = async (newImageUrl, newImage) => {
+        const { product_image_url: originalUrl, isNew } = { ...this.state };
+        const { product_id } = this.state.data;
+        try {
+            console.log(newImageUrl, newImage);
+            this.setState({
+                product_image_url: newImageUrl,
+                product_image: newImage,
+            });
+
+            if (!isNew) {
+                const { data: file } = await putProductImage(
+                    product_id,
+                    newImage
+                );
+                const { filename } = file;
+                const data = { ...this.state.data };
+                data.image_name = filename;
+                const product_image_url = productImageUrl(filename);
+                this.setState({ data, product_image_url });
+            }
+        } catch (e) {
+            console.error(e);
+            toast.error("Could not upload image", { theme: "dark" });
+            this.setState({ product_image_url: originalUrl });
+        }
+    };
+
+    handleRemoveImage = () => {
+        const product_image_url = productImageUrl(this.state.data.image_name);
+        this.setState({ product_image_url });
     };
 
     render() {
@@ -261,6 +349,8 @@ class ProductFormBody extends Form {
                 name: category.sub_category_name,
             });
         }
+
+        const imageAvailable = this.state.product_image_url !== "";
 
         return (
             <div className="container mb-5">
@@ -311,20 +401,39 @@ class ProductFormBody extends Form {
                         </form>
                     </div>
                     <div className="col justify-content-center mb-3">
-                        <div
-                            className="card shadow text-center align-items-center hover-focus"
-                            style={{ borderRadius: "5%" }}
-                        >
+                        {imageAvailable && (
                             <div>
-                                <img
-                                    src={
-                                        "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE4QWs8?ver=95ec&q=90&m=6&h=270&w=270&b=%23FFFFFFFF&f=jpg&o=f&aim=true"
-                                    }
-                                    className="card-img-top"
-                                    alt=""
-                                ></img>
+                                <div className="d-flex justify-content-center mb-3">
+                                    <img
+                                        alt="not fount"
+                                        width="400px"
+                                        src={this.state.product_image_url}
+                                    />
+                                </div>
+                                <div className="d-flex justify-content-center mb-3">
+                                    <button
+                                        className="btn btn-warning hover-focus"
+                                        onClick={() => {
+                                            this.setState({
+                                                product_image_url: "",
+                                            });
+                                        }}
+                                    >
+                                        Change
+                                        <span className="ms-2">
+                                            <i className="fa fa-edit"></i>
+                                        </span>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
+                        )}
+                        {!imageAvailable && (
+                            <AddImage
+                                saveImage={this.handleSaveImage}
+                                removeImage={this.handleRemoveImage}
+                                aspectRatio={1}
+                            />
+                        )}
                     </div>
                 </div>
                 <div className="mt-5 div-dark">
@@ -353,28 +462,32 @@ class ProductFormBody extends Form {
                                                         }
                                                     </td>
                                                     <td>
-                                                        <i
-                                                            className="fa fa-fw fa-pencil-square-o"
-                                                            style={{
-                                                                cursor: "pointer",
-                                                            }}
-                                                            onClick={() =>
-                                                                this.handleEditCustomFeature(
-                                                                    feature
-                                                                )
-                                                            }
-                                                        ></i>
-                                                        <i
-                                                            className="ms-3 fa fa-fw fa-trash-o"
-                                                            style={{
-                                                                cursor: "pointer",
-                                                            }}
-                                                            onClick={() =>
-                                                                this.handleDeleteCustomFeature(
-                                                                    feature
-                                                                )
-                                                            }
-                                                        ></i>
+                                                        <div
+                                                            className="btn-group btn-group-sm"
+                                                            role="toolbar"
+                                                            aria-label="Actions Toolbar"
+                                                        >
+                                                            <button
+                                                                className="btn btn-warning hover-focus"
+                                                                onClick={() =>
+                                                                    this.handleEditCustomFeature(
+                                                                        feature
+                                                                    )
+                                                                }
+                                                            >
+                                                                <i className="fa fa-fw fa-pencil-square-o"></i>
+                                                            </button>
+                                                            <button
+                                                                className="btn btn-danger hover-focus"
+                                                                onClick={() =>
+                                                                    this.handleDeleteCustomFeature(
+                                                                        feature
+                                                                    )
+                                                                }
+                                                            >
+                                                                <i className="fa fa-fw fa-trash-o"></i>
+                                                            </button>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             );
@@ -396,28 +509,32 @@ class ProductFormBody extends Form {
                                                         }
                                                     </td>
                                                     <td>
-                                                        <i
-                                                            className="fa fa-fw fa-pencil-square-o"
-                                                            style={{
-                                                                cursor: "pointer",
-                                                            }}
-                                                            onClick={() =>
-                                                                this.handleEditCustomFeature(
-                                                                    feature
-                                                                )
-                                                            }
-                                                        ></i>
-                                                        <i
-                                                            className="ms-3 fa fa-fw fa-trash-o"
-                                                            style={{
-                                                                cursor: "pointer",
-                                                            }}
-                                                            onClick={() =>
-                                                                this.handleDeleteCustomFeature(
-                                                                    feature
-                                                                )
-                                                            }
-                                                        ></i>
+                                                        <div
+                                                            className="btn-group btn-group-sm"
+                                                            role="toolbar"
+                                                            aria-label="Actions Toolbar"
+                                                        >
+                                                            <button
+                                                                className="btn btn-warning hover-focus"
+                                                                onClick={() =>
+                                                                    this.handleEditCustomFeature(
+                                                                        feature
+                                                                    )
+                                                                }
+                                                            >
+                                                                <i className="fa fa-fw fa-pencil-square-o"></i>
+                                                            </button>
+                                                            <button
+                                                                className="btn btn-danger hover-focus"
+                                                                onClick={() =>
+                                                                    this.handleDeleteCustomFeature(
+                                                                        feature
+                                                                    )
+                                                                }
+                                                            >
+                                                                <i className="fa fa-fw fa-trash-o"></i>
+                                                            </button>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             );
@@ -479,6 +596,20 @@ class ProductFormBody extends Form {
                                                         )
                                                         .join(", ")}
                                                 </td>
+                                                {this.state.isNew && (
+                                                    <td>
+                                                        <button
+                                                            className="btn btn-sm btn-danger"
+                                                            onClick={() =>
+                                                                this.handleDeleteOption(
+                                                                    index
+                                                                )
+                                                            }
+                                                        >
+                                                            <i className="fa fa-trash-o"></i>
+                                                        </button>
+                                                    </td>
+                                                )}
                                             </tr>
                                         )
                                     )}

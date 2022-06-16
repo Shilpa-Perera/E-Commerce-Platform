@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+const _ = require("lodash");
 const Joi = require("joi");
 const db = require("../util/database");
 const dotenv = require("dotenv");
@@ -13,6 +13,19 @@ class Variant {
         this.quantity = variantDetails.quantity;
         this.variant_name = variantDetails.variant_name;
     }
+
+    static #schema = {
+        product_id: Joi.number().min(0).label("Product ID"),
+        variant_id: Joi.number().min(0).label("Variant ID"),
+        variant_name: Joi.string()
+            .required()
+            .min(3)
+            .max(250)
+            .label("Variant Name"),
+        price: Joi.number().required().min(1).label("Price"),
+        quantity: Joi.number().required().min(0).label("Quantity"),
+        options: Joi.array(),
+    };
 
     static getVariantIds(productId, optionId, valueId, ids) {
         let get_variant_ids_query =
@@ -106,6 +119,40 @@ class Variant {
             ]);
         }
     }
+
+    static async saveVariantImage(variantId, imageName) {
+        const insert_image_query =
+            "insert into variant_image (variant_id, image_name) values (?, ?)";
+        await db.execute(insert_image_query, [variantId, imageName]);
+    }
+
+    static async fetchAllImages(variantId) {
+        const get_all_images_query =
+            "select image_name from variant_image where variant_id=?";
+        return db.execute(get_all_images_query, [variantId]);
+    }
+
+    static async checkVariantOfProduct(productID, variantId) {
+        const check_variant_query =
+            "select variant_id from variant where product_id=? and variant_id=?";
+        const [result, _] = await db.execute(check_variant_query, [
+            productID,
+            variantId,
+        ]);
+        return result.length > 0;
+    }
+
+    static getSchema() {
+        return Variant.#schema;
+    }
+}
+
+function validateVariant(variant, props) {
+    const schema = _.pick(Variant.getSchema(), props);
+    const object = _.pick(variant, props);
+
+    return Joi.object(schema).validate(object);
 }
 
 module.exports.Variant = Variant;
+module.exports.validateVariant = validateVariant;
