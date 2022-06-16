@@ -62,8 +62,7 @@ class Orders extends Component {
 
             const sorted = _.orderBy(
                 filtered,
-                (order) => {           
-                    console.log("sortby path: ", sortBy.path)
+                (order) => {
                     return order[sortBy.path];
                 },
                 [sortBy.order]
@@ -79,7 +78,6 @@ class Orders extends Component {
         } = this.state;
         const { totalCount, data: orders } = this.getPagedData();
         const plh = "Enter Order Id";
-        // console.log(orders);
         return (
             <div className="container-fluid mb-5">
                 <div className="row">
