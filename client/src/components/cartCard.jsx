@@ -5,6 +5,15 @@ class CartCard extends Component {
      
   render() { 
 
+    const{
+      title , 
+      variant_name , 
+      onDecrement ,
+      onIncrement , 
+      variant_id , 
+      number_of_items,
+      price}  = this.props ;
+
     return (
      
      <div className="card rounded-3 mb-4">
@@ -16,25 +25,25 @@ class CartCard extends Component {
                 className="img-fluid rounded-3" alt="Cotton T-shirt"/>
             </div>
             <div className="col-md-3 col-lg-3 col-xl-3">
-              <p className="lead fw-normal mb-2">{this.props.title}</p>
-              <p><span className="text-muted">{this.props.variant_name} </span></p>
+              <p className="lead fw-normal mb-2">{title}</p>
+              <p><span className="text-muted">{variant_name} </span></p>
             </div>
             <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
-              <button className="btn btn-link px-2" onClick={() => this.props.onDecrement(this.props.variant_id)} 
+              <button className="btn btn-link px-2" onClick={() => onDecrement(variant_id)} 
                 >
                 <i className="fa fa-minus"></i>
               </button>
 
               <span id="form1" min="0" name="quantity"  type="number"
-                className="form-control form-control-sm" >{this.props.number_of_items}</span>
+                className="form-control form-control-sm" >{number_of_items}</span>
 
-              <button className="btn btn-link px-2" onClick={() => this.props.onIncrement(this.props.variant_id)}
+              <button className="btn btn-link px-2" onClick={() => onIncrement(variant_id)}
                >
                 <i className="fa fa-plus"></i>
               </button>
             </div>
             <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-              <h5 className="mb-0">{this.props.price}</h5>
+              <h5 className="mb-0">{price}</h5>
             </div>
             <div className="col-md-1 col-lg-1 col-xl-1 text-end">
             <button type="button" class="btn btn-default " aria-label="Left Align" >
