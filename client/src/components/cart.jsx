@@ -79,6 +79,12 @@ class Cart extends Component {
           )
         )}
 
+        <div className="card">
+          <div className="card-body">
+            <button type="button" className="btn btn-warning btn-block btn-lg">Proceed to Pay</button>
+          </div>
+        </div>
+
         </div>
       </div>
     </div>
