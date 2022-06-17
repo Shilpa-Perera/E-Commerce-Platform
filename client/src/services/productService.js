@@ -17,7 +17,7 @@ export function getProduct(productId) {
 }
 
 export function getUnavailableProducts() {
-    return http.get(`${apiEndpoint}/unavailable`)
+    return http.get(`${apiEndpoint}/unavailable`);
 }
 
 export function saveProduct(product) {
@@ -50,6 +50,17 @@ export function saveProduct(product) {
     }
 }
 
+export function restoreProduct(productId) {
+    return http.post(`${apiEndpoint}/restore/${productId}`);
+}
+
+export function checkProductVariant(productId, variantId) {
+    return http.post(`${apiEndpoint}/check`, {
+        product_id: productId,
+        variant_id: variantId,
+    });
+}
+
 export function updateDefault(productId, variantId) {
     return http.put(`${apiEndpoint}/default/${productId}`, {
         variant_id: variantId,
@@ -66,8 +77,4 @@ export function putProductImage(productId, image) {
 
 export function deleteProduct(productId) {
     return http.delete(productUrl(productId));
-}
-
-export function restoreProduct(productId) {
-    return http.post(`${apiEndpoint}/restore/${productId}`);
 }
