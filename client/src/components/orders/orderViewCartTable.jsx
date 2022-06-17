@@ -5,36 +5,42 @@ import Table from "../common/table";
 class OrdersCartTable extends Component {
     columns = [
         {
-            key: "phone_number",
-            content: ({ phone_number }) => (
-                <span className="me-2 my-2 my-lg-0">{phone_number}</span>
+            key: "variant ID",
+            content: ({ variant_id, product_id }) => (
+                <Link to={`/products/${product_id}`}>
+                    <span className="me-2 my-2 my-lg-0">{variant_id}</span>
+                </Link>
             ),
-            label: "Phone number",
+            label: "variant ID",
         },
+        {
+            key: "Name",
+            content: ({ variant_name }) => (
+                <span className="me-2 my-2 my-lg-0">{variant_name}</span>
+            ),
+            label: "Name",
+        },
+        {
+            key: "Quantity",
+            content: ({ number_of_items }) => (
+                <span className="me-2 my-2 my-lg-0">{number_of_items}</span>
+            ),
+            label: "Quantity",
+        }
     ];
 
     render() {
-        const { orders, sortBy, onSort, cartDetails } = this.props;
+        const { sortBy, onSort, cartDetails } = this.props;
         console.log(cartDetails);
         return (
-            <div className="pb-5">
-                <div className="container div-dark">
-                    <div className="mt-5">
-                        <div className="table-responsive order-table-container">
-                            {cartDetails.map((e) => {
-                                let name = e.variant_name;
-                                console.log(name);
-                                return <div key={name}>{name}</div>;
-                            })}
-                            {/* <Table
-                                columns={this.columns}
-                                data={orders}
-                                sortColumn={sortBy}
-                                onSort={onSort}
-                            /> */}
-                        </div>
-                    </div>
-                </div>
+            <div className="table-responsive order-table-container">
+                <h5>Cart Items</h5>
+                <Table
+                    columns={this.columns}
+                    data={cartDetails}
+                    sortColumn={sortBy}
+                    onSort={onSort}
+                />
             </div>
         );
     }
