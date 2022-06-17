@@ -59,7 +59,7 @@ class AddedVariantsTable extends Component {
                         className="btn btn-primary btn-sm hover-focus"
                         onClick={() =>
                             this.props.push(
-                                `/products/variants/${variant.variant_id}/images`
+                                `/products/${this.props.product.product_id}/variants/${variant.variant_id}/images`
                             )
                         }
                     >
@@ -73,8 +73,9 @@ class AddedVariantsTable extends Component {
     ];
 
     render() {
-        const { options, onSort, sortColumn } = this.props;
+        const { product, options, onSort, sortColumn } = this.props;
         const variantsNotAdded = options.length === 0;
+        const noDefault = product.default_variant_id === null;
 
         return (
             <div>
@@ -83,7 +84,15 @@ class AddedVariantsTable extends Component {
                     <div className="my-5">
                         <span className="alert alert-warning">
                             No variants added. The product will not be shown to
-                            customer.
+                            the customer.
+                        </span>
+                    </div>
+                )}
+                {!variantsNotAdded && noDefault && (
+                    <div className="my-5">
+                        <span className="alert alert-warning">
+                            No default variant selected. The product will not be
+                            shown to the customer.
                         </span>
                     </div>
                 )}

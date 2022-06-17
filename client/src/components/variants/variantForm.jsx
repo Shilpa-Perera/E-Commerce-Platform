@@ -289,6 +289,7 @@ class VariantFormBody extends Component {
                         <div className={addedVariantsClasses}>
                             <div className={addedVariantsTableClasses}>
                                 <AddedVariantsTable
+                                    product={product}
                                     options={addedVariants}
                                     onEdit={this.handleEdit}
                                     onMakeDefault={this.handleMakeDefault}

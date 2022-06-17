@@ -14,6 +14,11 @@ class ProductController {
         res.send(allProducts[0]);
     }
 
+    static async getUnavailableProducts(req, res, next) {
+        const unavailableProducts = await Product.fetchUnavailable();
+        res.send(unavailableProducts[0]);
+    }
+
     static async getProduct(req, res, next) {
         const { id: productId } = req.params;
         const product = await Product.getProductById(productId);
@@ -158,6 +163,23 @@ class ProductController {
     static async deleteProduct(req, res, next) {
         const productId = req.params.id;
         await Product.deleteProduct(productId);
+    }
+
+    static async restoreProduct(req, res, next) {
+        const productId = req.params.id;
+        await Product.restoreProduct(productId);
+
+        res.send({ success: true })
+    }
+
+    static async checkProductVariant(req, res, next) {
+        const { product_id, variant_id } = req.body;
+        const success = await Product.checkProductVariant(
+            product_id,
+            variant_id
+        );
+
+        res.send({ success });
     }
 }
 

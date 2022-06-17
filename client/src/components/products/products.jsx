@@ -174,8 +174,10 @@ class Products extends Component {
         const { length: count } = this.state.products;
         if (count === 0)
             return (
-                <div className="container-fluid mb-5">
-                    <p className="h4">There are no products in the database</p>
+                <div className="container-fluid mb-5 mt-5">
+                    <div className="d-flex justify-content-center align-items-center">
+                        <p className="h4">There are no available products.</p>
+                    </div>
                 </div>
             );
 
