@@ -39,6 +39,29 @@ class Product {
         return db.execute(select_all_query);
     }
 
+    static fetchUnavailable() {
+        const select_unavailable_query = `
+            select
+                p.product_id,
+                p.product_title,
+                p.sku,
+                p.availability,
+                p.default_variant_id,
+                c.category_name,
+                sc.sub_category_name
+            from
+                product p
+                join product_category pc on p.product_id = pc.product_id
+                join category c on pc.category_id = c.category_id
+                join sub_category sc on pc.sub_category_id = sc.sub_category_id
+            where
+                p.availability = 'UNAVAILABLE'
+                or p.default_variant_id is null
+        `;
+
+        return db.execute(select_unavailable_query);
+    }
+
     static async getProductById(productId) {
         const product = await Product.getProduct(productId);
 
@@ -296,6 +319,12 @@ class Product {
         const delete_product_query =
             "update product set availability='UNAVAILABLE' where product_id=?";
         await db.execute(delete_product_query, [productId]);
+    }
+
+    static async restoreProduct(productId) {
+        const restore_product_query =
+            "update product set availability='AVAILABLE' where product_id=?";
+        await db.execute(restore_product_query, [productId]);
     }
 
     static getSchema() {

@@ -80,6 +80,14 @@ export default function NavBar({ theme, toggleTheme }) {
                                         Manage Products
                                     </NavLink>
                                 </li>
+                                <li>
+                                    <NavLink
+                                        className="dropdown-item hover-focus"
+                                        to="/products/unavailable/"
+                                    >
+                                        Unavailable Products
+                                    </NavLink>
+                                </li>
                             </ul>
                         </li>
                         <li className="nav-item">
@@ -117,10 +125,10 @@ export default function NavBar({ theme, toggleTheme }) {
                                 title={`Switch to ${nextTheme} theme`}
                             >
                                 {theme && (
-                                    <ImSun className="text-warning h3 d-inline m-0 theme-toggle"/>
+                                    <ImSun className="text-warning h3 d-inline m-0 theme-toggle" />
                                 )}
                                 {!theme && (
-                                    <BsMoonStarsFill className="text-info h3 d-inline m-0 theme-toggle"/>
+                                    <BsMoonStarsFill className="text-info h3 d-inline m-0 theme-toggle" />
                                 )}
                             </span>
                         </li>
