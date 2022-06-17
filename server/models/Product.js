@@ -321,6 +321,12 @@ class Product {
         await db.execute(delete_product_query, [productId]);
     }
 
+    static async restoreProduct(productId) {
+        const restore_product_query =
+            "update product set availability='AVAILABLE' where product_id=?";
+        await db.execute(restore_product_query, [productId]);
+    }
+
     static getSchema() {
         return Product.#schema;
     }

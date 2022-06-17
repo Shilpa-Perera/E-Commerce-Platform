@@ -164,6 +164,11 @@ class ProductController {
         const productId = req.params.id;
         await Product.deleteProduct(productId);
     }
+
+    static async restoreProduct(req, res, next) {
+        const productId = req.params.id;
+        await Product.restoreProduct(productId);
+    }
 }
 
 module.exports.ProductController = ProductController;
