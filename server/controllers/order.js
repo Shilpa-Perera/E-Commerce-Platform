@@ -11,7 +11,10 @@ class OrderController {
     static async getOrderCart(req, res, next){
         const {id} = req.params;
         const orderCart = await Order.getOrderCart(id);
-        res.send(orderCart[0]);
+        const orderDetails = await Order.getOrderById(id);
+        const orderArray = {orderDetails: orderDetails, orderCart: orderCart[0]};
+        console.log("api - order id: ", id);
+        res.send(orderArray);
     }
 }
 
