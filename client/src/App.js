@@ -20,6 +20,7 @@ import VariantImages from "./components/variants/variantImages";
 import ScrollToTop from "./components/scrollToTop";
 import DeletedProduct from "./components/products/deletedProduct";
 import ThemeSelector from "./components/themeSelector";
+import UnavailableProducts from "./components/products/unavailableProducts";
 
 function App() {
     const [theme, toggleTheme] = useState(
@@ -47,6 +48,11 @@ function App() {
                     <Route
                         path="new"
                         element={<Navigate to="/products/edit/new" />}
+                    ></Route>
+
+                    <Route
+                        path="unavailable"
+                        element={<UnavailableProducts />}
                     ></Route>
 
                     <Route path="deleted" element={<DeletedProduct />}></Route>
