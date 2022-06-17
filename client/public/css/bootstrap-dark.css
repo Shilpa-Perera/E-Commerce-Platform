@@ -13,6 +13,35 @@ h4,
   color: #BB86FC;
 }
 
+/* Custom Styling for Order */
+.order-cart-table-container{
+  padding: 5px;
+  margin: 2px;
+  min-height: 50px;
+  max-height: 200px;
+}
+.order-table-container::-webkit-scrollbar{
+  background-color: #333333;
+  height: 20px;
+  border-radius: 10px;
+}
+.order-table-container::-webkit-scrollbar-thumb{
+  background-color: #121212;
+  border-radius: 10px;
+}
+
+.order-cart-div{
+  background-color: #333333;
+  border-radius:10px; 
+  text-align: center;
+}
+
+.order-cart-table>h5{
+  border: #EEEEEE;
+  height: 2rem;
+}
+/* Custom Styling for Order */
+
 .div-dark {
   background-color: #222222;
   padding: 3%;
