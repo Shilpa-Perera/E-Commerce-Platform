@@ -12,9 +12,10 @@ class OrderView extends Component {
 
     async componentDidMount() {
         const { id } = this.props;
-        const { data: cart } = await getOrder(id);
+        const {data: s} = await getOrder(id);
+        console.log(s);
 
-        this.setState({ cart });
+        this.setState({ cart: s });
     }
 
     render() {
@@ -127,7 +128,7 @@ class OrderView extends Component {
                         </div>
                         <div className="mb-3">
                             <label for="f1" className="col-sm-4 col-form-label">
-                                Cart {cart}
+                                {/* Cart {cart} */}
                             </label>
                             {/* <OrdersCartTable /> */}
                             <div className="col-sm-6"></div>
