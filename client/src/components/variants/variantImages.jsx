@@ -8,7 +8,7 @@ import { variantImageUrl } from "../../services/imageService";
 import Carousel from "../common/carousel";
 import AddImage from "../addImage";
 import { toast } from "react-toastify";
-import { getProduct } from "../../services/productService";
+import { checkProductVariant, getProduct } from "../../services/productService";
 
 class VariantImagesBody extends React.Component {
     state = {
@@ -19,6 +19,9 @@ class VariantImagesBody extends React.Component {
 
     async componentDidMount() {
         const { productId, variantId, replace } = this.props;
+
+        const { data } = await checkProductVariant(productId, variantId);
+        if (!data.success) replace("/not-found");
 
         try {
             const { data: product } = await getProduct(productId);
