@@ -168,6 +168,8 @@ class ProductController {
     static async restoreProduct(req, res, next) {
         const productId = req.params.id;
         await Product.restoreProduct(productId);
+
+        res.send({ success: true })
     }
 }
 
