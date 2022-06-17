@@ -3,8 +3,15 @@ import { Link } from "react-router-dom";
 import Table from "../common/table";
 
 class OrdersCartTable extends Component {
-    columns = [];
-    
+    columns = [
+        {
+            key: "phone_number",
+            content: ({ phone_number }) => (
+                <span className="me-2 my-2 my-lg-0">{phone_number}</span>
+            ),
+            label: "Phone number",
+        },
+    ];
 
     render() {
         const { orders, sortBy, onSort, cartDetails } = this.props;
@@ -17,7 +24,7 @@ class OrdersCartTable extends Component {
                             {cartDetails.map((e) => {
                                 let name = e.variant_name;
                                 console.log(name);
-                                return (<div key={name}>{name}</div>);
+                                return <div key={name}>{name}</div>;
                             })}
                             {/* <Table
                                 columns={this.columns}
