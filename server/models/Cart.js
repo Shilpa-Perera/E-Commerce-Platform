@@ -54,6 +54,13 @@ class Cart{
 
     static async addProductToCart(cart_id,variant_id){
 
+        // select number_of_items from cart_product where cart_id = ? and variant_id = ? ;
+        // if number_of_items == 0 {
+        //        update it    
+        //} 
+        // else {
+        //      add new one
+        //}
         let stmt = `insert into cart_product values(? , ? , ?) ;` ;
         await db.execute(stmt , [cart_id,variant_id,1]);
     }

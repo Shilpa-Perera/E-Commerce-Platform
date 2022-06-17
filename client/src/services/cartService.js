@@ -25,9 +25,15 @@ export function updateItemCount(cart_id,variant_id,number_of_items){
         
     );
 }
-export function setCartId(cart_id){
+export async function setCartId(){
 
-    localStorage.setItem("cart_id", cart_id);
+    const local_id = localStorage.getItem("cart_id");
+        
+    if(!local_id){
+        const { data : cart_id } = await getCartId();
+        localStorage.setItem("cart_id", cart_id.cart_id);
+        localStorage.setItem("item_count", 0) ;
+    }
 
 }
 

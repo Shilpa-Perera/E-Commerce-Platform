@@ -11,7 +11,7 @@ class Cart extends Component {
    } 
 
   async CartProducts(){
-      const { data: variant } = await getCartProducts(this.props.cart_id);
+      const { data: variant } = await getCartProducts(localStorage.getItem("cart_id"));
       let orderTotal = 0;
       variant.forEach(element => {
             orderTotal += (parseFloat(element.price))*(element.number_of_items);

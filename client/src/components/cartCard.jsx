@@ -30,7 +30,7 @@ class CartCard extends Component {
               <p><span className="text-muted">{variant_name} </span></p>
             </div>
             <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
-              <button className="btn btn-link px-2" onClick={() => onDecrement(variant_id)} disabled = {number_of_items == 1 ? 'disabled' : ""}
+              <button className="btn btn-link px-2" onClick={() => onDecrement(variant_id)} disabled = {number_of_items === 1 ? 'disabled' : ""}
                 >
                 <i className="fa fa-minus"></i>
               </button>

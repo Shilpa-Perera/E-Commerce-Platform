@@ -132,7 +132,7 @@ export default function NavBar({ theme, toggleTheme }) {
                                 <span className="ms-2">
                                     <i className="fa fa-shopping-cart fa-2x "></i>
                                     <span className="badge rounded-pill badge-notification bg-primary">
-                                        1
+                                        {localStorage.getItem("item_count")}
                                     </span>
                                 </span>
                             </NavLink>

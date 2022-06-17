@@ -91,7 +91,7 @@ function App() {
 
                 <Route
                     path="/cart"
-                    element={<Cart cart_id={localStorage.getItem("cart_id")} />}
+                    element={<Cart />}
                 ></Route>
 
                 <Route path="/login" element={<LoginForm />}></Route>

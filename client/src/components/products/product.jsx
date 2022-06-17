@@ -5,7 +5,7 @@ import { getVariant, getVariantById } from "../../services/variantService";
 import Carousel from "../common/carousel";
 import { toast } from "react-toastify";
 import { variantImageUrl } from "../../services/imageService";
-import { getCartId, addProductToCart} from "../../services/cartService" ;
+import { addProductToCart , setCartId} from "../../services/cartService" ;
 
 class ProductBody extends Component {
     state = {
@@ -67,13 +67,11 @@ class ProductBody extends Component {
 
     handleAddToCart =  async() => {
 
-        const local_id = localStorage.getItem("cart_id");
-        if(!local_id){
-            const { data : cart_id } = await getCartId();
-            localStorage.setItem("cart_id", cart_id.cart_id);
-            localStorage.setItem("item_count", 0) ;
-        }
+        await setCartId();
 
+        let item_count = parseInt(localStorage.getItem("item_count"));
+        item_count ++ ;
+        localStorage.setItem("item_count", item_count.toString()) ;
         
         const cart_id = localStorage.getItem("cart_id");
         const obj = {cart_id : cart_id , variant_id : this.state.variant.variant_id }
