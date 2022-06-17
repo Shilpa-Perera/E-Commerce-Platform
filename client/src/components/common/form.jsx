@@ -30,6 +30,8 @@ class Form extends Component {
             errors[item.path[0]] = item.message;
           }
         }
+
+        // console.log("validate",errors);
         return errors;
       };
 
@@ -40,7 +42,7 @@ class Form extends Component {
           return error ? error.details[0].message : null;
         } 
         else {
-          console.log("validateProperty", obj)
+          // console.log("validateProperty", obj)
           const { error } = Joi.object({
             [name]: this.additionalSchema[name],
           }).validate(obj);
@@ -53,10 +55,10 @@ class Form extends Component {
         const errors = this.validate();
         this.setState({ errors: errors || { ...this.initiateErrors() } });
         if (errors) {
-          console.log("inside handle submit: ", errors);
+          // console.log("inside handle submit: ", errors);
           return;
         }
-        console.log("inside handle submit outside ", errors);
+        // console.log("inside handle submit outside ", errors);
         this.doSubmit();
       };
 

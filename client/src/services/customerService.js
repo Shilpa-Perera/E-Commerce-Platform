@@ -16,13 +16,15 @@ export function getCustomer(customerId) {
 }
 
 export function saveCustomer(customer) {
-    console.log(customer);
-    if (customer.id) {
+    // console.log(customer);
+    if (customer.customer_id !== -1) {
         const body = { ...customer };
-        delete body.id;
-        return http.put(customerUrl(customer.id), body);
+        delete body.customer_id;
+        console.log("send to update url", body);
+        return {res: "success"};
+        // return http.put(customerUrl(customer.id), body);
     }
-    return http.post(apiEndpoint, customer);
+    // return http.post(apiEndpoint, customer);
 }
 
 export function deleteCustomer(customerId) {

@@ -13,6 +13,27 @@ class CustomerAddress {
     this.city = customerAddressDetails.city;
     this.postal_code = customerAddressDetails.postal_code;
   }
+
+  async update() {
+    let sql = "update customer_address \
+    set po_box=?, street_name=?, city=?, postal_code=? where customer_id=? and address_id=?;";
+
+    await db.execute(sql, [this.po_box, this.street_name, this.city, this.postal_code, this.customer_id, this.address_id], (err, results) => {
+      if (err) {
+        throw err;
+      } else {
+        console.log("results: ", results);
+      }
+    });
+  }
+}
+
+class CustomerMobile {
+  constructor(customerMobileDetails) {
+    this.telephone_id = customerMobileDetails.telephone_id;
+    this.customer_id = customerMobileDetails.customer_id;
+    this.mobile = customerMobileDetails.mobile;
+  }
 }
 
 class Customer {
@@ -35,25 +56,48 @@ class Customer {
     let sql = `select * from customer where email=?;`;
     const [customers, _] = await db.execute(sql, [email]);
 
-    return (customers.length > 0) ? new Customer(customers[0]) : false;
+    return customers.length > 0 ? new Customer(customers[0]) : false;
   }
 
-  static async findById(id) {
-    const sql = `select * from customer where id=?;`;
-    const [customers, _] = await db.execute(sql, [id]);
-    return (customers.length > 0) ? customers[0] : false;
+  static async findById(customerId) {
+    const sql = `select * from customer where customer_id=?;`;
+    const [customers, _] = await db.execute(sql, [customerId]);
+    return customers.length > 0 ? new Customer(customers[0]) : false;
+  }
+
+  static async fetchAllInfoById(customerId) {
+    const customer = await this.findById(customerId);
+
+    const addresses = await this.fetchAddresses(customerId);
+    customer.addresses = addresses;
+
+    const mobiles = await this.fetchMobiles(customerId);
+    customer.mobiles = mobiles;
+
+    return customer;    
   }
 
   static async fetchAddresses(customerId) {
     const sql = "select * from customer_address where customer_id=?";
-    const [customer_addresses, _] = await db.execute(sql, [customerId]);
-    return customer_addresses;
+    const [addresses, _] = await db.execute(sql, [customerId]);
+    
+    const result = [];
+    for (let address of addresses) {
+      result.push(new CustomerAddress(address));
+    }
+    console.log("inside fetchAddresses", addresses);
+    return result;
   }
 
   static async fetchMobiles(customerId) {
     const sql = "select * from customer_mobile where customer_id=?";
     const [customer_mobiles, _] = await db.execute(sql, [customerId]);
-    return customer_mobiles;
+
+    const customerMobileObjs = [];
+    for (let customerMobileDetails of customer_mobiles)
+      customerMobileObjs.push(new CustomerMobile(customerMobileDetails));
+
+    return customerMobileObjs;
   }
 
   // POST
@@ -121,6 +165,18 @@ class Customer {
     return { query: query, params: params };
   }
 
+  async updateCustomer() {
+    let sql = "update customer set name=? where customer_id=?;";
+
+    await db.execute(sql, [this.name, this.customer_id], (err, results) => {
+      if (err) {
+        throw err;
+      } else {
+        console.log("results: ", results);
+      }
+    });
+  }
+
   async saveCustomer() {
     let sql = "insert into customer (name,email,password) values (?,?,?);";
 
@@ -137,6 +193,8 @@ class Customer {
     );
     this.customer_id = (await Customer.findByEmail(this.email)).customer_id;
   }
+
+  async updateMobiles() {}
 
   // before executing "cusomter_id" should be SET
   async saveMobiles() {
@@ -169,7 +227,9 @@ class Customer {
     });
   }
 
-  updateCustomer(id) {}
+  async update() {
+    await this.updateCustomer();
+  }
 
   generateAuthToken() {
     const token = jwt.sign(
@@ -192,10 +252,12 @@ function validateCustomer(customer) {
         city: Joi.string(),
         postal_code: Joi.string(),
       })
-      .required().min(1),
+      .required()
+      .min(1),
     mobiles: Joi.array()
       .items(Joi.string().pattern(new RegExp("^[+0][0-9]+")))
-      .required().min(1),
+      .required()
+      .min(1),
   });
 
   return schema.validate(customer);
@@ -226,4 +288,5 @@ function validateCustomerMobile(customerMobile) {
 
 module.exports.Customer = Customer;
 module.exports.CustomerAddress = CustomerAddress;
+module.exports.CustomerMobile = CustomerMobile;
 module.exports.validate = validateCustomer;

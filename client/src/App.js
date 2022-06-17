@@ -1,4 +1,5 @@
 import { Route, Routes, Navigate } from "react-router-dom";
+import { useState, useEffect } from 'react';
 import { ToastContainer } from "react-toastify";
 import Products from "./components/products/products";
 import NavBar from "./components/navBar";
@@ -11,13 +12,21 @@ import NotFound from "./components/notFound";
 import Home from "./components/home";
 import Orders from "./components/orders";
 import LoginForm from "./components/loginForm";
-import RegisterForm from "./components/customer/registerForm";
+import CustomerForm from "./components/customer/customerForm";
 import Logout from './components/logout';
 import Cart from "./components/cart";
 import VariantImages from "./components/variants/variantImages";
 import ScrollToTop from "./components/scrollToTop";
+import { getCurrentUser } from './services/authService';
+
 
 function App() {
+    // const [user, setUser] = useState;
+
+    // useEffect(() => {
+    //     setUser(getCurrentUser())
+    // }, [])
+
     return (
         <div className="d-flex flex-column min-vh-100">
             <NavBar />
@@ -61,7 +70,8 @@ function App() {
                 <Route path="/logout" element={<Logout />}></Route>
 
                 <Route path="/customers/*">
-                    <Route path="register" element={<RegisterForm />}></Route>
+                    <Route path=":id" element={<CustomerForm />}></Route>
+                    {/* <Route path="register" element={<CustomerForm />}></Route> */}
                 </Route>
                 <Route path="/" element={<Home />}></Route>
                 <Route path="*" element={<NotFound />} />

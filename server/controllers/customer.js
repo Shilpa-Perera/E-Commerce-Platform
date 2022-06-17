@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const _ = require("lodash");
-const { Customer, CustomerAddress, validate } = require("../models/Customer");
+const { Customer, CustomerAddress, CustomerMobile, validate } = require("../models/Customer");
 
 class CustomerController {
   static async getAllCustomers(req, res, next) {
@@ -9,8 +9,22 @@ class CustomerController {
   }
 
   static async getCustomer(req, res, next) {
-    const customer = await Customer.findById(req.params.id);
+    // const user = req.user;
+    // if(user.id !== req.params.id) return res.status(403).send("Access Denied");
+
+    const customer = await Customer.fetchAllInfoById(req.params.id);
     res.send(customer);
+
+    // if (!req.query.type || req.query.type === '1') {
+    //   // only basic details
+    //   const customer = await Customer.findById(req.params.id);
+    //   res.send(customer);
+    // }
+    // else if (req.query.type === '2') {
+    //   // all details
+      
+    // }
+
   }
 
   static async getCustomerAddresses(req, res, next) {
@@ -22,6 +36,7 @@ class CustomerController {
 
   static async getCustomerMobiles(req, res, next) {
     const user = req.user;
+    console.log("getCustomerMobiles", user);
     const customerMobiles = await Customer.fetchMobiles(user.customer_id);
     res.send(customerMobiles);
   }
@@ -33,8 +48,10 @@ class CustomerController {
     let customer = await Customer.findByEmail(req.body.email);
     if (customer)
       return res.status(400).send("Customer email already registered");
-    console.log("no customer");
-    customer = new Customer(_.pick(req.body, ["name", "email", "password", "mobiles"]));
+
+    customer = new Customer(
+      _.pick(req.body, ["name", "email", "password", "mobiles"])
+    );
 
     // hash password
     const salt = await bcrypt.genSalt(10);
@@ -53,6 +70,41 @@ class CustomerController {
     res
       .header("x-auth-token", token)
       .send(_.pick(customer, ["customer_id", "name", "email"]));
+  }
+
+  static async updateCustomer(req, res, next) {
+    const { error } = validate(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
+    const customer = new Customer({
+      customer_id: req.params.id,
+      name: req.body.name,
+      email: req.body.email,
+      // mobiles: req.body.mobiles,
+    });
+
+    // create address objects - without "customer_id"
+    const addresses = req.body.addresses;
+    addresses.forEach((address) => {
+      
+      const addressObj = new CustomerAddress({ customer_id: req.params.id, ...address });
+      console.log(addressObj);
+      
+      // has a error not fixed... if req.body.addresses contain address_id with them.. this will work.. 
+      
+      addressObj.update();
+    });
+
+    // create mobile objects - without "customer_id"
+    const mobiles = req.body.mobiles;
+    mobiles.forEach((mobile) => {
+      const mobileObj = new CustomerMobile(mobile);
+      mobileObj.update();
+    })
+
+    await customer.update();
+    console.log("customer updated");
+    res.send(_.pick(customer, ["customer_id", "name", "email"]));
   }
 }
 
