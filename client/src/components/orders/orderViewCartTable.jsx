@@ -26,21 +26,23 @@ class OrdersCartTable extends Component {
                 <span className="me-2 my-2 my-lg-0">{number_of_items}</span>
             ),
             label: "Quantity",
-        }
+        },
     ];
 
     render() {
         const { sortBy, onSort, cartDetails } = this.props;
         console.log(cartDetails);
         return (
-            <div className="table-responsive order-table-container">
+            <div className="order-cart-table">
                 <h5>Cart Items</h5>
-                <Table
-                    columns={this.columns}
-                    data={cartDetails}
-                    sortColumn={sortBy}
-                    onSort={onSort}
-                />
+                <div className="table-responsive order-cart-table-container order-table-container">
+                    <Table
+                        columns={this.columns}
+                        data={cartDetails}
+                        sortColumn={sortBy}
+                        onSort={onSort}
+                    />
+                </div>
             </div>
         );
     }
