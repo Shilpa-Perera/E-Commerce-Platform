@@ -14,6 +14,11 @@ class ProductController {
         res.send(allProducts[0]);
     }
 
+    static async getUnavailableProducts(req, res, next) {
+        const unavailableProducts = await Product.fetchUnavailable();
+        res.send(unavailableProducts[0]);
+    }
+
     static async getProduct(req, res, next) {
         const { id: productId } = req.params;
         const product = await Product.getProductById(productId);
