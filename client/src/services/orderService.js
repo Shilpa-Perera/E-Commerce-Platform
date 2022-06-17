@@ -10,5 +10,5 @@ export function getOrders() {
 }
 
 export function getOrder(id){
-    return http.get(apiEndpoint+id);
+    return http.get(apiEndpoint+"/"+id);
 }
