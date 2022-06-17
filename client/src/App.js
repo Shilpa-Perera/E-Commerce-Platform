@@ -57,18 +57,19 @@ function App() {
 
                     <Route path="deleted" element={<DeletedProduct />}></Route>
 
-                    <Route path="variants">
-                        <Route path=":id">
-                            <Route
-                                path="images"
-                                element={<VariantImages />}
-                            ></Route>
-                        </Route>
-                    </Route>
-
                     <Route path=":id">
                         <Route index element={<Product />}></Route>
-                        <Route path="variants" element={<VariantForm />} />
+
+                        <Route path="variants">
+                            <Route index element={<VariantForm />}></Route>
+
+                            <Route path=":v_id">
+                                <Route
+                                    path="images"
+                                    element={<VariantImages />}
+                                ></Route>
+                            </Route>
+                        </Route>
                     </Route>
 
                     <Route path="edit">

@@ -59,7 +59,7 @@ class AddedVariantsTable extends Component {
                         className="btn btn-primary btn-sm hover-focus"
                         onClick={() =>
                             this.props.push(
-                                `/products/variants/${variant.variant_id}/images`
+                                `/products/${this.props.product.product_id}/variants/${variant.variant_id}/images`
                             )
                         }
                     >
