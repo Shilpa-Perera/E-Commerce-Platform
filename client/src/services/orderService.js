@@ -8,3 +8,7 @@ export function getOrders() {
     console.log(apiEndpoint);
     return http.get(apiEndpoint);
 }
+
+export function getOrder(id){
+    return http.get(apiEndpoint+id);
+}
