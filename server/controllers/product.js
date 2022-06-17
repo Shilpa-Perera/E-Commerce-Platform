@@ -171,6 +171,16 @@ class ProductController {
 
         res.send({ success: true })
     }
+
+    static async checkProductVariant(req, res, next) {
+        const { product_id, variant_id } = req.body;
+        const success = await Product.checkProductVariant(
+            product_id,
+            variant_id
+        );
+
+        res.send({ success });
+    }
 }
 
 module.exports.ProductController = ProductController;
