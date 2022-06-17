@@ -91,7 +91,7 @@ class AddedVariantsTable extends Component {
                 {!variantsNotAdded && noDefault && (
                     <div className="my-5">
                         <span className="alert alert-warning">
-                            No Default variant selected. The product will not be
+                            No default variant selected. The product will not be
                             shown to the customer.
                         </span>
                     </div>
