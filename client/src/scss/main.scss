@@ -91,4 +91,14 @@ h4,
   transition: transform 0.3s ease-in-out;
 }
 
+.order-table-container::-webkit-scrollbar{
+  background-color: #333333;
+  height: 20px;
+  border-radius: 10px;
+}
+.order-table-container::-webkit-scrollbar-thumb{
+  background-color: #121212;
+  border-radius: 10px;
+}
+
 @import '~bootstrap/scss/bootstrap';
