@@ -49,21 +49,13 @@ export default function NavBar({ theme, toggleTheme }) {
                                 data-bs-toggle="dropdown"
                                 aria-expanded="false"
                             >
-                                Products
+                                Manage
                             </span>
                             <ul
                                 className="dropdown-menu collapsed"
                                 id="product-list-collapse"
                                 aria-labelledby="navbarDropdown"
                             >
-                                <li>
-                                    <NavLink
-                                        className="dropdown-item hover-focus"
-                                        to="/products/"
-                                    >
-                                        Product Album
-                                    </NavLink>
-                                </li>
                                 <li>
                                     <NavLink
                                         className="dropdown-item hover-focus"
