@@ -157,17 +157,26 @@ class CustomerFormBody extends Form {
 
   doSubmit = async () => {
     try {
-      const { data } = this.state;
+      console.log("front state", this.state.data);
+      const data = { ...this.state.data };
       const mobiles = [];
+      const addresses = [];
 
-      for (let address of data.addresses) {
+      for (let address of addresses) {
         delete address.index;
         delete address.address_id;
       };
+      for (let i = 0; i < data.addresses.length; i++) {
+        const address = { ...data.addresses[i] };
+        delete address.index;
+        delete address.address_id;
+        addresses.push(address);
+      }
       for (let mobile of data.mobiles) {
         mobiles.push(mobile.mobile)
       };
       data.mobiles = mobiles;
+      data.addresses = addresses;
 
       await saveCustomer(data);
       console.log("state", this.state);
