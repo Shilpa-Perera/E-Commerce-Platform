@@ -6,12 +6,19 @@ import { updateItemCount } from "../services/cartService";
 
 class Cart extends Component {
   state = { 
-    variant :  [] 
+    variant :  [],
+    orderTotal : 0  
    } 
 
   async CartProducts(){
       const { data: variant } = await getCartProducts(this.props.cart_id);
+      let orderTotal = 0;
+      variant.forEach(element => {
+            orderTotal += (parseFloat(element.price))*(element.number_of_items);
+      });
+
       this.setState({variant}) ;
+      this.setState({orderTotal});
 
    }
   async componentDidMount() {
@@ -24,7 +31,7 @@ class Cart extends Component {
 
 
 
-   handleIncrement = (variant_id) => {
+  handleIncrement = (variant_id) => {
         const products = [...this.state.variant];
         const index = products.findIndex(item => item.variant_id === variant_id);
         products[index].number_of_items ++  ;
@@ -49,6 +56,8 @@ class Cart extends Component {
     updateItemCount(products[index].cart_id , products[index].variant_id , products[index].number_of_items ) ; 
 
  }
+
+
   render() { 
     return (
 
@@ -75,13 +84,26 @@ class Cart extends Component {
             number_of_items= {product.number_of_items}
             onIncrement = {this.handleIncrement}
             onDecrement = {this.handleDecrement} 
-            onDelete = {this.handleDelete}/>
+            onDelete = {this.handleDelete}/>  
           )
         )}
 
+        <div className ="card mb-5">
+          <div className ="card-body p-4">
+            <div className ="float-end">
+              <p className ="mb-0 me-5 d-flex align-items-center">
+                <span className ="small text-muted me-2">Order total:</span> <span
+                  className ="lead fw-normal">{this.state.orderTotal}</span>
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+
         <div className="card">
           <div className="card-body">
-            <button type="button" className="btn btn-warning btn-block btn-lg">Proceed to Pay</button>
+              <button type="button" className ="btn btn-success w-100 ">Proceed to Pay</button>
           </div>
         </div>
 
