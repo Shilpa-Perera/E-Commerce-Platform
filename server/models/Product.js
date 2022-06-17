@@ -448,6 +448,24 @@ class Product {
         await db.execute(restore_product_query, [productId]);
     }
 
+    static async checkProductVariant(productId, variantId) {
+        const check_query = `
+            select
+                variant_id
+            from
+                variant
+            where
+                variant_id = ?
+                and product_id = ?
+        `;
+
+        const [result, _] = await db.execute(check_query, [
+            variantId,
+            productId,
+        ]);
+        return result.length > 0;
+    }
+
     static getSchema() {
         return Product.#schema;
     }
