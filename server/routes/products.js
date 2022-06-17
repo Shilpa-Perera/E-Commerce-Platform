@@ -20,9 +20,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-router.get("/", ProductController.getAllProducts);
 router.get("/unavailable", ProductController.getUnavailableProducts);
 router.get("/:id", ProductController.getProduct);
+router.get("/", ProductController.getAllProducts);
 router.post("/feature", ProductController.postCustomFeature);
 router.post("/", ProductController.postProduct);
 router.put("/feature/:id", ProductController.putCustomFeature);
