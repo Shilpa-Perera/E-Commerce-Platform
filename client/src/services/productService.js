@@ -16,6 +16,10 @@ export function getProduct(productId) {
     return http.get(productUrl(productId));
 }
 
+export function getUnavailableProducts() {
+    return http.get(`${apiEndpoint}/unavailable`)
+}
+
 export function saveProduct(product) {
     if (product.product_id > 0) {
         const body = { ...product };
@@ -62,4 +66,8 @@ export function putProductImage(productId, image) {
 
 export function deleteProduct(productId) {
     return http.delete(productUrl(productId));
+}
+
+export function restoreProduct(productId) {
+    return http.post(`${apiEndpoint}/restore/${productId}`);
 }
