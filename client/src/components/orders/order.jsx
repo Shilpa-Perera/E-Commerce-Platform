@@ -33,138 +33,134 @@ class OrderView extends Component {
             let orderValues = orderDisplayValues.orderDetails[0];
             let cart = orderDisplayValues.cart;
             return (
-                <div className="pb-5">
-                    <div className="container div-dark">
-                        <h3 className="mb-4">Manage Order ### WIP</h3>
-                        <div className="mt-5">
-                            <div className="mb-3 row">
-                                <label
-                                    htmlFor="f1"
-                                    className="col-sm-4 col-form-label"
-                                >
-                                    Order ID
-                                </label>
-                                <div className="col-sm-6">
-                                    <input
-                                        type="text"
-                                        readOnly
-                                        className="form-control-plaintext"
-                                        id="f1"
-                                        value={orderValues.order_id}
-                                    />
+                <div className="container div-dark">
+                    <div className="pb-5">
+                        <div className="container div-dark">
+                            <h3 className="mb-4">Manage Order</h3>
+                            <div className="mt-5">
+                                <div className="mb-3 row">
+                                    <label
+                                        htmlFor="f1"
+                                        className="col-sm-4 col-form-label"
+                                    >
+                                        Order ID
+                                    </label>
+                                    <div className="col-sm-6">
+                                        <input
+                                            type="text"
+                                            readOnly
+                                            className="form-control-plaintext"
+                                            id="f1"
+                                            value={orderValues.order_id}
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="mb-3 row">
-                                <label
-                                    htmlFor="f1"
-                                    className="col-sm-4 col-form-label"
-                                >
-                                    Name on order
-                                </label>
-                                <div className="col-sm-6">
-                                    <input
-                                        type="text"
-                                        readOnly
-                                        className="form-control-plaintext"
-                                        id="f1"
-                                        value={orderValues.order_name}
-                                    />
+                                <div className="mb-3 row">
+                                    <label
+                                        htmlFor="f1"
+                                        className="col-sm-4 col-form-label"
+                                    >
+                                        Name on order
+                                    </label>
+                                    <div className="col-sm-6">
+                                        <input
+                                            type="text"
+                                            readOnly
+                                            className="form-control-plaintext"
+                                            id="f1"
+                                            value={orderValues.order_name}
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="mb-3 row">
-                                <label
-                                    htmlFor="f1"
-                                    className="col-sm-4 col-form-label"
-                                >
-                                    Date
-                                </label>
-                                <div className="col-sm-6">
-                                    <input
-                                        type="text"
-                                        readOnly
-                                        className="form-control-plaintext"
-                                        id="f1"
-                                        value={orderValues.date}
-                                    />
+                                <div className="mb-3 row">
+                                    <label
+                                        htmlFor="f1"
+                                        className="col-sm-4 col-form-label"
+                                    >
+                                        Date
+                                    </label>
+                                    <div className="col-sm-6">
+                                        <input
+                                            type="text"
+                                            readOnly
+                                            className="form-control-plaintext"
+                                            id="f1"
+                                            value={orderValues.date}
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="mb-3 row">
-                                <label
-                                    htmlFor="f1"
-                                    className="col-sm-4 col-form-label"
-                                >
-                                    Delivery Address
-                                </label>
-                                <div className="col-sm-6">
-                                    <input
-                                        type="text"
-                                        readOnly
-                                        className="form-control-plaintext"
-                                        id="f1"
-                                        value={orderValues.delivery_address}
-                                    />
+                                <div className="mb-3 row">
+                                    <label
+                                        htmlFor="f1"
+                                        className="col-sm-4 col-form-label"
+                                    >
+                                        Delivery Address
+                                    </label>
+                                    <div className="col-sm-6">
+                                        <input
+                                            type="text"
+                                            readOnly
+                                            className="form-control-plaintext"
+                                            id="f1"
+                                            value={orderValues.delivery_address}
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="mb-3 row">
-                                <label
-                                    htmlFor="f1"
-                                    className="col-sm-4 col-form-label"
-                                >
-                                    Telephone
-                                </label>
-                                <div className="col-sm-6">
-                                    <input
-                                        type="text"
-                                        readOnly
-                                        className="form-control-plaintext"
-                                        id="f1"
-                                        value={orderValues.phone_number}
-                                    />
+                                <div className="mb-3 row">
+                                    <label
+                                        htmlFor="f1"
+                                        className="col-sm-4 col-form-label"
+                                    >
+                                        Telephone
+                                    </label>
+                                    <div className="col-sm-6">
+                                        <input
+                                            type="text"
+                                            readOnly
+                                            className="form-control-plaintext"
+                                            id="f1"
+                                            value={orderValues.phone_number}
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="mb-3 row">
-                                <label
-                                    htmlFor="f1"
-                                    className="col-sm-4 col-form-label"
-                                >
-                                    Delivery Method
-                                </label>
-                                <div className="col-sm-6">
-                                    <input
-                                        type="text"
-                                        readOnly
-                                        className="form-control-plaintext"
-                                        id="f1"
-                                        value={orderValues.delivery_method}
-                                    />
+                                <div className="mb-3 row">
+                                    <label
+                                        htmlFor="f1"
+                                        className="col-sm-4 col-form-label"
+                                    >
+                                        Delivery Method
+                                    </label>
+                                    <div className="col-sm-6">
+                                        <input
+                                            type="text"
+                                            readOnly
+                                            className="form-control-plaintext"
+                                            id="f1"
+                                            value={orderValues.delivery_method}
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="mb-3 row">
-                                <label
-                                    htmlFor="f1"
-                                    className="col-sm-4 col-form-label"
-                                >
-                                    Payment Method
-                                </label>
-                                <div className="col-sm-6">
-                                    <input
-                                        type="text"
-                                        readOnly
-                                        className="form-control-plaintext"
-                                        id="f1"
-                                        value={orderValues.payment_method}
-                                    />
+                                <div className="mb-3 row">
+                                    <label
+                                        htmlFor="f1"
+                                        className="col-sm-4 col-form-label"
+                                    >
+                                        Payment Method
+                                    </label>
+                                    <div className="col-sm-6">
+                                        <input
+                                            type="text"
+                                            readOnly
+                                            className="form-control-plaintext"
+                                            id="f1"
+                                            value={orderValues.payment_method}
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="mb-3">
-                                <label
-                                    htmlFor="f1"
-                                    className="col-sm-4 col-form-label"
-                                >
-                                    Order items
-                                </label>
-                                <OrdersCartTable cartDetails={cart} />
-                                <div className="col-sm-6"></div>
+                                <div className="mb-3 order-cart-div">
+                                    <OrdersCartTable cartDetails={cart} />
+                                    <div className="col-sm-6"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
