@@ -159,7 +159,6 @@ class OrderView extends Component {
                                 </div>
                                 <div className="mb-3 order-cart-div">
                                     <OrdersCartTable cartDetails={cart} />
-                                    <div className="col-sm-6"></div>
                                 </div>
                             </div>
                         </div>
