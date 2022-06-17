@@ -53,7 +53,7 @@ class OrdersTable extends Component {
                 <div className="container div-dark">
                     <h3 className="mb-4">Manage Orders</h3>
                     <div className="mt-5">
-                        <div className="table-responsive">
+                        <div className="table-responsive order-table-container">
                             <Table
                                 columns={this.columns}
                                 data={orders}
