@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Products from "./components/products/products";
@@ -18,12 +19,24 @@ import Cart from "./components/cart";
 import VariantImages from "./components/variants/variantImages";
 import ScrollToTop from "./components/scrollToTop";
 import DeletedProduct from "./components/products/deletedProduct";
-
+import ThemeSelector from "./components/themeSelector";
+import UnavailableProducts from "./components/products/unavailableProducts";
 
 function App() {
+    const [theme, toggleTheme] = useState(
+        localStorage.getItem("theme") === "dark"
+    );
+
     return (
         <div className="d-flex flex-column min-vh-100">
-            <NavBar />
+            <ThemeSelector theme={theme} />
+            <NavBar
+                theme={theme}
+                toggleTheme={(theme) => {
+                    toggleTheme(theme);
+                    localStorage.setItem("theme", theme ? "dark" : "light");
+                }}
+            />
             <ToastContainer />
             <Routes>
                 <Route path="/products">
@@ -37,20 +50,26 @@ function App() {
                         element={<Navigate to="/products/edit/new" />}
                     ></Route>
 
-                    <Route path="deleted" element={<DeletedProduct />}></Route>
+                    <Route
+                        path="unavailable"
+                        element={<UnavailableProducts />}
+                    ></Route>
 
-                    <Route path="variants">
-                        <Route path=":id">
-                            <Route
-                                path="images"
-                                element={<VariantImages />}
-                            ></Route>
-                        </Route>
-                    </Route>
+                    <Route path="deleted" element={<DeletedProduct />}></Route>
 
                     <Route path=":id">
                         <Route index element={<Product />}></Route>
-                        <Route path="variants" element={<VariantForm />} />
+
+                        <Route path="variants">
+                            <Route index element={<VariantForm />}></Route>
+
+                            <Route path=":v_id">
+                                <Route
+                                    path="images"
+                                    element={<VariantImages />}
+                                ></Route>
+                            </Route>
+                        </Route>
                     </Route>
 
                     <Route path="edit">
@@ -65,12 +84,15 @@ function App() {
                     </Route>
                 </Route>
 
-                <Route path="/orders" >
+                <Route path="/orders">
                     <Route index element={<Orders />}></Route>
                     <Route path=":id" element={<Order />}></Route>
                 </Route>
 
-                <Route path="/cart" element={<Cart />}></Route>
+                <Route
+                    path="/cart"
+                    element={<Cart cart_id={localStorage.getItem("cart_id")} />}
+                ></Route>
 
                 <Route path="/login" element={<LoginForm />}></Route>
                 <Route path="/logout" element={<Logout />}></Route>

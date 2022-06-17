@@ -16,6 +16,10 @@ export function getProduct(productId) {
     return http.get(productUrl(productId));
 }
 
+export function getUnavailableProducts() {
+    return http.get(`${apiEndpoint}/unavailable`);
+}
+
 export function saveProduct(product) {
     if (product.product_id > 0) {
         const body = { ...product };
@@ -44,6 +48,17 @@ export function saveProduct(product) {
             ])
         );
     }
+}
+
+export function restoreProduct(productId) {
+    return http.post(`${apiEndpoint}/restore/${productId}`);
+}
+
+export function checkProductVariant(productId, variantId) {
+    return http.post(`${apiEndpoint}/check`, {
+        product_id: productId,
+        variant_id: variantId,
+    });
 }
 
 export function updateDefault(productId, variantId) {

@@ -192,7 +192,7 @@ create table if not exists variant_image(
 
 create table if not exists cart(
     cart_id int unsigned auto_increment primary key,
-    customer_id int unsigned not null,
+    customer_id int unsigned ,
     state int unsigned not null,
     foreign key (customer_id) references customer(customer_id) on delete cascade
 );

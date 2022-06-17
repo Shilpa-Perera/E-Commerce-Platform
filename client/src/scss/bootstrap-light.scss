@@ -1,0 +1,113 @@
+$primary = #0d6efd;
+$success = #198754;
+$bg_muted = #eeeeee;
+$col_muted = #222222;
+
+$list-group-bg = $bg_muted;
+
+h1,
+h2,
+h3,
+h4,
+.h1,
+.h2,
+.h3,
+.h4 {
+  color: #0d6efd;
+}
+
+.div-dark {
+  background-color: $bg_muted;
+  padding: 3%;
+  border-radius: 2%;
+}
+
+.hover-focus:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease-in-out;
+}
+
+.hover-color:hover {
+  background-color: silver;
+  color: black;
+}
+
+.pointer {
+  cursor: pointer !important;
+}
+
+.cropper {
+  position: relative;
+  height: 50vh;
+  background-color: $bg_muted;
+}
+
+.form-control::file-selector-button {
+  background-color: $success !important;
+  color: black !important;
+}
+
+.hr-white {
+  color: $col_muted;
+}
+
+#scroll-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  padding: 5px 6px;
+}
+
+#scroll-to-top:hover {
+  transform: scale(1.2);
+  transition: transform 0.3s ease-in-out;
+}
+
+.navbar-custom .navbar-brand {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.navbar-custom .navbar-brand:hover,
+.navbar-custom .navbar-brand:focus {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.navbar-custom .navbar-nav .nav-link {
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.navbar-custom .navbar-nav .nav-link:hover,
+.navbar-custom .navbar-nav .nav-link:focus {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.navbar-custom .navbar-nav .nav-link.disabled {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.navbar-custom .navbar-nav .show>.nav-link,
+.navbar-custom .navbar-nav .nav-link.active {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.navbar-custom .navbar-toggler {
+  color: rgba(0, 0, 0, 0.55);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.navbar-custom .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.navbar-custom .navbar-text {
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.navbar-custom .navbar-text a,
+.navbar-custom .navbar-text a:hover,
+.navbar-custom .navbar-text a:focus {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+@import '~bootstrap/scss/bootstrap';
