@@ -20,6 +20,7 @@ class LoginFormBody extends Form {
       const { data } = this.state;
       await auth.loginCustomer(data.username, data.password);
 
+      this.props.setUser(auth.getCurrentUser());
       this.props.navigate("/");
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
@@ -49,7 +50,7 @@ class LoginFormBody extends Form {
 
 const LoginForm = (props) => {
   const navigate = useNavigate();
-  return <LoginFormBody navigate={navigate} />;
+  return <LoginFormBody {...props} navigate={navigate} />;
 };
 
 export default LoginForm;

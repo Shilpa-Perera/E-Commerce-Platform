@@ -2,8 +2,9 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { ImSun } from "react-icons/im";
 import { BsMoonStarsFill } from "react-icons/bs";
+import { getCurrentUser } from './../services/authService';
 
-export default function NavBar({ theme, toggleTheme,item_count }) {
+export default function NavBar({ theme, toggleTheme,item_count, user }) {
     const nextTheme = theme ? "light" : "dark";
     
     return (
@@ -90,22 +91,30 @@ export default function NavBar({ theme, toggleTheme,item_count }) {
                                 Orders
                             </NavLink>
                         </li>
-                        <li className="nav-item">
+                        {!user && <li className="nav-item">
                             <NavLink
                                 className="nav-link hover-focus"
                                 to="/login"
                             >
                                 Login
                             </NavLink>
-                        </li>
-                        <li className="nav-item">
+                        </li>}
+                        {user && <li className="nav-item">
                             <NavLink
                                 className="nav-link hover-focus"
                                 to="/logout"
                             >
                                 Logout
                             </NavLink>
-                        </li>
+                        </li>}
+                        {!user && <li className="nav-item">
+                            <NavLink
+                                className="nav-link hover-focus"
+                                to="/customers/register"
+                            >
+                                Register
+                            </NavLink>
+                        </li>}
                     </ul>
                     <ul className="navbar-nav ms-auto">
                         <li className="nav-item d-flex align-items-center">

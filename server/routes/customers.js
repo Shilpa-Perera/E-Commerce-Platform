@@ -3,10 +3,11 @@ const auth = require('../middleware/auth');
 const express = require("express");
 const router = express();
 
-router.get("/address", [auth], CustomerController.getCustomerAddresses);
+router.get("/addresses", [auth], CustomerController.getCustomerAddresses);
+router.get("/mobiles", [auth], CustomerController.getCustomerMobiles);
 router.get("/", CustomerController.getAllCustomers);
 router.get("/:id", CustomerController.getCustomer);
-router.get("/mobiles", [auth], CustomerController.getCustomerMobiles);
 router.post("/", CustomerController.postCustomer);
+router.put("/:id", [auth], CustomerController.updateCustomer);
 
 module.exports = router;
