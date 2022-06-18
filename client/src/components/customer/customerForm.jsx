@@ -5,6 +5,7 @@ import Form from "../common/form";
 import { getCustomer, saveCustomer } from "../../services/customerService";
 import Input from "../common/input";
 import { getCurrentUser } from "../../services/authService";
+import ROLE from "../../services/roles.json";
 
 class CustomerFormBody extends Form {
   state = {
@@ -76,7 +77,7 @@ class CustomerFormBody extends Form {
     mobile: Joi.string().min(10).max(12).label("Contact No"),
   };
 
-  // constructor() { 
+  // constructor() {
   //   super();
   //   // const user = getCurrentUser();
   // }
@@ -113,12 +114,12 @@ class CustomerFormBody extends Form {
   async populateCustomer() {
     try {
       const customerId = this.props.params.id;
-      // console.log("customerId",  customerId);
-      if (customerId === "register") return;
+      console.log("customerId", customerId);
+      if (!customerId) return;
 
       const errors = {
         addresses: [],
-        mobiles: []
+        mobiles: [],
       };
 
       const { data: customer } = await getCustomer(customerId);
@@ -132,8 +133,8 @@ class CustomerFormBody extends Form {
       for (let index = 0; index < customer.mobiles.length; index++) {
         const mobile = customer.mobiles[index];
         mobile.index = index;
-        delete mobile.customer_id;  
-        
+        delete mobile.customer_id;
+
         errors.mobiles.push({});
       }
       // delete customer.customer_id;
@@ -144,22 +145,34 @@ class CustomerFormBody extends Form {
       console.log(customer);
       console.log("new errors", errors);
       this.setState({ data: customer, errors: errors });
-    }
-    catch (ex) {
+    } catch (ex) {
       // go to 404 page
     }
   }
 
   async componentDidMount() {
     // console.log("componentDidMount");
-    await this.populateCustomer();
+    // check if data is allowed
+    const user = getCurrentUser();
+    const customerId = this.props.params.id;
+    if (!customerId) return;
+    else if (
+      user.role === ROLE.ADMIN ||
+      (user.role === ROLE.CUSTOMER && customerId === user.user_id)
+    ) {
+      await this.populateCustomer();
+      
+    }
+    else{
+      this.props.navigate("not-found");
+    }
   }
 
   doSubmit = async () => {
     try {
       console.log("front state", this.state.data);
       const data = { ...this.state.data };
-      
+
       await saveCustomer(data);
       console.log("state", this.state);
       this.props.navigate("/");
@@ -222,7 +235,7 @@ class CustomerFormBody extends Form {
           {this.renderInput("name", "Name")}
           {this.renderInput("email", "Email")}
           {this.renderInput("password", "Password", "password")}
-          
+
           <button onClick={this.handleAddMoreAddress}>
             Add another Address
           </button>
@@ -231,8 +244,8 @@ class CustomerFormBody extends Form {
               <Input
                 data-array-name="addresses"
                 data-element-id={address.index}
-                key={"po_box"+address.index}
-                id={"po_box"+address.index}
+                key={"po_box" + address.index}
+                id={"po_box" + address.index}
                 type="text"
                 label="Po Box"
                 name="po_box"
@@ -243,8 +256,8 @@ class CustomerFormBody extends Form {
               <Input
                 data-array-name="addresses"
                 data-element-id={address.index}
-                id={"street_name"+address.index}
-                key={"street_name"+address.index}
+                id={"street_name" + address.index}
+                key={"street_name" + address.index}
                 type="text"
                 label="Street Name"
                 name="street_name"
@@ -255,8 +268,8 @@ class CustomerFormBody extends Form {
               <Input
                 data-array-name="addresses"
                 data-element-id={address.index}
-                id={"city"+address.index}
-                key={"city"+address.index}
+                id={"city" + address.index}
+                key={"city" + address.index}
                 type="text"
                 label="City"
                 name="city"
@@ -267,8 +280,8 @@ class CustomerFormBody extends Form {
               <Input
                 data-array-name="addresses"
                 data-element-id={address.index}
-                id={"postal_code"+address.index}
-                key={"postal_code"+address.index}
+                id={"postal_code" + address.index}
+                key={"postal_code" + address.index}
                 type="text"
                 label="Postal Code"
                 name="postal_code"
@@ -285,8 +298,8 @@ class CustomerFormBody extends Form {
               <Input
                 data-array-name="mobiles"
                 data-element-id={mobile.index}
-                id={"mobile"+mobile.index}
-                key={"mobile"+mobile.index}
+                id={"mobile" + mobile.index}
+                key={"mobile" + mobile.index}
                 type="text"
                 label="Contact No"
                 name="mobile"

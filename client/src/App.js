@@ -22,14 +22,31 @@ import DeletedProduct from "./components/products/deletedProduct";
 import ThemeSelector from "./components/themeSelector";
 import UnavailableProducts from "./components/products/unavailableProducts";
 import { getTheme, saveTheme } from "./services/themeService";
+import { getCurrentUser } from "./services/authService";
+import ProtectedRoute from './components/common/protectedRoute';
 
 function App() {
     const [theme, setTheme] = useState(getTheme());
+    const [user, setUser] = useState();
+
+    useEffect(() => {
+        console.log("set user");
+        setUser(getCurrentUser());
+    }, [])
+
+    useEffect(() => {
+        console.log("set user on change", user);
+    }, user);
+
+    // const login = (user) => {
+    //     setUser(user);
+    // }
 
     return (
         <div className="d-flex flex-column min-vh-100">
             <ThemeSelector theme={theme} />
             <NavBar
+                user={user}
                 theme={theme}
                 toggleTheme={(theme) => {
                     setTheme(theme);
@@ -90,12 +107,19 @@ function App() {
 
                 <Route path="/cart" element={<Cart />}></Route>
 
-                <Route path="/login" element={<LoginForm />}></Route>
-                <Route path="/logout" element={<Logout />}></Route>
+                <Route path="/login" element={<LoginForm setUser={(user) => {setUser(user);}} />}></Route>
+                <Route path="/logout" element={<Logout setUser={(user) => {setUser(user);}}/>}></Route>
 
                 <Route path="/customers/*">
-                    <Route path=":id" element={<CustomerForm />}></Route>
-                    {/* <Route path="register" element={<CustomerForm />}></Route> */}
+                    
+                        <Route path=":id" element={
+                            <ProtectedRoute><CustomerForm /></ProtectedRoute>
+                        }></Route>
+                    {/* <Route path=":id" element={
+                            <CustomerForm />
+                        }></Route> */}
+                    
+                    <Route path="register" element={<CustomerForm />}></Route>
                 </Route>
 
                 <Route path="/" element={<Home />}></Route>
