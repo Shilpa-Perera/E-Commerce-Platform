@@ -13,7 +13,7 @@ class Orders extends Component {
         pageSize: 24,
         sortBy: { path: "order_id", order: "asc" },
     };
-    
+
     async componentDidMount() {
         const { data: orders } = await getOrders();
         this.setState({ orders });
@@ -59,13 +59,13 @@ class Orders extends Component {
                 return queryRegEx.test(title);
             });
 
-            const sorted = _.orderBy(
-                filtered,
-                (order) => {
-                    return order[sortBy.path];
-                },
-                [sortBy.order]
-            );
+        const sorted = _.orderBy(
+            filtered,
+            (order) => {
+                return order[sortBy.path];
+            },
+            [sortBy.order]
+        );
 
         const orders = paginate(sorted, currentPage, pageSize);
         return { totalCount: 10, data: orders };
@@ -80,22 +80,20 @@ class Orders extends Component {
         return (
             <div className="container-fluid mb-5">
                 <div className="row">
-                    <div className="col-md-12 col-lg-9 col-xxl-10">
-                        <div className="container w-75 mb-5">
-                            <div className="p-3 div-dark">
-                                <SearchBox
-                                    value={searchQuery}
-                                    onChange={this.handleSearch}
-                                    placeholder = {plh}
-                                />
-                            </div>
+                    <div className="container w-75 mb-5">
+                        <div className="p-3 div-dark">
+                            <SearchBox
+                                value={searchQuery}
+                                onChange={this.handleSearch}
+                                placeholder={plh}
+                            />
                         </div>
-                        <OrdersTable
-                            orders={orders}
-                            sortBy={this.state.sortBy}
-                            onSort={this.handleSort}
-                        />
                     </div>
+                    <OrdersTable
+                        orders={orders}
+                        sortBy={this.state.sortBy}
+                        onSort={this.handleSort}
+                    />
                 </div>
             </div>
         );
