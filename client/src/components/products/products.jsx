@@ -1,17 +1,23 @@
 import React, { Component } from "react";
 import _ from "lodash";
-import { getProducts } from "../../services/productService";
+import { deleteProduct, getProducts } from "../../services/productService";
 import ProductAlbum from "./productAlbum";
-import { getCategories, getSubCategories } from "../../services/categoryService";
+import {
+    getCategories,
+    getSubCategories,
+} from "../../services/categoryService";
 import CategoryList from "./categoryList";
 import SubCategoryList from "./subCategoryList";
 import SearchBox from "../common/searchBox";
 import { paginate } from "../../utils/paginate";
 import Pagination from "../common/pagination";
 import ProductsTable from "./productsTable";
+import { toast } from "react-toastify";
+import Loading from "../common/loading";
 
 class Products extends Component {
     state = {
+        loading: true,
         products: [],
         categories: [],
         subCategories: [],
@@ -34,9 +40,13 @@ class Products extends Component {
     ];
 
     async componentDidMount() {
-        const { data: products } = await getProducts();
-        const { data: categories } = await getCategories();
-        this.setState({ products, categories });
+        try {
+            const { data: products } = await getProducts();
+            const { data: categories } = await getCategories();
+            this.setState({ products, categories, loading: false });
+        } catch (e) {
+            this.setState({ loading: false });
+        }
     }
 
     handleCategorySelect = async (category) => {
@@ -95,6 +105,26 @@ class Products extends Component {
         this.setState({ selectedSubCategory: null });
     };
 
+    handleDeleteProduct = async (productId) => {
+        const products = [...this.state.products];
+        const originalProducts = [...products];
+
+        for (let i = 0; i < products.length; ++i) {
+            if (products[i].product_id === productId) {
+                products.splice(i, 1);
+                break;
+            }
+        }
+        this.setState({ products });
+
+        try {
+            await deleteProduct(productId);
+        } catch (e) {
+            toast.error("Could not delete the product", { theme: "dark" });
+            this.setState({ products: originalProducts });
+        }
+    };
+
     getPagedData = () => {
         const {
             products: allProducts,
@@ -146,12 +176,16 @@ class Products extends Component {
     };
 
     render() {
+        if (this.state.loading) return <Loading />;
+
         const { isAlbum, isTable } = this.props;
         const { length: count } = this.state.products;
         if (count === 0)
             return (
-                <div className="container-fluid mb-5">
-                    <p className="h4">There are no products in the database</p>
+                <div className="container-fluid mb-5 mt-5">
+                    <div className="d-flex justify-content-center align-items-center">
+                        <p className="h4">There are no available products.</p>
+                    </div>
                 </div>
             );
 
@@ -216,6 +250,7 @@ class Products extends Component {
                                 products={products}
                                 sortBy={this.state.sortBy}
                                 onSort={this.handleSort}
+                                deleteProduct={this.handleDeleteProduct}
                             />
                         )}
                         <Pagination

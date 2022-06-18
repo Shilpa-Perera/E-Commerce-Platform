@@ -3,7 +3,7 @@ const express = require("express");
 const router = express();
 
 router.get("/", OrderController.getAllOrders);
-// router.get("/:id", OrderController.getOrder);
+router.get("/:id", OrderController.getOrderCart);
 // router.post("/", OrderController.postOrder);
 // router.put("/:id", OrderController.putOrder);
 

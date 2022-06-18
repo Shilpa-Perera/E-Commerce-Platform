@@ -14,18 +14,18 @@ class EditCustomFeaturesForm extends Form {
     schema = {
         custom_feature_name: Joi.string()
             .required()
-            .min(5)
-            .max(50)
+            .min(3)
+            .max(100)
             .label("Custom Feature Name"),
         custom_feature_val: Joi.string()
             .required()
-            .min(5)
-            .max(50)
+            .min(3)
+            .max(250)
             .label("Custom Feature Value"),
     };
 
     valueSchema = {
-        value_name: Joi.string().min(1).max(50).required().label("Value Name"),
+        value_name: Joi.string().min(1).max(250).required().label("Value Name"),
     };
 
     doSubmit = async () => {

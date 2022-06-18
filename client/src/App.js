@@ -10,26 +10,32 @@ import Product from "./components/products/product";
 import VariantForm from "./components/variants/variantForm";
 import NotFound from "./components/notFound";
 import Home from "./components/home";
-import Orders from "./components/orders";
+import Orders from "./components/orders/orders";
+import Order from "./components/orders/order";
 import LoginForm from "./components/loginForm";
 import CustomerForm from "./components/customer/customerForm";
-import Logout from './components/logout';
+import Logout from "./components/logout";
 import Cart from "./components/cart";
 import VariantImages from "./components/variants/variantImages";
 import ScrollToTop from "./components/scrollToTop";
-import { getCurrentUser } from './services/authService';
-
+import DeletedProduct from "./components/products/deletedProduct";
+import ThemeSelector from "./components/themeSelector";
+import UnavailableProducts from "./components/products/unavailableProducts";
+import { getTheme, saveTheme } from "./services/themeService";
 
 function App() {
-    // const [user, setUser] = useState;
-
-    // useEffect(() => {
-    //     setUser(getCurrentUser())
-    // }, [])
+    const [theme, setTheme] = useState(getTheme());
 
     return (
         <div className="d-flex flex-column min-vh-100">
-            <NavBar />
+            <ThemeSelector theme={theme} />
+            <NavBar
+                theme={theme}
+                toggleTheme={(theme) => {
+                    setTheme(theme);
+                    saveTheme(theme);
+                }}
+            />
             <ToastContainer />
             <Routes>
                 <Route path="/products">
@@ -37,22 +43,34 @@ function App() {
                         index
                         element={<Products isAlbum={true} isTable={false} />}
                     ></Route>
+
                     <Route
                         path="new"
                         element={<Navigate to="/products/edit/new" />}
                     ></Route>
-                    <Route path="variants">
-                        <Route path=":id">
-                            <Route
-                                path="images"
-                                element={<VariantImages />}
-                            ></Route>
-                        </Route>
-                    </Route>
+
+                    <Route
+                        path="unavailable"
+                        element={<UnavailableProducts />}
+                    ></Route>
+
+                    <Route path="deleted" element={<DeletedProduct />}></Route>
+
                     <Route path=":id">
                         <Route index element={<Product />}></Route>
-                        <Route path="variants" element={<VariantForm />} />
+
+                        <Route path="variants">
+                            <Route index element={<VariantForm />}></Route>
+
+                            <Route path=":v_id">
+                                <Route
+                                    path="images"
+                                    element={<VariantImages />}
+                                ></Route>
+                            </Route>
+                        </Route>
                     </Route>
+
                     <Route path="edit">
                         <Route
                             index
@@ -60,12 +78,18 @@ function App() {
                                 <Products isAlbum={false} isTable={true} />
                             }
                         ></Route>
+
                         <Route path=":id" element={<ProductForm />}></Route>
                     </Route>
                 </Route>
-                <Route path="/orders" element={<Orders />}></Route>
+
+                <Route path="/orders">
+                    <Route index element={<Orders />}></Route>
+                    <Route path=":id" element={<Order />}></Route>
+                </Route>
+
                 <Route path="/cart" element={<Cart />}></Route>
-                
+
                 <Route path="/login" element={<LoginForm />}></Route>
                 <Route path="/logout" element={<Logout />}></Route>
 
@@ -73,7 +97,9 @@ function App() {
                     <Route path=":id" element={<CustomerForm />}></Route>
                     {/* <Route path="register" element={<CustomerForm />}></Route> */}
                 </Route>
+
                 <Route path="/" element={<Home />}></Route>
+
                 <Route path="*" element={<NotFound />} />
             </Routes>
             <ScrollToTop />

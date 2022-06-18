@@ -46,7 +46,8 @@ export function saveCustomer(customer) {
     return http.put(url, body);
   } else {
     // register routine
-
+    delete body.customer_id;
+    
     console.log("post body: ", body);
     return http.post(apiEndpoint, body);
   }

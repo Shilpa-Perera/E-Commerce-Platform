@@ -12,9 +12,11 @@ import {
 import AddedVariantsTable from "./addedVariantsTable";
 import EditVariantForm from "./editVariantForm";
 import NotAddedVariantsTable from "./notAddedVariantsTable";
+import Loading from "../common/loading";
 
 class VariantFormBody extends Component {
     state = {
+        loading: true,
         product: null,
         availableVariants: null,
         addedVariants: null,
@@ -68,6 +70,9 @@ class VariantFormBody extends Component {
         variant.product_id = this.state.product.product_id;
 
         availableVariants.splice(variant.index, 1);
+        for (let i = variant.index; i < availableVariants.length; ++i) {
+            availableVariants[i].index = i;
+        }
 
         variant.index = addedVariants.length;
         addedVariants.push(variant);
@@ -177,6 +182,9 @@ class VariantFormBody extends Component {
         const { id: product_id } = this.props;
         const { data: product } = await getProduct(product_id);
 
+        if (product.availability === "UNAVAILABLE")
+            this.props.replace("/products/deleted");
+
         let availableVariants = [];
         const addedVariants = [];
 
@@ -258,10 +266,17 @@ class VariantFormBody extends Component {
             addedVariants.push(variant);
         }
 
-        this.setState({ product, availableVariants, addedVariants });
+        this.setState({
+            product,
+            availableVariants,
+            addedVariants,
+            loading: false,
+        });
     }
 
     render() {
+        if (this.state.loading) return <Loading />;
+
         const { product, availableVariants, addedSortColumn, editVariant } =
             this.state;
         const addedVariants = this.getAddedVariants();
@@ -283,6 +298,7 @@ class VariantFormBody extends Component {
                         <div className={addedVariantsClasses}>
                             <div className={addedVariantsTableClasses}>
                                 <AddedVariantsTable
+                                    product={product}
                                     options={addedVariants}
                                     onEdit={this.handleEdit}
                                     onMakeDefault={this.handleMakeDefault}

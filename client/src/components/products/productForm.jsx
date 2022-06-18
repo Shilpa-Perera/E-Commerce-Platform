@@ -3,7 +3,10 @@ import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import Joi from "joi-browser";
 import Form from "../common/form";
-import { getCategories, getSubCategories } from "../../services/categoryService";
+import {
+    getCategories,
+    getSubCategories,
+} from "../../services/categoryService";
 import {
     getProduct,
     putProductImage,
@@ -62,12 +65,12 @@ class ProductFormBody extends Form {
         product_id: Joi.number(),
         product_title: Joi.string()
             .required()
-            .min(5)
-            .max(50)
+            .min(3)
+            .max(250)
             .label("Product Title"),
         category_id: Joi.number().min(1).required().label("Category"),
         sub_category_id: Joi.number().min(1).required().label("Subcategory"),
-        sku: Joi.string().required().min(5).max(20).label("SKU"),
+        sku: Joi.string().required().min(5).max(30).label("SKU"),
         product_weight: Joi.number().required().min(1).label("Product Weight"),
         custom_features: Joi.array(),
         options: Joi.array(),
@@ -86,10 +89,16 @@ class ProductFormBody extends Form {
             if (productId === "new") {
                 const isNew = true;
                 this.setState({ isNew });
+                if (this.option_columns.length === 2)
+                    this.option_columns.push({ key: "actions_op", label: "Actions" });
                 return;
             }
 
             const { data: product } = await getProduct(productId);
+
+            if (product.availability === "UNAVAILABLE")
+                this.props.replace("/products/deleted");
+
             const data = _.pick(product, [
                 "product_id",
                 "product_title",
@@ -267,8 +276,21 @@ class ProductFormBody extends Form {
         bsCollapse.hide();
     };
 
+    handleDeleteOption = (index) => {
+        if (this.state.isNew) {
+            const data = { ...this.state.data };
+            data.options.splice(index, 1);
+            this.setState({ data });
+        }
+    };
+
     doSubmit = async () => {
-        if (this.state.product_image !== null) {
+        const { isNew, product_image } = this.state;
+        if (!isNew) {
+            const { data } = await saveProduct(this.state.data);
+            const { product_id } = data;
+            this.props.push(`/products/${product_id}/variants`);
+        } else if (product_image !== null) {
             const { data } = await saveProduct(this.state.data);
             const { product_id } = data;
             await putProductImage(product_id, this.state.product_image);
@@ -574,6 +596,20 @@ class ProductFormBody extends Form {
                                                         )
                                                         .join(", ")}
                                                 </td>
+                                                {this.state.isNew && (
+                                                    <td>
+                                                        <button
+                                                            className="btn btn-sm btn-danger"
+                                                            onClick={() =>
+                                                                this.handleDeleteOption(
+                                                                    index
+                                                                )
+                                                            }
+                                                        >
+                                                            <i className="fa fa-trash-o"></i>
+                                                        </button>
+                                                    </td>
+                                                )}
                                             </tr>
                                         )
                                     )}
