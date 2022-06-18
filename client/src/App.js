@@ -21,11 +21,10 @@ import ScrollToTop from "./components/scrollToTop";
 import DeletedProduct from "./components/products/deletedProduct";
 import ThemeSelector from "./components/themeSelector";
 import UnavailableProducts from "./components/products/unavailableProducts";
+import { getTheme, saveTheme } from "./services/themeService";
 
 function App() {
-    const [theme, toggleTheme] = useState(
-        localStorage.getItem("theme") === "dark"
-    );
+    const [theme, setTheme] = useState(getTheme());
 
     return (
         <div className="d-flex flex-column min-vh-100">
@@ -33,8 +32,8 @@ function App() {
             <NavBar
                 theme={theme}
                 toggleTheme={(theme) => {
-                    toggleTheme(theme);
-                    localStorage.setItem("theme", theme ? "dark" : "light");
+                    setTheme(theme);
+                    saveTheme(theme);
                 }}
             />
             <ToastContainer />
@@ -89,10 +88,7 @@ function App() {
                     <Route path=":id" element={<Order />}></Route>
                 </Route>
 
-                <Route
-                    path="/cart"
-                    element={<Cart />}
-                ></Route>
+                <Route path="/cart" element={<Cart />}></Route>
 
                 <Route path="/login" element={<LoginForm />}></Route>
                 <Route path="/logout" element={<Logout />}></Route>
