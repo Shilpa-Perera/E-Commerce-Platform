@@ -4,7 +4,7 @@ import Form from "./common/form";
 
 class AddCategoryForm extends Form {
   state = {
-    new_category_name: "",
+    data: { new_category_name: "" },
     errors: [],
   };
 
@@ -17,7 +17,7 @@ class AddCategoryForm extends Form {
   };
 
   doSubmit = async () => {
-    this.props.addCategory(this.state.new_category_name);
+    this.props.addCategory(this.state.data.new_category_name);
 
     document.getElementById("new_category_name").value = "";
 
@@ -32,7 +32,7 @@ class AddCategoryForm extends Form {
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
-          {/* {this.renderInput("new_category_name", "New Category Name")} */}
+          {this.renderInput("new_category_name", "New Category Name")}
           {this.renderStyledButton("Add New Category", "hover-focus", () => (
             <i className="fa fa-plus-circle"></i>
           ))}
