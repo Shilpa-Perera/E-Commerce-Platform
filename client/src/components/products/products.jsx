@@ -13,9 +13,11 @@ import { paginate } from "../../utils/paginate";
 import Pagination from "../common/pagination";
 import ProductsTable from "./productsTable";
 import { toast } from "react-toastify";
+import Loading from "../common/loading";
 
 class Products extends Component {
     state = {
+        loading: true,
         products: [],
         categories: [],
         subCategories: [],
@@ -38,9 +40,13 @@ class Products extends Component {
     ];
 
     async componentDidMount() {
-        const { data: products } = await getProducts();
-        const { data: categories } = await getCategories();
-        this.setState({ products, categories });
+        try {
+            const { data: products } = await getProducts();
+            const { data: categories } = await getCategories();
+            this.setState({ products, categories, loading: false });
+        } catch (e) {
+            this.setState({ loading: false });
+        }
     }
 
     handleCategorySelect = async (category) => {
@@ -170,6 +176,8 @@ class Products extends Component {
     };
 
     render() {
+        if (this.state.loading) return <Loading />;
+
         const { isAlbum, isTable } = this.props;
         const { length: count } = this.state.products;
         if (count === 0)

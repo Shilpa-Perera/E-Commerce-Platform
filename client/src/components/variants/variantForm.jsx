@@ -12,9 +12,11 @@ import {
 import AddedVariantsTable from "./addedVariantsTable";
 import EditVariantForm from "./editVariantForm";
 import NotAddedVariantsTable from "./notAddedVariantsTable";
+import Loading from "../common/loading";
 
 class VariantFormBody extends Component {
     state = {
+        loading: true,
         product: null,
         availableVariants: null,
         addedVariants: null,
@@ -264,10 +266,17 @@ class VariantFormBody extends Component {
             addedVariants.push(variant);
         }
 
-        this.setState({ product, availableVariants, addedVariants });
+        this.setState({
+            product,
+            availableVariants,
+            addedVariants,
+            loading: false,
+        });
     }
 
     render() {
+        if (this.state.loading) return <Loading />;
+
         const { product, availableVariants, addedSortColumn, editVariant } =
             this.state;
         const addedVariants = this.getAddedVariants();
