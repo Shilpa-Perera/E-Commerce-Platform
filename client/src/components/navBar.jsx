@@ -3,9 +3,9 @@ import { NavLink } from "react-router-dom";
 import { ImSun } from "react-icons/im";
 import { BsMoonStarsFill } from "react-icons/bs";
 
-export default function NavBar({ theme, toggleTheme }) {
+export default function NavBar({ theme, toggleTheme,item_count }) {
     const nextTheme = theme ? "light" : "dark";
-
+    
     return (
         <nav className="navbar navbar-expand-lg navbar-custom mb-5">
             <div className="container-fluid">
@@ -132,7 +132,7 @@ export default function NavBar({ theme, toggleTheme }) {
                                 <span className="ms-2">
                                     <i className="fa fa-shopping-cart fa-2x "></i>
                                     <span className="badge rounded-pill badge-notification bg-primary">
-                                        {localStorage.getItem("item_count")}
+                                        {item_count}
                                     </span>
                                 </span>
                             </NavLink>

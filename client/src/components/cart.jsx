@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import { getCartProducts } from "../services/cartService";
 import CartCard from "./cartCard";
-import { updateItemCount } from "../services/cartService";
+import { updateItemCount,deletedProduct } from "../services/cartService";
 
 
 class Cart extends Component {
@@ -13,9 +13,12 @@ class Cart extends Component {
   async CartProducts(){
       const { data: variant } = await getCartProducts(localStorage.getItem("cart_id"));
       let orderTotal = 0;
-      variant.forEach(element => {
-            orderTotal += (parseFloat(element.price))*(element.number_of_items);
-      });
+      if(variant){
+          variant.forEach(element => {
+          orderTotal += (parseFloat(element.price))*(element.number_of_items);
+    });
+      }
+      
 
       this.setState({variant}) ;
       this.setState({orderTotal});
@@ -44,15 +47,7 @@ class Cart extends Component {
     const index = products.findIndex(item => item.variant_id === variant_id);
     products[index].number_of_items --  ;
     this.setState({variant:products});
-    updateItemCount(products[index].cart_id , products[index].variant_id , products[index].number_of_items ) ; 
-
- }
-
- handleDelete = (variant_id) => {
-    const products = [...this.state.variant];
-    const index = products.findIndex(item => item.variant_id === variant_id);
-    products[index].number_of_items = 0  ;
-    this.setState({variant:products});
+    
     updateItemCount(products[index].cart_id , products[index].variant_id , products[index].number_of_items ) ; 
 
  }
@@ -84,7 +79,7 @@ class Cart extends Component {
             number_of_items= {product.number_of_items}
             onIncrement = {this.handleIncrement}
             onDecrement = {this.handleDecrement} 
-            onDelete = {this.handleDelete}/>  
+            onDelete = {() => this.props.onDeleteFromCart(product.cart_id, product.variant_id)}/>  
           )
         )}
 
@@ -99,7 +94,6 @@ class Cart extends Component {
 
           </div>
         </div>
-
 
         <div className="card">
           <div className="card-body">
