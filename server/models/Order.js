@@ -22,7 +22,7 @@ class Order {
     }
 
     static async getOrderById(orderId) {
-        const product_values_query = "SELECT * FROM `order` WHERE order_id = ?";
+        const product_values_query = "SELECT * FROM `order` NATURAL JOIN sell WHERE `order`.order_id = ?;";
         const result = await db.execute(product_values_query, [orderId]);
         return result[0];
     }
