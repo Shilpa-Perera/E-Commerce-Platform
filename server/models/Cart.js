@@ -37,7 +37,7 @@ class Cart{
 
         // To be refined
         // Cart item : cart_id , variant_id , variant_name , product_title , variant_image , price , number of items
-        let stmt = `select cp.cart_id , cp.variant_id , v.variant_name , cp.number_of_items , v.price , p.product_title , p.product_id from 
+        let stmt = `select cp.cart_id , cp.variant_id , v.variant_name , cp.number_of_items , v.price , p.product_title , p.product_id , p.image_name from 
                     cart_product cp natural join variant v inner join product p using (product_id) where cart_id=? and cp.number_of_items > 0 ;` ;
         const [products, _] = await db.execute(stmt, [id]);
         if (products.length > 0) {
