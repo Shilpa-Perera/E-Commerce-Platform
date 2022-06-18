@@ -1,3 +1,4 @@
+const ROLE = require("../roles.json");
 const jwt = require("jsonwebtoken");
 const Joi = require("joi");
 const db = require("../util/database");
@@ -254,7 +255,7 @@ class Customer {
 
   generateAuthToken() {
     const token = jwt.sign(
-      { customer_id: this.customer_id, name: this.name, email: this.email },
+      { user_id: this.customer_id, name: this.name, email: this.email, role: ROLE.ADMIN },
       config.get("jwtPrivateKey")
     );
     return token;

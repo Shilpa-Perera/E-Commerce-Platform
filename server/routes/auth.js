@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const _ = require('lodash');
 const {Customer} = require('../models/Customer');
 const express = require('express');
+const { Admin } = require('../models/Admin');
 const router = express.Router();
 
 router.post("/", async (req, res) => {
@@ -11,10 +12,8 @@ router.post("/", async (req, res) => {
 
     const email = req.body.email;
 
-    let user = await Customer.findByEmail(email);
-    // if (!user) user = await Customer.findOne({ email: req.body.email });       
-    // if (!user) user = await Author.findOne({ email: req.body.email });
-
+    let user = await Admin.findByEmail(email);
+    if (!user) user = await Customer.findByEmail(email);    
     if (!user) return res.status(400).send('Invalid email or password.');
 
     const validPassword = await bcrypt.compare(req.body.password, user.password);
