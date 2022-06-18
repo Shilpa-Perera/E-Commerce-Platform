@@ -26,6 +26,10 @@ class CustomerAddress {
       }
     });
   }
+
+  async save() {
+
+  }
 }
 
 class CustomerMobile {
@@ -33,6 +37,19 @@ class CustomerMobile {
     this.telephone_id = customerMobileDetails.telephone_id;
     this.customer_id = customerMobileDetails.customer_id;
     this.mobile = customerMobileDetails.mobile;
+  }
+
+  async update() {
+    let sql = "update customer_mobile \
+    set mobile=? where telephone_id=? and customer_id=?;";
+
+    await db.execute(sql, [this.mobile, this.telephone_id, this.customer_id], (err, results) => {
+      if (err) {
+        throw err;
+      } else {
+        console.log("results: ", results);
+      }
+    });
   }
 }
 
@@ -129,7 +146,9 @@ class Customer {
     for (let i = 0; i < this.mobiles.length; i++) {
       const mobile = this.mobiles[i];
 
-      const args = [this.customer_id, mobile];
+      if (mobile.telephone_id !== -1) continue;
+
+      const args = [this.customer_id, mobile.mobile];
 
       params.push(...args);
     }
@@ -147,6 +166,8 @@ class Customer {
 
     for (let i = 0; i < this.addresses.length; i++) {
       const address = this.addresses[i];
+
+      if (address.address_id !== -1) continue;
 
       const args = [
         this.customer_id,
@@ -247,6 +268,7 @@ function validateCustomer(customer) {
     password: Joi.string().max(1024).required(),
     addresses: Joi.array()
       .items({
+        address_id: Joi.number(),
         po_box: Joi.string(),
         street_name: Joi.string(),
         city: Joi.string(),
@@ -255,7 +277,10 @@ function validateCustomer(customer) {
       .required()
       .min(1),
     mobiles: Joi.array()
-      .items(Joi.string().pattern(new RegExp("^[+0][0-9]+")))
+      .items({
+        telephone_id: Joi.number(),
+        mobile: Joi.string().pattern(new RegExp("^[+0][0-9]+"))
+      })
       .required()
       .min(1),
   });

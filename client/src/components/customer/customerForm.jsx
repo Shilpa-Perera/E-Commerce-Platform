@@ -159,25 +159,7 @@ class CustomerFormBody extends Form {
     try {
       console.log("front state", this.state.data);
       const data = { ...this.state.data };
-      const mobiles = [];
-      const addresses = [];
-
-      for (let address of addresses) {
-        delete address.index;
-        delete address.address_id;
-      };
-      for (let i = 0; i < data.addresses.length; i++) {
-        const address = { ...data.addresses[i] };
-        delete address.index;
-        delete address.address_id;
-        addresses.push(address);
-      }
-      for (let mobile of data.mobiles) {
-        mobiles.push(mobile.mobile)
-      };
-      data.mobiles = mobiles;
-      data.addresses = addresses;
-
+      
       await saveCustomer(data);
       console.log("state", this.state);
       this.props.navigate("/");
@@ -250,7 +232,7 @@ class CustomerFormBody extends Form {
                 data-array-name="addresses"
                 data-element-id={address.index}
                 key={"po_box"+address.index}
-                id={address.index}
+                id={"po_box"+address.index}
                 type="text"
                 label="Po Box"
                 name="po_box"
@@ -261,7 +243,7 @@ class CustomerFormBody extends Form {
               <Input
                 data-array-name="addresses"
                 data-element-id={address.index}
-                id={address.index}
+                id={"street_name"+address.index}
                 key={"street_name"+address.index}
                 type="text"
                 label="Street Name"
@@ -273,7 +255,7 @@ class CustomerFormBody extends Form {
               <Input
                 data-array-name="addresses"
                 data-element-id={address.index}
-                id={address.index}
+                id={"city"+address.index}
                 key={"city"+address.index}
                 type="text"
                 label="City"
@@ -285,7 +267,7 @@ class CustomerFormBody extends Form {
               <Input
                 data-array-name="addresses"
                 data-element-id={address.index}
-                id={address.index}
+                id={"postal_code"+address.index}
                 key={"postal_code"+address.index}
                 type="text"
                 label="Postal Code"
@@ -303,7 +285,7 @@ class CustomerFormBody extends Form {
               <Input
                 data-array-name="mobiles"
                 data-element-id={mobile.index}
-                id={mobile.index}
+                id={"mobile"+mobile.index}
                 key={"mobile"+mobile.index}
                 type="text"
                 label="Contact No"

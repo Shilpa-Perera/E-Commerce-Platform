@@ -73,37 +73,49 @@ class CustomerController {
   }
 
   static async updateCustomer(req, res, next) {
-    const { error } = validate(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
+    // const { error } = validate(req.body);
+    // if (error) return res.status(400).send(error.details[0].message);
 
+    // no change of email and password
     const customer = new Customer({
       customer_id: req.params.id,
       name: req.body.name,
       email: req.body.email,
-      // mobiles: req.body.mobiles,
+      mobiles: [],
     });
 
-    // create address objects - without "customer_id"
     const addresses = req.body.addresses;
-    addresses.forEach((address) => {
+    addresses.forEach(async (address) => {
       
       const addressObj = new CustomerAddress({ customer_id: req.params.id, ...address });
-      console.log(addressObj);
+      // console.log(addressObj);
       
       // has a error not fixed... if req.body.addresses contain address_id with them.. this will work.. 
-      
-      addressObj.update();
+      if (addressObj.address_id !== -1)  await addressObj.update();
+      else customer.addresses.push(addressObj);
     });
+
+
 
     // create mobile objects - without "customer_id"
     const mobiles = req.body.mobiles;
-    mobiles.forEach((mobile) => {
-      const mobileObj = new CustomerMobile(mobile);
-      mobileObj.update();
+    mobiles.forEach(async (mobile) => {
+      const mobileObj = new CustomerMobile({ customer_id: req.params.id, ...mobile });
+      // console.log(mobileObj);
+
+      if (mobileObj.telephone_id !== -1)  await mobileObj.update();
+      else customer.mobiles.push(mobileObj);
+      await mobileObj.update();
     })
 
     await customer.update();
-    console.log("customer updated");
+    
+    // add newly added addresses and mobiles
+    console.log("put:",customer.addresses);
+    if (customer.addresses.length) await customer.saveAddresses();
+    if (customer.mobiles.length) await customer.saveMobiles();
+    
+    // console.log("customer updated");
     res.send(_.pick(customer, ["customer_id", "name", "email"]));
   }
 }
