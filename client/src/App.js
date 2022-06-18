@@ -21,7 +21,7 @@ import ScrollToTop from "./components/scrollToTop";
 import DeletedProduct from "./components/products/deletedProduct";
 import ThemeSelector from "./components/themeSelector";
 import UnavailableProducts from "./components/products/unavailableProducts";
-import { getTheme, saveTheme } from "./services/themeService";
+import { getTheme, saveTheme } from "./utils/theme";
 import { getCurrentUser } from "./services/authService";
 import ProtectedRoute from './components/common/protectedRoute';
 import {  getItemCount ,addProductToCart , setCartId, incrementItemCount, decrementItemCount ,deletedProduct } from "./services/cartService";
