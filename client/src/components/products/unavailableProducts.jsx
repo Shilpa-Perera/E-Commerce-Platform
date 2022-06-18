@@ -9,10 +9,12 @@ import UnavailableProductsTable from "./unavailableProductsTable";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import SearchBox from "../common/searchBox";
+import Loading from "../common/loading";
 
 class UnavailableProductsBody extends Component {
     state = {
-        unavailableProducts: null,
+        loading: true,
+        unavailableProducts: [],
         currentPage: 1,
         pageSize: 24,
         searchQuery: "",
@@ -63,8 +65,10 @@ class UnavailableProductsBody extends Component {
                 else product.reason = "Unknown";
             }
 
-            this.setState({ unavailableProducts });
-        } catch (e) {}
+            this.setState({ unavailableProducts, loading: false });
+        } catch (e) {
+            this.setState({ loading: false });
+        }
     }
 
     handleSort = (sortBy) => {
@@ -100,6 +104,8 @@ class UnavailableProductsBody extends Component {
     };
 
     render() {
+        if (this.state.loading) return <Loading />;
+
         const { unavailableProducts: data, sortBy, searchQuery } = this.state;
         if (data === null) return;
 

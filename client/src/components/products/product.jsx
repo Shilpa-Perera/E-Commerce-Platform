@@ -5,10 +5,12 @@ import { getVariant, getVariantById } from "../../services/variantService";
 import Carousel from "../common/carousel";
 import { toast } from "react-toastify";
 import { variantImageUrl } from "../../services/imageService";
-import { addProductToCart , setCartId} from "../../services/cartService" ;
+import { addProductToCart, setCartId } from "../../services/cartService";
+import Loading from "../common/loading";
 
 class ProductBody extends Component {
     state = {
+        loading: true,
         product: null,
         variant: null,
         selectedOptions: [],
@@ -65,17 +67,19 @@ class ProductBody extends Component {
         await this.populateVariant();
     };
 
-    handleAddToCart =  async() => {
-
+    handleAddToCart = async () => {
         await setCartId();
 
         let item_count = parseInt(localStorage.getItem("item_count"));
-        item_count ++ ;
-        localStorage.setItem("item_count", item_count.toString()) ;
-        
+        item_count++;
+        localStorage.setItem("item_count", item_count.toString());
+
         const cart_id = localStorage.getItem("cart_id");
-        const obj = {cart_id : cart_id , variant_id : this.state.variant.variant_id }
-        const {data : result} = await addProductToCart(obj);
+        const obj = {
+            cart_id: cart_id,
+            variant_id: this.state.variant.variant_id,
+        };
+        const { data: result } = await addProductToCart(obj);
         toast.success(`Item added to cart!`, { theme: "dark" });
     };
 
@@ -123,12 +127,15 @@ class ProductBody extends Component {
                 this.props.replace("/not-found");
         }
         await this.populateVariant();
+        this.setState({ loading: false });
     }
 
     render() {
+        if (this.state.loading) return <Loading />;
+
         const { product, variant, images } = this.state;
         if (product) {
-            const availabile = product.availability === "AVAILABLE";
+            const available = product.availability === "AVAILABLE";
 
             const optionsAvailable =
                 product.options && product.options.length > 0;
@@ -254,7 +261,7 @@ class ProductBody extends Component {
                                         </table>
                                     </div>
                                 )}
-                                {availabile && (
+                                {available && (
                                     <React.Fragment>
                                         <div className="d-flex flex-row-reverse mt-5">
                                             <div>
@@ -302,7 +309,7 @@ class ProductBody extends Component {
                                         )}
                                     </React.Fragment>
                                 )}
-                                {!availabile && (
+                                {!available && (
                                     <div className="container mt-5">
                                         <div
                                             className="alert alert-danger d-flex align-items-center"

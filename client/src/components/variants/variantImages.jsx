@@ -9,9 +9,11 @@ import Carousel from "../common/carousel";
 import AddImage from "../addImage";
 import { toast } from "react-toastify";
 import { checkProductVariant, getProduct } from "../../services/productService";
+import Loading from "../common/loading";
 
 class VariantImagesBody extends React.Component {
     state = {
+        loading: true,
         product: null,
         variant: null,
         images: [],
@@ -33,7 +35,7 @@ class VariantImagesBody extends React.Component {
                     images.push(variantImageUrl(image_name));
                 }
 
-            this.setState({ product, variant, images });
+            this.setState({ product, variant, images, loading: false });
         } catch (e) {
             if (e.response && e.response.status === 404) replace("/not-found");
         }
@@ -68,6 +70,8 @@ class VariantImagesBody extends React.Component {
     };
 
     render() {
+        if (this.state.loading) return <Loading />;
+
         const { product, variant, images } = this.state;
 
         if (variant === null) return;
