@@ -4,11 +4,9 @@ import { ImSun } from "react-icons/im";
 import { BsMoonStarsFill } from "react-icons/bs";
 import { getCurrentUser } from './../services/authService';
 
-export default function NavBar({ theme, toggleTheme, user }) {
+export default function NavBar({ theme, toggleTheme,item_count, user }) {
     const nextTheme = theme ? "light" : "dark";
-
-    // const user = getCurrentUser();
-
+    
     return (
         <nav className="navbar navbar-expand-lg navbar-custom mb-5">
             <div className="container-fluid">
@@ -143,7 +141,7 @@ export default function NavBar({ theme, toggleTheme, user }) {
                                 <span className="ms-2">
                                     <i className="fa fa-shopping-cart fa-2x "></i>
                                     <span className="badge rounded-pill badge-notification bg-primary">
-                                        {localStorage.getItem("item_count")}
+                                        {item_count}
                                     </span>
                                 </span>
                             </NavLink>

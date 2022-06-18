@@ -5,7 +5,7 @@ import { getVariant, getVariantById } from "../../services/variantService";
 import Carousel from "../common/carousel";
 import { toast } from "react-toastify";
 import { variantImageUrl } from "../../services/imageService";
-import { addProductToCart, setCartId } from "../../services/cartService";
+import { addProductToCart, setCartId, incrementItemCount, getItemCount } from "../../services/cartService";
 import Loading from "../common/loading";
 
 class ProductBody extends Component {
@@ -16,6 +16,7 @@ class ProductBody extends Component {
         selectedOptions: [],
         images: [],
         defaultImages: [],
+        item_count : this.props.item_count
     };
 
     async populateVariant() {
@@ -65,22 +66,6 @@ class ProductBody extends Component {
         this.setState({ selectedOptions });
 
         await this.populateVariant();
-    };
-
-    handleAddToCart = async () => {
-        await setCartId();
-
-        let item_count = parseInt(localStorage.getItem("item_count"));
-        item_count++;
-        localStorage.setItem("item_count", item_count.toString());
-
-        const cart_id = localStorage.getItem("cart_id");
-        const obj = {
-            cart_id: cart_id,
-            variant_id: this.state.variant.variant_id,
-        };
-        const { data: result } = await addProductToCart(obj);
-        toast.success(`Item added to cart!`, { theme: "dark" });
     };
 
     async componentDidMount() {
@@ -280,7 +265,7 @@ class ProductBody extends Component {
                                                     <button
                                                         className="btn btn-outline-success hover-focus"
                                                         onClick={
-                                                            this.handleAddToCart
+                                                           () => this.props.onAddToCart(this.state.variant.variant_id)
                                                         }
                                                     >
                                                         Add to cart

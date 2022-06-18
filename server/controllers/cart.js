@@ -40,6 +40,14 @@ class CartController{
         res.send(cart_id);
     }
 
+    static async deleteProduct(req,res,next){
+
+         const cart_id = req.params.cart_id ;
+         const variant_id = req.params.variant_id ;
+         await Cart.deleteProduct(cart_id,variant_id);
+         res.status(201).send("Success");
+    }
+
     
 
     

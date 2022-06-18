@@ -24,23 +24,18 @@ import UnavailableProducts from "./components/products/unavailableProducts";
 import { getTheme, saveTheme } from "./services/themeService";
 import { getCurrentUser } from "./services/authService";
 import ProtectedRoute from './components/common/protectedRoute';
+import {  getItemCount ,addProductToCart , setCartId, incrementItemCount, decrementItemCount ,deletedProduct } from "./services/cartService";
+import { toast } from "react-toastify";
 
 function App() {
     const [theme, setTheme] = useState(getTheme());
+    const [item_count , setItemCount] = useState(getItemCount()) ;
     const [user, setUser] = useState();
 
     useEffect(() => {
-        console.log("set user");
         setUser(getCurrentUser());
     }, [])
 
-    useEffect(() => {
-        console.log("set user on change", user);
-    }, user);
-
-    // const login = (user) => {
-    //     setUser(user);
-    // }
 
     return (
         <div className="d-flex flex-column min-vh-100">
@@ -52,6 +47,7 @@ function App() {
                     setTheme(theme);
                     saveTheme(theme);
                 }}
+                item_count = {item_count}
             />
             <ToastContainer />
             <Routes>
@@ -74,7 +70,26 @@ function App() {
                     <Route path="deleted" element={<DeletedProduct />}></Route>
 
                     <Route path=":id">
-                        <Route index element={<Product />}></Route>
+                        <Route index element={<Product item_count = {item_count} 
+                                                       onAddToCart={async (variant_id)  => {
+                                                           
+
+                                                            await setCartId();
+                                                            incrementItemCount();
+                                                            
+                                                    
+                                                            const cart_id = localStorage.getItem("cart_id");
+                                                            const obj = {
+                                                                cart_id: cart_id,
+                                                                variant_id: variant_id,
+                                                            };
+                                                            const { data: result } = await addProductToCart(obj);
+                                                            toast.success(`Item added to cart!`, { theme: "dark" });
+                                                            setItemCount(getItemCount());
+                                                }} 
+                            />}>
+
+                     </Route>
 
                         <Route path="variants">
                             <Route index element={<VariantForm />}></Route>
@@ -105,7 +120,14 @@ function App() {
                     <Route path=":id" element={<Order />}></Route>
                 </Route>
 
-                <Route path="/cart" element={<Cart />}></Route>
+                <Route path="/cart" element={<Cart item_count = {item_count} 
+                                                    onDeleteFromCart = {async (cart_id,variant_id)=>{
+                                                         decrementItemCount()
+                                                         await deletedProduct(cart_id ,variant_id) ;
+                                                         setItemCount(getItemCount);
+                                                }}/>}>
+
+                                                </Route>
 
                 <Route path="/login" element={<LoginForm setUser={(user) => {setUser(user);}} />}></Route>
                 <Route path="/logout" element={<Logout setUser={(user) => {setUser(user);}}/>}></Route>
