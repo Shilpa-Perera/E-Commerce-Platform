@@ -1,19 +1,25 @@
 import React, {Component} from "react";
-
+import { productImageUrl } from "../services/imageService" ;
 
 class CartCard extends Component {
      
   render() { 
 
     const{
-      title , 
-      variant_name , 
-      onDecrement ,
-      onIncrement ,
-      onDelete, 
-      variant_id , 
-      number_of_items,
-      price}  = this.props ;
+        title , 
+        variant_name ,
+        image_name , 
+        onDecrement ,
+        onIncrement ,
+        onDelete, 
+        variant_id , 
+        number_of_items,
+        price}  = this.props ;
+
+    const image =
+        image_name === null
+          ? "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE4QWs8?ver=95ec&q=90&m=6&h=270&w=270&b=%23FFFFFFFF&f=jpg&o=f&aim=true"
+          : productImageUrl(image_name);
 
     return (
      
@@ -22,8 +28,7 @@ class CartCard extends Component {
           <div className="row d-flex justify-content-between align-items-center">
             <div className="col-md-2 col-lg-2 col-xl-2">
               <img
-                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
-                className="img-fluid rounded-3" alt="Cotton T-shirt"/>
+                src= {image} className="img-fluid rounded-3" alt="image"/>
             </div>
             <div className="col-md-3 col-lg-3 col-xl-3">
               <p className="lead fw-normal mb-2">{title}</p>

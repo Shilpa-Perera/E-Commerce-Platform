@@ -76,6 +76,7 @@ class Cart extends Component {
             title = { product.product_title } 
             variant_name = {product.variant_name} 
             price = {product.price} 
+            image_name = {product.image_name}
             number_of_items= {product.number_of_items}
             onIncrement = {this.handleIncrement}
             onDecrement = {this.handleDecrement} 
@@ -97,7 +98,7 @@ class Cart extends Component {
 
         <div className="card">
           <div className="card-body">
-              <button type="button" className ="btn btn-success w-100 ">Proceed to Pay</button>
+              <button type="button" className ="btn btn-success w-100" disabled = {this.state.orderTotal === 0 ? 'disabled' : ""}>Proceed to Pay</button>
           </div>
         </div>
 
