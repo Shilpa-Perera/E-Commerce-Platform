@@ -13,6 +13,11 @@ class Category {
     return db.execute(select_all_query);
   }
 
+  static async getAllSubCategories() {
+    const get_all_sub_categories_query = "select * from sub_category";
+    return db.execute(get_all_sub_categories_query);
+  }
+
   static async getSubCategories(categoryId) {
     const get_sub_categories_query =
       "select * from category_link natural join sub_category where category_id=?";
@@ -31,6 +36,14 @@ class Category {
     const insert_add_category_query =
       "insert into category (category_name) values (?)";
     const result = await db.execute(insert_add_category_query, [categoryName]);
+  }
+
+  static async addSubCategory(subCategoryName) {
+    const insert_add_sub_category_query =
+      "insert into sub_category (sub_category_name) values (?)";
+    const result = await db.execute(insert_add_sub_category_query, [
+      subCategoryName,
+    ]);
   }
 }
 
