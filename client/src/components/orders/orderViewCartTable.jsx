@@ -31,7 +31,6 @@ class OrdersCartTable extends Component {
 
     render() {
         const { sortBy, onSort, cartDetails } = this.props;
-        console.log(cartDetails);
         return (
             <div className="order-cart-table">
                 <h5>Cart Items</h5>
