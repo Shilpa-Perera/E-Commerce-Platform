@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getOrder } from "../../services/orderService";
+import { OrderStatus } from "./orderStatus";
 import OrdersCartTable from "./orderViewCartTable";
 
 class OrderView extends Component {
@@ -34,6 +35,7 @@ class OrderView extends Component {
             let cart = null;
             try {
                 orderValues = orderDisplayValues.orderDetails[0];
+                console.log(orderValues); // ## WIP: temporary
                 cart = orderDisplayValues.cart;
                 let t = orderValues.order_id;
             } catch (error) {
@@ -123,7 +125,9 @@ class OrderView extends Component {
                                                 readOnly
                                                 className="form-control-plaintext"
                                                 id="f1"
-                                                value={orderValues.delivery_address}
+                                                value={
+                                                    orderValues.delivery_address
+                                                }
                                             />
                                         </div>
                                     </div>
@@ -157,7 +161,9 @@ class OrderView extends Component {
                                                 readOnly
                                                 className="form-control-plaintext"
                                                 id="f1"
-                                                value={orderValues.delivery_method}
+                                                value={
+                                                    orderValues.delivery_method
+                                                }
                                             />
                                         </div>
                                     </div>
@@ -174,12 +180,25 @@ class OrderView extends Component {
                                                 readOnly
                                                 className="form-control-plaintext"
                                                 id="f1"
-                                                value={orderValues.payment_method}
+                                                value={
+                                                    orderValues.payment_method
+                                                }
                                             />
                                         </div>
                                     </div>
                                     <div className="mb-3 order-cart-div">
                                         <OrdersCartTable cartDetails={cart} />
+                                    </div>
+
+                                    <div className="mb-3 row">
+                                        <OrderStatus
+                                            status={{
+                                                paymentState:
+                                                    orderValues.payment_state,
+                                                deliveryState:
+                                                    orderValues.delivery_state,
+                                            }}
+                                        />
                                     </div>
                                 </div>
                             </div>
