@@ -35,6 +35,7 @@ import {
 import { toast } from "react-toastify";
 import ROLE from "./utils/roles.json";
 import OrderCheckoutForm from "./components/orders/orderCheckout";
+import CheckoutPayment from "./components/orders/checkoutPayment";
 
 function App() {
     const [theme, setTheme] = useState(getTheme());
@@ -159,7 +160,13 @@ function App() {
                             />
                         }
                     ></Route>
-                    <Route path="checkout" element={<OrderCheckoutForm />}></Route>
+                    <Route path="checkout">
+                        <Route index element={<OrderCheckoutForm />}></Route>
+                        <Route
+                            path="payment"
+                            element={<CheckoutPayment />}
+                        ></Route>
+                    </Route>
                 </Route>
 
                 <Route
