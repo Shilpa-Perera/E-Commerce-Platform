@@ -22,8 +22,8 @@ class CartController{
         
         const cart_id = req.body.cart_id;
         const variant_id = req.body.variant_id ;
-        await Cart.addProductToCart(cart_id,variant_id);
-        res.status(201).send("Success");
+        const isExist = await Cart.addProductToCart(cart_id,variant_id);
+        res.send(isExist);
 
     }
 

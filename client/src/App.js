@@ -83,7 +83,7 @@ function App() {
                                     item_count={item_count}
                                     onAddToCart={async (variant_id) => {
                                         await setCartId();
-                                        incrementItemCount();
+                                        
 
                                         const cart_id =
                                             localStorage.getItem("cart_id");
@@ -93,10 +93,10 @@ function App() {
                                         };
                                         const { data: result } =
                                             await addProductToCart(obj);
-                                        toast.success(`Item added to cart!`, {
-                                            theme: "dark",
-                                        });
-                                        setItemCount(getItemCount());
+                                        let toast_msg = (result.exist) ?  "Item already in the cart !" : "Item added to cart !";
+                                        (result.exist) ?  toast.warn(`${toast_msg}`, {theme: "dark", }) : toast.success(`${toast_msg}`, {theme: "dark", });
+                                         if (! result.exist)  {incrementItemCount() ; setItemCount(getItemCount());}
+                                         
                                     }}
                                 />
                             }
