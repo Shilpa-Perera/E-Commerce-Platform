@@ -1,5 +1,7 @@
 const { CustomerController } = require("../controllers/customer");
 const auth = require('../middleware/auth');
+const authPage = require('../middleware/authPage');
+const ROLE = require("../util/roles.json");
 const express = require("express");
 const router = express();
 
