@@ -61,17 +61,31 @@ function App() {
                 <Route path="/products">
                     <Route
                         index
-                        element={<Products isAlbum={true} isTable={false} />}
+                        element={
+                            <Products
+                                isAlbum={true}
+                                isTable={false}
+                                user={user}
+                            />
+                        }
                     ></Route>
 
                     <Route
                         path="new"
-                        element={<Navigate to="/products/edit/new" />}
+                        element={
+                            <ProtectedRoute permissions={[ROLE.ADMIN]}>
+                                <Navigate to="/products/edit/new" />
+                            </ProtectedRoute>
+                        }
                     ></Route>
 
                     <Route
                         path="unavailable"
-                        element={<UnavailableProducts />}
+                        element={
+                            <ProtectedRoute permissions={[ROLE.ADMIN]}>
+                                <UnavailableProducts />
+                            </ProtectedRoute>
+                        }
                     ></Route>
 
                     <Route path="deleted" element={<DeletedProduct />}></Route>
@@ -81,10 +95,10 @@ function App() {
                             index
                             element={
                                 <Product
+                                    user={user}
                                     item_count={item_count}
                                     onAddToCart={async (variant_id) => {
                                         await setCartId();
-                                        
 
                                         const cart_id =
                                             localStorage.getItem("cart_id");
@@ -94,22 +108,45 @@ function App() {
                                         };
                                         const { data: result } =
                                             await addProductToCart(obj);
-                                        let toast_msg = (result.exist) ?  "Item already in the cart !" : "Item added to cart !";
-                                        (result.exist) ?  toast.warn(`${toast_msg}`, {theme: "dark", }) : toast.success(`${toast_msg}`, {theme: "dark", });
-                                         if (! result.exist)  {incrementItemCount() ; setItemCount(getItemCount());}
-                                         
+                                        let toast_msg = result.exist
+                                            ? "Item already in the cart !"
+                                            : "Item added to cart !";
+                                        result.exist
+                                            ? toast.warn(`${toast_msg}`, {
+                                                  theme: "dark",
+                                              })
+                                            : toast.success(`${toast_msg}`, {
+                                                  theme: "dark",
+                                              });
+                                        if (!result.exist) {
+                                            incrementItemCount();
+                                            setItemCount(getItemCount());
+                                        }
                                     }}
                                 />
                             }
                         ></Route>
 
                         <Route path="variants">
-                            <Route index element={<VariantForm />}></Route>
+                            <Route
+                                index
+                                element={
+                                    <ProtectedRoute permissions={[ROLE.ADMIN]}>
+                                        <VariantForm />
+                                    </ProtectedRoute>
+                                }
+                            ></Route>
 
                             <Route path=":v_id">
                                 <Route
                                     path="images"
-                                    element={<VariantImages />}
+                                    element={
+                                        <ProtectedRoute
+                                            permissions={[ROLE.ADMIN]}
+                                        >
+                                            <VariantImages />
+                                        </ProtectedRoute>
+                                    }
                                 ></Route>
                             </Route>
                         </Route>
@@ -119,11 +156,24 @@ function App() {
                         <Route
                             index
                             element={
-                                <Products isAlbum={false} isTable={true} />
+                                <ProtectedRoute permissions={[ROLE.ADMIN]}>
+                                    <Products
+                                        isAlbum={false}
+                                        isTable={true}
+                                        user={user}
+                                    />
+                                </ProtectedRoute>
                             }
                         ></Route>
 
-                        <Route path=":id" element={<ProductForm />}></Route>
+                        <Route
+                            path=":id"
+                            element={
+                                <ProtectedRoute permissions={[ROLE.ADMIN]}>
+                                    <ProductForm />
+                                </ProtectedRoute>
+                            }
+                        ></Route>
                     </Route>
                 </Route>
 
@@ -168,16 +218,20 @@ function App() {
                 ></Route>
 
                 <Route path="/customers">
-                        
-                        {/* using permissions */}
-                        {/* <Route path=":id" element={
+                    {/* using permissions */}
+                    {/* <Route path=":id" element={
                             <ProtectedRoute permissions={[ROLE.CUSTOMER]}><CustomerForm /></ProtectedRoute>
                         }></Route> */}
 
-                        <Route path=":id" element={
-                            <ProtectedRoute><CustomerForm /></ProtectedRoute>
-                        }></Route>
-                    
+                    <Route
+                        path=":id"
+                        element={
+                            <ProtectedRoute>
+                                <CustomerForm />
+                            </ProtectedRoute>
+                        }
+                    ></Route>
+
                     <Route path="register" element={<CustomerForm />}></Route>
                 </Route>
 

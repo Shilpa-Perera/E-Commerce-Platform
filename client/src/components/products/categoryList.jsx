@@ -3,6 +3,7 @@ import ListGroup from "../common/listGroup";
 import { Link } from "react-router-dom";
 
 export default function CategoryList({
+    isAdmin,
     categories,
     handleCategorySelect,
     selectedCategory,
@@ -47,13 +48,15 @@ export default function CategoryList({
                         additionalClasses={""}
                         additionalItemClasses={"border-0 rounded-pill mb-2"}
                     />
-                    <Link
-                        className="btn btn-primary h5 mt-3 hover-focus"
-                        to="/categories/new"
-                    >
-                        <i className="fa fa-plus"></i>
-                        <span className="ms-2">Add New</span>
-                    </Link>
+                    {isAdmin && (
+                        <Link
+                            className="btn btn-primary h5 mt-3 hover-focus"
+                            to="/categories/new"
+                        >
+                            <i className="fa fa-plus"></i>
+                            <span className="ms-2">Add New</span>
+                        </Link>
+                    )}
                 </div>
             </div>
         </div>
