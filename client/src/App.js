@@ -132,7 +132,7 @@ function App() {
                 <Route path="/login" element={<LoginForm setUser={(user) => {setUser(user);}} />}></Route>
                 <Route path="/logout" element={<Logout setUser={(user) => {setUser(user);}}/>}></Route>
 
-                <Route path="/customers/*">
+                <Route path="/customers">
                     
                         <Route path=":id" element={
                             <ProtectedRoute><CustomerForm /></ProtectedRoute>

@@ -43,7 +43,7 @@ create table if not exists admin (
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(1024) NOT NULL
-)
+);
 
 create table if not exists customer (
     customer_id int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
