@@ -30,13 +30,6 @@ class OrderCheckoutForm extends Component {
 
                         <CheckoutFormCard/>
 
-                        <div className="row">
-                            <div className="col-md-3 mb-3">
-                                <div className="invalid-feedback">
-                                    Zip code required.
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
