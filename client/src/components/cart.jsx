@@ -136,7 +136,7 @@ class Cart extends Component {
                                                 : ""
                                         }
                                     >
-                                        Proceed to Pay
+                                        Checkout
                                     </button>
                                 </Link>
                             </div>
