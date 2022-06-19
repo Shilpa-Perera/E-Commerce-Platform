@@ -5,8 +5,6 @@ import Table from "../common/table";
 class ProductsTable extends Component {
     columns = [
         { path: "product_title", label: "Product Title" },
-        { path: "category_name", label: "Category" },
-        { path: "sub_category_name", label: "Subcategory" },
         { path: "sku", label: "SKU" },
         {
             path: "reason",
@@ -27,19 +25,36 @@ class ProductsTable extends Component {
                             </button>
                         </span>
                     )}
-                    {availability === "AVAILABLE" &&
-                        default_variant_id === null && (
-                            <span className="me-2 my-2 my-lg-0">
-                                <Link to={`/products/${product_id}/variants/`}>
-                                    <button className="btn btn-primary btn-sm hover-focus">
-                                        <span className="me-2">
-                                            Manage Variants
-                                        </span>
-                                        <i className="fa fa-gears"></i>
-                                    </button>
-                                </Link>
-                            </span>
-                        )}
+                    {availability === "AVAILABLE" && (
+                        <React.Fragment>
+                            {default_variant_id === null && (
+                                <span className="me-2 my-2 my-lg-0">
+                                    <Link
+                                        to={`/products/${product_id}/variants/`}
+                                    >
+                                        <button className="btn btn-primary btn-sm hover-focus">
+                                            <span className="me-2">
+                                                Manage Variants
+                                            </span>
+                                            <i className="fa fa-gears"></i>
+                                        </button>
+                                    </Link>
+                                </span>
+                            )}
+                            {default_variant_id !== null && (
+                                <span className="me-2 my-2 my-lg-0">
+                                    <Link to={`/products/edit/${product_id}/`}>
+                                        <button className="btn btn-primary btn-sm hover-focus">
+                                            <span className="me-2">
+                                                Edit Product
+                                            </span>
+                                            <i className="fa fa-edit"></i>
+                                        </button>
+                                    </Link>
+                                </span>
+                            )}
+                        </React.Fragment>
+                    )}
                 </div>
             ),
             label: "Actions",
