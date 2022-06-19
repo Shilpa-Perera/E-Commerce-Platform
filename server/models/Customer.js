@@ -1,4 +1,4 @@
-const ROLE = require("../roles.json");
+const ROLE = require("../util/roles.json");
 const jwt = require("jsonwebtoken");
 const Joi = require("joi");
 const db = require("../util/database");
@@ -85,6 +85,7 @@ class Customer {
 
   static async fetchAllInfoById(customerId) {
     const customer = await this.findById(customerId);
+    if (!customer) return;
 
     const addresses = await this.fetchAddresses(customerId);
     customer.addresses = addresses;

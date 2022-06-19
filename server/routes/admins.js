@@ -1,6 +1,6 @@
 const auth = require('../middleware/auth');
 const authPage = require('../middleware/authPage');
-const ROLE = require("../roles.json");
+const ROLE = require("../util/roles.json");
 const express = require("express");
 const { AdminController } = require('../controllers/admin');
 const router = express();

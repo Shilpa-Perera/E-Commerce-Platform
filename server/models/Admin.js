@@ -1,4 +1,4 @@
-const ROLE = require("../roles.json");
+const ROLE = require("../util/roles.json");
 const jwt = require("jsonwebtoken");
 const Joi = require("joi");
 const db = require("../util/database");

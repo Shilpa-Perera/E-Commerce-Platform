@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const _ = require("lodash");
 const { Admin } = require("../models/Admin");
+const ROLE = require("../util/roles.json");
 const {
   Customer,
   CustomerAddress,
@@ -15,11 +16,12 @@ class CustomerController {
   }
 
   static async getCustomer(req, res, next) {
-    // const user = req.user;
-    // if(user.id !== req.params.id) return res.status(403).send("Access Denied");
-
     const customer = await Customer.fetchAllInfoById(req.params.id);
-    res.send(customer);
+    if (!customer) return res.status(404).send("The customer with given ID not found");
+
+    const user = req.user;
+    if (user.role === ROLE.admin || user.user_id === req.params.id) return customer;
+    else return res.status(403).send("Access Denied");
 
     // if (!req.query.type || req.query.type === '1') {
     //   // only basic details
