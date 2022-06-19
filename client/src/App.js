@@ -34,6 +34,7 @@ import {
 } from "./services/cartService";
 import { toast } from "react-toastify";
 import ROLE from "./utils/roles.json";
+import OrderCheckoutForm from "./components/orders/orderCheckout";
 
 function App() {
     const [theme, setTheme] = useState(getTheme());
@@ -84,7 +85,6 @@ function App() {
                                     item_count={item_count}
                                     onAddToCart={async (variant_id) => {
                                         await setCartId();
-                                        
 
                                         const cart_id =
                                             localStorage.getItem("cart_id");
@@ -94,10 +94,20 @@ function App() {
                                         };
                                         const { data: result } =
                                             await addProductToCart(obj);
-                                        let toast_msg = (result.exist) ?  "Item already in the cart !" : "Item added to cart !";
-                                        (result.exist) ?  toast.warn(`${toast_msg}`, {theme: "dark", }) : toast.success(`${toast_msg}`, {theme: "dark", });
-                                         if (! result.exist)  {incrementItemCount() ; setItemCount(getItemCount());}
-                                         
+                                        let toast_msg = result.exist
+                                            ? "Item already in the cart !"
+                                            : "Item added to cart !";
+                                        result.exist
+                                            ? toast.warn(`${toast_msg}`, {
+                                                  theme: "dark",
+                                              })
+                                            : toast.success(`${toast_msg}`, {
+                                                  theme: "dark",
+                                              });
+                                        if (!result.exist) {
+                                            incrementItemCount();
+                                            setItemCount(getItemCount());
+                                        }
                                     }}
                                 />
                             }
@@ -132,19 +142,25 @@ function App() {
                     <Route path=":id" element={<Order />}></Route>
                 </Route>
 
-                <Route
-                    path="/cart"
-                    element={
-                        <Cart
-                            item_count={item_count}
-                            onDeleteFromCart={async (cart_id, variant_id) => {
-                                decrementItemCount();
-                                await deletedProduct(cart_id, variant_id);
-                                setItemCount(getItemCount);
-                            }}
-                        />
-                    }
-                ></Route>
+                <Route path="/cart">
+                    <Route
+                        index
+                        element={
+                            <Cart
+                                item_count={item_count}
+                                onDeleteFromCart={async (
+                                    cart_id,
+                                    variant_id
+                                ) => {
+                                    decrementItemCount();
+                                    await deletedProduct(cart_id, variant_id);
+                                    setItemCount(getItemCount);
+                                }}
+                            />
+                        }
+                    ></Route>
+                    <Route path="checkout" element={<OrderCheckoutForm />}></Route>
+                </Route>
 
                 <Route
                     path="/login"
@@ -168,16 +184,20 @@ function App() {
                 ></Route>
 
                 <Route path="/customers">
-                        
-                        {/* using permissions */}
-                        {/* <Route path=":id" element={
+                    {/* using permissions */}
+                    {/* <Route path=":id" element={
                             <ProtectedRoute permissions={[ROLE.CUSTOMER]}><CustomerForm /></ProtectedRoute>
                         }></Route> */}
 
-                        <Route path=":id" element={
-                            <ProtectedRoute><CustomerForm /></ProtectedRoute>
-                        }></Route>
-                    
+                    <Route
+                        path=":id"
+                        element={
+                            <ProtectedRoute>
+                                <CustomerForm />
+                            </ProtectedRoute>
+                        }
+                    ></Route>
+
                     <Route path="register" element={<CustomerForm />}></Route>
                 </Route>
 
