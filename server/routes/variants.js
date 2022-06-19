@@ -1,3 +1,6 @@
+const auth = require("../middleware/auth");
+const authPage = require("../middleware/authPage");
+const ROLE = require("../util/roles.json");
 const { VariantController } = require("../controllers/variant");
 const express = require("express");
 const multer = require("multer");
@@ -23,12 +26,18 @@ const upload = multer({ storage });
 router.get("/images/:id", VariantController.getImages);
 router.get("/:id", VariantController.getVariantById);
 router.get("/", VariantController.getVariant);
+
 router.post(
     "/images/:id",
-    upload.single("variant_img"),
+    [auth, authPage([ROLE.ADMIN]), upload.single("variant_img")],
     VariantController.postImage
 );
-router.post("/", VariantController.postVariant);
-router.put("/:id", VariantController.putVariant);
+router.post("/", [auth, authPage([ROLE.ADMIN])], VariantController.postVariant);
+
+router.put(
+    "/:id",
+    [auth, authPage([ROLE.ADMIN])],
+    VariantController.putVariant
+);
 
 module.exports = router;
