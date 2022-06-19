@@ -146,15 +146,27 @@ class Products extends Component {
                 return queryRegEx.test(title);
             });
         else if (selectedSubCategory && selectedSubCategory.sub_category_id) {
-            filtered = allProducts.filter(
-                (p) =>
-                    p.sub_category_id === selectedSubCategory.sub_category_id &&
-                    p.category_id === selectedCategory.category_id
-            );
+            filtered = allProducts.filter((p) => {
+                for (const {
+                    category_id,
+                    sub_category_id,
+                } of p.product_categories) {
+                    if (
+                        category_id === selectedCategory.category_id &&
+                        sub_category_id === selectedSubCategory.sub_category_id
+                    )
+                        return true;
+                }
+                return false;
+            });
         } else if (selectedCategory && selectedCategory.category_id) {
-            filtered = allProducts.filter(
-                (p) => p.category_id === selectedCategory.category_id
-            );
+            filtered = allProducts.filter((p) => {
+                for (const { category_id } of p.product_categories) {
+                    if (category_id === selectedCategory.category_id)
+                        return true;
+                }
+                return false;
+            });
         }
 
         const sorted = _.orderBy(
