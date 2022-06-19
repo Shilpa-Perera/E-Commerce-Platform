@@ -5,18 +5,27 @@ const {
     validateProduct,
     validateCustomFeature,
     validateOption,
+    validateProductCategory,
+    validateProductId,
 } = require("../models/Product");
 const { Variant } = require("../models/Variant");
 
 class ProductController {
     static async getAllProducts(req, res, next) {
-        const allProducts = await Product.fetchAll();
-        res.send(allProducts[0]);
+        const [allProducts, _] = await Product.fetchAll();
+
+        for (const product of allProducts) {
+            product.product_categories = await Product.getProductCategories(
+                product.product_id
+            );
+        }
+
+        res.send(allProducts);
     }
 
     static async getUnavailableProducts(req, res, next) {
-        const unavailableProducts = await Product.fetchUnavailable();
-        res.send(unavailableProducts[0]);
+        const [unavailableProducts, _] = await Product.fetchUnavailable();
+        res.send(unavailableProducts);
     }
 
     static async getProduct(req, res, next) {
@@ -69,17 +78,29 @@ class ProductController {
     static async postCustomFeature(req, res, next) {
         const { product_id, custom_feature } = req.body;
 
-        const { error } = validateCustomFeature(custom_feature);
+        let { error } = validateCustomFeature(custom_feature);
         if (error) return res.status(400).send(error.details[0].message);
 
-        const { error: error_id } = Joi.object({
-            id: Joi.number().required().min(1).label("Product ID"),
-        }).validate({ id: product_id });
-        if (error_id) return res.status(400).send(error_id.details[0].message);
+        error = validateProductId(product_id);
+        if (error) return res.status(400).send(error.details[0].message);
 
         await Product.addCustomFeature(product_id, custom_feature);
 
         res.send(custom_feature);
+    }
+
+    static async postProductCategory(req, res, next) {
+        const { product_id, product_category } = req.body;
+
+        let { error } = validateProductCategory(product_category);
+        if (error) return res.status(400).send(error.details[0].message);
+
+        error = validateProductId(product_id);
+        if (error) return res.status(400).send(error.details[0].message);
+
+        await Product.addProductCategory(product_id, product_category);
+
+        res.send({ success: true });
     }
 
     static async putCustomFeature(req, res, next) {
@@ -103,18 +124,13 @@ class ProductController {
     }
 
     static async putProduct(req, res, next) {
-        const props = [
-            "product_title",
-            "sku",
-            "product_weight",
-            "category_id",
-            "sub_category_id",
-        ];
+        const props = ["product_title", "sku", "product_weight"];
 
         const product = new Product({
             product_id: req.params.id,
             ..._.pick(req.body, props),
             custom_features: null,
+            product_categories: null,
             options: null,
         });
 
@@ -160,6 +176,15 @@ class ProductController {
         await Product.deleteCustomFeature(featureId);
     }
 
+    static async deleteProductCategory(req, res, next) {
+        const { product_id, category_id, sub_category_id } = req.params;
+        await Product.deleteProductCategory(
+            product_id,
+            category_id,
+            sub_category_id
+        );
+    }
+
     static async deleteProduct(req, res, next) {
         const productId = req.params.id;
         await Product.deleteProduct(productId);
@@ -169,7 +194,7 @@ class ProductController {
         const productId = req.params.id;
         await Product.restoreProduct(productId);
 
-        res.send({ success: true })
+        res.send({ success: true });
     }
 
     static async checkProductVariant(req, res, next) {
