@@ -25,18 +25,33 @@ class CheckoutPayment extends Component {
                                 3
                             </span>
                         </h4>
-                        <CheckoutCartCard/>
-                        
+                        <CheckoutCartCard />
                     </div>
                     {/* Form Area */}
                     <div className="col-md-8 order-md-1">
                         <h4 className="d-flex justify-content-between align-items-center mb-3">
-                            <span className="text-muted">Payment Details</span>
+                            <span className="text-muted">Payment</span>
                         </h4>
 
                         <div className="row p-5 div-dark">
-                            <div className="d-block my-3">
-                                <h5 className="mb-3">Payment method</h5>
+                            <div className="col-12">
+                                <label htmlFor="totalAmmount">
+                                    Estimated Delivery Time:
+                                </label>
+                                <li className="list-group-item" id="firstName">
+                                    5 days
+                                </li>
+                            </div>
+                            <div className="col-12">
+                                <label htmlFor="totalAmmount">
+                                    Total amount:
+                                </label>
+                                <li className="list-group-item" id="firstName">
+                                    LKR 2012
+                                </li>
+                            </div>
+                            <div className="col-12 d-block my-3">
+                                <h5 className="mb-3">Choose payment method</h5>
                                 <div className="form-check">
                                     <input
                                         className="form-check-input"
@@ -139,6 +154,24 @@ class CheckoutPayment extends Component {
                                         </div>
                                     </div>
                                 )}
+                                <div
+                                    className="btn-group col-6"
+                                    role="group"
+                                    aria-label="Basic mixed styles example"
+                                >
+                                    <button
+                                        type="button"
+                                        className="btn btn-danger"
+                                    >
+                                        Cancle
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="btn btn-success"
+                                    >
+                                        Proceed to Pay ### to payment gateway - order validation - inventory consistency - mount cart - transaction
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
