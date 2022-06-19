@@ -52,7 +52,7 @@ class Admin {
 
   generateAuthToken() {
     const token = jwt.sign(
-      { user_id: this.admin_id, name: this.name, email: this.email, role: ROLE.CUSTOMER },
+      { user_id: this.admin_id, name: this.name, email: this.email, role: ROLE.ADMIN },
       config.get("jwtPrivateKey")
     );
     return token;

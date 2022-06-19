@@ -5,7 +5,7 @@ import Form from "../common/form";
 import { getCustomer, saveCustomer } from "../../services/customerService";
 import Input from "../common/input";
 import { getCurrentUser } from "../../services/authService";
-import ROLE from "../../services/roles.json";
+import ROLE from "../../utils/roles.json";
 
 class CustomerFormBody extends Form {
   state = {
