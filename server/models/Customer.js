@@ -255,7 +255,7 @@ class Customer {
 
   generateAuthToken() {
     const token = jwt.sign(
-      { user_id: this.customer_id, name: this.name, email: this.email, role: ROLE.ADMIN },
+      { user_id: this.customer_id, name: this.name, email: this.email, role: ROLE.CUSTOMER },
       config.get("jwtPrivateKey")
     );
     return token;

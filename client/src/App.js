@@ -26,6 +26,7 @@ import { getCurrentUser } from "./services/authService";
 import ProtectedRoute from './components/common/protectedRoute';
 import {  getItemCount ,addProductToCart , setCartId, incrementItemCount, decrementItemCount ,deletedProduct } from "./services/cartService";
 import { toast } from "react-toastify";
+import ROLE from "./utils/roles.json";
 
 function App() {
     const [theme, setTheme] = useState(getTheme());
@@ -133,13 +134,15 @@ function App() {
                 <Route path="/logout" element={<Logout setUser={(user) => {setUser(user);}}/>}></Route>
 
                 <Route path="/customers">
-                    
+                        
+                        {/* using permissions */}
+                        {/* <Route path=":id" element={
+                            <ProtectedRoute permissions={[ROLE.CUSTOMER]}><CustomerForm /></ProtectedRoute>
+                        }></Route> */}
+
                         <Route path=":id" element={
                             <ProtectedRoute><CustomerForm /></ProtectedRoute>
                         }></Route>
-                    {/* <Route path=":id" element={
-                            <CustomerForm />
-                        }></Route> */}
                     
                     <Route path="register" element={<CustomerForm />}></Route>
                 </Route>
