@@ -75,7 +75,7 @@ class Product {
             product.custom_features = await Product.getCustomFeatures(
                 productId
             );
-            product.product_categories = await Product.getProductCategories(
+            product.product_categories = await Product.getProductCategoriesWithNames(
                 productId
             );
             product.options = await Product.getOptions(productId);
