@@ -4,7 +4,7 @@ import auth from "../../services/authService";
 
 const ProtectedRoute = ({ permissions, children }) => {
   const currentUser = auth.getCurrentUser();
-  console.log("currentUser: ", currentUser);
+  // console.log("currentUser: ", currentUser);
   if (currentUser) {
     if (!permissions) return children;
     else if (permissions.includes(currentUser.role)) return children;
