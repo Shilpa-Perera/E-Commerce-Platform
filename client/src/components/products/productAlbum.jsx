@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import ProductAlbumGrid from "./productAlbumGrid";
 
 export default function ProductAlbum({
+    isAdmin,
     products,
     sortBy,
     sortOptions,
@@ -17,13 +18,15 @@ export default function ProductAlbum({
                 <div className="mb-4 d-flex justify-content-between flex-column flex-lg-row">
                     <span>
                         <h2 className="d-inline-block">Products</h2>
-                        <Link
-                            className="btn btn-primary h5 ms-3 hover-focus"
-                            to="/products/edit/new"
-                        >
-                            <i className="fa fa-plus"></i>
-                            <span className="ms-2">Add New</span>
-                        </Link>
+                        {isAdmin && (
+                            <Link
+                                className="btn btn-primary h5 ms-3 hover-focus"
+                                to="/products/edit/new"
+                            >
+                                <i className="fa fa-plus"></i>
+                                <span className="ms-2">Add New</span>
+                            </Link>
+                        )}
                     </span>
                     <span>
                         <table className="table table-borderless table-sm">

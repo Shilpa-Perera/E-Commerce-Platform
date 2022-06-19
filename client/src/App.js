@@ -61,7 +61,13 @@ function App() {
                 <Route path="/products">
                     <Route
                         index
-                        element={<Products isAlbum={true} isTable={false} />}
+                        element={
+                            <Products
+                                isAlbum={true}
+                                isTable={false}
+                                user={user}
+                            />
+                        }
                     ></Route>
 
                     <Route
@@ -89,6 +95,7 @@ function App() {
                             index
                             element={
                                 <Product
+                                    user={user}
                                     item_count={item_count}
                                     onAddToCart={async (variant_id) => {
                                         await setCartId();
@@ -150,7 +157,11 @@ function App() {
                             index
                             element={
                                 <ProtectedRoute permissions={[ROLE.ADMIN]}>
-                                    <Products isAlbum={false} isTable={true} />
+                                    <Products
+                                        isAlbum={false}
+                                        isTable={true}
+                                        user={user}
+                                    />
                                 </ProtectedRoute>
                             }
                         ></Route>

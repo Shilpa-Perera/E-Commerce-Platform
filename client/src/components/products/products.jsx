@@ -178,7 +178,7 @@ class Products extends Component {
     render() {
         if (this.state.loading) return <Loading />;
 
-        const { isAlbum, isTable } = this.props;
+        const { isAlbum, isTable, user } = this.props;
         const { length: count } = this.state.products;
         if (count === 0)
             return (
@@ -201,11 +201,14 @@ class Products extends Component {
 
         const { totalCount, data: products } = this.getPagedData();
 
+        const isAdmin = user && user.role === "admin";
+
         return (
             <div className="container-fluid mb-5">
                 <div className="row">
                     <div className="col-md-4 col-lg-3 col-xxl-2">
                         <CategoryList
+                            isAdmin={isAdmin}
                             categories={categories}
                             handleCategorySelect={this.handleCategorySelect}
                             selectedCategory={selectedCategory}
@@ -237,6 +240,7 @@ class Products extends Component {
                         )}
                         {isAlbum && (
                             <ProductAlbum
+                                isAdmin={isAdmin}
                                 products={products}
                                 sortBy={this.state.sortBy}
                                 sortOptions={this.sortOptions}
