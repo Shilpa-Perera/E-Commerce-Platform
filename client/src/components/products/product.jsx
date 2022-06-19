@@ -3,9 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getProduct } from "../../services/productService";
 import { getVariant, getVariantById } from "../../services/variantService";
 import Carousel from "../common/carousel";
-import { toast } from "react-toastify";
 import { variantImageUrl } from "../../services/imageService";
-import { addProductToCart, setCartId, incrementItemCount, getItemCount } from "../../services/cartService";
 import Loading from "../common/loading";
 
 class ProductBody extends Component {
@@ -16,7 +14,7 @@ class ProductBody extends Component {
         selectedOptions: [],
         images: [],
         defaultImages: [],
-        item_count : this.props.item_count
+        item_count: this.props.item_count,
     };
 
     async populateVariant() {
@@ -117,6 +115,9 @@ class ProductBody extends Component {
 
     render() {
         if (this.state.loading) return <Loading />;
+
+        const { user } = this.props;
+        const isCustomer = !(user && user.role === "admin");
 
         const { product, variant, images } = this.state;
         if (product) {
@@ -259,13 +260,17 @@ class ProductBody extends Component {
                                                 </h4>
                                             </div>
                                         </div>
-                                        {variant && inStock && (
+                                        {variant && inStock && isCustomer && (
                                             <div className="d-flex flex-row-reverse mt-5">
                                                 <div>
                                                     <button
                                                         className="btn btn-outline-success hover-focus"
-                                                        onClick={
-                                                           () => this.props.onAddToCart(this.state.variant.variant_id)
+                                                        onClick={() =>
+                                                            this.props.onAddToCart(
+                                                                this.state
+                                                                    .variant
+                                                                    .variant_id
+                                                            )
                                                         }
                                                     >
                                                         Add to cart

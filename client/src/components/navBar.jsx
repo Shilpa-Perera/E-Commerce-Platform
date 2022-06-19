@@ -2,11 +2,11 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { ImSun } from "react-icons/im";
 import { BsMoonStarsFill } from "react-icons/bs";
-import { getCurrentUser } from './../services/authService';
 
-export default function NavBar({ theme, toggleTheme,item_count, user }) {
+export default function NavBar({ theme, toggleTheme, item_count, user }) {
     const nextTheme = theme ? "light" : "dark";
-    
+    const isAdmin = user && user.role === "admin";
+
     return (
         <nav className="navbar navbar-expand-lg navbar-custom mb-5">
             <div className="container-fluid">
@@ -42,47 +42,49 @@ export default function NavBar({ theme, toggleTheme,item_count, user }) {
                                 Products
                             </NavLink>
                         </li>
-                        <li className="nav-item dropdown">
-                            <span
-                                className="nav-link dropdown-toggle hover-focus"
-                                role="button"
-                                id="navbarDropdown"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                            >
-                                Manage
-                            </span>
-                            <ul
-                                className="dropdown-menu collapsed"
-                                id="product-list-collapse"
-                                aria-labelledby="navbarDropdown"
-                            >
-                                <li>
-                                    <NavLink
-                                        className="dropdown-item hover-focus"
-                                        to="/products/edit/new"
-                                    >
-                                        New Product
-                                    </NavLink>
-                                </li>
-                                <li>
-                                    <NavLink
-                                        className="dropdown-item hover-focus"
-                                        to="/products/edit/"
-                                    >
-                                        Manage Products
-                                    </NavLink>
-                                </li>
-                                <li>
-                                    <NavLink
-                                        className="dropdown-item hover-focus"
-                                        to="/products/unavailable/"
-                                    >
-                                        Unavailable Products
-                                    </NavLink>
-                                </li>
-                            </ul>
-                        </li>
+                        {isAdmin && (
+                            <li className="nav-item dropdown">
+                                <span
+                                    className="nav-link dropdown-toggle hover-focus"
+                                    role="button"
+                                    id="navbarDropdown"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                >
+                                    Manage
+                                </span>
+                                <ul
+                                    className="dropdown-menu collapsed"
+                                    id="product-list-collapse"
+                                    aria-labelledby="navbarDropdown"
+                                >
+                                    <li>
+                                        <NavLink
+                                            className="dropdown-item hover-focus"
+                                            to="/products/edit/new"
+                                        >
+                                            New Product
+                                        </NavLink>
+                                    </li>
+                                    <li>
+                                        <NavLink
+                                            className="dropdown-item hover-focus"
+                                            to="/products/edit/"
+                                        >
+                                            Manage Products
+                                        </NavLink>
+                                    </li>
+                                    <li>
+                                        <NavLink
+                                            className="dropdown-item hover-focus"
+                                            to="/products/unavailable/"
+                                        >
+                                            Unavailable Products
+                                        </NavLink>
+                                    </li>
+                                </ul>
+                            </li>
+                        )}
                         <li className="nav-item">
                             <NavLink
                                 className="nav-link hover-focus"
@@ -91,30 +93,36 @@ export default function NavBar({ theme, toggleTheme,item_count, user }) {
                                 Orders
                             </NavLink>
                         </li>
-                        {!user && <li className="nav-item">
-                            <NavLink
-                                className="nav-link hover-focus"
-                                to="/login"
-                            >
-                                Login
-                            </NavLink>
-                        </li>}
-                        {user && <li className="nav-item">
-                            <NavLink
-                                className="nav-link hover-focus"
-                                to="/logout"
-                            >
-                                Logout
-                            </NavLink>
-                        </li>}
-                        {!user && <li className="nav-item">
-                            <NavLink
-                                className="nav-link hover-focus"
-                                to="/customers/register"
-                            >
-                                Register
-                            </NavLink>
-                        </li>}
+                        {!user && (
+                            <li className="nav-item">
+                                <NavLink
+                                    className="nav-link hover-focus"
+                                    to="/login"
+                                >
+                                    Login
+                                </NavLink>
+                            </li>
+                        )}
+                        {user && (
+                            <li className="nav-item">
+                                <NavLink
+                                    className="nav-link hover-focus"
+                                    to="/logout"
+                                >
+                                    Logout
+                                </NavLink>
+                            </li>
+                        )}
+                        {!user && (
+                            <li className="nav-item">
+                                <NavLink
+                                    className="nav-link hover-focus"
+                                    to="/customers/register"
+                                >
+                                    Register
+                                </NavLink>
+                            </li>
+                        )}
                     </ul>
                     <ul className="navbar-nav ms-auto">
                         <li className="nav-item d-flex align-items-center">
