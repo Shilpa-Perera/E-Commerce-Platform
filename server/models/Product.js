@@ -70,8 +70,9 @@ class Product {
             product.custom_features = await Product.getCustomFeatures(
                 productId
             );
-            product.product_categories =
-                Product.getProductCategories(productId);
+            product.product_categories = await Product.getProductCategories(
+                productId
+            );
             product.options = await Product.getOptions(productId);
         }
 
@@ -123,12 +124,16 @@ class Product {
     static async getProductCategories(productId) {
         const get_product_categories_query = `
             select
-                category_id,
-                sub_category_id
+                pc.category_id,
+                pc.sub_category_id,
+                c.category_name,
+                sc.sub_category_name
             from
-                product_category
+                product_category pc
+                join category c on pc.category_id = c.category_id
+                join sub_category sc on pc.sub_category_id = sc.sub_category_id
             where
-                product_id = ?
+                pc.product_id = ?
         `;
 
         const [product_categories, _] = await db.execute(

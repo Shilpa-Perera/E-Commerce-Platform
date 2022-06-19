@@ -41,27 +41,29 @@ class ProductController {
     }
 
     static async postProduct(req, res, next) {
-        const props = [
-            "product_title",
-            "sku",
-            "product_weight",
-            "category_id",
-            "sub_category_id",
-        ];
+        const props = ["product_title", "sku", "product_weight"];
 
         const { error } = validateProduct(req.body, props);
         if (error) return res.status(400).send(error.details[0].message);
 
         props.push("custom_features");
+        props.push("product_categories");
         props.push("options");
         let product = new Product(_.pick(req.body, props));
 
-        const { custom_features, options } = product;
+        const { custom_features, product_categories, options } = product;
 
         for (const custom_feature of custom_features) {
             const { error: error_cf } = validateCustomFeature(custom_feature);
             if (error_cf)
                 return res.status(400).send(error_cf.details[0].message);
+        }
+
+        for (const productCategory of product_categories) {
+            const { error: error_pc } =
+                validateProductCategory(productCategory);
+            if (error_pc)
+                return res.status(400).send(error_pc.details[0].message);
         }
 
         for (const option of options) {

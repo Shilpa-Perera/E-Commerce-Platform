@@ -26,7 +26,7 @@ router.get("/", ProductController.getAllProducts);
 router.post("/restore/:id", ProductController.restoreProduct);
 router.post("/check", ProductController.checkProductVariant);
 router.post("/feature", ProductController.postCustomFeature);
-router.post("/product-category", ProductController.postProductCategory);
+router.post("/product-categories", ProductController.postProductCategory);
 router.post("/", ProductController.postProduct);
 router.put("/feature/:id", ProductController.putCustomFeature);
 router.put("/default/:id", ProductController.putDefault);
@@ -38,7 +38,7 @@ router.put(
 router.put("/:id", ProductController.putProduct);
 router.delete("/feature/:id", ProductController.deleteFeature);
 router.delete(
-    "/product-category/:product_id/:category_id/:sub_category_id",
+    "/product-categories/:product_id/:category_id/:sub_category_id",
     ProductController.deleteProductCategory
 );
 router.delete("/:id", ProductController.deleteProduct);
