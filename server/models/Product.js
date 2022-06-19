@@ -95,7 +95,7 @@ class Product {
         if (products.length > 0) {
             const product = products[0];
             product.product_categories =
-                Product.getProductCategories(productId);
+                Product.getProductCategoriesWithNames(productId);
             return product;
         }
 
@@ -124,6 +124,24 @@ class Product {
     static async getProductCategories(productId) {
         const get_product_categories_query = `
             select
+                category_id,
+                sub_category_id
+            from
+                product_category
+            where
+                product_id = ?
+        `;
+
+        const [product_categories, _] = await db.execute(
+            get_product_categories_query,
+            [productId]
+        );
+        return product_categories;
+    }
+
+    static async getProductCategoriesWithNames(productId) {
+        const get_product_categories_names_query = `
+            select
                 pc.category_id,
                 pc.sub_category_id,
                 c.category_name,
@@ -137,7 +155,7 @@ class Product {
         `;
 
         const [product_categories, _] = await db.execute(
-            get_product_categories_query,
+            get_product_categories_names_query,
             [productId]
         );
         return product_categories;
