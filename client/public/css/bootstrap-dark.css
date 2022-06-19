@@ -40,6 +40,9 @@ h4,
   border: #EEEEEE;
   height: 2rem;
 }
+.checkout-cart-list{
+  background-color: transparent !important;
+}
 /* Custom Styling for Order */
 
 .div-dark {
