@@ -2,8 +2,10 @@ const { CategoryController } = require("../controllers/category");
 const express = require("express");
 const router = express();
 
-router.get("/", CategoryController.getAllCategories);
+router.get("/category", CategoryController.getAllCategories);
+router.get("/sub-category", CategoryController.getAllSubCategories);
 router.get("/:id", CategoryController.getSubCategories);
-router.post("/", CategoryController.addCategory);
+router.post("/add-category", CategoryController.addCategory);
+router.post("/add-sub-category", CategoryController.addSubCategory);
 
 module.exports = router;
