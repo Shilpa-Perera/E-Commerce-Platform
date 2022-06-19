@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 class CheckoutCartCard extends Component {
-    state = [{ payment: null }];
+    state = { payment: null };
     render() {
         return (
             <div className="div-dark overflow-hidden">
