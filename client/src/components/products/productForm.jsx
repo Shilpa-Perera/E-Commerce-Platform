@@ -3,10 +3,7 @@ import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import Joi from "joi-browser";
 import Form from "../common/form";
-import {
-    getCategories,
-    getSubCategories,
-} from "../../services/categoryService";
+import { getCategories } from "../../services/categoryService";
 import {
     getProduct,
     putProductImage,
@@ -25,22 +22,26 @@ import EditCustomFeaturesForm from "./editCustomFeatureForm";
 import _ from "lodash";
 import AddImage from "../addImage";
 import { productImageUrl } from "../../services/imageService";
+import ProductCategoryForm from "./productCategoryForm";
+import {
+    deleteProductCategory,
+    saveProductCategory,
+} from "../../services/productCategoryService";
 
 class ProductFormBody extends Form {
     state = {
         data: {
             product_id: 0,
             product_title: "",
-            category_id: 0,
-            sub_category_id: 0,
             sku: "",
             product_weight: "",
             custom_features: [],
+            product_categories: [],
             options: [],
             image_name: "",
         },
         categories: [],
-        subCategories: [],
+        current_product_categories: [],
         current_custom_features: [],
         current_options: [],
         isNew: false,
@@ -61,6 +62,12 @@ class ProductFormBody extends Form {
         { key: "edit", label: "" },
     ];
 
+    product_category_columns = [
+        { path: "category_name", label: "Category" },
+        { path: "sub_category_name", label: "Subcategory" },
+        { key: "edit", label: "" },
+    ];
+
     schema = {
         product_id: Joi.number(),
         product_title: Joi.string()
@@ -68,11 +75,10 @@ class ProductFormBody extends Form {
             .min(3)
             .max(250)
             .label("Product Title"),
-        category_id: Joi.number().min(1).required().label("Category"),
-        sub_category_id: Joi.number().min(1).required().label("Subcategory"),
         sku: Joi.string().required().min(5).max(30).label("SKU"),
         product_weight: Joi.number().required().min(1).label("Product Weight"),
         custom_features: Joi.array(),
+        product_categories: Joi.array(),
         options: Joi.array(),
         isNew: Joi.bool(),
         image_name: Joi.string().allow(""),
@@ -90,7 +96,10 @@ class ProductFormBody extends Form {
                 const isNew = true;
                 this.setState({ isNew });
                 if (this.option_columns.length === 2)
-                    this.option_columns.push({ key: "actions_op", label: "Actions" });
+                    this.option_columns.push({
+                        key: "actions_op",
+                        label: "Actions",
+                    });
                 return;
             }
 
@@ -102,18 +111,20 @@ class ProductFormBody extends Form {
             const data = _.pick(product, [
                 "product_id",
                 "product_title",
-                "category_id",
-                "sub_category_id",
                 "sku",
                 "product_weight",
                 "custom_features",
+                "product_categories",
                 "options",
                 "image_name",
             ]);
             const current_custom_features = data.custom_features;
+            const current_product_categories = data.product_categories;
             const current_options = data.options;
             data.custom_features = [];
+            data.product_categories = [];
             data.options = [];
+            data.product_id = productId;
 
             const { image_name } = product;
             const product_image_url =
@@ -122,6 +133,7 @@ class ProductFormBody extends Form {
             this.setState({
                 data,
                 current_custom_features,
+                current_product_categories,
                 current_options,
                 product_image_url,
             });
@@ -131,20 +143,9 @@ class ProductFormBody extends Form {
         }
     }
 
-    async populateSubCategories() {
-        const { category_id } = this.state.data;
-        let subCategories = [];
-        if (category_id > 0) {
-            const { data } = await getSubCategories(category_id);
-            subCategories = data;
-        }
-        this.setState({ subCategories });
-    }
-
     async componentDidMount() {
         await this.populateCategories();
         await this.populateProduct();
-        await this.populateSubCategories();
     }
 
     addOption = (option) => {
@@ -185,23 +186,31 @@ class ProductFormBody extends Form {
         }
     };
 
-    handleCategoryChange = async ({ currentTarget: input }) => {
-        const errors = { ...this.state.errors };
-        const errorMessage = this.validateProperty(input);
-        if (errorMessage) errors[input.name] = errorMessage;
-        else delete errors[input.name];
+    handleAddProductCategory = async (productCategory) => {
+        if (this.state.isNew) {
+            const data = { ...this.state.data };
+            data.product_categories.push(productCategory);
+            this.setState({ data });
+        } else {
+            const current_product_categories = [
+                ...this.state.current_product_categories,
+            ];
+            const originalProductCategories = [...current_product_categories];
+            current_product_categories.push(productCategory);
+            this.setState({ current_product_categories });
 
-        const category_id = input.value;
-        const data = { ...this.state.data };
-        data["category_id"] = category_id;
-
-        let subCategories = [];
-        if (category_id > 0) {
-            const { data: sub } = await getSubCategories(category_id);
-            subCategories = sub;
+            try {
+                await saveProductCategory(productCategory, this.props.id);
+            } catch (ex) {
+                console.log(ex);
+                toast.error("An error occurred while saving the category.", {
+                    theme: "dark",
+                });
+                this.setState({
+                    current_product_categories: originalProductCategories,
+                });
+            }
         }
-
-        this.setState({ data, errors, subCategories });
     };
 
     handleEditCustomFeature = (customFeature) => {
@@ -233,6 +242,41 @@ class ProductFormBody extends Form {
                     theme: "dark",
                 });
                 this.setState({ current_custom_features: originalFeatures });
+            }
+        }
+    };
+
+    handleDeleteProductCategory = async (productCategory) => {
+        const index = productCategory.index;
+        if (this.state.isNew) {
+            const data = { ...this.state.data };
+            data.product_categories.splice(index, 1);
+            this.setState({ data });
+        } else {
+            const current_product_categories = [
+                ...this.state.current_product_categories,
+            ];
+            const originalProductCategories = [...current_product_categories];
+            current_product_categories.splice(index, 1);
+            this.setState({
+                current_product_categories,
+                edit_custom_feature: {},
+            });
+
+            try {
+                const { category_id, sub_category_id } = productCategory;
+                await deleteProductCategory(
+                    this.state.data.product_id,
+                    category_id,
+                    sub_category_id
+                );
+            } catch (ex) {
+                toast.error("An error occurred while deleting the category.", {
+                    theme: "dark",
+                });
+                this.setState({
+                    current_product_categories: originalProductCategories,
+                });
             }
         }
     };
@@ -289,14 +333,23 @@ class ProductFormBody extends Form {
         if (!isNew) {
             const { data } = await saveProduct(this.state.data);
             const { product_id } = data;
-            this.props.push(`/products/${product_id}/variants`);
-        } else if (product_image !== null) {
+            return this.props.push(`/products/${product_id}/variants`);
+        } else if (
+            product_image !== null &&
+            this.state.data.product_categories.length > 0
+        ) {
             const { data } = await saveProduct(this.state.data);
             const { product_id } = data;
             await putProductImage(product_id, this.state.product_image);
-            this.props.push(`/products/${product_id}/variants`);
-        } else {
+            return this.props.push(`/products/${product_id}/variants`);
+        }
+
+        if (product_image === null) {
             toast.warn("Product image is not added!", { theme: "dark" });
+        }
+
+        if (this.state.data.product_categories.length === 0) {
+            toast.warn("Select at least one category!", { theme: "dark" });
         }
     };
 
@@ -342,14 +395,6 @@ class ProductFormBody extends Form {
             });
         }
 
-        let subCategories = [];
-        for (const category of this.state.subCategories) {
-            subCategories.push({
-                id: category.sub_category_id,
-                name: category.sub_category_name,
-            });
-        }
-
         const imageAvailable = this.state.product_image_url !== "";
 
         return (
@@ -365,17 +410,6 @@ class ProductFormBody extends Form {
                     <div className="col mb-3">
                         <form onSubmit={this.handleSubmit}>
                             {this.renderInput("product_title", "Product Title")}
-                            {this.renderSelect(
-                                "category_id",
-                                "Category",
-                                [{ id: 0, value: "" }, ...categories],
-                                this.handleCategoryChange
-                            )}
-                            {this.renderSelect(
-                                "sub_category_id",
-                                "Subcategory",
-                                [{ id: 0, value: "" }, ...subCategories]
-                            )}
                             {this.renderInput("sku", "SKU")}
                             {this.renderInput(
                                 "product_weight",
@@ -434,6 +468,89 @@ class ProductFormBody extends Form {
                                 aspectRatio={1}
                             />
                         )}
+                    </div>
+                </div>
+                <div className="mt-5 div-dark">
+                    <h3>Product Categories</h3>
+                    <div className="row row-cols-1 row-cols-sm-1 row-cols-md-2">
+                        <div className="col mb-3">
+                            <table className="table table-hover">
+                                <TableHeader
+                                    columns={this.product_category_columns}
+                                    sortColumn={null}
+                                />
+                                <tbody>
+                                    {this.state.current_product_categories.map(
+                                        (productCategory, index) => {
+                                            productCategory.index = index;
+                                            return (
+                                                <tr key={"1-" + index}>
+                                                    <td>
+                                                        {
+                                                            productCategory.category_name
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        {
+                                                            productCategory.sub_category_name
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        <button
+                                                            className="btn btn-danger hover-focus"
+                                                            onClick={() =>
+                                                                this.handleDeleteProductCategory(
+                                                                    productCategory
+                                                                )
+                                                            }
+                                                        >
+                                                            <i className="fa fa-fw fa-trash-o"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        }
+                                    )}
+                                    {this.state.data.product_categories.map(
+                                        (productCategory, index) => {
+                                            productCategory.index = index;
+                                            return (
+                                                <tr key={"2-" + index}>
+                                                    <td>
+                                                        {
+                                                            productCategory.category_name
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        {
+                                                            productCategory.sub_category_name
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        <button
+                                                            className="btn btn-danger hover-focus"
+                                                            onClick={() =>
+                                                                this.handleDeleteProductCategory(
+                                                                    productCategory
+                                                                )
+                                                            }
+                                                        >
+                                                            <i className="fa fa-fw fa-trash-o"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        }
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className="col mt-3">
+                            <ProductCategoryForm
+                                categories={categories}
+                                onSubmit={this.handleAddProductCategory}
+                            />
+                        </div>
                     </div>
                 </div>
                 <div className="mt-5 div-dark">

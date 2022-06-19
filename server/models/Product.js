@@ -12,8 +12,7 @@ class Product {
         this.product_weight = productDetails.product_weight;
         this.custom_features = productDetails.custom_features;
         this.options = productDetails.options;
-        this.category_id = productDetails.category_id;
-        this.sub_category_id = productDetails.sub_category_id;
+        this.product_categories = productDetails.product_categories;
     }
 
     static #schema = {
@@ -23,11 +22,10 @@ class Product {
             .min(3)
             .max(250)
             .label("Product Title"),
-        category_id: Joi.number().min(1).required().label("Category"),
-        sub_category_id: Joi.number().min(1).required().label("Subcategory"),
         sku: Joi.string().required().min(5).max(30).label("SKU"),
         product_weight: Joi.number().required().min(1).label("Product Weight"),
         custom_features: Joi.array(),
+        product_categories: Joi.array(),
         options: Joi.array(),
         isNew: Joi.bool(),
         image_name: Joi.string().allow(""),
@@ -40,7 +38,6 @@ class Product {
             from
                 product p
                 join variant v on p.default_variant_id = v.variant_id
-                join product_category pc on p.product_id = pc.product_id
             where
                 p.availability = 'AVAILABLE'
         `;
@@ -51,21 +48,21 @@ class Product {
     static fetchUnavailable() {
         const select_unavailable_query = `
             select
-                p.product_id,
-                p.product_title,
-                p.sku,
-                p.availability,
-                p.default_variant_id,
-                c.category_name,
-                sc.sub_category_name
+                product_id,
+                product_title,
+                sku,
+                availability,
+                default_variant_id
             from
-                product p
-                join product_category pc on p.product_id = pc.product_id
-                join category c on pc.category_id = c.category_id
-                join sub_category sc on pc.sub_category_id = sc.sub_category_id
+                product
             where
-                p.availability = 'UNAVAILABLE'
-                or p.default_variant_id is null
+                availability = 'UNAVAILABLE'
+               or default_variant_id is null
+               or product_id not in (
+                select
+                    distinct product_id
+                from product_category
+            )
         `;
 
         return db.execute(select_unavailable_query);
@@ -76,6 +73,9 @@ class Product {
 
         if (product) {
             product.custom_features = await Product.getCustomFeatures(
+                productId
+            );
+            product.product_categories = await Product.getProductCategoriesWithNames(
                 productId
             );
             product.options = await Product.getOptions(productId);
@@ -91,7 +91,6 @@ class Product {
             from
                 product p
                 left outer join variant v on p.default_variant_id = v.variant_id
-                join product_category pc on p.product_id = pc.product_id
             where
                 p.product_id = ?
         `;
@@ -99,7 +98,10 @@ class Product {
         const [products, _] = await db.execute(get_product_query, [productId]);
 
         if (products.length > 0) {
-            return products[0];
+            const product = products[0];
+            product.product_categories =
+                Product.getProductCategoriesWithNames(productId);
+            return product;
         }
 
         return false;
@@ -122,6 +124,46 @@ class Product {
             [productId]
         );
         return custom_features;
+    }
+
+    static async getProductCategories(productId) {
+        const get_product_categories_query = `
+            select
+                category_id,
+                sub_category_id
+            from
+                product_category
+            where
+                product_id = ?
+        `;
+
+        const [product_categories, _] = await db.execute(
+            get_product_categories_query,
+            [productId]
+        );
+        return product_categories;
+    }
+
+    static async getProductCategoriesWithNames(productId) {
+        const get_product_categories_names_query = `
+            select
+                pc.category_id,
+                pc.sub_category_id,
+                c.category_name,
+                sc.sub_category_name
+            from
+                product_category pc
+                join category c on pc.category_id = c.category_id
+                join sub_category sc on pc.sub_category_id = sc.sub_category_id
+            where
+                pc.product_id = ?
+        `;
+
+        const [product_categories, _] = await db.execute(
+            get_product_categories_names_query,
+            [productId]
+        );
+        return product_categories;
     }
 
     static async getOptionValues(productId, optionId) {
@@ -195,6 +237,19 @@ class Product {
         customFeature.custom_feature_id = result[0].insertId;
     }
 
+    static async addProductCategory(productId, productCategory) {
+        const insert_product_category_query = `
+            insert into product_category (product_id, category_id, sub_category_id)
+            values (?, ?, ?)
+        `;
+
+        await db.execute(insert_product_category_query, [
+            productId,
+            productCategory.category_id,
+            productCategory.sub_category_id,
+        ]);
+    }
+
     static async updateCustomFeature(customFeature) {
         const { custom_feature_id, custom_feature_name, custom_feature_val } =
             customFeature;
@@ -229,7 +284,7 @@ class Product {
         try {
             await connection.beginTransaction();
             await this.saveProduct(connection);
-            await this.saveCategory(connection);
+            await this.saveProductCategories(connection);
             await this.saveCustomFeatures(connection);
             await this.saveOptions(connection);
             await connection.commit();
@@ -257,18 +312,21 @@ class Product {
         connection.unprepare(insert_product_query);
     }
 
-    async saveCategory(connection) {
-        const insert_product_category_query = `
-            insert into product_category (product_id, category_id, sub_category_id)
-            values (?, ?, ?)
-        `;
+    async saveProductCategories(connection) {
+        for (const { category_id, sub_category_id } of this
+            .product_categories) {
+            const insert_product_category_query = `
+                insert into product_category (product_id, category_id, sub_category_id)
+                values (?, ?, ?)
+            `;
 
-        await connection.execute(insert_product_category_query, [
-            this.product_id,
-            this.category_id,
-            this.sub_category_id,
-        ]);
-        connection.unprepare(insert_product_category_query);
+            await connection.execute(insert_product_category_query, [
+                this.product_id,
+                category_id,
+                sub_category_id,
+            ]);
+            connection.unprepare(insert_product_category_query);
+        }
     }
 
     async saveCustomFeatures(connection) {
@@ -320,23 +378,6 @@ class Product {
     }
 
     async update() {
-        const connection = await db.getConnection();
-
-        try {
-            await connection.beginTransaction();
-            await this.updateProduct(connection);
-            await this.updateCategory(connection);
-            await connection.commit();
-        } catch (e) {
-            await connection.rollback();
-            await connection.release();
-            throw e;
-        }
-
-        await connection.release();
-    }
-
-    async updateProduct(connection) {
         const {
             product_title: old_title,
             sku: old_sku,
@@ -359,32 +400,13 @@ class Product {
                     product_id = ?
             `;
 
-            await connection.execute(update_product_query, [
+            await db.execute(update_product_query, [
                 this.product_title,
                 this.sku,
                 this.product_weight,
                 this.product_id,
             ]);
-            connection.unprepare(update_product_query);
         }
-    }
-
-    async updateCategory(connection) {
-        const update_product_category_query = `
-            update
-                product_category
-            set category_id = ?,
-                sub_category_id = ?
-            where
-                product_id = ?
-        `;
-
-        await connection.execute(update_product_category_query, [
-            this.category_id,
-            this.sub_category_id,
-            this.product_id,
-        ]);
-        connection.unprepare(update_product_category_query);
     }
 
     static async makeDefault(productId, variantId) {
@@ -420,6 +442,23 @@ class Product {
         `;
 
         await db.execute(delete_custom_feature_query, [featureId]);
+    }
+
+    static async deleteProductCategory(productId, categoryId, subCategoryId) {
+        const delete_product_category_query = `
+            delete
+                from product_category
+                where
+                    product_id = ?
+                    and category_id = ?
+                    and sub_category_id = ?
+        `;
+
+        await db.execute(delete_product_category_query, [
+            productId,
+            categoryId,
+            subCategoryId,
+        ]);
     }
 
     static async deleteProduct(productId) {
@@ -471,6 +510,14 @@ class Product {
     }
 }
 
+function validateProductId(productId) {
+    const { error } = Joi.object({
+        id: Joi.number().required().min(1).label("Product ID"),
+    }).validate({ id: productId });
+
+    return error;
+}
+
 function validateProduct(product, props) {
     const schema = _.pick(Product.getSchema(), props);
     const object = _.pick(product, props);
@@ -497,6 +544,17 @@ function validateCustomFeature(feature) {
     );
 }
 
+function validateProductCategory(productCategory) {
+    const schema = {
+        category_id: Joi.number().min(1),
+        sub_category_id: Joi.number().min(1),
+    };
+
+    return Joi.object(schema).validate(
+        _.pick(productCategory, ["category_id", "sub_category_id"])
+    );
+}
+
 function validateOption(option) {
     const schema = {
         option_name: Joi.string()
@@ -513,6 +571,8 @@ function validateOption(option) {
 }
 
 module.exports.Product = Product;
+module.exports.validateProductId = validateProductId;
 module.exports.validateProduct = validateProduct;
 module.exports.validateCustomFeature = validateCustomFeature;
+module.exports.validateProductCategory = validateProductCategory;
 module.exports.validateOption = validateOption;

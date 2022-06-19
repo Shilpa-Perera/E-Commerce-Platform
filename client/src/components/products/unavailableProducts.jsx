@@ -62,7 +62,7 @@ class UnavailableProductsBody extends Component {
                     default_variant_id === null
                 )
                     product.reason = "No default variant";
-                else product.reason = "Unknown";
+                else product.reason = "No category selected";
             }
 
             this.setState({ unavailableProducts, loading: false });

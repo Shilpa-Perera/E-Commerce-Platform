@@ -26,13 +26,7 @@ export function saveProduct(product) {
         delete body.product_id;
         return http.put(
             productUrl(product.product_id),
-            _.pick(body, [
-                "product_title",
-                "sku",
-                "product_weight",
-                "category_id",
-                "sub_category_id",
-            ])
+            _.pick(body, ["product_title", "sku", "product_weight"])
         );
     } else {
         return http.post(
@@ -42,9 +36,8 @@ export function saveProduct(product) {
                 "sku",
                 "product_weight",
                 "custom_features",
+                "product_categories",
                 "options",
-                "category_id",
-                "sub_category_id",
             ])
         );
     }
