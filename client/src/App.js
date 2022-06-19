@@ -34,6 +34,7 @@ import {
 } from "./services/cartService";
 import { toast } from "react-toastify";
 import ROLE from "./utils/roles.json";
+import CategoryForm from "./components/category/categoryForm";
 
 function App() {
     const [theme, setTheme] = useState(getTheme());
@@ -175,6 +176,10 @@ function App() {
                             }
                         ></Route>
                     </Route>
+                </Route>
+
+                <Route path="/categories">
+                    <Route path="new" element={<CategoryForm />}></Route>
                 </Route>
 
                 <Route path="/orders">
