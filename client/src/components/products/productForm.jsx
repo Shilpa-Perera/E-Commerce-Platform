@@ -357,7 +357,6 @@ class ProductFormBody extends Form {
         const { product_image_url: originalUrl, isNew } = { ...this.state };
         const { product_id } = this.state.data;
         try {
-            console.log(newImageUrl, newImage);
             this.setState({
                 product_image_url: newImageUrl,
                 product_image: newImage,
