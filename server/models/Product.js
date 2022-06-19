@@ -57,7 +57,12 @@ class Product {
                 product
             where
                 availability = 'UNAVAILABLE'
-                or default_variant_id is null
+               or default_variant_id is null
+               or product_id not in (
+                select
+                    distinct product_id
+                from product_category
+            )
         `;
 
         return db.execute(select_unavailable_query);
