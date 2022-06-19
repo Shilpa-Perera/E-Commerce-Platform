@@ -47,6 +47,30 @@ h4,
 .checkout-cart-list{
   background-color: transparent !important;
 }
+
+.checkout-cart-container{
+  max-height: 300px;
+  margin: 5px;
+  overflow: auto;
+}
+
+.checkout-cart-container::-webkit-scrollbar{
+  background-color: #ffffff;
+  height: 20px;
+  width:10px;
+  border-radius: 10px;
+}
+
+.checkout-cart-container::-webkit-scrollbar-thumb{
+  background-color: #cfcfcf;;
+  border-radius: 10px;
+}
+
+@media (max-width: 767px) {
+  .checkout-cart-container{
+    max-height: none!important;
+  }
+}
 /* Custom Styling for Order */
 
 .div-dark {
