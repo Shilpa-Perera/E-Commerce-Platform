@@ -20,7 +20,7 @@ import {
 } from "../../services/customFeatureService";
 import EditCustomFeaturesForm from "./editCustomFeatureForm";
 import _ from "lodash";
-import AddImage from "../addImage";
+import AddImage from "../common/addImage";
 import { productImageUrl } from "../../services/imageService";
 import ProductCategoryForm from "./productCategoryForm";
 import {
