@@ -15,6 +15,26 @@ class CustomerAddress {
     this.postal_code = customerAddressDetails.postal_code;
   }
 
+  static async getById(addressId) {
+    const sql = "select * from customer_address where address_id=?";
+
+    const [addresses, _] = await db.execute(sql, [addressId]);
+    return new CustomerAddress(addresses[0]);    
+  }
+
+  static async deleteById(addressId) {
+    let sql = "delete from customer_address where address_id=?";
+
+    const result = await db.execute(sql, [addressId], (err, results) => {
+      if (err) {
+        throw err;
+      } else {
+        console.log("results: ", results);
+      }
+    });
+    return result;
+  }
+
   async update() {
     let sql = "update customer_address \
     set po_box=?, street_name=?, city=?, postal_code=? where customer_id=? and address_id=?;";

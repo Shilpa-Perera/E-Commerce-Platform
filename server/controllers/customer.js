@@ -18,9 +18,9 @@ class CustomerController {
   static async getCustomer(req, res, next) {
     const customer = await Customer.fetchAllInfoById(req.params.id);
     if (!customer) return res.status(404).send("The customer with given ID not found");
-
+    // console.log("getCustomer: inside", customer);
     const user = req.user;
-    if (user.role === ROLE.admin || user.user_id === req.params.id) return customer;
+    if (user.role === ROLE.ADMIN || user.user_id === req.params.id) return res.send(customer);
     else return res.status(403).send("Access Denied");
 
     // if (!req.query.type || req.query.type === '1') {
@@ -37,14 +37,14 @@ class CustomerController {
   static async getCustomerAddresses(req, res, next) {
     const user = req.user;
     console.log("getCustomerAddresses", user);
-    const customerAddresses = await Customer.fetchAddresses(user.customer_id);
+    const customerAddresses = await Customer.fetchAddresses(user.user_id);
     res.send(customerAddresses);
   }
 
   static async getCustomerMobiles(req, res, next) {
     const user = req.user;
     console.log("getCustomerMobiles", user);
-    const customerMobiles = await Customer.fetchMobiles(user.customer_id);
+    const customerMobiles = await Customer.fetchMobiles(user.user_id);
     res.send(customerMobiles);
   }
 
@@ -78,7 +78,7 @@ class CustomerController {
     const token = customer.generateAuthToken();
     res
       .header("x-auth-token", token)
-      .send(_.pick(customer, ["customer_id", "name", "email"]));
+      .send(_.pick(customer, ["user_id", "name", "email"]));
   }
 
   static async updateCustomer(req, res, next) {
@@ -129,6 +129,22 @@ class CustomerController {
 
     // console.log("customer updated");
     res.send(_.pick(customer, ["customer_id", "name", "email"]));
+  }
+
+  static async deleteCustomerAddress(req, res, next) {
+    // admin or address.customer_id should be customer's
+
+    const customerAddress = await CustomerAddress.getById(req.params.id);
+    if (!customerAddress) return res.status(404).send("The customer address with given ID not found");
+    console.log("deleteCustomerAddress, customerAddress: ", customerAddress);
+    const user = req.user;
+    console.log("deleteCustomerAddress, user: ", user);
+    if (user.role === ROLE.ADMIN || user.user_id === customerAddress.customer_id) {
+      const result = await CustomerAddress.deleteById(req.params.id);
+      res.send(result);
+    }
+    else return res.status(403).send("Access Denied");
+
   }
 }
 
