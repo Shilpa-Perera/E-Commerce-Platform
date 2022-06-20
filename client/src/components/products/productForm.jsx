@@ -20,7 +20,7 @@ import {
 } from "../../services/customFeatureService";
 import EditCustomFeaturesForm from "./editCustomFeatureForm";
 import _ from "lodash";
-import AddImage from "../addImage";
+import AddImage from "../common/addImage";
 import { productImageUrl } from "../../services/imageService";
 import ProductCategoryForm from "./productCategoryForm";
 import {
@@ -357,7 +357,6 @@ class ProductFormBody extends Form {
         const { product_image_url: originalUrl, isNew } = { ...this.state };
         const { product_id } = this.state.data;
         try {
-            console.log(newImageUrl, newImage);
             this.setState({
                 product_image_url: newImageUrl,
                 product_image: newImage,

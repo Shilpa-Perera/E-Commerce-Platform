@@ -40,6 +40,12 @@ class Product {
                 join variant v on p.default_variant_id = v.variant_id
             where
                 p.availability = 'AVAILABLE'
+                and p.product_id in (
+                    select
+                        distinct product_id
+                    from
+                        product_category
+                )
         `;
 
         return db.execute(select_all_query);

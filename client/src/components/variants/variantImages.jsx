@@ -6,7 +6,7 @@ import {
 } from "../../services/variantService";
 import { variantImageUrl } from "../../services/imageService";
 import Carousel from "../common/carousel";
-import AddImage from "../addImage";
+import AddImage from "../common/addImage";
 import { toast } from "react-toastify";
 import { checkProductVariant, getProduct } from "../../services/productService";
 import Loading from "../common/loading";
