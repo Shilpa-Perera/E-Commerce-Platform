@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Joi from "joi-browser";
 import Form from "../common/form";
-import { getCustomer, saveCustomer } from "../../services/customerService";
+import { getCustomer, saveCustomer, deleteCustomerAddress } from "../../services/customerService";
 import Input from "../common/input";
 import { getCurrentUser } from "../../services/authService";
 import ROLE from "../../utils/roles.json";
@@ -215,7 +215,7 @@ class CustomerFormBody extends Form {
     this.setState({ data, errors });
   };
 
-  handleDeleteAddress = (e, address) => {
+  handleDeleteAddress = async (e, address) => {
     e.preventDefault();
     console.log(address);
 
@@ -227,7 +227,7 @@ class CustomerFormBody extends Form {
 
     if (address.address_id !== -1) {
       try {
-        // await deleteAddress(address.address_id);
+        await deleteCustomerAddress(address.address_id);
       } catch (ex) {
         if (ex.response && ex.response.status === 404)
           toast.error("This book has already deleted.");
