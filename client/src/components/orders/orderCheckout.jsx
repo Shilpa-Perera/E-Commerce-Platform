@@ -1,11 +1,36 @@
 import React, { Component } from "react";
-import CartCard from "../cartCard";
 import CheckoutCartCard from "./checkoutCartCard";
 import CheckoutFormCard from "./checkoutFormCard";
+import { getCartProducts } from "../../services/cartService";
 
 class OrderCheckoutForm extends Component {
-    state = [{ payment: null }];
+    state = {
+        variant: [],
+        orderTotal: 0,
+    };
+
+    async CartProducts() {
+        const { data: variant } = await getCartProducts(
+            localStorage.getItem("cart_id")
+        );
+        let orderTotal = 0;
+        if (variant) {
+            variant.forEach((element) => {
+                orderTotal +=
+                    parseFloat(element.price) * element.number_of_items;
+            });
+        }
+
+        this.setState({ variant });
+        this.setState({ orderTotal });
+    }
+    async componentDidMount() {
+        await this.CartProducts();
+    }
+
     render() {
+        const{variant} = this.state;
+        console.log(variant)
         return (
             <div className="container h-100 py-5">
                 <div className="row d-flex h-100">

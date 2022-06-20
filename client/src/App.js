@@ -37,6 +37,7 @@ import ROLE from "./utils/roles.json";
 import OrderCheckoutForm from "./components/orders/orderCheckout";
 import CheckoutPayment from "./components/orders/checkoutPayment";
 import CategoryForm from "./components/category/categoryForm";
+import MockPaymentGateway from "./components/paymentGateway";
 
 function App() {
     const [theme, setTheme] = useState(getTheme());
@@ -253,7 +254,7 @@ function App() {
 
                     <Route path="register" element={<CustomerForm />}></Route>
                 </Route>
-
+                <Route path="/paymentGateway" element={<MockPaymentGateway/>}></Route>
                 <Route path="/" element={<Home />}></Route>
 
                 <Route path="*" element={<NotFound />} />

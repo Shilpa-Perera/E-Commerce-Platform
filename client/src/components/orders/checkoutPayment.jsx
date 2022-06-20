@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import CheckoutCartCard from "./checkoutCartCard";
 
 class CheckoutPayment extends Component {
@@ -159,18 +160,26 @@ class CheckoutPayment extends Component {
                                     role="group"
                                     aria-label="Basic mixed styles example"
                                 >
-                                    <button
-                                        type="button"
-                                        className="btn btn-danger"
-                                    >
-                                        Cancle
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn btn-success"
-                                    >
-                                        Proceed to Pay ### to payment gateway - order validation - inventory consistency - mount cart - transaction
-                                    </button>
+                                    <Link to="/cart">
+                                        <button
+                                            type="button"
+                                            className="btn btn-danger"
+                                        >
+                                            Cancle
+                                        </button>
+                                    </Link>
+
+                                    {/* Link is Temporary */}
+                                    <Link to={`/paymentGateway`}>
+                                        <button
+                                            type="button"
+                                            className="btn btn-success"
+                                        >
+                                            {/* Proceed to Pay ### to payment gateway - order validation - inventory consistency - mount cart - transaction */}
+                                            Confirm
+                                        </button>
+                                    </Link>
+
                                 </div>
                             </div>
                         </div>
