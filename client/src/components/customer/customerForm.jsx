@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import Joi from "joi-browser";
 import Form from "../common/form";
-import { getCustomer, saveCustomer } from "../../services/customerService";
+import { getCustomer, saveCustomer, deleteCustomerAddress } from "../../services/customerService";
 import Input from "../common/input";
 import { getCurrentUser } from "../../services/authService";
 import ROLE from "../../utils/roles.json";
@@ -114,15 +115,16 @@ class CustomerFormBody extends Form {
   async populateCustomer() {
     try {
       const customerId = this.props.params.id;
-      console.log("customerId", customerId);
+      // console.log("customerId", customerId);
       if (!customerId) return;
 
       const errors = {
         addresses: [],
         mobiles: [],
       };
-
+      // console.log(" get customer");
       const { data: customer } = await getCustomer(customerId);
+      // console.log("customer:", customer);
       for (let index = 0; index < customer.addresses.length; index++) {
         const address = customer.addresses[index];
         address.index = index;
@@ -146,7 +148,7 @@ class CustomerFormBody extends Form {
       console.log("new errors", errors);
       this.setState({ data: customer, errors: errors });
     } catch (ex) {
-      // go to 404 page
+      toast.error("No customer found.");
     }
   }
 
@@ -155,15 +157,16 @@ class CustomerFormBody extends Form {
     // check if data is allowed
     const user = getCurrentUser();
     const customerId = this.props.params.id;
+    // console.log("role:", user);
+    
     if (!customerId) return;
     else if (
+      
       user.role === ROLE.ADMIN ||
       (user.role === ROLE.CUSTOMER && customerId === user.user_id)
     ) {
       await this.populateCustomer();
-      
-    }
-    else{
+    } else {
       this.props.navigate("not-found");
     }
   }
@@ -212,6 +215,28 @@ class CustomerFormBody extends Form {
     this.setState({ data, errors });
   };
 
+  handleDeleteAddress = async (e, address) => {
+    e.preventDefault();
+    console.log(address);
+
+    const originalData = this.state.data;
+    const addresses = originalData.addresses.filter((a) => a.index !== address.index);
+    const updateData = { ...originalData };
+    updateData.addresses = addresses;
+    this.setState({data: updateData}); 
+
+    if (address.address_id !== -1) {
+      try {
+        await deleteCustomerAddress(address.address_id);
+      } catch (ex) {
+        if (ex.response && ex.response.status === 404)
+          toast.error("This book has already deleted.");
+
+          this.setState({ data: originalData });
+      }
+    }
+  }
+
   handleArrayChange = ({ currentTarget: input }) => {
     const { arrayName, elementId } = input.dataset;
     console.log("handleArrayChange", arrayName, elementId);
@@ -229,86 +254,99 @@ class CustomerFormBody extends Form {
     console.log("render state: ", this.state);
     // console.log("errors", this.state.errors);
     return (
-      <div>
+      <div style={{ width: "1400px", margin: "0 auto" }}>
         <h1>Register</h1>
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("name", "Name")}
           {this.renderInput("email", "Email")}
           {this.renderInput("password", "Password", "password")}
 
-          <button onClick={this.handleAddMoreAddress}>
-            Add another Address
-          </button>
-          {addresses.map((address) => (
-            <React.Fragment>
-              <Input
-                data-array-name="addresses"
-                data-element-id={address.index}
-                key={"po_box" + address.index}
-                id={"po_box" + address.index}
-                type="text"
-                label="Po Box"
-                name="po_box"
-                value={addresses[address.index].po_box}
-                onChange={this.handleChange}
-                error={this.state.errors.addresses[address.index].po_box}
-              />
-              <Input
-                data-array-name="addresses"
-                data-element-id={address.index}
-                id={"street_name" + address.index}
-                key={"street_name" + address.index}
-                type="text"
-                label="Street Name"
-                name="street_name"
-                value={addresses[address.index].street_name}
-                onChange={this.handleChange}
-                error={this.state.errors.addresses[address.index].street_name}
-              />
-              <Input
-                data-array-name="addresses"
-                data-element-id={address.index}
-                id={"city" + address.index}
-                key={"city" + address.index}
-                type="text"
-                label="City"
-                name="city"
-                value={addresses[address.index].city}
-                onChange={this.handleChange}
-                error={this.state.errors.addresses[address.index].city}
-              />
-              <Input
-                data-array-name="addresses"
-                data-element-id={address.index}
-                id={"postal_code" + address.index}
-                key={"postal_code" + address.index}
-                type="text"
-                label="Postal Code"
-                name="postal_code"
-                value={addresses[address.index].postal_code}
-                onChange={this.handleChange}
-                error={this.state.errors.addresses[address.index].postal_code}
-              />
-            </React.Fragment>
-          ))}
+          <div className="container mb-5  p-5 div-dark">
+            {addresses.map((address) => (
+              <div className="">
+                <Input
+                  data-array-name="addresses"
+                  data-element-id={address.index}
+                  key={"po_box" + address.index}
+                  id={"po_box" + address.index}
+                  type="text"
+                  label="Po Box"
+                  name="po_box"
+                  value={addresses[address.index].po_box}
+                  onChange={this.handleChange}
+                  error={this.state.errors.addresses[address.index].po_box}
+                />
+                <Input
+                  data-array-name="addresses"
+                  data-element-id={address.index}
+                  id={"street_name" + address.index}
+                  key={"street_name" + address.index}
+                  type="text"
+                  label="Street Name"
+                  name="street_name"
+                  value={addresses[address.index].street_name}
+                  onChange={this.handleChange}
+                  error={this.state.errors.addresses[address.index].street_name}
+                />
+                <Input
+                  data-array-name="addresses"
+                  data-element-id={address.index}
+                  id={"city" + address.index}
+                  key={"city" + address.index}
+                  type="text"
+                  label="City"
+                  name="city"
+                  value={addresses[address.index].city}
+                  onChange={this.handleChange}
+                  error={this.state.errors.addresses[address.index].city}
+                />
+                <Input
+                  data-array-name="addresses"
+                  data-element-id={address.index}
+                  id={"postal_code" + address.index}
+                  key={"postal_code" + address.index}
+                  type="text"
+                  label="Postal Code"
+                  name="postal_code"
+                  value={addresses[address.index].postal_code}
+                  onChange={this.handleChange}
+                  error={this.state.errors.addresses[address.index].postal_code}
+                />
+                <button onClick={(e) => this.handleDeleteAddress(e, address)} className="btn btn-danger mb-3">Delete</button>
+              </div>
+            ))}
+            <button
+              className="btn btn-warning mb-3"
+              onClick={this.handleAddMoreAddress}
+            >
+              Add another Address
+            </button>
+          </div>
 
-          <button onClick={this.handleAddMoreMboile}>Add another Mobile</button>
-          {mobiles.map((mobile) => (
-            <React.Fragment>
-              <Input
-                data-array-name="mobiles"
-                data-element-id={mobile.index}
-                id={"mobile" + mobile.index}
-                key={"mobile" + mobile.index}
-                type="text"
-                label="Contact No"
-                name="mobile"
-                value={mobile.mobile}
-                onChange={this.handleChange}
-                error={this.state.errors.mobiles[mobile.index].mobile}
-              />
-            </React.Fragment>
-          ))}
+          <div className="container mb-5  p-5 div-dark">
+            
+            {mobiles.map((mobile) => (
+              <div className="col">
+                <Input
+                  data-array-name="mobiles"
+                  data-element-id={mobile.index}
+                  id={"mobile" + mobile.index}
+                  key={"mobile" + mobile.index}
+                  type="text"
+                  label="Contact No"
+                  name="mobile"
+                  value={mobile.mobile}
+                  onChange={this.handleChange}
+                  error={this.state.errors.mobiles[mobile.index].mobile}
+                />
+                <button className="btn btn-danger mb-3">Delete</button>
+              
+              </div>
+            ))}
+            <button className="btn btn-warning mb-3" onClick={this.handleAddMoreMboile}>
+              Add another Mobile
+            </button>
+          </div>
 
           {this.renderButton("Register")}
         </form>

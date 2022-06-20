@@ -36,7 +36,7 @@ export function saveCustomer(customer) {
   body.mobiles = mobiles;
   body.addresses = addresses;
 
-  // console.log(customer);
+  console.log("saveCustomer", body);
   if (body.customer_id !== -1) {
     // update routine
     const url = customerUrl(body.customer_id)
@@ -55,4 +55,8 @@ export function saveCustomer(customer) {
 
 export function deleteCustomer(customerId) {
   return http.delete(customerUrl(customerId));
+}
+
+export function deleteCustomerAddress(addressId) {
+  return http.delete(`${apiEndpoint}/addresses/${addressId}`);
 }

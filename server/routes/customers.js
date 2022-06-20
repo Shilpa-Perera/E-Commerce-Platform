@@ -11,5 +11,6 @@ router.get("/", CustomerController.getAllCustomers);
 router.get("/:id", [auth, authPage([ROLE.ADMIN, ROLE.CUSTOMER])], CustomerController.getCustomer);
 router.post("/", CustomerController.postCustomer);
 router.put("/:id", [auth], CustomerController.updateCustomer);
+router.delete("/addresses/:id", [auth], CustomerController.deleteCustomerAddress)
 
 module.exports = router;

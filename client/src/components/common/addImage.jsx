@@ -1,6 +1,6 @@
 import React from "react";
 import Cropper from "react-easy-crop";
-import getCroppedImg from "../utils/cropImage";
+import getCroppedImg from "../../utils/cropImage";
 
 class AddImage extends React.Component {
     state = {
