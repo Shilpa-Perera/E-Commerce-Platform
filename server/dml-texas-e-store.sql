@@ -106,15 +106,3 @@ insert into category_link (category_id, sub_category_id) values (6, 1);
 insert into category_link (category_id, sub_category_id) values (3, 7);
 
 
-#Dummy cart data.
-
-insert into cart values(1,2,1);
-insert into cart values(2,1,1);
-insert into cart values(3,3,1);
-insert into cart_product values(1,1,5);
-insert into cart_product values(2,1,1);
-insert into cart_product values(1,2,1);
-insert into cart_product values(3,4,5);
-insert into cart_product values(3,1,2); 
-insert into cart_product values(1,3,5);
-insert into cart_product values(1,4,2);
