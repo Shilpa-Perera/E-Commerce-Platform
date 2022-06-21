@@ -30,7 +30,7 @@ import {
     setCartId,
     incrementItemCount,
     decrementItemCount,
-    deletedProduct,
+    getCartId,
 } from "./services/cartService";
 import { toast } from "react-toastify";
 import ROLE from "./utils/roles.json";
@@ -104,7 +104,7 @@ function App() {
                                         await setCartId();
 
                                         const cart_id =
-                                            localStorage.getItem("cart_id");
+                                            getCartId();
                                         const obj = {
                                             cart_id: cart_id,
                                             variant_id: variant_id,
