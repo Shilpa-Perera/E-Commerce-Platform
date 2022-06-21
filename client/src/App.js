@@ -196,11 +196,9 @@ function App() {
                             <Cart
                                 item_count={item_count}
                                 onDeleteFromCart={async (
-                                    cart_id,
-                                    variant_id
+
                                 ) => {
                                     decrementItemCount();
-                                    await deletedProduct(cart_id, variant_id);
                                     setItemCount(getItemCount);
                                 }}
                             />

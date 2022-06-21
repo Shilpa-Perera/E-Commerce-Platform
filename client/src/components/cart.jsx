@@ -10,7 +10,7 @@ class Cart extends Component {
         orderTotal: 0,
     };
 
-    async CartProducts() {
+    async cartProducts() {
         const { data: variant } = await getCartProducts(
             localStorage.getItem("cart_id")
         );
@@ -21,16 +21,11 @@ class Cart extends Component {
                     parseFloat(element.price) * element.number_of_items;
             });
         }
-
         this.setState({ variant });
         this.setState({ orderTotal });
     }
     async componentDidMount() {
-        await this.CartProducts();
-    }
-
-    async componentDidUpdate() {
-        await this.CartProducts();
+        await this.cartProducts();
     }
 
     handleIncrement = (variant_id) => {
@@ -62,6 +57,14 @@ class Cart extends Component {
         );
     };
 
+    handleDelete = async (cart_id,variant_id) => {
+      await deletedProduct(cart_id, variant_id);
+      await this.cartProducts();
+      this.props.onDeleteFromCart() ;
+      
+    }
+
+
     render() {
         return (
             <div className="container h-100 py-5">
@@ -71,11 +74,7 @@ class Cart extends Component {
                             <h3 className="d-inline-block">Shopping Cart</h3>
                             <div>
                                 <p className="mb-0">
-                                    <span className="text-muted">Sort by:</span>{" "}
-                                    <a href="#!" className="text-body">
-                                        price{" "}
-                                        <i className="fa fa-angle-down mt-1"></i>
-                                    </a>
+                                  {/* For sorting */}
                                 </p>
                             </div>
                         </div>
@@ -94,7 +93,7 @@ class Cart extends Component {
                                     onIncrement={this.handleIncrement}
                                     onDecrement={this.handleDecrement}
                                     onDelete={() =>
-                                        this.props.onDeleteFromCart(
+                                        this.handleDelete(
                                             product.cart_id,
                                             product.variant_id
                                         )
