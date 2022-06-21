@@ -28,11 +28,13 @@ class OrderCheckoutForm extends Component {
         await this.CartProducts();
     }
 
+
     render() {
-        const{variant} = this.state;
+        const { variant } = this.state;
         console.log(variant)
         return (
             <div className="container h-100 py-5">
+
                 <div className="row d-flex h-100">
                     <h3 className="d-inline-block">Checkout</h3>
                     {/* cart card */}
@@ -43,20 +45,19 @@ class OrderCheckoutForm extends Component {
                                 3
                             </span>
                         </h4>
-                        <CheckoutCartCard/>
-                        
+                        <CheckoutCartCard />
                     </div>
-
                     {/* Form Area */}
                     <div className="col-md-8 order-md-1">
                         <h4 className="d-flex justify-content-between align-items-center mb-3">
                             <span className="text-muted">Order Details</span>
                         </h4>
-
-                        <CheckoutFormCard/>
-
+                        
+                            <CheckoutFormCard />
+                        
                     </div>
                 </div>
+
             </div>
         );
     }
