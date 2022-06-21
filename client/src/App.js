@@ -37,6 +37,7 @@ import ROLE from "./utils/roles.json";
 import OrderCheckoutForm from "./components/orders/orderCheckout";
 import CheckoutPayment from "./components/orders/checkoutPayment";
 import CategoryForm from "./components/category/categoryForm";
+import CategoryLink from "./components/category/linkCategory";
 
 function App() {
     const [theme, setTheme] = useState(getTheme());
@@ -103,8 +104,7 @@ function App() {
                                     onAddToCart={async (variant_id) => {
                                         await setCartId();
 
-                                        const cart_id =
-                                            getCartId();
+                                        const cart_id = getCartId();
                                         const obj = {
                                             cart_id: cart_id,
                                             variant_id: variant_id,
@@ -181,7 +181,22 @@ function App() {
                 </Route>
 
                 <Route path="/categories">
-                    <Route path="new" element={<CategoryForm />}></Route>
+                    <Route
+                        path="new"
+                        element={
+                            <ProtectedRoute permissions={[ROLE.ADMIN]}>
+                                <CategoryForm />
+                            </ProtectedRoute>
+                        }
+                    ></Route>
+                    <Route
+                        path="link-category"
+                        element={
+                            <ProtectedRoute permissions={[ROLE.ADMIN]}>
+                                <CategoryLink />
+                            </ProtectedRoute>
+                        }
+                    ></Route>
                 </Route>
 
                 <Route path="/orders">
@@ -195,9 +210,7 @@ function App() {
                         element={
                             <Cart
                                 item_count={item_count}
-                                onDeleteFromCart={async (
-
-                                ) => {
+                                onDeleteFromCart={async () => {
                                     decrementItemCount();
                                     setItemCount(getItemCount);
                                 }}

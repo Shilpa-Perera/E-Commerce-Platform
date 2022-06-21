@@ -82,6 +82,14 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                             Unavailable Products
                                         </NavLink>
                                     </li>
+                                    <li>
+                                        <NavLink
+                                            className="dropdown-item hover-focus"
+                                            to="/categories/link-category"
+                                        >
+                                            Link Category
+                                        </NavLink>
+                                    </li>
                                 </ul>
                             </li>
                         )}
