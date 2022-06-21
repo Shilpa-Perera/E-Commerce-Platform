@@ -63,10 +63,10 @@ class Category {
         ]);
     }
 
-    static async linkCategory(category_id, sub_category_id) {
-        const link_category_query =
+    static async linkSubCategories(category_id, sub_category_id) {
+        const link_sub_categories_query =
             "insert into category_link (category_id,sub_category_id) values (?,?)";
-        const result = await db.execute(link_category_query, [
+        const result = await db.execute(link_sub_categories_query, [
             category_id,
             sub_category_id,
         ]);
