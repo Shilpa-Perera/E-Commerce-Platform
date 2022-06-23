@@ -123,6 +123,16 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                 </NavLink>
                             </li>
                         )}
+                        {isAdmin && (
+                            <li className="nav-item">
+                                <NavLink
+                                    className="nav-link hover-focus"
+                                    to="/customers"
+                                >
+                                    Manage Customers
+                                </NavLink>
+                            </li>
+                        )}
                     </ul>
                     <ul className="navbar-nav ms-auto">
                         <li className="nav-item d-flex align-items-center">
