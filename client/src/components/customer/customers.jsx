@@ -52,19 +52,13 @@ class Customers extends Component {
         if (count === 0) return <p>There are no customers in the database.</p>;
         console.log("customers.jsx>customers: ", customers);
         return (
-            <>
-                <h1>Customers</h1>
-                <div>
-                    <CustomersTable
-                        customers={customers}
-                        // sortColumn={sortColumn}
-                        // onSort={this.handleSort}
-                    />
-                    {customers.map((item, index) => {
-                        <p>{item}</p>;
-                    })}
-                </div>
-            </>
+            <div className="container-fluid mb-5">
+                <CustomersTable
+                    customers={customers}
+                    sortColumn={sortColumn}
+                    onSort={this.handleSort}
+                />
+            </div>
         );
     }
 }
