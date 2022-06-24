@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import {
     getCategories,
     getSubCategoriesToLink,
+    linkSubCategories,
 } from "../../services/categoryService";
 import CategoryList from "../products/categoryList";
 import SubCategoryList from "../products/subCategoryList";
@@ -10,6 +11,7 @@ class CategoryLink extends Component {
     state = {
         categories: [],
         subCategories: [],
+        category_id: null,
         selectedCategory: null,
         selectedSubCategory: null,
     };
@@ -25,15 +27,29 @@ class CategoryLink extends Component {
         );
         this.setState({
             selectedCategory: category,
+            category_id: category.category_id,
             subCategories: subCategories,
             selectedSubCategory: null,
         });
     };
 
-    handleSubCategorySelect = (subCategory) => {
+    handleSubCategorySelect = async (subCategory) => {
+        await linkSubCategories(
+            this.state.category_id,
+            subCategory.sub_category_id
+        );
+
+        const { data: subCategories } = await getSubCategoriesToLink(
+            this.state.category_id
+        );
+
         this.setState({
-            selectedSubCategory: subCategory,
+            subCategories: subCategories,
         });
+    };
+
+    handleClearCategorySelection = () => {
+        this.setState({ selectedCategory: null, selectedSubCategory: null });
     };
 
     render() {
@@ -55,9 +71,9 @@ class CategoryLink extends Component {
                             categories={categories}
                             handleCategorySelect={this.handleCategorySelect}
                             selectedCategory={selectedCategory}
-                            // handleClearSelection={
-                            //     this.handleClearCategorySelection
-                            // }
+                            handleClearSelection={
+                                this.handleClearCategorySelection
+                            }
                         />
                     </div>
                     <div className="col-md-8 col-lg-9 col-xxl-10">

@@ -39,7 +39,7 @@ class CategoryController {
     static async linkSubCategories(req, res, next) {
         const { category_id, sub_category_id } = req.body;
         await Category.linkSubCategories(category_id, sub_category_id);
-        res.send(category_id, sub_category_id);
+        res.send({ category_id, sub_category_id });
     }
 }
 

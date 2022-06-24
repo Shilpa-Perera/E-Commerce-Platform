@@ -34,3 +34,10 @@ export function addSubCategory(newSubCategoryName) {
         new_sub_category_name: newSubCategoryName,
     });
 }
+
+export function linkSubCategories(category_id, sub_category_id) {
+    return http.post(`${apiEndpoint}/link-category`, {
+        category_id: category_id,
+        sub_category_id: sub_category_id,
+    });
+}
