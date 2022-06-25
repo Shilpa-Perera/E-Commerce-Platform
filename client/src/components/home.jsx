@@ -14,7 +14,7 @@ function Home(props) {
             console.log(e);
             toast.error("An error occurred!", { theme: "dark" });
         });
-    });
+    },[]);
 
     return (
         <div className="container-fluid mb-5">

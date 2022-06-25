@@ -1,5 +1,11 @@
 import http from "./httpService";
 import _ from "lodash";
+import { EncryptStorage } from 'encrypt-storage';
+
+export const encryptStorage = new EncryptStorage('secret-key', {
+    prefix: '@cart',
+    storageType: 'localStorage',
+  });
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const apiEndpoint = apiUrl + "/cart";
@@ -36,17 +42,28 @@ export function deletedProduct(cart_id,variant_id){
 
 export async function setCartId(){
 
-    const local_id = localStorage.getItem("cart_id");
+    const local_id = encryptStorage.getItem("cart_id");
     if(!local_id){
-        const { data : cart_id } = await getCartId();
-        localStorage.setItem("cart_id", cart_id.cart_id);
+        const { data : cart_id } = await getNewCartId();
+        encryptStorage.setItem("cart_id", cart_id.cart_id);
     }
 }
 
-export function getCartId(){
+export function getNewCartId(){
  
     return http.get(newCartUrl()) ;
 
+}
+
+export function getCartId(){
+    
+    return encryptStorage.getItem("cart_id");
+}
+
+export function removeCart(){
+
+    encryptStorage.removeItem("cart_id");
+    encryptStorage.removeItem("item_count") ;
 }
 
 export function getItemCount(){
