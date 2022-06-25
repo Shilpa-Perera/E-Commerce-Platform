@@ -162,12 +162,14 @@ class CustomerFormBody extends Form {
         // check if data is allowed
         const user = getCurrentUser();
         const customerId = this.props.params.id;
-        // console.log("role:", user);
+        console.log("role:", user);
+        console.log("customerId:", typeof customerId);
 
         if (!customerId) return;
         else if (
             user.role === ROLE.ADMIN ||
-            (user.role === ROLE.CUSTOMER && customerId === user.user_id)
+            (user.role === ROLE.CUSTOMER &&
+                parseInt(customerId) === user.user_id)
         ) {
             await this.populateCustomer();
         } else {
