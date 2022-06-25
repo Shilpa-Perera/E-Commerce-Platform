@@ -32,7 +32,7 @@ class CheckoutFormCard extends Form {
             .label("Delivery Address"),
 
         city: Joi.string().required().min(1).max(250).label("City"),
-        zipcode: Joi.string().required().min(1).max(250).label("ZIP Code"),
+        zipcode: Joi.string().required().min(5).max(5).label("ZIP Code"),
         price: Joi.number().required().min(1).label("Price"),
     };
 
@@ -45,9 +45,6 @@ class CheckoutFormCard extends Form {
                     </div>
                     <div className="col-6 form-group mb-3">
                         {this.renderInput("lastName", "Last Name")}
-                        <div className="invalid-feedback">
-                            Valid last name is required.
-                        </div>
                     </div>
 
                     <div className="col-12 form-group mb-3">
