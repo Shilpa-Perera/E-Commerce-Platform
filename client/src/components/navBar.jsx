@@ -130,9 +130,7 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                     className="nav-link hover-focus"
                                     to="/login"
                                 >
-                                    <span className="font-weight-bold">
-                                        Login
-                                    </span>
+                                    <p className="font-weight-bold">Login</p>
                                 </NavLink>
                             </li>
                         )}
@@ -142,9 +140,7 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                     className="nav-link hover-focus"
                                     to="/logout"
                                 >
-                                    <span className="font-weight-bold">
-                                        Logout
-                                    </span>
+                                    <p className="font-weight-bold">Logout</p>
                                 </NavLink>
                             </li>
                         )}
@@ -154,7 +150,7 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                     className="nav-link hover-focus"
                                     to="/customers/register"
                                 >
-                                    Register
+                                    <p className="font-weight-bold">Register</p>
                                 </NavLink>
                             </li>
                         )}
