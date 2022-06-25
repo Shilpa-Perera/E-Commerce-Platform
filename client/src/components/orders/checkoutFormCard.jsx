@@ -1,52 +1,56 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import Form from "../common/form";
+import Joi from "joi-browser";
 
-class CheckoutFormCard extends Component {
-    state = [{ payment: null, infor: null }];
-
+class CheckoutFormCard extends Form {
+    // state = [{ payment: null, infor: null }];
+    state = {
+        data: {
+            firstName: "",
+            lastName: "",
+            email: "",
+            deliveryAddress: ""
+            
+        },
+        errors: [],
+    };
 
     handleSubmit = (e) => {
         console.log("inside handle submit outside ");
-        this.setState({infor: this.form})
+        this.setState({ infor: this.form });
+    };
+
+    schema = {
+        firstName: Joi.string().required().min(3).max(250).label("First Name"),
+        lastName: Joi.string().required().min(3).max(250).label("Last Name"),
+        email: Joi.string().required().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
+        price: Joi.number().required().min(1).label("Price"),
     };
 
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
                 <div className="row p-5 div-dark">
-
                     <div className="col-6 form-group mb-3">
-                        <label for="firstName">First name</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="firstName"
-                            placeholder=""
-                            required
-                        ></input>
+                        {this.renderInput("firstName", "First Name")}
                     </div>
                     <div className="col-6 form-group mb-3">
-                        <label for="lastName">Last name</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="lastName"
-                            placeholder=""
-                            required
-                        ></input>
+                        {this.renderInput("lastName", "Last Name")}
                         <div className="invalid-feedback">
                             Valid last name is required.
                         </div>
                     </div>
 
                     <div className="col-12 form-group mb-3">
-                        <label for="email">Email </label>
+                    {this.renderInput("email", "Email Address")}
+                        {/* <label for="email">Email </label>
                         <input
                             type="email"
                             className="form-control"
                             id="email"
                             placeholder="you@example.com"
-                        ></input>
+                        ></input> */}
                     </div>
 
                     <div className="col-12 form-group mb-3">
@@ -83,12 +87,12 @@ class CheckoutFormCard extends Component {
                     </div>
 
                     {/* <Link to={`/cart/checkout/payment`}> */}
-                        <button
-                            className="btn btn-primary btn-lg btn-block"
-                            type=""
-                        >
-                            Proceed to Payment
-                        </button>
+                    <button
+                        className="btn btn-primary btn-lg btn-block"
+                        type=""
+                    >
+                        Proceed to Payment
+                    </button>
                     {/* </Link> */}
                 </div>
             </form>
