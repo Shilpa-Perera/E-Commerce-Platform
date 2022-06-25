@@ -11,6 +11,9 @@ class CheckoutFormCard extends Form {
             lastName: "",
             email: "",
             deliveryAddress: "",
+            city: "",
+            zipcode: "",
+            price: "",
         },
         errors: [],
     };
@@ -23,9 +26,7 @@ class CheckoutFormCard extends Form {
     schema = {
         firstName: Joi.string().required().min(3).max(250).label("First Name"),
         lastName: Joi.string().required().min(3).max(250).label("Last Name"),
-        email: Joi.string()
-            .required()
-            .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } }),
+        email: Joi.string().required().email({ minDomainSegments: 2 }),
         deliveryAddress: Joi.string()
             .required()
             .max(1000)
