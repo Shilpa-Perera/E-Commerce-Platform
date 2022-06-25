@@ -10,8 +10,7 @@ class CheckoutFormCard extends Form {
             firstName: "",
             lastName: "",
             email: "",
-            deliveryAddress: ""
-            
+            deliveryAddress: "",
         },
         errors: [],
     };
@@ -24,7 +23,16 @@ class CheckoutFormCard extends Form {
     schema = {
         firstName: Joi.string().required().min(3).max(250).label("First Name"),
         lastName: Joi.string().required().min(3).max(250).label("Last Name"),
-        email: Joi.string().required().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
+        email: Joi.string()
+            .required()
+            .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } }),
+        deliveryAddress: Joi.string()
+            .required()
+            .max(1000)
+            .label("Delivery Address"),
+
+        city: Joi.string().required().min(1).max(250).label("City"),
+        zipcode: Joi.string().required().min(1).max(250).label("ZIP Code"),
         price: Joi.number().required().min(1).label("Price"),
     };
 
@@ -43,47 +51,22 @@ class CheckoutFormCard extends Form {
                     </div>
 
                     <div className="col-12 form-group mb-3">
-                    {this.renderInput("email", "Email Address")}
-                        {/* <label for="email">Email </label>
-                        <input
-                            type="email"
-                            className="form-control"
-                            id="email"
-                            placeholder="you@example.com"
-                        ></input> */}
+                        {this.renderInput("email", "Email Address")}
                     </div>
 
                     <div className="col-12 form-group mb-3">
-                        <label for="address">Delivery address</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="address"
-                            placeholder="1234 Main St"
-                            required
-                        ></input>
+                        {this.renderInput(
+                            "deliveryAddress",
+                            "Delivery Address"
+                        )}
                     </div>
 
                     <div className="col-6 form-group mb-3">
-                        <label for="city">City</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="city"
-                            placeholder=""
-                            required
-                        ></input>
+                        {this.renderInput("city", "City")}
                     </div>
 
                     <div className="col-6 form-group mb-3">
-                        <label for="zip">Zip</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="zip"
-                            placeholder=""
-                            required
-                        ></input>
+                        {this.renderInput("zipcode", "ZIP Code")}
                     </div>
 
                     {/* <Link to={`/cart/checkout/payment`}> */}
