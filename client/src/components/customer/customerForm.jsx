@@ -120,7 +120,7 @@ class CustomerFormBody extends Form {
     async populateCustomer() {
         try {
             const customerId = this.props.params.id;
-            // console.log("customerId", customerId);
+            console.log("customerId", customerId, typeof customerId);
             if (!customerId) return;
 
             const errors = {

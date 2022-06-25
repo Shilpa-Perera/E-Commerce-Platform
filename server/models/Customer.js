@@ -142,7 +142,7 @@ class Customer {
         for (let address of addresses) {
             result.push(new CustomerAddress(address));
         }
-        console.log("inside fetchAddresses", addresses);
+        // console.log("inside fetchAddresses", addresses);
         return result;
     }
 

@@ -101,36 +101,7 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                 Orders
                             </NavLink>
                         </li>
-                        {!user && (
-                            <li className="nav-item">
-                                <NavLink
-                                    className="nav-link hover-focus"
-                                    to="/login"
-                                >
-                                    Login
-                                </NavLink>
-                            </li>
-                        )}
-                        {user && (
-                            <li className="nav-item">
-                                <NavLink
-                                    className="nav-link hover-focus"
-                                    to="/logout"
-                                >
-                                    Logout
-                                </NavLink>
-                            </li>
-                        )}
-                        {!user && (
-                            <li className="nav-item">
-                                <NavLink
-                                    className="nav-link hover-focus"
-                                    to="/customers/register"
-                                >
-                                    Register
-                                </NavLink>
-                            </li>
-                        )}
+
                         {user && !isAdmin && (
                             <li className="nav-item">
                                 <NavLink
@@ -153,6 +124,40 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                         )}
                     </ul>
                     <ul className="navbar-nav ms-auto">
+                        {!user && (
+                            <li className="nav-item">
+                                <NavLink
+                                    className="nav-link hover-focus"
+                                    to="/login"
+                                >
+                                    <span className="font-weight-bold">
+                                        Login
+                                    </span>
+                                </NavLink>
+                            </li>
+                        )}
+                        {user && (
+                            <li className="nav-item">
+                                <NavLink
+                                    className="nav-link hover-focus"
+                                    to="/logout"
+                                >
+                                    <span className="font-weight-bold">
+                                        Logout
+                                    </span>
+                                </NavLink>
+                            </li>
+                        )}
+                        {!user && (
+                            <li className="nav-item">
+                                <NavLink
+                                    className="nav-link hover-focus"
+                                    to="/customers/register"
+                                >
+                                    Register
+                                </NavLink>
+                            </li>
+                        )}
                         <li className="nav-item d-flex align-items-center">
                             <span
                                 className="ms-2 pointer"
