@@ -10,3 +10,5 @@ router.get(
     [auth, authPage([ROLE.ADMIN])],
     ReportController.getProductInterestReport
 );
+
+module.exports = router;
