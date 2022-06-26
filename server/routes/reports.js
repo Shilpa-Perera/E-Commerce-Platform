@@ -10,5 +10,10 @@ router.get(
     [auth, authPage([ROLE.ADMIN])],
     ReportController.getProductInterestReport
 );
+router.get(
+    "/prducts/max_sale/:start_date/:end_date",
+    [auth, authPage([ROLE.ADMIN])],
+    ReportController.getMaxSaleProductsReport
+)
 
 module.exports = router;

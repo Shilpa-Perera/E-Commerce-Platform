@@ -37,6 +37,10 @@ class Report {
 
         return productInterestData;
     }
+
+    static async getMaxSaleProducts(start_date,end_date){
+        
+    }
 }
 
 module.exports.Report = Report;
