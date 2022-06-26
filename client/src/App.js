@@ -39,6 +39,7 @@ import CheckoutPayment from "./components/orders/checkoutPayment";
 import CategoryForm from "./components/category/categoryForm";
 import Customers from "./components/customer/customers";
 import CategoryLink from "./components/category/linkCategory";
+import ProductInterestReport from "./components/reports/productInterestReport";
 
 function App() {
     const [theme, setTheme] = useState(getTheme());
@@ -270,6 +271,19 @@ function App() {
                     ></Route>
 
                     <Route path="register" element={<CustomerForm />}></Route>
+                </Route>
+
+                <Route path="/reports">
+                    <Route path="products">
+                        <Route
+                            path="interest/:id"
+                            element={
+                                <ProtectedRoute permissions={[ROLE.ADMIN]}>
+                                    <ProductInterestReport />
+                                </ProtectedRoute>
+                            }
+                        ></Route>
+                    </Route>
                 </Route>
 
                 <Route path="/" element={<Home />}></Route>
