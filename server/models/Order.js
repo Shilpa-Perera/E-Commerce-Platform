@@ -45,6 +45,13 @@ class Order {
         return result;
     }
 
+    static async insertNewOrder(details){
+        console.log("in to DB:" , details);
+        const insertOrder = "";
+        const result =  await db.execute(insertOrder,[]);
+        return result;
+    }
+
 }
 
 module.exports.Order = Order;
