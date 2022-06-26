@@ -6,13 +6,15 @@ import { getCartProducts } from "../../services/cartService";
 
 class OrderCheckoutForm extends Component {
     state = {
+        cartId: null,
         variant: [],
         orderTotal: 0,
     };
 
     async CartProducts() {
+        const cartId = localStorage.getItem("cart_id")
         const { data: variant } = await getCartProducts(
-            localStorage.getItem("cart_id")
+            cartId
         );
 
         let orderTotal = 0;
@@ -25,14 +27,15 @@ class OrderCheckoutForm extends Component {
 
         this.setState({ variant });
         this.setState({ orderTotal });
+        this.setState({cartId});
     }
     async componentDidMount() {
         await this.CartProducts();
     }
 
     render() {
-        const { variant, orderTotal } = this.state;
-        console.log(variant, orderTotal);
+        const { variant, orderTotal, cartId } = this.state;
+        // console.log(variant, orderTotal);
         if (variant && orderTotal) {
             return (
                 <div className="container h-100 py-5">
@@ -60,6 +63,7 @@ class OrderCheckoutForm extends Component {
                             </h4>
 
                             <CheckoutFormCard
+                                cartId = {cartId}
                                 cardDetails={variant}
                                 cartTotal={orderTotal}
                             />
