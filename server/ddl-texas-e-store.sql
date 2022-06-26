@@ -236,8 +236,8 @@ create table if not exists sell(
     sell_id int unsigned auto_increment primary key,
     date_time datetime not null,
     order_id int unsigned not null,
-    delivery_state int unsigned,
-    payment_state int unsigned,
+    delivery_state enum('PROCESSING', 'OUTFORDELIVERY', 'DELIVERED'),
+    payment_state enum('PENDING', 'PAID'),
     foreign key (order_id) references `order`(order_id) on delete cascade
 );
 

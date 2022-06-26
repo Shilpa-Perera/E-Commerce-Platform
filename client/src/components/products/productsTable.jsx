@@ -44,6 +44,14 @@ class ProductsTable extends Component {
                             <i className="fa fa-trash-o"></i>
                         </button>
                     </span>
+                    <span className="me-2 my-2 my-lg-0">
+                        <Link to={`/reports/products/interest/${product_id}`}>
+                            <button className="btn btn-info btn-sm hover-focus">
+                                <span className="me-2">Interest Report</span>
+                                <i className="fa fa-bar-chart"></i>
+                            </button>
+                        </Link>
+                    </span>
                 </div>
             ),
             label: "Actions",

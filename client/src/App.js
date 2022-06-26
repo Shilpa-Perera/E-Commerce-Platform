@@ -38,7 +38,9 @@ import OrderCheckoutForm from "./components/orders/orderCheckout";
 import CheckoutPayment from "./components/orders/checkoutPayment";
 import CategoryForm from "./components/category/categoryForm";
 import MockPaymentGateway from "./components/paymentGateway";
+import Customers from "./components/customer/customers";
 import CategoryLink from "./components/category/linkCategory";
+import ProductInterestReport from "./components/reports/productInterestReport";
 
 function App() {
     const [theme, setTheme] = useState(getTheme());
@@ -250,9 +252,15 @@ function App() {
 
                 <Route path="/customers">
                     {/* using permissions */}
-                    {/* <Route path=":id" element={
-                            <ProtectedRoute permissions={[ROLE.CUSTOMER]}><CustomerForm /></ProtectedRoute>
-                        }></Route> */}
+                    <Route
+                        exact
+                        path=""
+                        element={
+                            <ProtectedRoute permissions={[ROLE.ADMIN]}>
+                                <Customers />
+                            </ProtectedRoute>
+                        }
+                    ></Route>
 
                     <Route
                         path=":id"
@@ -266,6 +274,20 @@ function App() {
                     <Route path="register" element={<CustomerForm />}></Route>
                 </Route>
                 <Route path="/paymentGateway" element={<MockPaymentGateway/>}></Route>
+
+                <Route path="/reports">
+                    <Route path="products">
+                        <Route
+                            path="interest/:id"
+                            element={
+                                <ProtectedRoute permissions={[ROLE.ADMIN]}>
+                                    <ProductInterestReport />
+                                </ProtectedRoute>
+                            }
+                        ></Route>
+                    </Route>
+                </Route>
+
                 <Route path="/" element={<Home />}></Route>
 
                 <Route path="*" element={<NotFound />} />

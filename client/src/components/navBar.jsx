@@ -101,13 +101,36 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                 Orders
                             </NavLink>
                         </li>
+
+                        {user && !isAdmin && (
+                            <li className="nav-item">
+                                <NavLink
+                                    className="nav-link hover-focus"
+                                    to={`/customers/${user.user_id}`}
+                                >
+                                    Profile
+                                </NavLink>
+                            </li>
+                        )}
+                        {isAdmin && (
+                            <li className="nav-item">
+                                <NavLink
+                                    className="nav-link hover-focus"
+                                    to="/customers"
+                                >
+                                    Manage Customers
+                                </NavLink>
+                            </li>
+                        )}
+                    </ul>
+                    <ul className="navbar-nav ms-auto">
                         {!user && (
                             <li className="nav-item">
                                 <NavLink
                                     className="nav-link hover-focus"
                                     to="/login"
                                 >
-                                    Login
+                                    <p className="font-weight-bold">Login</p>
                                 </NavLink>
                             </li>
                         )}
@@ -117,7 +140,7 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                     className="nav-link hover-focus"
                                     to="/logout"
                                 >
-                                    Logout
+                                    <p className="font-weight-bold">Logout</p>
                                 </NavLink>
                             </li>
                         )}
@@ -127,12 +150,10 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                     className="nav-link hover-focus"
                                     to="/customers/register"
                                 >
-                                    Register
+                                    <p className="font-weight-bold">Register</p>
                                 </NavLink>
                             </li>
                         )}
-                    </ul>
-                    <ul className="navbar-nav ms-auto">
                         <li className="nav-item d-flex align-items-center">
                             <span
                                 className="ms-2 pointer"
