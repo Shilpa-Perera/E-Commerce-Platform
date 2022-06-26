@@ -15,3 +15,8 @@ export function getOrder(id) {
 export function setOrderDetails(details) {
     return http.post(apiUrl + "/orders/checkout", _.pick(details, ['data', 'cartId']));
 }
+
+export function validateAndConfirmOrder(details){
+    console.log(details);
+    return http.post(apiUrl + "/orders/checkout/payment", _.pick(details, ['data', 'cartId', 'paymentMethod', 'totalPrice', 'paymentDetails']));
+}
