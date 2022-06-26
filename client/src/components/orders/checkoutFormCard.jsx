@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Form from "../common/form";
 import Joi from "joi-browser";
+import { setOrderDetails } from "../../services/orderService";
 
 class CheckoutFormCard extends Form {
     state = {
@@ -30,12 +31,8 @@ class CheckoutFormCard extends Form {
         zipcode: Joi.string().required().min(5).max(5).label("ZIP Code"),
     };
 
-    // handleSubmit = (e) => {
-    //     console.log("inside handle submit outside ");
-    //     this.setState({ infor: this.form });
-    // };
-
     doSubmit = async () => {
+        let result = null;
         const cartId = this.props.cartId;
         const data = {
             firstName: "",
@@ -45,10 +42,16 @@ class CheckoutFormCard extends Form {
             city: "",
             zipcode: "",
         };
-        this.setState({cartId: "cartId"});
+        await this.setState({cartId: cartId});
         this.setState({ data });
         
-        console.log(this.state.data, this.state.cartId, cartId);
+        console.log(this.state.data, this.state.cartId);
+        try {
+            result = await setOrderDetails(this.state);
+        } catch (error) {
+            console.log(error);
+        }
+        console.log(result);
     };
 
     render() {

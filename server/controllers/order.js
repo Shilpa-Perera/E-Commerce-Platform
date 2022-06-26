@@ -15,6 +15,18 @@ class OrderController {
         console.log("api - order id: ", id);
         res.send(orderArray);
     }
+
+    static async setOrderDetails(req, res, next){
+        const test  = req.body;
+        
+        console.log(test);
+    }
+
+    static validateData(data) {
+        
+    }
+
+
 }
 
 module.exports.OrderController = OrderController;
