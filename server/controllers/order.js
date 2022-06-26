@@ -20,19 +20,23 @@ class OrderController {
     }
 
     static async setOrderDetails(req, res, next) {
-        const test = req.body;
+        // const test = req.body;
+        const test = [];
+        console.log(OrderController.validateData(test));
         if (OrderController.validateData(test)) {
             console.log("valid");
         }
 
-        console.log(test);
+        // console.log(test);
     }
 
     static validateData(data) {
-        data.data.forEach((element) => {
-            element === null;
-            return false;
-        });
+        const dataArray = data.data
+        console.log(dataArray);
+        for (const item in dataArray) {
+            return(item===null ? false : true);
+          }
+        return true;
     }
 }
 
