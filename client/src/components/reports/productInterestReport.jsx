@@ -126,10 +126,10 @@ class ProductInterestReportBody extends Component {
                 <div id={elementId} className="mb-5 p-5">
                     <div>
                         <div className="d-flex justify-content-center mb-2">
-                            <h2>Product Interest Report</h2>
+                            <h1>Product Interest Report</h1>
                         </div>
                         <div className="d-flex justify-content-center mb-4">
-                            <h4>{product.product_title}</h4>
+                            <h3>{product.product_title}</h3>
                         </div>
                     </div>
                     <div className="d-flex justify-content-center">
