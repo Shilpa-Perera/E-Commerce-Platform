@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import Form from "../common/form";
 import Joi from "joi-browser";
 import { setOrderDetails } from "../../services/orderService";
+import { toast } from "react-toastify";
+import CheckoutPayment from "./checkoutPayment";
 
 class CheckoutFormCard extends Form {
     state = {
@@ -15,6 +17,8 @@ class CheckoutFormCard extends Form {
             zipcode: "",
         },
         cartId: null,
+        page: null,
+        estimatedDelivery: null,
         errors: [],
     };
 
@@ -31,6 +35,19 @@ class CheckoutFormCard extends Form {
         zipcode: Joi.string().required().min(5).max(5).label("ZIP Code"),
     };
 
+    componentDidMount() {
+        const data = {
+            firstName: "a",
+            lastName: "b",
+            email: "c",
+            deliveryAddress: "d",
+            city: "e",
+            zipcode: "f",
+        };
+        this.setState({ data: data });
+        
+    }
+
     doSubmit = async () => {
         let result = null;
         const cartId = this.props.cartId;
@@ -42,63 +59,67 @@ class CheckoutFormCard extends Form {
             city: "",
             zipcode: "",
         };
-        await this.setState({cartId: cartId});
+        await this.setState({ cartId: cartId });
         this.setState({ data });
-        
-        console.log(this.state.data, this.state.cartId);
+
         try {
             result = await setOrderDetails(this.state);
         } catch (error) {
-            console.log(error);
+            toast.error("Error occured. Try Again!")
         }
-        console.log(result);
+        if (result.data[1] === "All set") {
+            const page = "payment";
+            this.setState({data:result.data[0]});
+            this.setState({page:page})
+            this.setState({estimatedDelivery:result.data[2]})
+        } else {
+            toast.warning(result.data[1]);
+        }
     };
 
     render() {
-        return (
-            <form onSubmit={this.handleSubmit}>
-                <div className="row p-5 div-dark">
-                    <div className="col-6 form-group mb-3">
-                        {this.renderInput("firstName", "First Name")}
-                    </div>
-                    <div className="col-6 form-group mb-3">
-                        {this.renderInput("lastName", "Last Name")}
-                    </div>
+        if (this.state.page === null) {
+            return (
+                <form onSubmit={this.handleSubmit}>
+                    <div className="row p-5 div-dark">
+                        <div className="col-6 form-group mb-3">
+                            {this.renderInput("firstName", "First Name")}
+                        </div>
+                        <div className="col-6 form-group mb-3">
+                            {this.renderInput("lastName", "Last Name")}
+                        </div>
 
-                    <div className="col-12 form-group mb-3">
-                        {this.renderInput("email", "Email Address")}
-                    </div>
+                        <div className="col-12 form-group mb-3">
+                            {this.renderInput("email", "Email Address")}
+                        </div>
 
-                    <div className="col-12 form-group mb-3">
-                        {this.renderInput(
-                            "deliveryAddress",
-                            "Delivery Address"
-                        )}
-                    </div>
+                        <div className="col-12 form-group mb-3">
+                            {this.renderInput(
+                                "deliveryAddress",
+                                "Delivery Address"
+                            )}
+                        </div>
 
-                    <div className="col-6 form-group mb-3">
-                        {this.renderInput("city", "City")}
-                    </div>
+                        <div className="col-6 form-group mb-3">
+                            {this.renderInput("city", "City")}
+                        </div>
 
-                    <div className="col-6 form-group mb-3">
-                        {this.renderInput("zipcode", "ZIP Code")}
-                    </div>
+                        <div className="col-6 form-group mb-3">
+                            {this.renderInput("zipcode", "ZIP Code")}
+                        </div>
 
-                    <div className="col-12 form-group mb-3">
-                        {this.renderStyledButton("Proceed to Payment")}
+                        <div className="col-12 form-group mb-3">
+                            {this.renderStyledButton("Proceed to Payment")}
+                        </div>
                     </div>
-
-                    {/* <Link to={`/cart/checkout/payment`}> */}
-                    {/* <button
-                        className="btn btn-primary btn-lg btn-block"
-                        type=""
-                    >
-                        Proceed to Payment
-                    </button> */}
-                    {/* </Link> */}
-                </div>
-            </form>
-        );
+                </form>
+            );
+        }
+        else if(this.state.page === "payment"){
+            return (
+                <CheckoutPayment data ={this.state.data} deliveryEstimate = {this.state.estimatedDelivery} />
+            )
+        }
     }
 }
 
