@@ -24,7 +24,7 @@ class OrderController {
         const validation = OrderController.validateData(test);
         let validateResult = validation[0];
         let error = validation[1];
-        let estimatedDeliveryTime = 6;
+        let estimatedDeliveryTime = 6; // ## fix calculation
         if (validateResult) {
             console.log("valid" , error);
             
@@ -58,10 +58,15 @@ class OrderController {
         return [true, "All set"];
     }
 
+
     static async confirmAndSetOrder(req, res, next){
         const orderDetails = req.body;
         console.log(orderDetails);
-         
+        const dateTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        console.log(dateTime);
+
+
+        
     }
 }
 
