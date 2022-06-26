@@ -57,6 +57,12 @@ class OrderController {
 
         return [true, "All set"];
     }
+
+    static async confirmAndSetOrder(req, res, next){
+        const orderDetails = req.body;
+        console.log(orderDetails);
+         
+    }
 }
 
 module.exports.OrderController = OrderController;
