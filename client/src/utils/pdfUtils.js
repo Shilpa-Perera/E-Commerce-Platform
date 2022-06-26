@@ -6,9 +6,7 @@ export function elementToPdf(elementId, filename) {
 
     html2canvas(input).then((canvas) => {
         const img = canvas.toDataURL("image/png");
-        const pdf = new jsPDF({
-            orientation: "landscape",
-        });
+        const pdf = new jsPDF();
         const imgProps = pdf.getImageProperties(img);
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
