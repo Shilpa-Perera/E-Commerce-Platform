@@ -14,6 +14,7 @@ import { Bar } from "react-chartjs-2";
 import { getProduct } from "../../services/productService";
 import Loading from "../common/loading";
 import { elementToPdf } from "../../utils/pdfUtils";
+import { toast } from "react-toastify";
 
 ChartJS.register(
     CategoryScale,
@@ -33,18 +34,18 @@ class ProductInterestReportBody extends Component {
     };
 
     months = [
-        "January",
-        "February",
-        "March",
-        "April",
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
         "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
     ];
 
     async componentDidMount() {
@@ -72,6 +73,11 @@ class ProductInterestReportBody extends Component {
                         text: "Product Interest Report",
                     },
                 },
+                scale: {
+                    ticks: {
+                        precision: 0,
+                    },
+                },
             };
 
             const data = {
@@ -89,8 +95,8 @@ class ProductInterestReportBody extends Component {
             if (reportData.length > 0) {
                 for (const reportDataItem of reportData) {
                     data.labels.push(
-                        `${reportDataItem.year} - ${
-                            this.months[reportDataItem.month - 1]
+                        `${this.months[reportDataItem.month - 1]} ${
+                            reportDataItem.year
                         }`
                     );
                     data.datasets[0].data.push(reportDataItem.count);
@@ -101,6 +107,9 @@ class ProductInterestReportBody extends Component {
         } catch (e) {
             if (e.response && e.response.status === 404)
                 this.props.replace("/not-found");
+
+            toast.error("An error occurred!", { theme: "dark" });
+            this.setState({ loading: false });
         }
     }
 
