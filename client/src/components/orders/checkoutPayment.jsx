@@ -1,26 +1,25 @@
-import React, { Component } from "react";
+import React from "react";
 
 import { Link } from "react-router-dom";
-
-import CheckoutCartCard from "./checkoutCartCard";
 import Joi from "joi-browser";
 import Form from "../common/form";
+import { validateAndConfirmOrder } from "../../services/orderService";
 
 class CheckoutPayment extends Form {
     state = {
         paymentMethod: null,
         data: {
-            firstName: "",
             cc_cvv: "",
             cc_expiration: "",
             cc_number: "",
             cc_name: "",
         },
+        orderDetails: null,
+        totalAmount: null,
         errors: [],
     };
 
     schema = {
-        firstName: Joi.string().required().min(3).max(250).label("First Name"),
         cc_cvv: Joi.string()
             .regex(/^[0-9]+$/)
             .required()
@@ -29,30 +28,62 @@ class CheckoutPayment extends Form {
             .label("CCV"),
         cc_expiration: Joi.string()
             .required()
-            .min(8)
+            .min(4)
             .max(250)
             .label("Expiration Date"),
         cc_number: Joi.string().required().min(3).max(250).label("First Name"),
         cc_name: Joi.string().required().min(3).max(250).label("First Name"),
     };
 
+    componentDidMount() {
+        this.setState({
+            orderDetails: this.props.data,
+            totalAmount: this.props.cartTotal,
+        });
+    }
+
     selectcash = () => {
-        this.setState({ paymentMethod: "cash" });
+        const data = {
+            cc_cvv: "000",
+            cc_expiration: "00/00",
+            cc_number: "00000000",
+            cc_name: "000000",
+        };
+        this.setState({ paymentMethod: "cash", data: data });
     };
 
     selectcard = () => {
-        this.setState({ paymentMethod: "card" });
+        const data = {
+            cc_cvv: "",
+            cc_expiration: "",
+            cc_number: "",
+            cc_name: "",
+        };
+        this.setState({ paymentMethod: "card", data: data });
     };
 
     doSubmit = async () => {
         console.log("to pay");
+        const details = {
+            ...this.state.orderDetails,
+            totalPrice: this.state.totalAmount,
+            paymentMethod: this.state.paymentMethod,
+            paymentDetails: this.state.data,
+        };
+
+        await validateAndConfirmOrder(details);
     };
 
     render() {
-        const { paymentMethod } = this.state;
+        const { paymentMethod, totalAmount: cartTotal } = this.state;
 
-        const { data, deliveryEstimate, cartTotal } = this.props;
-        console.log("in payment: ", data, deliveryEstimate);
+        const { deliveryEstimate } = this.props;
+        console.log(
+            "in payment: ",
+            deliveryEstimate,
+            this.state.orderDetails,
+            this.state.totalAmount
+        );
         console.log(paymentMethod);
         return (
             <div>
@@ -73,38 +104,41 @@ class CheckoutPayment extends Form {
                     </div>
                     <div className="col-12 d-block my-3">
                         <form onSubmit={this.handleSubmit}>
-                            <h5 className="mb-3">Choose payment method</h5>
-                            <div className="form-check">
-                                <input
-                                    className="form-check-input"
-                                    type="radio"
-                                    name="flexRadioDefault"
-                                    id="cashInput"
-                                    onChange={this.selectcash}
-                                ></input>
-                                <label
-                                    className="form-check-label"
-                                    htmlFor="flexRadioDefault1"
-                                >
-                                    Cash
-                                </label>
+                            <div className="mb-3">
+                                <h5 className="mb-3">Choose payment method</h5>
+                                <div className="form-check">
+                                    <input
+                                        className="form-check-input"
+                                        type="radio"
+                                        name="flexRadioDefault"
+                                        id="cashInput"
+                                        onChange={this.selectcash}
+                                    ></input>
+                                    <label
+                                        className="form-check-label"
+                                        htmlFor="flexRadioDefault1"
+                                    >
+                                        Cash
+                                    </label>
+                                </div>
+
+                                <div className="form-check">
+                                    <input
+                                        className="form-check-input"
+                                        type="radio"
+                                        name="flexRadioDefault"
+                                        id="cardInput"
+                                        onChange={this.selectcard}
+                                    ></input>
+                                    <label
+                                        className="form-check-label"
+                                        htmlFor="flexRadioDefault1"
+                                    >
+                                        Card
+                                    </label>
+                                </div>
                             </div>
 
-                            <div className="form-check">
-                                <input
-                                    className="form-check-input"
-                                    type="radio"
-                                    name="flexRadioDefault"
-                                    id="cardInput"
-                                    onChange={this.selectcard}
-                                ></input>
-                                <label
-                                    className="form-check-label"
-                                    htmlFor="flexRadioDefault1"
-                                >
-                                    Card
-                                </label>
-                            </div>
                             {paymentMethod === "card" && (
                                 <div>
                                     <div className="row">
@@ -135,22 +169,28 @@ class CheckoutPayment extends Form {
                                 </div>
                             )}
                             <div
-                                className="btn-group col-2"
+                                className="row"
                                 role="group"
                                 aria-label="Basic mixed styles example"
                             >
-                                <Link to="/cart">
-                                    <button
-                                        type="button"
-                                        className="btn btn-danger"
-                                    >
-                                        Cancle
-                                    </button>
-                                </Link>
+                                <div className="col-3">
+                                    <Link to="/cart">
+                                        <button
+                                            type="button"
+                                            class="btn btn-danger hover-focus"
+                                        >
+                                            Cancle
+                                        </button>
+                                    </Link>
+                                </div>
 
                                 {/* Link is Temporary */}
-
-                                {this.renderStyledButton("Confirm")}
+                                <div className="col-3">
+                                    {this.renderStyledButton(
+                                        "Confirm",
+                                        "hover-focus btn-success"
+                                    )}
+                                </div>
                             </div>
                         </form>
                     </div>
