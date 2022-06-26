@@ -108,6 +108,7 @@ class CheckoutFormCard extends Form {
                             {this.renderInput("zipcode", "ZIP Code")}
                         </div>
 
+
                         <div className="col-12 form-group mb-3">
                             {this.renderStyledButton("Proceed to Payment")}
                         </div>
@@ -117,7 +118,8 @@ class CheckoutFormCard extends Form {
         }
         else if(this.state.page === "payment"){
             return (
-                <CheckoutPayment data ={this.state.data} deliveryEstimate = {this.state.estimatedDelivery} />
+
+                <CheckoutPayment data ={this.state.data} deliveryEstimate = {this.state.estimatedDelivery} cartTotal = {this.props.cartTotal}/>
             )
         }
     }
