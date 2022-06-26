@@ -2,65 +2,11 @@ use texas_e_store;
 
 # admin
 
-INSERT INTO admin (name, email, password)
-VALUES (
-    'Achira',
-    'achira@gmail.com',
-    '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka'
-  );
-
-INSERT INTO admin (name, email, password)
-VALUES (
-    'Chaturanga',
-    'chathuranga@gmail.com',
-    '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka'
-  );
-
-INSERT INTO admin (name, email, password)
-VALUES (
-    'Sasitha',
-    'sasitha@gmail.com',
-    '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka'
-  );
-
-INSERT INTO admin (name, email, password)
-VALUES (
-    'Thamindu',
-    'thamindu@gmail.com',
-    '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka'
-  );
-
-INSERT INTO admin (name, email, password)
-VALUES (
-    'Shilpa',
-    'shilpa@gmail.com',
-    '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka'
-  );
-
-# customer
-
-INSERT INTO customer (name, email, password)
- VALUES (
-     'Sahan Silva',
-     'sahan@gmail.com',
-     '$2b$10$XJTjhQfCLlg4sCrakL.ih.DaeXTb7SjrltITr/x4WgscUubBDDMRq'
-   );
-
- INSERT INTO customer (name, email, password)
- VALUES (
-     'Nipuni Silva',
-     'nipuni@gmail.com',
-     '$2b$10$XJTjhQfCLlg4sCrakL.ih.DaeXTb7SjrltITr/x4WgscUubBDDMRq'
-   );
-
- INSERT INTO customer (name, email, password)
- VALUES (
-     'Kumesh Uminda',
-     'kumesh@gmail.com',
-     '$2b$10$TtrjJrQQn0LkvNJc3wUxLeWmWgji3b23Jq4rgIbzDJ39VauVTR5Zy'
-   );
-
-
+INSERT INTO admin (name, email, password) VALUES  ('Achira', 'achira@gmail.com', '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka');
+INSERT INTO admin (name, email, password) VALUES ('Chaturanga', 'chathuranga@gmail.com', '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka');
+INSERT INTO admin (name, email, password) VALUES ('Sasitha', 'sasitha@gmail.com', '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka');
+INSERT INTO admin (name, email, password) VALUES ('Thamindu', 'thamindu@gmail.com', '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka');
+INSERT INTO admin (name, email, password) VALUES ('Shilpa', 'shilpa@gmail.com', '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka');
 
 #categories
 
