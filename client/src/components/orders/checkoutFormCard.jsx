@@ -4,7 +4,6 @@ import Form from "../common/form";
 import Joi from "joi-browser";
 
 class CheckoutFormCard extends Form {
-    // state = [{ payment: null, infor: null }];
     state = {
         data: {
             firstName: "",
@@ -13,14 +12,9 @@ class CheckoutFormCard extends Form {
             deliveryAddress: "",
             city: "",
             zipcode: "",
-            price: "",
         },
+        cartId: null,
         errors: [],
-    };
-
-    handleSubmit = (e) => {
-        console.log("inside handle submit outside ");
-        this.setState({ infor: this.form });
     };
 
     schema = {
@@ -34,7 +28,27 @@ class CheckoutFormCard extends Form {
 
         city: Joi.string().required().min(1).max(250).label("City"),
         zipcode: Joi.string().required().min(5).max(5).label("ZIP Code"),
-        price: Joi.number().required().min(1).label("Price"),
+    };
+
+    // handleSubmit = (e) => {
+    //     console.log("inside handle submit outside ");
+    //     this.setState({ infor: this.form });
+    // };
+
+    doSubmit = async () => {
+        const cartId = this.props.cartId;
+        const data = {
+            firstName: "",
+            lastName: "",
+            email: "",
+            deliveryAddress: "",
+            city: "",
+            zipcode: "",
+        };
+        this.setState({cartId: "cartId"});
+        this.setState({ data });
+        
+        console.log(this.state.data, this.state.cartId, cartId);
     };
 
     render() {
@@ -67,13 +81,17 @@ class CheckoutFormCard extends Form {
                         {this.renderInput("zipcode", "ZIP Code")}
                     </div>
 
+                    <div className="col-12 form-group mb-3">
+                        {this.renderStyledButton("Proceed to Payment")}
+                    </div>
+
                     {/* <Link to={`/cart/checkout/payment`}> */}
-                    <button
+                    {/* <button
                         className="btn btn-primary btn-lg btn-block"
                         type=""
                     >
                         Proceed to Payment
-                    </button>
+                    </button> */}
                     {/* </Link> */}
                 </div>
             </form>
