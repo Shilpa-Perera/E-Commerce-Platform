@@ -14,7 +14,9 @@ class CheckoutCartCard extends Component {
                             <small className="text-muted">
                                 {e.variant_name}
                             </small>
-                            <h6 className="fw-lighter">Quantity: {e.number_of_items}</h6>
+                            <h6 className="fw-lighter">
+                                Quantity: {e.number_of_items}
+                            </h6>
                         </div>
                     </div>
                     <span className="text-muted">{e.price}</span>
@@ -26,7 +28,7 @@ class CheckoutCartCard extends Component {
 
     state = { payment: null };
     render() {
-        const {cardDetails, cartTotal} = this.props;
+        const { cardDetails, cartTotal } = this.props;
         if (cardDetails) {
             return (
                 <div className="div-dark overflow-hidden">
