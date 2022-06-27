@@ -79,8 +79,8 @@ class CheckoutPayment extends Form {
             toast.warning("Payment Failed. Try again", {
                 theme: "dark",
             });
+            return;
         }
-
         window.location = "/order-summary/1";
     };
 
