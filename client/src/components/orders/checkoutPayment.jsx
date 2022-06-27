@@ -1,10 +1,10 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Joi from "joi-browser";
 import Form from "../common/form";
 import { validateAndConfirmOrder } from "../../services/orderService";
 import { toast } from "react-toastify";
+
 
 class CheckoutPayment extends Form {
     state = {
@@ -79,11 +79,8 @@ class CheckoutPayment extends Form {
                 theme: "dark",
             });
         }
-        toast.success(data[1]==='result'?"Payment Successful":"", {
-            theme: "dark",
-        });
-        let navigate = useNavigate();
-        navigate("../orders");
+
+        window.location="/order-summary";
     };
 
     

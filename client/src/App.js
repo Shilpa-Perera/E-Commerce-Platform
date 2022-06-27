@@ -41,6 +41,7 @@ import MockPaymentGateway from "./components/paymentGateway";
 import Customers from "./components/customer/customers";
 import CategoryLink from "./components/category/linkCategory";
 import ProductInterestReport from "./components/reports/productInterestReport";
+import OrderSummary from "./components/orders/orderSummary";
 
 function App() {
     const [theme, setTheme] = useState(getTheme());
@@ -206,6 +207,8 @@ function App() {
                     <Route index element={<Orders />}></Route>
                     <Route path=":id" element={<Order />}></Route>
                 </Route>
+                
+                <Route path="/order-summary" element={<OrderSummary/>}></Route>
 
                 <Route path="/cart">
                     <Route
