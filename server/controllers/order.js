@@ -61,9 +61,19 @@ class OrderController {
 
     static async confirmAndSetOrder(req, res, next){
         const orderDetails = req.body;
+        let error = null;
         console.log(orderDetails);
         const dateTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
         console.log(dateTime);
+
+        // Payment Call
+
+        let paymentResult = false;
+
+        if (!paymentResult) {
+            error = "Payment Failed";
+            res.status(200).send([orderDetails, error]);
+        }
 
 
         
