@@ -1,9 +1,10 @@
 import React from "react";
-
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Joi from "joi-browser";
 import Form from "../common/form";
 import { validateAndConfirmOrder } from "../../services/orderService";
+import { toast } from "react-toastify";
 
 class CheckoutPayment extends Form {
     state = {
@@ -63,7 +64,6 @@ class CheckoutPayment extends Form {
     };
 
     doSubmit = async () => {
-        console.log("to pay");
         const details = {
             ...this.state.orderDetails,
             totalPrice: this.state.totalAmount,
@@ -71,8 +71,22 @@ class CheckoutPayment extends Form {
             paymentDetails: this.state.data,
         };
 
-        await validateAndConfirmOrder(details);
+        const { data } = await validateAndConfirmOrder(details);
+
+        console.log(data);
+        if (data[1] === "Payment Failed") {
+            toast.warning("Payment Failed. Try again", {
+                theme: "dark",
+            });
+        }
+        toast.success(data[1]==='result'?"Payment Successful":"", {
+            theme: "dark",
+        });
+        let navigate = useNavigate();
+        navigate("../orders");
     };
+
+    
 
     render() {
         const {
@@ -82,22 +96,17 @@ class CheckoutPayment extends Form {
         } = this.state;
 
         const { deliveryEstimate } = this.props;
-
-        console.log(paymentMethod);
         if (orderDetails && cartTotal) {
-            console.log(
-                "in payment: ",
-                deliveryEstimate,
-                orderDetails,
-                this.state.totalAmount
-            );
             const readOnlyOrderData = orderDetails.data;
             return (
                 <div>
                     <div className="row p-5 div-dark">
                         <div className="col-12 mb-3">
                             <label htmlFor="fullname">Full name:</label>
-                            <li className="list-group-item text-break" id="fullname">
+                            <li
+                                className="list-group-item text-break"
+                                id="fullname"
+                            >
                                 {readOnlyOrderData.firstName +
                                     " " +
                                     readOnlyOrderData.lastName}
@@ -106,7 +115,10 @@ class CheckoutPayment extends Form {
 
                         <div className="col-12 mb-3">
                             <label htmlFor="email">Email address:</label>
-                            <li className="list-group-item text-break" id="email">
+                            <li
+                                className="list-group-item text-break"
+                                id="email"
+                            >
                                 {readOnlyOrderData.email}
                             </li>
                         </div>
@@ -115,21 +127,30 @@ class CheckoutPayment extends Form {
                             <label htmlFor="deliveryAddress">
                                 Delivery Address:
                             </label>
-                            <li className="list-group-item text-break" id="deliveryAddress">
+                            <li
+                                className="list-group-item text-break"
+                                id="deliveryAddress"
+                            >
                                 {readOnlyOrderData.deliveryAddress}
                             </li>
                         </div>
 
                         <div className="col-6 mb-3">
                             <label htmlFor="city">City:</label>
-                            <li className="list-group-item text-break" id="city">
+                            <li
+                                className="list-group-item text-break"
+                                id="city"
+                            >
                                 {readOnlyOrderData.city}
                             </li>
                         </div>
 
                         <div className="col-6 mb-3">
                             <label htmlFor="zipcode">ZIP code:</label>
-                            <li className="list-group-item text-break" id="zipcode">
+                            <li
+                                className="list-group-item text-break"
+                                id="zipcode"
+                            >
                                 {readOnlyOrderData.zipcode}
                             </li>
                         </div>
@@ -147,7 +168,9 @@ class CheckoutPayment extends Form {
                         </div>
 
                         <div className="col-12 mb-3">
-                            <label htmlFor="totalAmmount text-break">Total amount:</label>
+                            <label htmlFor="totalAmmount text-break">
+                                Total amount:
+                            </label>
                             <li className="list-group-item" id="totalAmount">
                                 LKR {cartTotal}
                             </li>

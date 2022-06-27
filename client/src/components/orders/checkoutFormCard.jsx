@@ -41,8 +41,8 @@ class CheckoutFormCard extends Form {
             lastName: "b",
             email: "c",
             deliveryAddress: "d",
-            city: "e",
-            zipcode: "f",
+            city: "",
+            zipcode: "",
         };
         this.setState({ data: data });
     }

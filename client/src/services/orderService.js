@@ -17,6 +17,5 @@ export function setOrderDetails(details) {
 }
 
 export function validateAndConfirmOrder(details){
-    console.log(details);
     return http.post(apiUrl + "/orders/checkout/payment", _.pick(details, ['data', 'cartId', 'paymentMethod', 'totalPrice', 'paymentDetails']));
 }

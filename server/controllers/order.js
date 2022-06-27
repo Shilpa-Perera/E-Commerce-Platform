@@ -68,13 +68,16 @@ class OrderController {
 
         // Payment Call
 
-        let paymentResult = false;
+        let paymentResult = true;
 
         if (!paymentResult) {
             error = "Payment Failed";
-            res.status(200).send([orderDetails, error]);
+            return res.status(200).send([orderDetails, error]);
+            
         }
-
+        
+        error = await Order.insertNewOrder(); 
+        return res.status(200).send([orderDetails, error])
 
         
     }

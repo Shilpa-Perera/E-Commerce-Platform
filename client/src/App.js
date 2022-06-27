@@ -222,10 +222,6 @@ function App() {
                     ></Route>
                     <Route path="checkout">
                         <Route index element={<OrderCheckoutForm />}></Route>
-                        <Route
-                            path="payment"
-                            element={<CheckoutPayment />}
-                        ></Route>
                     </Route>
                 </Route>
 
