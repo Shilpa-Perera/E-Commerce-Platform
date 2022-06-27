@@ -45,7 +45,6 @@ class CheckoutFormCard extends Form {
             zipcode: "f",
         };
         this.setState({ data: data });
-        
     }
 
     doSubmit = async () => {
@@ -65,13 +64,13 @@ class CheckoutFormCard extends Form {
         try {
             result = await setOrderDetails(this.state);
         } catch (error) {
-            toast.error("Error occured. Try Again!")
+            toast.error("Error occured. Try Again!");
         }
         if (result.data[1] === "All set") {
             const page = "payment";
-            this.setState({data:result.data[0]});
-            this.setState({page:page})
-            this.setState({estimatedDelivery:result.data[2]})
+            this.setState({ data: result.data[0] });
+            this.setState({ page: page });
+            this.setState({ estimatedDelivery: result.data[2] });
         } else {
             toast.warning(result.data[1]);
         }
@@ -108,19 +107,22 @@ class CheckoutFormCard extends Form {
                             {this.renderInput("zipcode", "ZIP Code")}
                         </div>
 
-
                         <div className="col-12 form-group mb-3">
                             {this.renderStyledButton("Proceed to Payment")}
                         </div>
                     </div>
                 </form>
             );
-        }
-        else if(this.state.page === "payment"){
+        } else if (this.state.page === "payment") {
             return (
-
-                <CheckoutPayment data ={this.state.data} deliveryEstimate = {this.state.estimatedDelivery} cartTotal = {this.props.cartTotal}/>
-            )
+                <div>
+                    <CheckoutPayment
+                        data={this.state.data}
+                        deliveryEstimate={this.state.estimatedDelivery}
+                        cartTotal={this.props.cartTotal}
+                    />
+                </div>
+            );
         }
     }
 }
