@@ -14,6 +14,15 @@ class Cart extends Component {
         const { data: variant } = await getCartProducts(
             getCartId()
         );
+        let orderTotal = this.orderTotalCalc(variant);
+        this.setState({ variant });
+        this.setState({ orderTotal });
+    }
+    async componentDidMount() {
+        await this.cartProducts();
+    }
+
+    orderTotalCalc = (variant) => {
         let orderTotal = 0;
         if (variant) {
             variant.forEach((element) => {
@@ -21,11 +30,7 @@ class Cart extends Component {
                     parseFloat(element.price) * element.number_of_items;
             });
         }
-        this.setState({ variant });
-        this.setState({ orderTotal });
-    }
-    async componentDidMount() {
-        await this.cartProducts();
+        return orderTotal.toFixed(2) ;
     }
 
     handleIncrement = (variant_id) => {
@@ -34,7 +39,9 @@ class Cart extends Component {
             (item) => item.variant_id === variant_id
         );
         products[index].number_of_items++;
+        const orderTotal = this.orderTotalCalc(products);
         this.setState({ variant: products });
+        this.setState({orderTotal});
         updateItemCount(
             products[index].cart_id,
             products[index].variant_id,
@@ -48,8 +55,9 @@ class Cart extends Component {
             (item) => item.variant_id === variant_id
         );
         products[index].number_of_items--;
+        const orderTotal = this.orderTotalCalc(products);
         this.setState({ variant: products });
-
+        this.setState({orderTotal});
         updateItemCount(
             products[index].cart_id,
             products[index].variant_id,
@@ -109,7 +117,7 @@ class Cart extends Component {
                                             Order total:
                                         </span>{" "}
                                         <span className="lead fw-normal">
-                                            {this.state.orderTotal}
+                                             Rs.  {this.state.orderTotal}
                                         </span>
                                     </p>
                                 </div>

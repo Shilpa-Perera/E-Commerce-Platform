@@ -49,7 +49,7 @@ class CartCard extends Component {
               </button>
             </div>
             <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-              <h5 className="mb-0">{price*number_of_items}</h5>
+              <h5 className="mb-0">Rs. {(price*number_of_items).toFixed(2)}</h5>
             </div>
             <div className="col-md-1 col-lg-1 col-xl-1 text-end">
             <button type="button" className="btn btn-default " aria-label="Left Align" onClick={() => onDelete(variant_id)} >
