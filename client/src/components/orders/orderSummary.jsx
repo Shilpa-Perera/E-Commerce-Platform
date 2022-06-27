@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 import pdfMake from "pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import htmlToPdfmake from "html-to-pdfmake";
+import { getOrder } from "../../services/orderService";
+import { useParams } from "react-router-dom";
 
 class OrderSummary extends Form {
     state = {
@@ -25,6 +27,8 @@ class OrderSummary extends Form {
 
     componentDidMount() {
         console.log("run");
+        const {id} = this.props;
+        console.log(id);
         // toast.success("Payment Successful", {
         //     theme: "dark",
         // });
@@ -206,4 +210,9 @@ class OrderSummary extends Form {
     }
 }
 
-export default OrderSummary;
+function OrderReport(props){
+    const {id} =  useParams();
+    return <OrderSummary {...{ props, id }} />;
+}
+
+export default OrderReport;

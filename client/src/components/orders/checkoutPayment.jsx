@@ -6,6 +6,7 @@ import { validateAndConfirmOrder } from "../../services/orderService";
 import { toast } from "react-toastify";
 
 
+
 class CheckoutPayment extends Form {
     state = {
         paymentMethod: null,
@@ -80,10 +81,8 @@ class CheckoutPayment extends Form {
             });
         }
 
-        window.location="/order-summary";
+        window.location = "/order-summary/1";
     };
-
-    
 
     render() {
         const {
