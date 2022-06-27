@@ -46,10 +46,6 @@ export async function setCartId() {
 	}
 }
 
-export function getNewCartId() {
-	return http.get(newCartUrl());
-}
-
 export function getCartId() {
 	return encryptStorage.getItem("cart_id");
 }
@@ -80,4 +76,8 @@ export function decrementItemCount() {
 
 export function addProductToCart(obj) {
 	return http.post(apiEndpoint, obj);
+}
+
+export function getNewCartId() {
+	return http.get(newCartUrl());
 }

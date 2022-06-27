@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { productImageUrl } from "../services/imageService";
+import { MdDelete } from "react-icons/md";
 
 class CartCard extends Component {
 	render() {
@@ -79,10 +80,7 @@ class CartCard extends Component {
 								aria-label="Left Align"
 								onClick={() => onDelete(variant_id)}
 							>
-								<span
-									className="fa fa-trash fa-lg"
-									aria-hidden="true"
-								></span>
+								<MdDelete style={{ fill: "red" }} size={25} />
 							</button>
 							{/* <a onClick={() => onDelete(variant_id)} className="text-danger"><i className="fa fa-trash fa-lg"></i></a> */}
 						</div>

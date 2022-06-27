@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { getCartProducts } from "../services/cartService";
 import CartCard from "./cartCard";
+
 import {
 	updateItemCount,
 	deletedProduct,
