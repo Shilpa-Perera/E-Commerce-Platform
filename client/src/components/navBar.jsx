@@ -170,7 +170,8 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                 )}
                             </span>
                         </li>
-                        <li className="nav-item">
+                        {!isAdmin && (
+                            <li className="nav-item">
                             <NavLink
                                 className="nav-link hover-focus"
                                 to="/cart"
@@ -183,6 +184,8 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                 </span>
                             </NavLink>
                         </li>
+                        )}
+                        
                     </ul>
                 </div>
             </div>
