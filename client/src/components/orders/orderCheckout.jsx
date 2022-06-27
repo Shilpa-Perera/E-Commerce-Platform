@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import CheckoutCartCard from "./checkoutCartCard";
 import CheckoutFormCard from "./checkoutFormCard";
-import { getCartProducts } from "../../services/cartService";
+import { getCartId, getCartProducts } from "../../services/cartService";
 
 
 class OrderCheckoutForm extends Component {
@@ -12,7 +12,7 @@ class OrderCheckoutForm extends Component {
     };
 
     async CartProducts() {
-        const cartId = localStorage.getItem("@cart:cart_id")
+        const cartId = getCartId();
         const { data: variant } = await getCartProducts(
             cartId
         );
