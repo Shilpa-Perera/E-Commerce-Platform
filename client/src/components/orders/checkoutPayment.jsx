@@ -75,128 +75,181 @@ class CheckoutPayment extends Form {
     };
 
     render() {
-        const { paymentMethod, totalAmount: cartTotal } = this.state;
+        const {
+            paymentMethod,
+            totalAmount: cartTotal,
+            orderDetails,
+        } = this.state;
 
         const { deliveryEstimate } = this.props;
-        console.log(
-            "in payment: ",
-            deliveryEstimate,
-            this.state.orderDetails,
-            this.state.totalAmount
-        );
+
         console.log(paymentMethod);
-        return (
-            <div>
-                <div className="row p-5 div-dark">
-                    <div className="col-12">
-                        <label htmlFor="totalAmmount">
-                            Estimated Delivery Time:
-                        </label>
-                        <li className="list-group-item" id="deliveryEstimate">
-                            {deliveryEstimate} days
-                        </li>
-                    </div>
-                    <div className="col-12">
-                        <label htmlFor="totalAmmount">Total amount:</label>
-                        <li className="list-group-item" id="totalAmount">
-                            LKR {cartTotal}
-                        </li>
-                    </div>
-                    <div className="col-12 d-block my-3">
-                        <form onSubmit={this.handleSubmit}>
-                            <div className="mb-3">
-                                <h5 className="mb-3">Choose payment method</h5>
-                                <div className="form-check">
-                                    <input
-                                        className="form-check-input"
-                                        type="radio"
-                                        name="flexRadioDefault"
-                                        id="cashInput"
-                                        onChange={this.selectcash}
-                                    ></input>
-                                    <label
-                                        className="form-check-label"
-                                        htmlFor="flexRadioDefault1"
-                                    >
-                                        Cash
-                                    </label>
-                                </div>
+        if (orderDetails && cartTotal) {
+            console.log(
+                "in payment: ",
+                deliveryEstimate,
+                orderDetails,
+                this.state.totalAmount
+            );
+            const readOnlyOrderData = orderDetails.data;
+            return (
+                <div>
+                    <div className="row p-5 div-dark">
+                        <div className="col-12 mb-3">
+                            <label htmlFor="fullname">Full name:</label>
+                            <li className="list-group-item text-break" id="fullname">
+                                {readOnlyOrderData.firstName +
+                                    " " +
+                                    readOnlyOrderData.lastName}
+                            </li>
+                        </div>
 
-                                <div className="form-check">
-                                    <input
-                                        className="form-check-input"
-                                        type="radio"
-                                        name="flexRadioDefault"
-                                        id="cardInput"
-                                        onChange={this.selectcard}
-                                    ></input>
-                                    <label
-                                        className="form-check-label"
-                                        htmlFor="flexRadioDefault1"
-                                    >
-                                        Card
-                                    </label>
-                                </div>
-                            </div>
+                        <div className="col-12 mb-3">
+                            <label htmlFor="email">Email address:</label>
+                            <li className="list-group-item text-break" id="email">
+                                {readOnlyOrderData.email}
+                            </li>
+                        </div>
 
-                            {paymentMethod === "card" && (
-                                <div>
-                                    <div className="row">
-                                        <div className="col-md-6 mb-3">
-                                            {this.renderInput(
-                                                "cc_name",
-                                                "Name on card"
-                                            )}
-                                        </div>
-                                        <div className="col-md-6 mb-3">
-                                            {this.renderInput(
-                                                "cc_number",
-                                                "Card number"
-                                            )}
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-md-3 mb-3">
-                                            {this.renderInput(
-                                                "cc_expiration",
-                                                "Expiration date"
-                                            )}
-                                        </div>
-                                        <div className="col-md-3 mb-3">
-                                            {this.renderInput("cc_cvv", "CVV")}
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                            <div
-                                className="row"
-                                role="group"
-                                aria-label="Basic mixed styles example"
+                        <div className="col-12 mb-3">
+                            <label htmlFor="deliveryAddress">
+                                Delivery Address:
+                            </label>
+                            <li className="list-group-item text-break" id="deliveryAddress">
+                                {readOnlyOrderData.deliveryAddress}
+                            </li>
+                        </div>
+
+                        <div className="col-6 mb-3">
+                            <label htmlFor="city">City:</label>
+                            <li className="list-group-item text-break" id="city">
+                                {readOnlyOrderData.city}
+                            </li>
+                        </div>
+
+                        <div className="col-6 mb-3">
+                            <label htmlFor="zipcode">ZIP code:</label>
+                            <li className="list-group-item text-break" id="zipcode">
+                                {readOnlyOrderData.zipcode}
+                            </li>
+                        </div>
+
+                        <div className="col-12 mb-3">
+                            <label htmlFor="deliveryEstimate">
+                                Estimated Delivery Time:
+                            </label>
+                            <li
+                                className="list-group-item text-break"
+                                id="deliveryEstimate"
                             >
-                                <div className="col-3">
-                                    <Link to="/cart">
-                                        <button
-                                            type="button"
-                                            class="btn btn-danger hover-focus"
+                                {deliveryEstimate} days
+                            </li>
+                        </div>
+
+                        <div className="col-12 mb-3">
+                            <label htmlFor="totalAmmount text-break">Total amount:</label>
+                            <li className="list-group-item" id="totalAmount">
+                                LKR {cartTotal}
+                            </li>
+                        </div>
+
+                        <div className="col-12 d-block my-3">
+                            <form onSubmit={this.handleSubmit}>
+                                <div className="mb-3">
+                                    <h5 className="mb-3">
+                                        Choose payment method
+                                    </h5>
+                                    <div className="form-check">
+                                        <input
+                                            className="form-check-input"
+                                            type="radio"
+                                            name="flexRadioDefault"
+                                            id="cashInput"
+                                            onChange={this.selectcash}
+                                        ></input>
+                                        <label
+                                            className="form-check-label"
+                                            htmlFor="flexRadioDefault1"
                                         >
-                                            Cancle
-                                        </button>
-                                    </Link>
+                                            Cash
+                                        </label>
+                                    </div>
+
+                                    <div className="form-check">
+                                        <input
+                                            className="form-check-input"
+                                            type="radio"
+                                            name="flexRadioDefault"
+                                            id="cardInput"
+                                            onChange={this.selectcard}
+                                        ></input>
+                                        <label
+                                            className="form-check-label"
+                                            htmlFor="flexRadioDefault1"
+                                        >
+                                            Card
+                                        </label>
+                                    </div>
                                 </div>
 
-                                {/* Link is Temporary */}
-                                <div className="col-3">
-                                    {this.renderStyledButton(
-                                        "Confirm",
-                                        "hover-focus btn-success"
-                                    )}
+                                {paymentMethod === "card" && (
+                                    <div>
+                                        <div className="row">
+                                            <div className="col-md-6 mb-3">
+                                                {this.renderInput(
+                                                    "cc_name",
+                                                    "Name on card"
+                                                )}
+                                            </div>
+                                            <div className="col-md-6 mb-3">
+                                                {this.renderInput(
+                                                    "cc_number",
+                                                    "Card number"
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-md-3 mb-3">
+                                                {this.renderInput(
+                                                    "cc_expiration",
+                                                    "Expiration date"
+                                                )}
+                                            </div>
+                                            <div className="col-md-3 mb-3">
+                                                {this.renderInput(
+                                                    "cc_cvv",
+                                                    "CVV"
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                                <div className="row">
+                                    <div className="col-3">
+                                        <Link to="/cart">
+                                            <button
+                                                type="button"
+                                                class="btn btn-danger hover-focus"
+                                            >
+                                                Cancle
+                                            </button>
+                                        </Link>
+                                    </div>
+
+                                    {/* Link is Temporary */}
+                                    <div className="col-3">
+                                        {this.renderStyledButton(
+                                            "Confirm",
+                                            "hover-focus btn-success"
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        );
+            );
+        }
     }
 }
 
