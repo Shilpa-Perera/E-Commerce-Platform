@@ -14,6 +14,12 @@ router.get(
     "/prducts/max_sale/:start_date/:end_date",
     [auth, authPage([ROLE.ADMIN])],
     ReportController.getMaxSaleProductsReport
-)
+);
+
+router.get(
+    "/quaterly-sales-report/:year",
+    [auth, authPage([ROLE.ADMIN])],
+    ReportController.getQuaterlySalesReport
+);
 
 module.exports = router;
