@@ -68,7 +68,7 @@ class OrderController {
 
         // Payment Call
 
-        let paymentResult = true;
+        let paymentResult = true; // ### to payment Gateway
 
         if (!paymentResult) {
             error = "Payment Failed";
