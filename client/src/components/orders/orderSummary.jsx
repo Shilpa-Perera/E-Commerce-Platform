@@ -1,13 +1,11 @@
 import { React } from "react";
 import Form from "../common/form";
-
-import { toast } from "react-toastify";
-
 import pdfMake from "pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import htmlToPdfmake from "html-to-pdfmake";
 import { getOrder } from "../../services/orderService";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import NotFound from "../notFound";
 
 class OrderSummary extends Form {
     state = {
@@ -20,8 +18,11 @@ class OrderSummary extends Form {
         const { id } = this.props;
         console.log(id);
         const { data: s } = await getOrder(id);
+        console.log("s: ", s);
+        if (s.orderCart.length === 0 || s.orderDetails.length === 0) {
+            return;
+        }
         this.setState({ orderDetails: s.orderDetails, cart: s.orderCart });
-        console.log(this.state.cart, this.state.orderDetails);
     }
 
     printDocument() {
@@ -32,8 +33,18 @@ class OrderSummary extends Form {
         pdfMake.createPdf(documentDefinition).open();
     }
 
+    calcOrderTotal(itemArray) {
+        let total = 0;
+        itemArray.map((e) => {
+            total += e.price * e.number_of_items;
+            return total;
+        });
+        return total;
+    }
+
     render() {
         const { cart, orderDetails } = this.state;
+        console.log(cart !== [] && orderDetails !== null);
 
         if (cart && orderDetails) {
             const orderDetails = this.state.orderDetails[0];
@@ -46,12 +57,15 @@ class OrderSummary extends Form {
 
                         <div className="App container mt-5 card">
                             <div className="row align-items-start p-3">
-                                <button className="btn btn-danger col-1 p-1 m-1 hover-focus">
+                                <Link
+                                    className="btn btn-danger col-1 p-1 m-1 hover-focus"
+                                    to="/"
+                                >
                                     <i
                                         className="fa fa-home"
                                         aria-hidden="true"
                                     ></i>
-                                </button>
+                                </Link>
                                 <button
                                     className="btn btn-primary col-1 hover-focus p-1 m-1"
                                     onClick={this.printDocument}
@@ -84,9 +98,11 @@ class OrderSummary extends Form {
                                                 </div>
                                             </div>
                                             <hr />
+                                            <h6 className="">Order Details</h6>
                                             <div className="products ">
                                                 <p className="">
-                                                    Order Date-Time: {orderDetails.date}
+                                                    Order Date-Time:{" "}
+                                                    {orderDetails.date}
                                                 </p>{" "}
                                                 <table className="table table-borderless">
                                                     <tbody>
@@ -133,12 +149,13 @@ class OrderSummary extends Form {
                                             </div>{" "}
                                             <h6 className="">Order items</h6>
                                             <hr />
-                                            <div className="products overflow-auto">
+                                            <div className="products overflow-auto table-responsive checkout-cart-container">
                                                 <table className="table">
                                                     <tbody>
                                                         <tr className="add">
                                                             <td>Item name</td>
                                                             <td>Variant</td>
+                                                            <td>Unit Price</td>
                                                             <td>Quantity</td>
                                                             <td className="text-center">
                                                                 Subtotal(LKR)
@@ -146,20 +163,42 @@ class OrderSummary extends Form {
                                                         </tr>
                                                         {cart.map((e) => {
                                                             return (
-                                                                <tr className="content">
+                                                                <tr
+                                                                    key={e.variant_id}
+                                                                    className="content"
+                                                                >
                                                                     <td>
-                                                                        Asus
-                                                                        VivoBook
-                                                                        Pro
+                                                                        {
+                                                                            e.product_title
+                                                                        }
                                                                     </td>
                                                                     <td>
-                                                                        {e.variant_name}
+                                                                        {
+                                                                            e.variant_name
+                                                                        }
                                                                     </td>
                                                                     <td className="text-center">
-                                                                        {e.number_of_items}
+                                                                        {
+                                                                            e.price
+                                                                        }
                                                                     </td>
                                                                     <td className="text-center">
-                                                                        250000.00
+                                                                        {
+                                                                            e.number_of_items
+                                                                        }
+                                                                    </td>
+                                                                    <td className="text-center">
+                                                                        {new Intl.NumberFormat(
+                                                                            "en-LK",
+                                                                            {
+                                                                                style: "currency",
+                                                                                currency:
+                                                                                    "LKR",
+                                                                            }
+                                                                        ).format(
+                                                                            e.price *
+                                                                                e.number_of_items
+                                                                        )}
                                                                     </td>
                                                                 </tr>
                                                             );
@@ -173,8 +212,20 @@ class OrderSummary extends Form {
                                                         <tr className="content">
                                                             <td>
                                                                 {" "}
-                                                                TOTAL (LKR) :
-                                                                645000 <br />
+                                                                TOTAL :{" "}
+                                                                {new Intl.NumberFormat(
+                                                                    "en-LK",
+                                                                    {
+                                                                        style: "currency",
+                                                                        currency:
+                                                                            "LKR",
+                                                                    }
+                                                                ).format(
+                                                                    this.calcOrderTotal(
+                                                                        cart
+                                                                    )
+                                                                )}
+                                                                <br />
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -190,10 +241,21 @@ class OrderSummary extends Form {
                                                         <tr className="content">
                                                             <td>
                                                                 {" "}
-                                                                Payment Method 
-                                                                : {orderDetails.payment_method} <br />{" "}
-                                                                Payment Status :{" "}
-                                                                 {orderDetails.payment_state} <br />
+                                                                Payment Method :{" "}
+                                                                {
+                                                                    orderDetails.payment_method
+                                                                }{" "}
+                                                                <br /> Payment
+                                                                Status :{" "}
+                                                                {
+                                                                    orderDetails.payment_state
+                                                                }{" "}
+                                                                <br />
+                                                                Payment Date :{" "}
+                                                                {
+                                                                    orderDetails.date_time
+                                                                }{" "}
+                                                                <br />{" "}
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -210,10 +272,16 @@ class OrderSummary extends Form {
                                                             <td>
                                                                 {" "}
                                                                 Delivery Method
-                                                                : {orderDetails.delivery_method}{" "}
+                                                                :{" "}
+                                                                {
+                                                                    orderDetails.delivery_method
+                                                                }{" "}
                                                                 <br /> Delivery
-                                                                Status 
-                                                                : {orderDetails.delivery_state} <br />
+                                                                Status :{" "}
+                                                                {
+                                                                    orderDetails.delivery_state
+                                                                }{" "}
+                                                                <br />
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -226,6 +294,10 @@ class OrderSummary extends Form {
                         </div>
                     </div>
                 </div>
+            );
+        } else {
+            return (
+                NotFound()
             );
         }
     }
