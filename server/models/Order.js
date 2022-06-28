@@ -70,14 +70,25 @@ module.exports.Order = Order;
 
 
 
-// START TRANSACTION; 
-// UPDATE variant 
-// INSERT INTO `order` (`customer_id`, `cart_id`, `date`, `order_name`, `delivery_address`, `phone_number`, `delivery_method`, `payment_method`) VALUES (NULL, '1', '2022-06-28 15:28:17.000000', 'dawd', 'qweqwrqr', '123124124', 'STORE-PICKUP', 'CARD'); 
 
-// INSERT INTO `sell` (`date_time`, `order_id`, `delivery_state`, `payment_state`) VALUES ('2022-06-28 15:28:41.000000', '2', 'PROCESSING', 'PENDING');
-// CREATE PROCEDURE
 
-// COMMIT;
+
+// DELIMITER &&  
+// CREATE PROCEDURE `order_transaction`(IN `orderCartId` INT(10), IN `orderDate` DATETIME, IN `orderName` VARCHAR(255), IN `orderAddress` VARCHAR(255), IN `orderPhoneNumber` VARCHAR(255), IN `orderDeliveryMethod` VARCHAR(255), IN `orderPaymentMethod` VARCHAR(255), IN `orderCustomerId` INT(10), IN `sellDateTime` DATETIME, IN `sellPaymentStatus` ENUM('PENDING','PAID','',''))
+// BEGIN  
+	
+//     START TRANSACTION; 
+
+//         INSERT INTO `order` (`customer_id`, `cart_id`, `date`, `order_name`, `delivery_address`, `phone_number`, `delivery_method`, `payment_method`) VALUES (orderCustomerId, orderCartId, orderDate, orderName, orderAddress, orderPhoneNumber, orderDeliveryMethod, orderPaymentMethod); 
+//         SELECT @newOrderID := order_id FROM `order` WHERE cart_id = orderCartId;
+//         INSERT INTO `sell` (`date_time`, `order_id`, `delivery_state`, `payment_state`) VALUES (sellDateTime, @newOrderID, 'PROCESSING', sellPaymentStatus);
+//         CALL update_product_variants_quantity_from_cart(orderCartId);
+//         UPDATE `cart` SET `state` = 'INACTIVE' WHERE `cart`.`cart_id` = orderCartId;
+//     COMMIT;
+
+// END &&
+
+// DELIMITER ;  
 
 
 // DELIMITER &&  
@@ -89,8 +100,6 @@ module.exports.Order = Order;
 // END &&
 
 // DELIMITER ;  
-
-
 
 // DELIMITER &&
 // CREATE PROCEDURE cart_transaction (IN cartId INT)  
