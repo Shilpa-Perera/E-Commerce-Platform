@@ -60,7 +60,7 @@ class Order {
 
         console.log("in to DB:", details);
         const insertOrder =
-            "START TRANSACTION; INSERT INTO `order` (`customer_id`, `cart_id`, `date`, `order_name`, `delivery_address`, `phone_number`, `delivery_method`, `payment_method`) VALUES (NULL, '1', '2022-06-28 15:28:17.000000', 'dawd', 'qweqwrqr', '123124124', 'STORE-PICKUP', 'CARD'); INSERT INTO `sell` (`date_time`, `order_id`, `delivery_state`, `payment_state`) VALUES ('2022-06-28 15:28:41.000000', '2', 'PROCESSING', 'PENDING');COMMIT;  ";
+            "CALL update_product_variants_quantity_from_cart(1); ";
         // const result =  await db.execute(insertOrder,[]);
         return "result";
     }
@@ -110,3 +110,86 @@ module.exports.Order = Order;
 
 
 // SELECT * FROM `variant` NATURAL JOIN cart_product WHERE cart_id=1;
+
+
+// query to get variant ID and new value to be updated
+// SELECT variant_id,quantity-CAST( number_of_items AS SIGNED ) remainder  FROM `variant` NATURAL JOIN cart_product WHERE cart_id=1;
+// SELECT e, variant_id, remainder FROM (SELECT ROW_NUMBER()OVER(ORDER BY variant_id)-1 as e , variant_id,quantity-CAST( number_of_items AS SIGNED ) remainder  FROM `variant` NATURAL JOIN cart_product WHERE cart_id=1) as A WHERE A.e=i;
+
+
+
+
+
+
+// DELIMITER &&
+// CREATE PROCEDURE cart_transaction (IN cartId INT)  
+// BEGIN  
+// 	DECLARE n int DEFAULT 0;
+// 	DECLARE i INT DEFAULT 0;
+//     DECLARE vID INT DEFAULT 0;
+//     DECLARE qVal INT DEFAULT 0;
+// 	SELECT COUNT(*) FROM `variant` NATURAL JOIN cart_product WHERE cart_id=cartId INTO n;
+// 	SET i=0;
+// 	WHILE i<n DO 
+//   		SELECT variant_id FROM (SELECT ROW_NUMBER()OVER(ORDER BY variant_id)-1 as e , variant_id,quantity-CAST( number_of_items AS SIGNED ) remainder  FROM `variant` NATURAL JOIN cart_product WHERE cart_id=cartId) as A WHERE A.e=i INTO vID;
+//         SELECT number_of_items FROM (SELECT ROW_NUMBER()OVER(ORDER BY variant_id)-1 as e , variant_id, number_of_items FROM `variant` NATURAL JOIN cart_product WHERE cart_id=cartId) as A WHERE A.e=i INTO qVal;
+//         update_products(qVal,vID);
+//   		SET i = i + 1;
+// 	END WHILE;
+// END &&
+// DELIMITER ;
+
+
+
+// DELIMITER &&
+// CREATE PROCEDURE cart_transaction (IN cartId INT)  
+// BEGIN  
+// 	DECLARE n int DEFAULT 0;
+// 	DECLARE i INT DEFAULT 0;
+// 	SELECT COUNT(*) FROM `variant` NATURAL JOIN cart_product WHERE cart_id=cartId INTO n;
+// 	SET i=0;
+// 	WHILE i<n DO 
+//   		SELECT @variantId :=variant_id FROM (SELECT ROW_NUMBER()OVER(ORDER BY variant_id)-1 as e , variant_id,quantity-CAST( number_of_items AS SIGNED ) remainder  FROM `variant` NATURAL JOIN cart_product WHERE cart_id=cartId) as A WHERE A.e=i;
+//         SELECT @qval :=number_of_items FROM (SELECT ROW_NUMBER()OVER(ORDER BY variant_id)-1 as e , variant_id, number_of_items FROM `variant` NATURAL JOIN cart_product WHERE cart_id=cartId) as A WHERE A.e=i;
+//         CALL update_products(@variantId,  @qval);
+//   		SET i = i + 1;
+// 	END WHILE;
+// END &&
+
+// DELIMITER ;
+
+
+
+// DELIMITER $$
+// CREATE PROCEDURE InsertCal(IN cartId INT)
+// BEGIN  
+// 	DECLARE n int DEFAULT 0;
+// 	DECLARE i INT DEFAULT 0;
+// 	DECLARE variantId  INT DEFAULT 0;
+// 	DECLARE qval INT DEFAULT 0;
+// 	SELECT COUNT(*) FROM `variant` NATURAL JOIN cart_product WHERE cart_id=cartId INTO n;
+// 	SET i=0;
+// 	WHILE i<n DO 
+//   		SET variantId = SELECT variant_id FROM (SELECT ROW_NUMBER()OVER(ORDER BY variant_id)-1 as e , variant_id,quantity-CAST( number_of_items AS SIGNED ) remainder  FROM `variant` NATURAL JOIN cart_product WHERE cart_id=cartId) as A WHERE A.e=i LIMIT 1;
+//         SET  qval = SELECT number_of_items FROM (SELECT ROW_NUMBER()OVER(ORDER BY variant_id)-1 as e , variant_id, number_of_items FROM `variant` NATURAL JOIN cart_product WHERE cart_id=cartId) as A WHERE A.e=i LIMIT 1;
+//         CALL update_products(variantId ,  qval );
+//   		SET i = i + 1;
+// 	END WHILE;
+// END$$
+
+
+// CREATE PROCEDURE test3(IN cartId INT)
+// BEGIN  
+// 	DECLARE n int DEFAULT 0;
+// 	DECLARE i INT DEFAULT 0;
+// 	DECLARE variantId  INT DEFAULT 0;
+// 	DECLARE qval INT DEFAULT 0;
+// 	SELECT COUNT(*) FROM `variant` NATURAL JOIN cart_product WHERE cart_id=cartId INTO n;
+// 	SET i=0;
+// 	WHILE i<n DO 
+//   		SELECT @variantId := variant_id FROM (SELECT ROW_NUMBER()OVER(ORDER BY variant_id)-1 as e , variant_id,quantity-CAST( number_of_items AS SIGNED ) remainder  FROM `variant` NATURAL JOIN cart_product WHERE cart_id=cartId) as A WHERE A.e=i LIMIT 1;
+//         SELECT @qval := number_of_items FROM (SELECT ROW_NUMBER()OVER(ORDER BY variant_id)-1 as e , variant_id, number_of_items FROM `variant` NATURAL JOIN cart_product WHERE cart_id=cartId) as A WHERE A.e=i LIMIT 1;
+//         CALL update_products(@variantId ,  @qval );
+//   		SET i = i + 1;
+// 	END WHILE;
+// END;
