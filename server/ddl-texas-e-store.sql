@@ -246,3 +246,19 @@ alter table product
     add constraint FK_Product_DefaultVariant
         foreign key (default_variant_id)
         references variant(variant_id);
+
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `update_product_variants_quantity_from_cart`(IN `cartId` INT)
+BEGIN  
+	DECLARE i INT DEFAULT 0;
+	SELECT @n:=COUNT(*) FROM `variant` NATURAL JOIN cart_product WHERE cart_id=cartId;
+	SET i=0;
+	WHILE i<@n DO 
+  		SELECT @variantId := variant_id FROM (SELECT ROW_NUMBER()OVER(ORDER BY variant_id)-1 as e , variant_id,quantity-CAST( number_of_items AS SIGNED ) remainder  FROM `variant` NATURAL JOIN cart_product WHERE cart_id=cartId) as A WHERE A.e=i LIMIT 1;
+        SELECT @qval := number_of_items FROM (SELECT ROW_NUMBER()OVER(ORDER BY variant_id)-1 as e , variant_id, number_of_items FROM `variant` NATURAL JOIN cart_product WHERE cart_id=cartId) as A WHERE A.e=i LIMIT 1;
+        UPDATE `variant` SET `quantity` = quantity-CAST( @qval AS SIGNED ) WHERE `variant`.`variant_id` = @variantId;
+  		SET i = i + 1;
+	END WHILE;
+END$$
+DELIMITER ;
