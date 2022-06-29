@@ -37,9 +37,11 @@ import ROLE from "./utils/roles.json";
 import OrderCheckoutForm from "./components/orders/orderCheckout";
 import CheckoutPayment from "./components/orders/checkoutPayment";
 import CategoryForm from "./components/category/categoryForm";
+import MockPaymentGateway from "./components/paymentGateway";
 import Customers from "./components/customer/customers";
 import CategoryLink from "./components/category/linkCategory";
 import ProductInterestReport from "./components/reports/productInterestReport";
+import OrderReport from "./components/orders/orderSummary";
 import QuaterlySalesReport from "./components/reports/quaterlySalesReport";
 
 function App() {
@@ -206,6 +208,8 @@ function App() {
                     <Route index element={<Orders />}></Route>
                     <Route path=":id" element={<Order />}></Route>
                 </Route>
+                
+                <Route path="/order-summary/:id" element={<OrderReport/>}></Route>
 
                 <Route path="/cart">
                     <Route
@@ -222,10 +226,6 @@ function App() {
                     ></Route>
                     <Route path="checkout">
                         <Route index element={<OrderCheckoutForm />}></Route>
-                        <Route
-                            path="payment"
-                            element={<CheckoutPayment />}
-                        ></Route>
                     </Route>
                 </Route>
 
@@ -273,6 +273,7 @@ function App() {
 
                     <Route path="register" element={<CustomerForm />}></Route>
                 </Route>
+                <Route path="/paymentGateway" element={<MockPaymentGateway/>}></Route>
 
                 <Route path="/reports">
                     <Route path="products">

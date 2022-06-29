@@ -38,6 +38,60 @@ drop table if exists category_link;
 drop table if exists sub_category;
 drop table if exists category;
 
+
+DELIMITER $$
+--
+-- Procedures
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `order_transaction` (IN `orderCartId` INT(10), IN `orderDate` DATETIME, IN `orderName` VARCHAR(255), IN `orderAddress` VARCHAR(255), IN `orderZipcode` VARCHAR(10), IN `orderPhoneNumber` VARCHAR(255), IN `orderDeliveryMethod` ENUM('STORE-PICKUP','DELIVERY'), IN `orderPaymentMethod` ENUM('CASH','CARD'), IN `orderCustomerId` INT(10), IN `sellDateTime` DATETIME, IN `sellPaymentStatus` ENUM('PENDING','PAID'), OUT `orderIdOutput` INT(10))  BEGIN
+ 
+ DECLARE exit handler for sqlexception
+   BEGIN
+     -- ERROR
+   ROLLBACK;
+ END;
+   
+
+ 
+ START TRANSACTION;
+   INSERT INTO `order` (`customer_id`, `cart_id`, `date`, `order_name`, `delivery_address`, `zip_code`, `phone_number`, `delivery_method`, `payment_method`) VALUES (orderCustomerId, orderCartId, orderDate, orderName, orderAddress, orderZipCode, orderPhoneNumber, orderDeliveryMethod, orderPaymentMethod);
+   SELECT @newOrder :=order_id FROM `order` WHERE cart_id = orderCartId;
+   INSERT INTO `sell` (`date_time`, `order_id`, `delivery_state`, `payment_state`) VALUES (sellDateTime, @newOrder, 'PROCESSING', sellPaymentStatus);
+   CALL update_product_variants_quantity_from_cart(orderCartId);
+   UPDATE `cart` SET `state` = 'INACTIVE' WHERE `cart`.`cart_id` = orderCartId;
+ SET orderIdOutput = @newOrder;
+ COMMIT;
+ SELECT orderIdOutput;
+ END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `order_transaction_guest` (IN `orderCartId` INT(10), IN `orderDate` DATETIME, IN `orderName` VARCHAR(255), IN `orderAddress` VARCHAR(255), IN `orderZipcode` VARCHAR(10), IN `orderPhoneNumber` VARCHAR(255), IN `orderDeliveryMethod` ENUM('STORE-PICKUP','DELIVERY'), IN `orderPaymentMethod` ENUM('CASH','CARD'), IN `orderCustomerId` INT(10), IN `sellDateTime` DATETIME, IN `sellPaymentStatus` ENUM('PENDING','PAID'), OUT `orderIdOutput` INT(10))  BEGIN
+ 
+
+ START TRANSACTION;
+   INSERT INTO `order` (`customer_id`, `cart_id`, `date`, `order_name`, `delivery_address`,`zip_code`, `phone_number`, `delivery_method`, `payment_method`) VALUES (NULL, orderCartId, orderDate, orderName, orderAddress, orderZipcode, orderPhoneNumber, orderDeliveryMethod, orderPaymentMethod);
+   SELECT @newOrder :=order_id FROM `order` WHERE cart_id = orderCartId;
+   INSERT INTO `sell` (`date_time`, `order_id`, `delivery_state`, `payment_state`) VALUES (sellDateTime, @newOrder, 'PROCESSING', sellPaymentStatus);
+   CALL update_product_variants_quantity_from_cart(orderCartId);
+   UPDATE `cart` SET `state` = 'INACTIVE' WHERE `cart`.`cart_id` = orderCartId;
+ SET orderIdOutput = @newOrder;
+ COMMIT;
+ SELECT orderIdOutput;
+ END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `update_product_variants_quantity_from_cart` (IN `cartId` INT)  BEGIN  
+	DECLARE i INT DEFAULT 0;
+	SELECT @n:=COUNT(*) FROM `variant` NATURAL JOIN cart_product WHERE cart_id=cartId;
+	SET i=0;
+	WHILE i<@n DO 
+  		SELECT @variantId := variant_id FROM (SELECT ROW_NUMBER()OVER(ORDER BY variant_id)-1 as e , variant_id,quantity-CAST( number_of_items AS SIGNED ) remainder  FROM `variant` NATURAL JOIN cart_product WHERE cart_id=cartId) as A WHERE A.e=i LIMIT 1;
+        SELECT @qval := number_of_items FROM (SELECT ROW_NUMBER()OVER(ORDER BY variant_id)-1 as e , variant_id, number_of_items FROM `variant` NATURAL JOIN cart_product WHERE cart_id=cartId) as A WHERE A.e=i LIMIT 1;
+        UPDATE `variant` SET `quantity` = quantity-CAST( @qval AS SIGNED ) WHERE `variant`.`variant_id` = @variantId;
+  		SET i = i + 1;
+	END WHILE;
+END$$
+
+DELIMITER ;
+
 create table if not exists admin (
     admin_id int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -220,12 +274,13 @@ create table if not exists `order`(
     order_id int unsigned auto_increment primary key,
     customer_id int unsigned,
     cart_id int unsigned not null,
-    date date not null,
+    date datetime not null,
     order_name varchar(255),
     delivery_address varchar(255),
+    zip_code varchar(10),
     phone_number varchar(255),
-    delivery_method varchar(255),
-    payment_method varchar(255),
+    delivery_method enum('STORE-PICKUP', 'DELIVERY') not null,
+    payment_method enum('CASH', 'CARD') not null,
     foreign key (cart_id) references cart(cart_id) on delete cascade,
     foreign key (customer_id) references customer(customer_id) on delete cascade
 );
@@ -234,9 +289,9 @@ create table if not exists `order`(
 
 create table if not exists sell(
     sell_id int unsigned auto_increment primary key,
-    date_time datetime not null,
+    date_time datetime,
     order_id int unsigned not null,
-    delivery_state enum('PROCESSING', 'OUTFORDELIVERY', 'DELIVERED'),
+    delivery_state enum('PROCESSING', 'OUTFORDELIVERY', 'DELIVERED') not null default 'PROCESSING',
     payment_state enum('PENDING', 'PAID'),
     foreign key (order_id) references `order`(order_id) on delete cascade
 );
