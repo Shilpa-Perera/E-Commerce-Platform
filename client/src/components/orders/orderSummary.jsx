@@ -14,11 +14,8 @@ class OrderSummary extends Form {
     };
 
     async componentDidMount() {
-        console.log("run");
         const { id } = this.props;
-        console.log(id);
         const { data: s } = await getOrder(id);
-        console.log("s: ", s);
         if (s.orderCart.length === 0 || s.orderDetails.length === 0) {
             return;
         }
@@ -44,12 +41,9 @@ class OrderSummary extends Form {
 
     render() {
         const { cart, orderDetails } = this.state;
-        console.log(cart !== [] && orderDetails !== null);
 
         if (cart && orderDetails) {
             const orderDetails = this.state.orderDetails[0];
-            console.log("cart:", cart);
-            console.log("order:", orderDetails);
             return (
                 <div className="container h-100 py-5">
                     <div className="row d-flex h-100">
@@ -136,14 +130,6 @@ class OrderSummary extends Form {
                                                                 }
                                                             </td>
                                                         </tr>
-                                                        {/* <tr className="content">
-                                                            <td className="col-6">
-                                                                Email
-                                                            </td>
-                                                            <td className="col-6">
-                                                                achira@gmail.com
-                                                            </td>
-                                                        </tr> */}
                                                     </tbody>
                                                 </table>
                                             </div>{" "}
@@ -164,7 +150,9 @@ class OrderSummary extends Form {
                                                         {cart.map((e) => {
                                                             return (
                                                                 <tr
-                                                                    key={e.variant_id}
+                                                                    key={
+                                                                        e.variant_id
+                                                                    }
                                                                     className="content"
                                                                 >
                                                                     <td>
@@ -296,9 +284,7 @@ class OrderSummary extends Form {
                 </div>
             );
         } else {
-            return (
-                NotFound()
-            );
+            return NotFound();
         }
     }
 }
