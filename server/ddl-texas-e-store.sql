@@ -223,9 +223,10 @@ create table if not exists `order`(
     date date not null,
     order_name varchar(255),
     delivery_address varchar(255),
+    zip_code varchar(10),
     phone_number varchar(255),
-    delivery_method varchar(255),
-    payment_method varchar(255),
+    delivery_method enum('STORE-PICKUP', 'DELIVERY') not null,
+    payment_method enum('CASH', 'CARD') not null,
     foreign key (cart_id) references cart(cart_id) on delete cascade,
     foreign key (customer_id) references customer(customer_id) on delete cascade
 );
@@ -236,7 +237,7 @@ create table if not exists sell(
     sell_id int unsigned auto_increment primary key,
     date_time datetime not null,
     order_id int unsigned not null,
-    delivery_state enum('PROCESSING', 'OUTFORDELIVERY', 'DELIVERED'),
+    delivery_state enum('PROCESSING', 'OUTFORDELIVERY', 'DELIVERED') not null default 'PROCESSING',
     payment_state enum('PENDING', 'PAID'),
     foreign key (order_id) references `order`(order_id) on delete cascade
 );
@@ -261,4 +262,32 @@ BEGIN
   		SET i = i + 1;
 	END WHILE;
 END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `order_transaction`(IN `orderCartId` INT(10), IN `orderDate` DATETIME, IN `orderName` VARCHAR(255), IN `orderAddress` VARCHAR(255), IN `orderZipCode` VARCHAR(10), IN `orderPhoneNumber` VARCHAR(255), IN `orderDeliveryMethod` VARCHAR(255), IN `orderPaymentMethod` VARCHAR(255), IN `orderCustomerId` INT(10), IN `sellDateTime` DATETIME, IN `sellPaymentStatus` ENUM('PENDING','PAID','',''))
+    DETERMINISTIC
+    COMMENT 'First SP at Expertdeveloper'
+BEGIN
+ 
+ DECLARE exit handler for sqlexception
+   BEGIN
+     -- ERROR
+   ROLLBACK;
+ END;
+   
+ DECLARE exit handler for sqlwarning
+  BEGIN
+     -- WARNING
+  ROLLBACK;
+ END;
+ 
+ START TRANSACTION;
+   INSERT INTO `order` (`customer_id`, `cart_id`, `date`, `order_name`, `delivery_address`, `zip_code`, `phone_number`, `delivery_method`, `payment_method`) VALUES (orderCustomerId, orderCartId, orderDate, orderName, orderAddress, orderZipCode, orderPhoneNumber, orderDeliveryMethod, orderPaymentMethod);
+   SELECT @newOrder :=order_id FROM `order` WHERE cart_id = orderCartId;
+   INSERT INTO `sell` (`date_time`, `order_id`, `payment_state`) VALUES (sellDateTime, @newOrder, sellPaymentStatus);
+   CALL update_product_variants_quantity_from_cart(orderCartId);
+   UPDATE `cart` SET `state` = 'INACTIVE' WHERE `cart`.`cart_id` = orderCartId;
+ COMMIT;
+ END$$
 DELIMITER ;
