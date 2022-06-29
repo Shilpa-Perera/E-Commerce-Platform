@@ -5,13 +5,13 @@ import Form from "../common/form";
 import { validateAndConfirmOrder } from "../../services/orderService";
 import { toast } from "react-toastify";
 
-
-
 class CheckoutPayment extends Form {
     state = {
         paymentMethod: null,
         deliveryMethod: null,
+        customerId: null,
         data: {
+            deliv: "",
             cc_cvv: "",
             cc_expiration: "",
             cc_number: "",
@@ -23,7 +23,7 @@ class CheckoutPayment extends Form {
     };
 
     schema = {
-        deliveryMethod: Joi.string().required().min(4),
+        deliv: Joi.string().required().min(4),
         cc_cvv: Joi.string()
             .regex(/^[0-9]+$/)
             .required()
@@ -48,6 +48,7 @@ class CheckoutPayment extends Form {
 
     selectcash = () => {
         const data = {
+            deliv: this.state.data.deliv,
             cc_cvv: "000",
             cc_expiration: "00/00",
             cc_number: "00000000",
@@ -58,6 +59,7 @@ class CheckoutPayment extends Form {
 
     selectcard = () => {
         const data = {
+            deliv: this.state.data.deliv,
             cc_cvv: "",
             cc_expiration: "",
             cc_number: "",
@@ -66,12 +68,26 @@ class CheckoutPayment extends Form {
         this.setState({ paymentMethod: "CARD", data: data });
     };
 
-    selectHomeDelivery = () =>{
-        this.setState({deliveryMethod: "DELIVERY"});
-    }
-    selectStorePickup = () =>{
-        this.setState({deliveryMethod: "STORE-PICKUP"});
-    }
+    selectHomeDelivery = () => {
+        const data = {
+            deliv: "DELIVERY",
+            cc_cvv: this.state.data.cc_cvv,
+            cc_expiration: this.state.data.cc_expiration,
+            cc_number: this.state.data.cc_number,
+            cc_name: this.state.data.cc_name,
+        };
+        this.setState({ deliveryMethod: "DELIVERY", data: data });
+    };
+    selectStorePickup = () => {
+        const data = {
+            deliv: "PICKUP",
+            cc_cvv: this.state.data.cc_cvv,
+            cc_expiration: this.state.data.cc_expiration,
+            cc_number: this.state.data.cc_number,
+            cc_name: this.state.data.cc_name,
+        };
+        this.setState({ deliveryMethod: "STORE-PICKUP", data: data });
+    };
 
     doSubmit = async () => {
         const details = {
@@ -79,18 +95,21 @@ class CheckoutPayment extends Form {
             totalPrice: this.state.totalAmount,
             paymentMethod: this.state.paymentMethod,
             paymentDetails: this.state.data,
+            deliveryMethod: this.state.deliveryMethod,
+            customerId: this.state.customerId
         };
 
         const { data } = await validateAndConfirmOrder(details);
 
-        console.log(data);
+        // console.log(data);
         if (data[1] === "Payment Failed") {
             toast.warning("Payment Failed. Try again", {
                 theme: "dark",
             });
             return;
         }
-        window.location = "/order-summary/1";
+        // remove cart from session
+        // window.location = "/order-summary/1";
     };
 
     render() {
