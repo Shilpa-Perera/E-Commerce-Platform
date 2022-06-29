@@ -261,3 +261,31 @@ insert into variant_image (variant_id, image_name) values (19, '72d36ce0-45b9-4d
 insert into variant_image (variant_id, image_name) values (19, 'a7556d30-a7b2-4b81-891e-8cc4ced8c864.png');
 insert into variant_image (variant_id, image_name) values (20, '06608ead-4e7c-4dae-b78b-398007149a22.png');
 insert into variant_image (variant_id, image_name) values (20, '2374696f-8cc6-49bd-9438-09adf8eb8a77.png');
+<<<<<<< HEAD
+
+
+#Dummy cart data.
+
+insert into cart values(1,2,1);
+insert into cart values(2,1,1);
+insert into cart values(3,3,1);
+insert into cart_product values(1,1,5);
+insert into cart_product values(2,1,1);
+insert into cart_product values(1,2,1);
+insert into cart_product values(3,4,5);
+insert into cart_product values(3,1,2); 
+insert into cart_product values(1,3,5);
+insert into cart_product values(1,4,2);
+
+# dummy sell 
+insert into sell (date_time, order_id, delivery_state, payment_state) values ('2022-06-27', 1, 1, 1);
+insert into sell (date_time, order_id, delivery_state, payment_state) values ('2022-06-27', 2, 1, 1);
+insert into sell (date_time, order_id, delivery_state, payment_state) values ('2022-01-27', 2, 1, 1);
+insert into sell (date_time, order_id, delivery_state, payment_state) values ('2022-01-27', 1, 1, 1);
+# dummy order
+insert into `order` (customer_id,cart_id,date,order_name) values (1,2,'2022-06-27','phone');
+insert into `order` (customer_id,cart_id,date,order_name) values (2,1,'2022-06-27','i phone');
+insert into `order` (customer_id,cart_id,date,order_name) values (1,2,'2022-01-27','phone');
+insert into `order` (customer_id,cart_id,date,order_name) values (2,1,'2022-01-27','i phone');
+=======
+>>>>>>> main

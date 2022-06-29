@@ -42,6 +42,7 @@ import Customers from "./components/customer/customers";
 import CategoryLink from "./components/category/linkCategory";
 import ProductInterestReport from "./components/reports/productInterestReport";
 import OrderReport from "./components/orders/orderSummary";
+import QuaterlySalesReport from "./components/reports/quaterlySalesReport";
 
 function App() {
     const [theme, setTheme] = useState(getTheme());
@@ -285,6 +286,15 @@ function App() {
                             }
                         ></Route>
                     </Route>
+
+                    <Route
+                        path="quaterly-sales-report"
+                        element={
+                            <ProtectedRoute permissions={[ROLE.ADMIN]}>
+                                <QuaterlySalesReport />
+                            </ProtectedRoute>
+                        }
+                    ></Route>
                 </Route>
 
                 <Route path="/" element={<Home />}></Route>

@@ -8,11 +8,21 @@ class ReportController {
         res.send(reportData);
     }
 
-    static async getMaxSaleProductsReport(req,res,next){
-        const start_date = req.params.start_date ;
-        const end_date =  req.params.end_date ;
-        const max_sale_products = await Report.getMaxSaleProducts(start_date,end_date);
-        res.send(max_sale_products) ;
+    static async getMaxSaleProductsReport(req, res, next) {
+        const start_date = req.params.start_date;
+        const end_date = req.params.end_date;
+        const max_sale_products = await Report.getMaxSaleProducts(
+            start_date,
+            end_date
+        );
+        res.send(max_sale_products);
+    }
+
+    static async getQuaterlySalesReport(req, res, next) {
+        const year = req.params.year;
+
+        const report = await Report.getQuaterlySalesReport(year);
+        res.send(report);
     }
 }
 

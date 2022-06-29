@@ -128,7 +128,7 @@ class Cart extends Component {
 								<Link
 									to={`/cart/checkout`}
 									onClick={
-										this.state.orderTotal === 0
+										this.state.orderTotal === "0.00"
 											? (event) => event.preventDefault()
 											: ""
 									}
@@ -137,7 +137,7 @@ class Cart extends Component {
 										type="button"
 										className="btn btn-primary w-100"
 										disabled={
-											this.state.orderTotal === 0
+											this.state.orderTotal === "0.00"
 												? "disabled"
 												: ""
 										}
