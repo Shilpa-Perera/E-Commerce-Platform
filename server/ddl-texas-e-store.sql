@@ -235,7 +235,7 @@ create table if not exists `order`(
 
 create table if not exists sell(
     sell_id int unsigned auto_increment primary key,
-    date_time datetime not null,
+    date_time datetime,
     order_id int unsigned not null,
     delivery_state enum('PROCESSING', 'OUTFORDELIVERY', 'DELIVERED') not null default 'PROCESSING',
     payment_state enum('PENDING', 'PAID'),
