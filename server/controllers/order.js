@@ -97,14 +97,8 @@ class OrderController {
 
         }
 
-        //details.cartId, "#order Date#", details.data.firstName+" "+details.data.lastName, 
-        //details.data.deliveryAddress, "#Telephoneno#", "#DeliveryMethod#", details.paymentMethod, 
-        //"#CustomerID#", "#SellDateTime#", "#SellpaymentStatus#"
-        
         error = await Order.insertNewOrder(finalDataFormat); 
-        return res.status(200).send([orderDetails, error])
-
-        
+        return res.status(200).send([orderDetails, error]);
     }
 }
 
