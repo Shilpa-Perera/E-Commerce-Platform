@@ -2,10 +2,9 @@ import http from "./httpService";
 import _ from "lodash";
 import { EncryptStorage } from "encrypt-storage";
 
-const encrtption_key = process.env.REACT_APP_ENCRYPTION_KEY;
-export const encryptStorage = new EncryptStorage(encrtption_key, {
+export const encryptStorage = new EncryptStorage("secret-key", {
 	prefix: "@cart",
-	storageType: "sessionStorage",
+	storageType: "localStorage",
 });
 
 const apiUrl = process.env.REACT_APP_API_URL;
@@ -57,22 +56,22 @@ export function removeCart() {
 }
 
 export function getItemCount() {
-	if (!sessionStorage.getItem("item_count")) {
-		sessionStorage.setItem("item_count", 0);
+	if (!localStorage.getItem("item_count")) {
+		localStorage.setItem("item_count", 0);
 	}
 
-	return sessionStorage.getItem("item_count");
+	return localStorage.getItem("item_count");
 }
 
 export function incrementItemCount() {
-	let item_count = parseInt(sessionStorage.getItem("item_count"));
+	let item_count = parseInt(localStorage.getItem("item_count"));
 	item_count++;
-	sessionStorage.setItem("item_count", item_count.toString());
+	localStorage.setItem("item_count", item_count.toString());
 }
 export function decrementItemCount() {
-	let item_count = parseInt(sessionStorage.getItem("item_count"));
+	let item_count = parseInt(localStorage.getItem("item_count"));
 	item_count--;
-	sessionStorage.setItem("item_count", item_count.toString());
+	localStorage.setItem("item_count", item_count.toString());
 }
 
 export function addProductToCart(obj) {
