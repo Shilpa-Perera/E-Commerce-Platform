@@ -4,6 +4,7 @@ import Joi from "joi-browser";
 import Form from "../common/form";
 import { validateAndConfirmOrder } from "../../services/orderService";
 import { toast } from "react-toastify";
+import { removeCart } from "../../services/cartService";
 
 class CheckoutPayment extends Form {
     state = {
@@ -96,7 +97,7 @@ class CheckoutPayment extends Form {
             paymentMethod: this.state.paymentMethod,
             paymentDetails: this.state.data,
             deliveryMethod: this.state.deliveryMethod,
-            customerId: this.state.customerId
+            customerId: this.state.customerId,
         };
 
         const { data } = await validateAndConfirmOrder(details);
@@ -108,8 +109,12 @@ class CheckoutPayment extends Form {
             });
             return;
         }
+        const { newOrderId } = data[1][0][6][0];
+        console.log(data[1][0]);
+        console.log(newOrderId);
+        removeCart();
         // remove cart from session
-        // window.location = "/order-summary/1";
+        window.location = "/order-summary/" + newOrderId;
     };
 
     render() {
