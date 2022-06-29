@@ -102,19 +102,17 @@ class CheckoutPayment extends Form {
 
         const { data } = await validateAndConfirmOrder(details);
 
-        // console.log(data);
         if (data[1] === "Payment Failed") {
             toast.warning("Payment Failed. Try again", {
                 theme: "dark",
             });
             return;
         }
-        const { newOrderId } = data[1][0][6][0];
-        console.log(data[1][0]);
-        console.log(newOrderId);
+       
+        let orderIdOutput = data[1];
         removeCart();
         // remove cart from session
-        window.location = "/order-summary/" + newOrderId;
+        window.location = "/order-summary/" + orderIdOutput;
     };
 
     render() {
