@@ -60,8 +60,8 @@ class Order {
 
         console.log("in to DB:", details);
         const insertOrder =
-            "CALL update_product_variants_quantity_from_cart(1); ";
-        // const result =  await db.execute(insertOrder,[]);
+            "CALL order_transaction(?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
+        const result =  await db.execute(insertOrder,[details.cartId, "#order Date#", details.data.firstName+" "+details.data.lastName, details.data.deliveryAddress, "#Telephoneno#", "#DeliveryMethod#", details.paymentMethod, "#CustomerID#", "#SellDateTime#", "#SellpaymentStatus#"]);
         return "result";
     }
 }
