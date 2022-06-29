@@ -52,15 +52,16 @@ class Order {
     }
 
     static async insertNewOrder(details) {
-        // `customer_id`, `cart_id`, `date`, `order_name`,
-        //`delivery_address`, `phone_number`, `delivery_method`,
-        //`payment_method`
-
-        //`date_time`, `delivery_state`, `payment_state`
-
+        const insertOrder = null;
         console.log("in to DB:", details);
-        const insertOrder =
-            "CALL order_transaction_guest(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
+        if (details.customerId === null) {
+            insertOrder =
+                "CALL order_transaction_guest(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
+        } else {
+            insertOrder =
+                "CALL order_transaction(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
+        }
+
         const result = await db.execute(insertOrder, [
             details.cartId,
             details.orderDateTime,
@@ -196,6 +197,3 @@ module.exports.Order = Order;
 //   		SET i = i + 1;
 // 	END WHILE;
 // END;
-
-
-
