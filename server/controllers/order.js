@@ -67,7 +67,7 @@ class OrderController {
         let paymentStatus = 'PENDING';
         console.log(orderDetails);
         const orderDateTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
-        console.log(orderDateTime);
+        // console.log(orderDateTime);
 
         // Payment Call
 
@@ -77,13 +77,31 @@ class OrderController {
             error = "Payment Failed";
             return res.status(200).send([orderDetails, error]);
             
-        }else if(orderDetails.paymentMethod === 'card'){
+        }else if(orderDetails.paymentMethod === 'CARD'){
             sellDateTime = orderDateTime;
             paymentStatus = 'PAID';
         }
-        finalOrderVal = {...orderDetails, orderDateTime, sellDateTime, paymentStatus};
         
-        error = await Order.insertNewOrder(); 
+        const finalDataFormat = {
+            cartId: orderDetails.cartId,
+            orderDateTime: orderDateTime,
+            orderName: orderDetails.data.firstName+ " " + orderDetails.data.lastName,
+            orderDeliveryAddress: orderDetails.data.deliveryAddress,
+            zipCode: orderDetails.data.zipcode,
+            orderTelephone: orderDetails.data.telephone,
+            deliveryMethod: orderDetails.deliveryMethod,
+            paymentMethod: orderDetails.paymentMethod,
+            customerId: orderDetails.customerId,
+            sellDateTime: sellDateTime,
+            sellPaymentStatus: paymentStatus
+
+        }
+
+        //details.cartId, "#order Date#", details.data.firstName+" "+details.data.lastName, 
+        //details.data.deliveryAddress, "#Telephoneno#", "#DeliveryMethod#", details.paymentMethod, 
+        //"#CustomerID#", "#SellDateTime#", "#SellpaymentStatus#"
+        
+        error = await Order.insertNewOrder(finalDataFormat); 
         return res.status(200).send([orderDetails, error])
 
         
