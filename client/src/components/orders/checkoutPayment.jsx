@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 class CheckoutPayment extends Form {
     state = {
         paymentMethod: null,
+        deliveryMethod: null,
         data: {
             cc_cvv: "",
             cc_expiration: "",
@@ -22,6 +23,7 @@ class CheckoutPayment extends Form {
     };
 
     schema = {
+        deliveryMethod: Joi.string().required().min(4),
         cc_cvv: Joi.string()
             .regex(/^[0-9]+$/)
             .required()
@@ -51,7 +53,7 @@ class CheckoutPayment extends Form {
             cc_number: "00000000",
             cc_name: "000000",
         };
-        this.setState({ paymentMethod: "cash", data: data });
+        this.setState({ paymentMethod: "CASH", data: data });
     };
 
     selectcard = () => {
@@ -61,8 +63,15 @@ class CheckoutPayment extends Form {
             cc_number: "",
             cc_name: "",
         };
-        this.setState({ paymentMethod: "card", data: data });
+        this.setState({ paymentMethod: "CARD", data: data });
     };
+
+    selectHomeDelivery = () =>{
+        this.setState({deliveryMethod: "DELIVERY"});
+    }
+    selectStorePickup = () =>{
+        this.setState({deliveryMethod: "STORE-PICKUP"});
+    }
 
     doSubmit = async () => {
         const details = {
@@ -116,6 +125,16 @@ class CheckoutPayment extends Form {
                                 id="email"
                             >
                                 {readOnlyOrderData.email}
+                            </li>
+                        </div>
+
+                        <div className="col-12 mb-3">
+                            <label htmlFor="telephone">Telephone Number:</label>
+                            <li
+                                className="list-group-item text-break"
+                                id="telephone"
+                            >
+                                {readOnlyOrderData.telephone}
                             </li>
                         </div>
 
@@ -176,6 +195,43 @@ class CheckoutPayment extends Form {
                             <form onSubmit={this.handleSubmit}>
                                 <div className="mb-3">
                                     <h5 className="mb-3">
+                                        Choose Delivery Method
+                                    </h5>
+                                    <div className="form-check">
+                                        <input
+                                            className="form-check-input"
+                                            type="radio"
+                                            name="delivery"
+                                            id="homeDelivery"
+                                            onChange={this.selectHomeDelivery}
+                                        ></input>
+                                        <label
+                                            className="form-check-label"
+                                            htmlFor="delivery"
+                                        >
+                                            Home Delivery
+                                        </label>
+                                    </div>
+
+                                    <div className="form-check">
+                                        <input
+                                            className="form-check-input"
+                                            type="radio"
+                                            name="delivery"
+                                            id="storePickup"
+                                            onChange={this.selectStorePickup}
+                                        ></input>
+                                        <label
+                                            className="form-check-label"
+                                            htmlFor="delivery"
+                                        >
+                                            Store Pickup
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div className="mb-3">
+                                    <h5 className="mb-3">
                                         Choose payment method
                                     </h5>
                                     <div className="form-check">
@@ -211,7 +267,7 @@ class CheckoutPayment extends Form {
                                     </div>
                                 </div>
 
-                                {paymentMethod === "card" && (
+                                {paymentMethod === "CARD" && (
                                     <div>
                                         <div className="row">
                                             <div className="col-md-6 mb-3">
