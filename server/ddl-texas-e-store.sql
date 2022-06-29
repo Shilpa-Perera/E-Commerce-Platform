@@ -43,7 +43,7 @@ DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `order_transaction` (IN `orderCartId` INT(10), IN `orderDate` DATETIME, IN `orderName` VARCHAR(255), IN `orderAddress` VARCHAR(255), IN `orderZipCode` VARCHAR(10), IN `orderPhoneNumber` VARCHAR(255), IN `orderDeliveryMethod` VARCHAR(255), IN `orderPaymentMethod` VARCHAR(255), IN `orderCustomerId` INT(10), IN `sellDateTime` DATETIME, IN `sellPaymentStatus` ENUM('PENDING','PAID'))  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `order_transaction` (IN `orderCartId` INT(10), IN `orderDate` DATETIME, IN `orderName` VARCHAR(255), IN `orderAddress` VARCHAR(255), IN `orderZipcode` VARCHAR(10), IN `orderPhoneNumber` VARCHAR(255), IN `orderDeliveryMethod` ENUM('STORE-PICKUP','DELIVERY'), IN `orderPaymentMethod` ENUM('CASH','CARD'), IN `orderCustomerId` INT(10), IN `sellDateTime` DATETIME, IN `sellPaymentStatus` ENUM('PENDING','PAID'), OUT `orderIdOutput` INT(10))  BEGIN
  
  DECLARE exit handler for sqlexception
    BEGIN
@@ -59,10 +59,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `order_transaction` (IN `orderCartId
    INSERT INTO `sell` (`date_time`, `order_id`, `delivery_state`, `payment_state`) VALUES (sellDateTime, @newOrder, 'PROCESSING', sellPaymentStatus);
    CALL update_product_variants_quantity_from_cart(orderCartId);
    UPDATE `cart` SET `state` = 'INACTIVE' WHERE `cart`.`cart_id` = orderCartId;
+ SET orderIdOutput = @newOrder;
  COMMIT;
+ SELECT orderIdOutput;
  END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `order_transaction_guest` (IN `orderCartId` INT(10), IN `orderDate` DATETIME, IN `orderName` VARCHAR(255), IN `orderAddress` VARCHAR(255), IN `orderZipcode` VARCHAR(10), IN `orderPhoneNumber` VARCHAR(255), IN `orderDeliveryMethod` ENUM('STORE-PICKUP','DELIVERY'), IN `orderPaymentMethod` ENUM('CASH','CARD'), IN `orderCustomerId` INT(10), IN `sellDateTime` DATETIME, IN `sellPaymentStatus` ENUM('PENDING','PAID'))  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `order_transaction_guest` (IN `orderCartId` INT(10), IN `orderDate` DATETIME, IN `orderName` VARCHAR(255), IN `orderAddress` VARCHAR(255), IN `orderZipcode` VARCHAR(10), IN `orderPhoneNumber` VARCHAR(255), IN `orderDeliveryMethod` ENUM('STORE-PICKUP','DELIVERY'), IN `orderPaymentMethod` ENUM('CASH','CARD'), IN `orderCustomerId` INT(10), IN `sellDateTime` DATETIME, IN `sellPaymentStatus` ENUM('PENDING','PAID'), OUT `orderIdOutput` INT(10))  BEGIN
  
 
  START TRANSACTION;
@@ -71,7 +73,9 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `order_transaction_guest` (IN `order
    INSERT INTO `sell` (`date_time`, `order_id`, `delivery_state`, `payment_state`) VALUES (sellDateTime, @newOrder, 'PROCESSING', sellPaymentStatus);
    CALL update_product_variants_quantity_from_cart(orderCartId);
    UPDATE `cart` SET `state` = 'INACTIVE' WHERE `cart`.`cart_id` = orderCartId;
+ SET orderIdOutput = @newOrder;
  COMMIT;
+ SELECT orderIdOutput;
  END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `update_product_variants_quantity_from_cart` (IN `cartId` INT)  BEGIN  
@@ -270,7 +274,7 @@ create table if not exists `order`(
     order_id int unsigned auto_increment primary key,
     customer_id int unsigned,
     cart_id int unsigned not null,
-    date date not null,
+    date datetime not null,
     order_name varchar(255),
     delivery_address varchar(255),
     zip_code varchar(10),
