@@ -197,10 +197,10 @@ create table if not exists variant_image(
 
 
 create table if not exists cart(
-    cart_id int unsigned auto_increment primary key,
-    customer_id int unsigned ,
-    state int unsigned not null,
-    foreign key (customer_id) references customer(customer_id) on delete cascade
+    cart_id         int unsigned    auto_increment      primary key,
+    customer_id     int unsigned ,
+    state           enum('ACTIVE', 'INACTIVE')    not null ,
+    foreign key     (customer_id)        references         customer(customer_id)     on delete cascade
 );
 
 
@@ -236,8 +236,8 @@ create table if not exists sell(
     sell_id int unsigned auto_increment primary key,
     date_time datetime not null,
     order_id int unsigned not null,
-    delivery_state int unsigned,
-    payment_state int unsigned,
+    delivery_state enum('PROCESSING', 'OUTFORDELIVERY', 'DELIVERED'),
+    payment_state enum('PENDING', 'PAID'),
     foreign key (order_id) references `order`(order_id) on delete cascade
 );
 

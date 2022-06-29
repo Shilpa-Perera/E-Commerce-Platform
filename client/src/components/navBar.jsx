@@ -2,6 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { ImSun } from "react-icons/im";
 import { BsMoonStarsFill } from "react-icons/bs";
+import { MdShoppingCart } from "react-icons/md";
 
 export default function NavBar({ theme, toggleTheme, item_count, user }) {
     const nextTheme = theme ? "light" : "dark";
@@ -198,19 +199,25 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                 )}
                             </span>
                         </li>
-                        <li className="nav-item">
-                            <NavLink
-                                className="nav-link hover-focus"
-                                to="/cart"
-                            >
-                                <span className="ms-2">
-                                    <i className="fa fa-shopping-cart fa-2x "></i>
-                                    <span className="badge rounded-pill badge-notification bg-primary">
-                                        {item_count}
+                        {!isAdmin && (
+                            <li className="nav-item">
+                                <NavLink
+                                    className="nav-link hover-focus"
+                                    to="/cart"
+                                >
+                                    <span className="ms-2">
+                                        <MdShoppingCart
+                                            className="mt-1"
+                                            size={30}
+                                            style={{ fill: "grey" }}
+                                        />
+                                        <span className="badge rounded-pill badge-notification bg-primary">
+                                            {item_count}
+                                        </span>
                                     </span>
-                                </span>
-                            </NavLink>
-                        </li>
+                                </NavLink>
+                            </li>
+                        )}
                     </ul>
                 </div>
             </div>
