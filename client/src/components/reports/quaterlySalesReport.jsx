@@ -1,7 +1,18 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import { getQuaterlySalesReport } from "../../services/reportService";
-import { Modal, Table } from "react-bootstrap";
+import {
+    Col,
+    Modal,
+    Row,
+    Table,
+    Container,
+    Card,
+    Button,
+} from "react-bootstrap";
+import { Bar } from "react-chartjs-2";
+import BarChart from "./quaterlySalesReportComponents/barChart";
+import QuaterlySalesReportTable from "./quaterlySalesReportComponents/quaterlySalesReportTable";
 
 class QuaterlySalesReport extends Component {
     state = {
@@ -10,6 +21,7 @@ class QuaterlySalesReport extends Component {
         reports: [],
         showReports: [],
         dataSource: [],
+        barChartInputs: {},
     };
 
     componentDidMount() {
@@ -37,84 +49,95 @@ class QuaterlySalesReport extends Component {
             [
                 {
                     variant_name: "Black/Copper - 4GB ",
-                    sell_total: "120000.00",
+                    sell_total: 120000.0,
                 },
                 {
                     variant_name: "White/Copper - 4GB",
-                    sell_total: "150000.00",
+                    sell_total: 150000.0,
                 },
                 {
                     variant_name: "Black/Copper - 6GB",
-                    sell_total: "130000.00",
+                    sell_total: 130000.0,
                 },
                 {
                     variant_name: "Silver - 64GB",
-                    sell_total: "400000.00",
+                    sell_total: 400000.0,
                 },
             ],
             [
                 {
                     variant_name: "Black/Copper - 4GB ",
-                    sell_total: "120000.00",
+                    sell_total: 120000.0,
                 },
                 {
                     variant_name: "White/Copper - 4GB",
-                    sell_total: "150000.00",
+                    sell_total: 150000.0,
                 },
                 {
                     variant_name: "Black/Copper - 6GB",
-                    sell_total: "130000.00",
+                    sell_total: 130000.0,
                 },
                 {
                     variant_name: "Silver - 64GB",
-                    sell_total: "400000.00",
+                    sell_total: 400000.0,
                 },
             ],
             [
                 {
                     variant_name: "Black/Copper - 4GB ",
-                    sell_total: "120000.00",
+                    sell_total: 120000.0,
                 },
                 {
                     variant_name: "White/Copper - 4GB",
-                    sell_total: "150000.00",
+                    sell_total: 150000.0,
                 },
                 {
                     variant_name: "Black/Copper - 6GB",
-                    sell_total: "130000.00",
+                    sell_total: 130000.0,
                 },
                 {
                     variant_name: "Silver - 64GB",
-                    sell_total: "400000.00",
+                    sell_total: 400000.0,
                 },
             ],
             [
                 {
                     variant_name: "Black/Copper - 4GB ",
-                    sell_total: "120000.00",
+                    sell_total: 120000.0,
                 },
                 {
                     variant_name: "White/Copper - 4GB",
-                    sell_total: "150000.00",
+                    sell_total: 150000.0,
                 },
                 {
                     variant_name: "Black/Copper - 6GB",
-                    sell_total: "130000.00",
+                    sell_total: 130000.0,
                 },
                 {
                     variant_name: "Silver - 64GB",
-                    sell_total: "400000.00",
+                    sell_total: 400000.0,
                 },
             ],
         ];
 
-        const dataSource = this.mapReportToDataSource(reports[index]);
+        const { dataSource, barChartInputs } = this.mapReportToDataSource(
+            reports[index]
+        );
 
-        this.setState({ reports, showReports, dataSource });
+        this.setState({
+            reports,
+            showReports,
+            dataSource,
+            barChartInputs,
+        });
     }
 
     mapReportToDataSource(report) {
         const dataSource = [];
+        const barChartInputs = {
+            labels: [],
+            data: [],
+        };
 
         for (let i = 0; i < report[0].length; i++) {
             const row = {
@@ -125,10 +148,15 @@ class QuaterlySalesReport extends Component {
                 q4: report[3][i].sell_total,
             };
             dataSource.push(row);
+
+            barChartInputs.labels.push(row.variant_name);
+            barChartInputs.data.push(row.q1 + row.q2 + row.q3 + row.q4);
         }
 
-        // this.setState({ dataSource });
-        return dataSource;
+        return {
+            dataSource: dataSource,
+            barChartInputs: barChartInputs,
+        };
     }
 
     closeReport(index) {
@@ -142,65 +170,78 @@ class QuaterlySalesReport extends Component {
     }
 
     render() {
-        const { startYear, currentYear, reports, showReports, dataSource } =
-            this.state;
+        const {
+            startYear,
+            currentYear,
+            reports,
+            showReports,
+            dataSource,
+            barChartInputs,
+        } = this.state;
 
         return (
-            <>
+            <Container>
                 <h1>Quaterly Sales Report</h1>
-                {reports.map((report, index) => (
-                    <div>
-                        <button
-                            onClick={() => this.loadReport(index)}
-                            key={index}
-                        >
-                            {" "}
-                            {startYear + index}
-                        </button>
-                        {console.log("report :", report)}
-
-                        {report.length !== 0 && (
-                            <Modal
-                                key={index}
-                                show={showReports[index]}
-                                onHide={() => this.closeReport(index)}
-                                size="lg"
+                <Row>
+                    {reports.map((report, index) => (
+                        <div>
+                            <Card
+                                className="text-center mb-2"
+                                style={{ width: "18rem" }}
                             >
-                                <Modal.Header closeButton>
-                                    <Modal.Title>
-                                        {startYear + index} Quaterly Sales
-                                        Report
-                                    </Modal.Title>
-                                </Modal.Header>
-                                <Modal.Body>
-                                    <Table>
-                                        <thead>
-                                            <tr>
-                                                <th>Prouct Variant</th>
-                                                <th>Q1</th>
-                                                <th>Q2</th>
-                                                <th>Q3</th>
-                                                <th>Q4</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {dataSource.map((row, index) => (
-                                                <tr>
-                                                    <td>{row.variant_name}</td>
-                                                    <td>{row.q1}</td>
-                                                    <td>{row.q2}</td>
-                                                    <td>{row.q3}</td>
-                                                    <td>{row.q4}</td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </Table>
-                                </Modal.Body>
-                            </Modal>
-                        )}
-                    </div>
-                ))}
-            </>
+                                {startYear + index}
+                                <Button
+                                    variant="primary"
+                                    onClick={() => this.loadReport(index)}
+                                    key={index}
+                                >
+                                    View Report
+                                </Button>
+                            </Card>
+
+                            {report.length !== 0 && (
+                                <Modal
+                                    key={index}
+                                    show={showReports[index]}
+                                    onHide={() => this.closeReport(index)}
+                                    size="lg"
+                                    aria-labelledby="contained-modal-title-vcenter"
+                                    fullscreen={true}
+                                >
+                                    <Modal.Header closeButton>
+                                        <Modal.Title>
+                                            {startYear + index} Quaterly Sales
+                                            Report
+                                        </Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body className="show-grid">
+                                        <Container>
+                                            <Row>
+                                                <Col md={4}>
+                                                    <QuaterlySalesReportTable
+                                                        dataSource={dataSource}
+                                                    />
+                                                </Col>
+
+                                                <Col md={8}>
+                                                    <BarChart
+                                                        labels={
+                                                            barChartInputs.labels
+                                                        }
+                                                        data={
+                                                            barChartInputs.data
+                                                        }
+                                                    />
+                                                </Col>
+                                            </Row>
+                                        </Container>
+                                    </Modal.Body>
+                                </Modal>
+                            )}
+                        </div>
+                    ))}
+                </Row>
+            </Container>
         );
     }
 }
