@@ -61,10 +61,13 @@ class OrderController {
 
     static async confirmAndSetOrder(req, res, next){
         const orderDetails = req.body;
+        let finalOrderVal;
         let error = null;
+        let sellDateTime = null;
+        let paymentStatus = 'PENDING';
         console.log(orderDetails);
-        const dateTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
-        console.log(dateTime);
+        const orderDateTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        console.log(orderDateTime);
 
         // Payment Call
 
@@ -74,7 +77,11 @@ class OrderController {
             error = "Payment Failed";
             return res.status(200).send([orderDetails, error]);
             
+        }else if(orderDetails.paymentMethod === 'card'){
+            sellDateTime = orderDateTime;
+            paymentStatus = 'PAID';
         }
+        finalOrderVal = {...orderDetails, orderDateTime, sellDateTime, paymentStatus};
         
         error = await Order.insertNewOrder(); 
         return res.status(200).send([orderDetails, error])
