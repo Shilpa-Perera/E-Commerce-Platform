@@ -96,8 +96,12 @@ class OrderController {
             sellPaymentStatus: paymentStatus
 
         }
-
-        error = await Order.insertNewOrder(finalDataFormat); 
+        try {
+            error = await Order.insertNewOrder(finalDataFormat); 
+        } catch (e) {
+            error = "Payment Failed";
+        }
+        
         let newOrderId = error[0].at(-2)[0].orderIdOutput;
         console.log("New Order Inserted with Order Id: ", newOrderId);
         return res.status(200).send([orderDetails, newOrderId]);

@@ -53,14 +53,14 @@ class Order {
 
     static async insertNewOrder(details) {
         let insertOrder = null;
-        let x = "NewOrderID";
-        // console.log("in to DB:", details);
+        let outputOrderId = "NewOrderID";
+
         if (details.customerId === null) {
             insertOrder =
                 "CALL order_transaction_guest(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
         } else {
             insertOrder =
-                "CALL order_transaction(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
+                "CALL order_transaction(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
         }
 
         const result = await db.execute(insertOrder, [
@@ -75,7 +75,7 @@ class Order {
             details.customerId,
             details.sellDateTime,
             details.sellPaymentStatus,
-            x
+            outputOrderId,
         ]);
         return result;
     }
