@@ -112,6 +112,34 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                             </NavLink>
                         </li>
 
+                        {isAdmin && (
+                            <li className="nav-item dropdown">
+                                <span
+                                    className="nav-link dropdown-toggle hover-focus"
+                                    role="button"
+                                    id="navbarDropdown"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                >
+                                    Reports
+                                </span>
+                                <ul
+                                    className="dropdown-menu collapsed"
+                                    id="product-list-collapse"
+                                    aria-labelledby="navbarDropdown"
+                                >
+                                    <li>
+                                        <NavLink
+                                            className="dropdown-item hover-focus"
+                                            to="/reports/quaterly-sales-report"
+                                        >
+                                            Quaterly Sales Report
+                                        </NavLink>
+                                    </li>
+                                </ul>
+                            </li>
+                        )}
+
                         {user && !isAdmin && (
                             <li className="nav-item">
                                 <NavLink
