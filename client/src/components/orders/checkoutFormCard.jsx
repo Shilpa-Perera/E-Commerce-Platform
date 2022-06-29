@@ -15,6 +15,7 @@ class CheckoutFormCard extends Form {
             deliveryAddress: "",
             city: "",
             zipcode: "",
+            telephone: ""
         },
         cartId: null,
         page: null,
@@ -33,6 +34,7 @@ class CheckoutFormCard extends Form {
 
         city: Joi.string().required().min(1).max(250).label("City"),
         zipcode: Joi.string().required().min(5).max(5).label("ZIP Code"),
+        telephone: Joi.string().required().min(8).max(12).label("Telephone Number")
     };
 
     componentDidMount() {
@@ -90,6 +92,9 @@ class CheckoutFormCard extends Form {
 
                         <div className="col-12 form-group mb-3">
                             {this.renderInput("email", "Email Address")}
+                        </div>
+                        <div className="col-12 form-group mb-3">
+                            {this.renderInput("telephone", "Telephone Number")}
                         </div>
 
                         <div className="col-12 form-group mb-3">
