@@ -279,7 +279,10 @@ insert into cart_product values(1,4,2);
 # dummy sell 
 insert into sell (date_time, order_id, delivery_state, payment_state) values ('2022-06-27', 1, 1, 1);
 insert into sell (date_time, order_id, delivery_state, payment_state) values ('2022-06-27', 2, 1, 1);
-
+insert into sell (date_time, order_id, delivery_state, payment_state) values ('2022-01-27', 2, 1, 1);
+insert into sell (date_time, order_id, delivery_state, payment_state) values ('2022-01-27', 1, 1, 1);
 # dummy order
 insert into `order` (customer_id,cart_id,date,order_name) values (1,2,'2022-06-27','phone');
 insert into `order` (customer_id,cart_id,date,order_name) values (2,1,'2022-06-27','i phone');
+insert into `order` (customer_id,cart_id,date,order_name) values (1,2,'2022-01-27','phone');
+insert into `order` (customer_id,cart_id,date,order_name) values (2,1,'2022-01-27','i phone');

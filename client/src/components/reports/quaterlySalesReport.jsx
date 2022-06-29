@@ -37,7 +37,8 @@ class QuaterlySalesReport extends Component {
 
     async loadReport(index) {
         const year = this.state.startYear + index;
-        // await getQuaterlySalesReport(year);
+        console.log("year", year);
+        const { data: loadedReport } = await getQuaterlySalesReport(year);
 
         const reports = [...this.state.reports];
         const showReports = [...this.state.showReports];
@@ -45,80 +46,8 @@ class QuaterlySalesReport extends Component {
         // to test wit sample
         showReports[index] = true;
         // every variant should be there.... or product
-        reports[index] = [
-            [
-                {
-                    variant_name: "Black/Copper - 4GB ",
-                    sell_total: 120000.0,
-                },
-                {
-                    variant_name: "White/Copper - 4GB",
-                    sell_total: 150000.0,
-                },
-                {
-                    variant_name: "Black/Copper - 6GB",
-                    sell_total: 130000.0,
-                },
-                {
-                    variant_name: "Silver - 64GB",
-                    sell_total: 400000.0,
-                },
-            ],
-            [
-                {
-                    variant_name: "Black/Copper - 4GB ",
-                    sell_total: 120000.0,
-                },
-                {
-                    variant_name: "White/Copper - 4GB",
-                    sell_total: 150000.0,
-                },
-                {
-                    variant_name: "Black/Copper - 6GB",
-                    sell_total: 130000.0,
-                },
-                {
-                    variant_name: "Silver - 64GB",
-                    sell_total: 400000.0,
-                },
-            ],
-            [
-                {
-                    variant_name: "Black/Copper - 4GB ",
-                    sell_total: 120000.0,
-                },
-                {
-                    variant_name: "White/Copper - 4GB",
-                    sell_total: 150000.0,
-                },
-                {
-                    variant_name: "Black/Copper - 6GB",
-                    sell_total: 130000.0,
-                },
-                {
-                    variant_name: "Silver - 64GB",
-                    sell_total: 400000.0,
-                },
-            ],
-            [
-                {
-                    variant_name: "Black/Copper - 4GB ",
-                    sell_total: 120000.0,
-                },
-                {
-                    variant_name: "White/Copper - 4GB",
-                    sell_total: 150000.0,
-                },
-                {
-                    variant_name: "Black/Copper - 6GB",
-                    sell_total: 130000.0,
-                },
-                {
-                    variant_name: "Silver - 64GB",
-                    sell_total: 400000.0,
-                },
-            ],
-        ];
+        reports[index] = loadedReport;
+        // console.log("loadedReport", loadedReport);
 
         const { dataSource, barChartInputs } = this.mapReportToDataSource(
             reports[index]
@@ -139,19 +68,48 @@ class QuaterlySalesReport extends Component {
             data: [],
         };
 
-        for (let i = 0; i < report[0].length; i++) {
-            const row = {
-                variant_name: report[0][i].variant_name,
-                q1: report[0][i].sell_total,
-                q2: report[1][i].sell_total,
-                q3: report[2][i].sell_total,
-                q4: report[3][i].sell_total,
-            };
-            dataSource.push(row);
+        const data = {};
 
-            barChartInputs.labels.push(row.variant_name);
-            barChartInputs.data.push(row.q1 + row.q2 + row.q3 + row.q4);
-        }
+        report.forEach((item) => {
+            // if item_name in data.keys
+            if (!Object.keys(data).includes(item.item_name)) {
+                data[item.item_name] = {
+                    q1: 0,
+                    q2: 0,
+                    q3: 0,
+                    q4: 0,
+                };
+            }
+            data[item.item_name]["q".concat(item.quater.toString())] = parseInt(
+                item.sell_total
+            );
+        });
+        // console.log("data", data);
+
+        Object.keys(data).forEach((key) => {
+            barChartInputs.labels.push(key);
+            barChartInputs.data.push(
+                data[key].q1 + data[key].q2 + data[key].q3 + data[key].q4
+            );
+
+            const dataSourceItem = { variant_name: key, ...data[key] };
+            dataSource.push(dataSourceItem);
+        });
+
+        // console.log("barChartInputs", barChartInputs);
+        // for (let i = 0; i < report[0].length; i++) {
+        //     const row = {
+        //         variant_name: report[0][i].variant_name,
+        //         q1: report[0][i].sell_total,
+        //         q2: report[1][i].sell_total,
+        //         q3: report[2][i].sell_total,
+        //         q4: report[3][i].sell_total,
+        //     };
+        //     dataSource.push(row);
+
+        //     barChartInputs.labels.push(row.variant_name);
+        //     barChartInputs.data.push(row.q1 + row.q2 + row.q3 + row.q4);
+        // }
 
         return {
             dataSource: dataSource,
@@ -235,6 +193,31 @@ class QuaterlySalesReport extends Component {
                                                 </Col>
                                             </Row>
                                         </Container>
+                                    </Modal.Body>
+                                </Modal>
+                            )}
+
+                            {report.length === 0 && (
+                                <Modal
+                                    key={"no-report".concat(index)}
+                                    show={showReports[index]}
+                                    onHide={() => this.closeReport(index)}
+                                    size="lg"
+                                    aria-labelledby="contained-modal-title-vcenter"
+                                    fullscreen={false}
+                                >
+                                    <Modal.Header closeButton>
+                                        <Modal.Title>
+                                            {startYear + index} Quaterly Sales
+                                            Report
+                                        </Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                        <span className="warning">
+                                            No items are sold on{" "}
+                                            {startYear + index} to generate a
+                                            report.
+                                        </span>
                                     </Modal.Body>
                                 </Modal>
                             )}
