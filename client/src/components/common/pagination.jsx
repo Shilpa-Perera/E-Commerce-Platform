@@ -7,28 +7,30 @@ const Pagination = ({ itemsCount, pageSize, currentPage, onPageChange }) => {
     if (pagesCount === 1) return null;
     const pages = _.range(1, pagesCount + 1);
     return (
-        <nav>
-            <ul className="pagination">
-                {pages.map((page) => (
-                    <li
-                        className={
-                            page === currentPage
-                                ? "page-item active clickable"
-                                : "page-item clickable"
-                        }
-                        key={page}
-                    >
-                        {/* eslint-disable-next-line */}
-                        <a
-                            className="page-link"
-                            onClick={() => onPageChange(page)}
+        <div className="d-flex justify-content-center">
+            <nav>
+                <ul className="pagination">
+                    {pages.map((page) => (
+                        <li
+                            className={
+                                page === currentPage
+                                    ? "page-item active pointer"
+                                    : "page-item pointer"
+                            }
+                            key={page}
                         >
-                            {page}
-                        </a>
-                    </li>
-                ))}
-            </ul>
-        </nav>
+                            {/* eslint-disable-next-line */}
+                            <a
+                                className="page-link"
+                                onClick={() => onPageChange(page)}
+                            >
+                                {page}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            </nav>
+        </div>
     );
 };
 
