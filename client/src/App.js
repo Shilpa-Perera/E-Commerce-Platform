@@ -205,8 +205,8 @@ function App() {
                 </Route>
 
                 <Route path="/orders">
-                    <Route index element={<Orders />}></Route>
-                    <Route path=":id" element={<Order />}></Route>
+                    <Route index element={<ProtectedRoute permissions={[ROLE.ADMIN]}><Orders /></ProtectedRoute>}></Route>
+                    <Route path=":id" element={<ProtectedRoute permissions={[ROLE.ADMIN]}><Order /></ProtectedRoute>}></Route>
                 </Route>
                 
                 <Route path="/order-summary/:id" element={<OrderReport/>}></Route>
