@@ -102,14 +102,16 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                 </ul>
                             </li>
                         )}
-                        <li className="nav-item">
-                            <NavLink
-                                className="nav-link hover-focus"
-                                to="/orders/"
-                            >
-                                Orders
-                            </NavLink>
-                        </li>
+                        {isAdmin && (
+                            <li className="nav-item">
+                                <NavLink
+                                    className="nav-link hover-focus"
+                                    to="/orders/"
+                                >
+                                    Orders
+                                </NavLink>
+                            </li>
+                        )}
 
                         {isAdmin && (
                             <li className="nav-item dropdown">
