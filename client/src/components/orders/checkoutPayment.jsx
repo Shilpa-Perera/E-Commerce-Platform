@@ -4,7 +4,6 @@ import Joi from "joi-browser";
 import Form from "../common/form";
 import { validateAndConfirmOrder } from "../../services/orderService";
 import { toast } from "react-toastify";
-import { removeCart } from "../../services/cartService";
 
 class CheckoutPayment extends Form {
 	state = {
@@ -44,6 +43,7 @@ class CheckoutPayment extends Form {
 		this.setState({
 			orderDetails: this.props.data,
 			totalAmount: this.props.cartTotal,
+			customerId: this.props.customerId
 		});
 	}
 
@@ -110,7 +110,6 @@ class CheckoutPayment extends Form {
 		}
 
 		let orderIdOutput = data[1];
-		// removeCart();
 		this.props.onCheckout();
 		// remove cart from session
 		window.location = "/order-summary/" + orderIdOutput;
@@ -132,7 +131,7 @@ class CheckoutPayment extends Form {
 						<div className="col-12 mb-3">
 							<label htmlFor="fullname">Full name:</label>
 							<li
-								className="list-group-item text-break"
+								className="list-group-item order-summary-infolist text-break"
 								id="fullname"
 							>
 								{readOnlyOrderData.firstName +
@@ -144,7 +143,7 @@ class CheckoutPayment extends Form {
 						<div className="col-12 mb-3">
 							<label htmlFor="email">Email address:</label>
 							<li
-								className="list-group-item text-break"
+								className="list-group-item order-summary-infolist text-break"
 								id="email"
 							>
 								{readOnlyOrderData.email}
@@ -154,7 +153,7 @@ class CheckoutPayment extends Form {
 						<div className="col-12 mb-3">
 							<label htmlFor="telephone">Telephone Number:</label>
 							<li
-								className="list-group-item text-break"
+								className="list-group-item order-summary-infolist text-break"
 								id="telephone"
 							>
 								{readOnlyOrderData.telephone}
@@ -166,7 +165,7 @@ class CheckoutPayment extends Form {
 								Delivery Address:
 							</label>
 							<li
-								className="list-group-item text-break"
+								className="list-group-item order-summary-infolist text-break"
 								id="deliveryAddress"
 							>
 								{readOnlyOrderData.deliveryAddress}
@@ -176,7 +175,7 @@ class CheckoutPayment extends Form {
 						<div className="col-6 mb-3">
 							<label htmlFor="city">City:</label>
 							<li
-								className="list-group-item text-break"
+								className="list-group-item order-summary-infolist text-break"
 								id="city"
 							>
 								{readOnlyOrderData.city}
@@ -186,7 +185,7 @@ class CheckoutPayment extends Form {
 						<div className="col-6 mb-3">
 							<label htmlFor="zipcode">ZIP code:</label>
 							<li
-								className="list-group-item text-break"
+								className="list-group-item order-summary-infolist text-break"
 								id="zipcode"
 							>
 								{readOnlyOrderData.zipcode}
@@ -198,7 +197,7 @@ class CheckoutPayment extends Form {
 								Estimated Delivery Time:
 							</label>
 							<li
-								className="list-group-item text-break"
+								className="list-group-item order-summary-infolist text-break"
 								id="deliveryEstimate"
 							>
 								{deliveryEstimate} days
@@ -209,7 +208,7 @@ class CheckoutPayment extends Form {
 							<label htmlFor="totalAmmount text-break">
 								Total amount:
 							</label>
-							<li className="list-group-item" id="totalAmount">
+							<li className="list-group-item order-summary-infolist" id="totalAmount">
 								LKR {cartTotal}
 							</li>
 						</div>
@@ -323,7 +322,7 @@ class CheckoutPayment extends Form {
 									</div>
 								)}
 								<div className="row">
-									<div className="col-3">
+									<div className="col-2 mx-auto">
 										<Link to="/cart">
 											<button
 												type="button"
@@ -335,7 +334,7 @@ class CheckoutPayment extends Form {
 									</div>
 
 									{/* Link is Temporary */}
-									<div className="col-3">
+									<div className="col-2 mx-auto">
 										{this.renderStyledButton(
 											"Confirm",
 											"hover-focus btn-success"
