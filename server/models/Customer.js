@@ -92,7 +92,8 @@ class CustomerMobile {
 class Customer {
     constructor(customerDetails) {
         this.customer_id = customerDetails.customer_id;
-        this.name = customerDetails.name;
+        this.first_name = customerDetails.first_name;
+        this.last_name = customerDetails.last_name;
         this.email = customerDetails.email;
         this.password = customerDetails.password;
         this.mobiles = customerDetails.mobiles;
@@ -103,7 +104,7 @@ class Customer {
     // GET
     static async fetchAll() {
         const [result, _] = await db.execute(
-            "select customer_id,name,email from customer"
+            "select customer_id,first_name,last_name,email from customer"
         );
         return result;
     }
@@ -227,23 +228,29 @@ class Customer {
     }
 
     async updateCustomer() {
-        let sql = "update customer set name=? where customer_id=?;";
-
-        await db.execute(sql, [this.name, this.customer_id], (err, results) => {
-            if (err) {
-                throw err;
-            } else {
-                console.log("results: ", results);
-            }
-        });
-    }
-
-    async saveCustomer() {
-        let sql = "insert into customer (name,email,password) values (?,?,?);";
+        let sql =
+            "update customer set first_name=?, last_name=? where customer_id=?;";
 
         await db.execute(
             sql,
-            [this.name, this.email, this.password],
+            [this.first_name, this.last_name, this.customer_id],
+            (err, results) => {
+                if (err) {
+                    throw err;
+                } else {
+                    console.log("results: ", results);
+                }
+            }
+        );
+    }
+
+    async saveCustomer() {
+        let sql =
+            "insert into customer (first_name,last_name,email,password) values (?,?,?,?);";
+
+        await db.execute(
+            sql,
+            [this.first_name, this.last_name, this.email, this.password],
             (err, results) => {
                 if (err) {
                     throw err;
@@ -263,8 +270,8 @@ class Customer {
 
         const query = this.getSaveMobilesQueryWithParams().query;
         const params = this.getSaveMobilesQueryWithParams().params;
-        console.log(query);
-        console.log(params);
+        // console.log(query);
+        // console.log(params);
         await db.execute(query, params, (err, results) => {
             if (err) {
                 throw err;
@@ -296,7 +303,8 @@ class Customer {
         const token = jwt.sign(
             {
                 user_id: this.customer_id,
-                name: this.name,
+                first_name: this.first_name,
+                last_name: this.last_name,
                 email: this.email,
                 role: ROLE.CUSTOMER,
             },
@@ -308,7 +316,8 @@ class Customer {
 
 function validateCustomer(customer) {
     const schema = Joi.object({
-        name: Joi.string().min(3).max(255).required(),
+        first_name: Joi.string().min(3).max(255).required(),
+        last_name: Joi.string().min(3).max(255).required(),
         email: Joi.string().min(5).max(255).required(),
         password: Joi.string().max(1024).required(),
         addresses: Joi.array()
