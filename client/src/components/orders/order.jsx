@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { getOrder } from "../../services/orderService";
 import { OrderStatus } from "./orderStatus";
 import OrdersCartTable from "./orderViewCartTable";
+import Loading from "../common/loading";
 
 class OrderView extends Component {
     state = {
@@ -210,7 +211,7 @@ class OrderView extends Component {
             return (
                 <div className="pb-5">
                     <div className="container div-dark">
-                        <h2> Loading...</h2>
+                        <Loading />
                     </div>
                 </div>
             );

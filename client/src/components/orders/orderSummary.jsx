@@ -6,11 +6,13 @@ import htmlToPdfmake from "html-to-pdfmake";
 import { getOrder } from "../../services/orderService";
 import { useParams, Link } from "react-router-dom";
 import NotFound from "../notFound";
+import Loading from "../common/loading";
 
 class OrderSummary extends Form {
     state = {
         orderDetails: null,
         cart: null,
+        loading: true
     };
 
     async componentDidMount() {
@@ -20,6 +22,7 @@ class OrderSummary extends Form {
             return;
         }
         this.setState({ orderDetails: s.orderDetails, cart: s.orderCart });
+        this.setState({ loading: false });
     }
 
     printDocument() {
@@ -40,6 +43,7 @@ class OrderSummary extends Form {
     }
 
     render() {
+        if (this.state.loading) return <Loading/>;
         const { cart, orderDetails } = this.state;
 
         if (cart && orderDetails) {
@@ -86,7 +90,7 @@ class OrderSummary extends Form {
                                                         Order Report
                                                     </h4>{" "}
                                                     <h5>
-                                                        Order ID:{" "}
+                                                        Order No:{" "}
                                                         {orderDetails.order_id}
                                                     </h5>{" "}
                                                 </div>

@@ -4,9 +4,11 @@ import Joi from "joi-browser";
 import Form from "../common/form";
 import { validateAndConfirmOrder } from "../../services/orderService";
 import { toast } from "react-toastify";
+import Loading from "../common/loading";
 
 class CheckoutPayment extends Form {
 	state = {
+		loading: true,
 		paymentMethod: null,
 		deliveryMethod: null,
 		customerId: null,
@@ -19,7 +21,7 @@ class CheckoutPayment extends Form {
 		},
 		orderDetails: null,
 		totalAmount: null,
-		errors: [],
+		errors: []
 	};
 
 	schema = {
@@ -45,6 +47,7 @@ class CheckoutPayment extends Form {
 			totalAmount: this.props.cartTotal,
 			customerId: this.props.customerId
 		});
+		this.setState({ loading: false });
 	}
 
 	selectcash = () => {
@@ -116,6 +119,7 @@ class CheckoutPayment extends Form {
 	};
 
 	render() {
+		if (this.state.loading) return <Loading/>;
 		const {
 			paymentMethod,
 			totalAmount: cartTotal,

@@ -46,7 +46,6 @@ class Order {
     static async getOrderCart(orderId) {
         const getOrderCart =
             "SELECT variant_name, variant_id, product_id, number_of_items, product_title, price  FROM `order` JOIN (SELECT cart.cart_id, variant.variant_name, variant.variant_id, variant.product_id, number_of_items, price FROM `cart_product` JOIN cart ON cart_product.cart_id = cart.cart_id JOIN variant ON variant.variant_id = cart_product.variant_id) AS X ON X.cart_id = `order`.cart_id natural JOIN product WHERE order_id = ?;";
-        // const getOrderCart = "SELECT variant_name, variant_id, product_id, number_of_items  FROM `order` JOIN (SELECT cart.cart_id, variant.variant_name, variant.variant_id, variant.product_id, number_of_items FROM `cart_product` JOIN cart ON cart_product.cart_id = cart.cart_id JOIN variant ON variant.variant_id = cart_product.variant_id) AS X ON X.cart_id = `order`.cart_id WHERE order_id = ?;";
         const result = await db.execute(getOrderCart, [orderId]);
         return result;
     }

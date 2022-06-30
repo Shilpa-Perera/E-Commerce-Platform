@@ -7,9 +7,11 @@ import { toast } from "react-toastify";
 import CheckoutPayment from "./checkoutPayment";
 import { getCurrentUser } from "../../services/authService";
 import { getCustomer } from "../../services/customerService";
+import Loading from "../common/loading";
 
 class CheckoutFormCard extends Form {
     state = {
+		loading: true,
         data: {
             firstName: "",
             lastName: "",
@@ -55,10 +57,9 @@ class CheckoutFormCard extends Form {
             telephone: "",
         };
         const customerId = getCurrentUser();
-		await this.setState({customerId: customerId.user_id});
-		console.log(customerId, this.state.customerId);
-        if (customerId !== null) {
+        if (customerId) {
             try {
+                await this.setState({customerId: customerId.user_id});
 				
                 const { data: customer } = await getCustomer(
                     this.state.customerId
@@ -74,13 +75,14 @@ class CheckoutFormCard extends Form {
                     telephone: customer.mobiles[0].mobile,
                 };
             } catch (error) {
-                return this.setState({ data: data });
+                return this.setState({ data: data, loading: false });
             }
         }
-        this.setState({ data: data });
+        this.setState({ data: data, loading: false });
     }
 
     doSubmit = async () => {
+		this.setState({loading: true});
         let result = null;
         const cartId = this.props.cartId;
         const data = {
@@ -108,9 +110,11 @@ class CheckoutFormCard extends Form {
         } else {
             toast.warning(result.data[1]);
         }
+		this.setState({loading: false});
     };
 
     render() {
+		if (this.state.loading) return <Loading/>;
         if (this.state.page === null) {
             return (
                 <form onSubmit={this.handleSubmit}>

@@ -61,11 +61,10 @@ class OrderController {
 
     static async confirmAndSetOrder(req, res, next){
         const orderDetails = req.body;
-        let finalOrderVal;
         let error = null;
         let sellDateTime = null;
         let paymentStatus = 'PENDING';
-        console.log(orderDetails);
+        // console.log(orderDetails);
         const orderDateTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
         // console.log(orderDateTime);
 
@@ -103,7 +102,6 @@ class OrderController {
         }
         
         let newOrderId = error[0].at(-2)[0].orderIdOutput;
-        console.log("New Order Inserted with Order Id: ", newOrderId);
         return res.status(200).send([orderDetails, newOrderId]);
     }
 }
