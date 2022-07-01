@@ -84,7 +84,7 @@ class Orders extends Component {
     };
 
     render() {
-        const { searchQuery, pageSize, currentPage } = this.state;
+        const { searchQuery, pageSize, currentPage, userType } = this.state;
         const { totalCount, data: orders } = this.getPagedData();
         const plh = "Enter order ID";
         return (
@@ -100,6 +100,7 @@ class Orders extends Component {
                         </div>
                     </div>
                     <OrdersTable
+                        userType={userType}
                         orders={orders}
                         sortBy={this.state.sortBy}
                         onSort={this.handleSort}
