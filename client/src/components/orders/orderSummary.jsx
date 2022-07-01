@@ -7,17 +7,29 @@ import { getOrder } from "../../services/orderService";
 import { useParams, Link } from "react-router-dom";
 import NotFound from "../notFound";
 import Loading from "../common/loading";
+import { getCurrentUser } from "../../services/authService";
 
 class OrderSummary extends Form {
     state = {
         orderDetails: null,
         cart: null,
-        loading: true
+        loading: true,
     };
 
     async componentDidMount() {
+        let customer_id = null;
+        const { user_id, role } = await getCurrentUser();
         const { id } = this.props;
         const { data: s } = await getOrder(id);
+        try {
+            customer_id = s.orderDetails[0].customer_id;
+        } catch (error) {}
+
+        console.log(s, user_id, customer_id, role);
+        if (role === "customer" && user_id !== customer_id) {
+            this.setState({ loading: false });
+            return;
+        }
         if (s.orderCart.length === 0 || s.orderDetails.length === 0) {
             return;
         }
@@ -43,7 +55,7 @@ class OrderSummary extends Form {
     }
 
     render() {
-        if (this.state.loading) return <Loading/>;
+        if (this.state.loading) return <Loading />;
         const { cart, orderDetails } = this.state;
 
         if (cart && orderDetails) {
