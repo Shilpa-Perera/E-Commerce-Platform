@@ -167,7 +167,7 @@ create table if not exists product (
 
 
 
-create table if not exists product_category(
+create table if not exists product_category (
     product_id          int unsigned    not null,
     category_id         int unsigned    not null,
     sub_category_id     int unsigned    not null,
@@ -197,7 +197,7 @@ create table if not exists variant (
     product_id      int unsigned    not null,
     variant_name    varchar(255)    not null,
     price           decimal(15, 2)  not null,
-    quantity        int not null,
+    quantity        int             not null,
 
     foreign key (product_id)    references      product(product_id)     on delete cascade
 );
@@ -241,7 +241,7 @@ create table if not exists variant_values (
 
 
 
-create table if not exists variant_image(
+create table if not exists variant_image (
     variant_id      int unsigned    not null,
     image_name      varchar(255)    primary key,
 
