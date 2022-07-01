@@ -268,7 +268,8 @@ class CustomerFormBody extends Form {
             addresses,
             mobiles,
             customer_id: customerId,
-            name,
+            first_name,
+            last_name,
         } = this.state.data;
         // console.log("render: ", addresses);
         // console.log("render state: ", this.state);
@@ -277,7 +278,9 @@ class CustomerFormBody extends Form {
             <div className="container  mb-5">
                 <div className="p-4">
                     <h1>
-                        {customerId === -1 ? "Register" : `${name}'s Profile`}
+                        {customerId === -1
+                            ? "Register"
+                            : `${first_name} ${last_name}'s Profile`}
                     </h1>
                 </div>
                 <div className="row  div-dark">
