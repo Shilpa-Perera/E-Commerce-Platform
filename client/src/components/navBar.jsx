@@ -1,12 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { ImSun } from "react-icons/im";
-import {
-    MdManageAccounts,
-    MdLogin,
-    MdLogout,
-    MdAddchart,
-} from "react-icons/md";
+import { MdManageAccounts, MdLogin, MdLogout } from "react-icons/md";
 import { FaAddressBook } from "react-icons/fa";
 import { BsMoonStarsFill } from "react-icons/bs";
 import { MdShoppingCart } from "react-icons/md";
@@ -55,7 +50,7 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                 <span
                                     className="nav-link dropdown-toggle hover-focus"
                                     role="button"
-                                    id="navbarDropdown"
+                                    id="manageDropdown"
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false"
                                 >
@@ -63,8 +58,8 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                 </span>
                                 <ul
                                     className="dropdown-menu collapsed"
-                                    id="product-list-collapse"
-                                    aria-labelledby="navbarDropdown"
+                                    id="manage-collapse"
+                                    aria-labelledby="manageDropdown"
                                 >
                                     <li>
                                         <NavLink
@@ -125,7 +120,7 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                 <span
                                     className="nav-link dropdown-toggle hover-focus"
                                     role="button"
-                                    id="navbarDropdown"
+                                    id="reportsDropdown"
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false"
                                 >
@@ -133,8 +128,8 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                 </span>
                                 <ul
                                     className="dropdown-menu collapsed"
-                                    id="product-list-collapse"
-                                    aria-labelledby="navbarDropdown"
+                                    id="reports-collapse"
+                                    aria-labelledby="reportsDropdown"
                                 >
                                     <li>
                                         <NavLink
@@ -172,7 +167,7 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                             <span
                                 className="nav-link dropdown-toggle hover-focus"
                                 role="button"
-                                id="navbarDropdown"
+                                id="profileDropdown"
                                 data-bs-toggle="dropdown"
                                 aria-expanded="false"
                             >
@@ -184,45 +179,51 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                             </span>
                             <ul
                                 className="dropdown-menu collapsed"
-                                id="product-list-collapse"
-                                aria-labelledby="navbarDropdown"
+                                id="profile-collapse"
+                                aria-labelledby="profileDropdown"
                             >
                                 {!user && (
-                                    <li className="nav-item">
+                                    <li>
                                         <NavLink
-                                            className="nav-link hover-focus"
+                                            className="dropdown-item hover-focus"
                                             to="/customers/register"
                                         >
                                             <span className="ms-2">
                                                 <FaAddressBook></FaAddressBook>
-                                                Register
+                                                <span className="ms-2">
+                                                    Register
+                                                </span>
                                             </span>
                                         </NavLink>
                                     </li>
                                 )}
                                 {!user && (
-                                    <li className="nav-item">
+                                    <li>
                                         <NavLink
-                                            className="nav-link hover-focus"
+                                            className="dropdown-item hover-focus"
                                             to="/login"
                                         >
                                             <span className="ms-2">
                                                 <MdLogin></MdLogin>
-                                                Login
+                                                <span className="ms-2">
+                                                    Login
+                                                </span>
                                             </span>
                                         </NavLink>
                                     </li>
                                 )}
 
                                 {user && (
-                                    <li className="nav-item">
+                                    <li>
                                         <NavLink
-                                            className="nav-link hover-focus"
+                                            className="dropdown-item hover-focus"
                                             to="/logout"
                                         >
                                             <span className="ms-2">
                                                 <MdLogout></MdLogout>
-                                                Logout
+                                                <span className="ms-2">
+                                                    Logout
+                                                </span>
                                             </span>
                                         </NavLink>
                                     </li>
