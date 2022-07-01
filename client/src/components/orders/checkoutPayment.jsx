@@ -330,7 +330,7 @@ class CheckoutPayment extends Form {
 										<Link to="/cart">
 											<button
 												type="button"
-												class="btn btn-danger hover-focus"
+												className="btn btn-danger hover-focus"
 											>
 												Cancle
 											</button>

@@ -2,7 +2,7 @@ const _ = require("lodash");
 const { Order } = require("../models/Order");
 
 class OrderController {
-    static async getAllOrders(req, res, next) {
+    static async getAllOrders(res) {
         const allOrders = await Order.fetchAll();
         res.send(allOrders[0]);
     }
@@ -13,7 +13,7 @@ class OrderController {
         return res.status(200).send(allCustomerOrders[0]);
     }
 
-    static async getOrderCart(req, res, next) {
+    static async getOrderCart(req, res) {
         const { id } = req.params;
         const orderCart = await Order.getOrderCart(id);
         const orderDetails = await Order.getOrderById(id);
@@ -21,11 +21,10 @@ class OrderController {
             orderDetails: orderDetails,
             orderCart: orderCart[0],
         };
-        console.log("api - order id: ", id);
         res.send(orderArray);
     }
 
-    static async setOrderDetails(req, res, next) {
+    static async setOrderDetails(req, res) {
         const test = req.body;
         const validation = OrderController.validateData(test);
         let validateResult = validation[0];
@@ -36,7 +35,6 @@ class OrderController {
 
             return res.status(200).send([test, error, estimatedDeliveryTime]);
         }
-
         return res.status(200).send([test, error]);
     }
 
@@ -63,7 +61,7 @@ class OrderController {
         return [true, "All set"];
     }
 
-    static async confirmAndSetOrder(req, res, next) {
+    static async confirmAndSetOrder(req, res) {
         const orderDetails = req.body;
         let error = null;
         let sellDateTime = null;
@@ -76,10 +74,9 @@ class OrderController {
         // console.log(orderDateTime);
 
         // Payment Call
+        let paymentResult = false; // ### to payment Gateway
 
-        let paymentResult = true; // ### to payment Gateway
-
-        if (!paymentResult) {
+        if (!paymentResult && orderDetails.paymentMethod === "CARD") {
             error = "Payment Failed";
             return res.status(200).send([orderDetails, error]);
         } else if (orderDetails.paymentMethod === "CARD") {

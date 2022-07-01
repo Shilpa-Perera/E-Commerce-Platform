@@ -25,7 +25,6 @@ class OrderSummary extends Form {
             customer_id = s.orderDetails[0].customer_id;
         } catch (error) {}
 
-        console.log(s, user_id, customer_id, role);
         if (role === "customer" && user_id !== customer_id) {
             this.setState({ loading: false });
             return;
