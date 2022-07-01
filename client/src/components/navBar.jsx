@@ -1,6 +1,13 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { ImSun } from "react-icons/im";
+import {
+    MdManageAccounts,
+    MdLogin,
+    MdLogout,
+    MdAddchart,
+} from "react-icons/md";
+import { FaAddressBook } from "react-icons/fa";
 import { BsMoonStarsFill } from "react-icons/bs";
 import { MdShoppingCart } from "react-icons/md";
 
@@ -153,36 +160,68 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                         )}
                     </ul>
                     <ul className="navbar-nav ms-auto">
-                        {!user && (
-                            <li className="nav-item">
-                                <NavLink
-                                    className="nav-link hover-focus"
-                                    to="/login"
-                                >
-                                    <p className="font-weight-bold">Login</p>
-                                </NavLink>
-                            </li>
-                        )}
-                        {user && (
-                            <li className="nav-item">
-                                <NavLink
-                                    className="nav-link hover-focus"
-                                    to="/logout"
-                                >
-                                    <p className="font-weight-bold">Logout</p>
-                                </NavLink>
-                            </li>
-                        )}
-                        {!user && (
-                            <li className="nav-item">
-                                <NavLink
-                                    className="nav-link hover-focus"
-                                    to="/customers/register"
-                                >
-                                    <p className="font-weight-bold">Register</p>
-                                </NavLink>
-                            </li>
-                        )}
+                        <li className="nav-item dropdown">
+                            <span
+                                className="nav-link dropdown-toggle hover-focus"
+                                role="button"
+                                id="navbarDropdown"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                            >
+                                <MdManageAccounts
+                                    className="mt-1"
+                                    size={30}
+                                    style={{ fill: "grey" }}
+                                ></MdManageAccounts>
+                            </span>
+                            <ul
+                                className="dropdown-menu collapsed"
+                                id="product-list-collapse"
+                                aria-labelledby="navbarDropdown"
+                            >
+                                {!user && (
+                                    <li className="nav-item">
+                                        <NavLink
+                                            className="nav-link hover-focus"
+                                            to="/customers/register"
+                                        >
+                                            <span className="ms-2">
+                                                <FaAddressBook></FaAddressBook>
+                                                Register
+                                            </span>
+                                        </NavLink>
+                                    </li>
+                                )}
+                                {!user && (
+                                    <li className="nav-item">
+                                        <NavLink
+                                            className="nav-link hover-focus"
+                                            to="/login"
+                                        >
+                                            <span className="ms-2">
+                                                <MdLogin></MdLogin>
+                                                Login
+                                            </span>
+                                        </NavLink>
+                                    </li>
+                                )}
+
+                                {user && (
+                                    <li className="nav-item">
+                                        <NavLink
+                                            className="nav-link hover-focus"
+                                            to="/logout"
+                                        >
+                                            <span className="ms-2">
+                                                <MdLogout></MdLogout>
+                                                Logout
+                                            </span>
+                                        </NavLink>
+                                    </li>
+                                )}
+                            </ul>
+                        </li>
+
                         <li className="nav-item d-flex align-items-center">
                             <span
                                 className="ms-2 pointer"
