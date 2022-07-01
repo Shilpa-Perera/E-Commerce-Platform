@@ -115,6 +115,17 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                             </li>
                         )}
 
+                        {user && !isAdmin && (
+                            <li className="nav-item">
+                                <NavLink
+                                    className="nav-link hover-focus"
+                                    to="/customers/orders"
+                                >
+                                    My Orders
+                                </NavLink>
+                            </li>
+                        )}
+
                         {isAdmin && (
                             <li className="nav-item dropdown">
                                 <span
