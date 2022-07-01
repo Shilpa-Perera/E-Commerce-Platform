@@ -300,14 +300,24 @@ function App() {
                             </ProtectedRoute>
                         }
                     ></Route>
-                    <Route
-                        path="orders"
-                        element={
-                            <ProtectedRoute>
-                                <Orders />
-                            </ProtectedRoute>
-                        }
-                    ></Route>
+                    <Route path="orders">
+                        <Route
+                            index
+                            element={
+                                <ProtectedRoute>
+                                    <Orders />
+                                </ProtectedRoute>
+                            }
+                        ></Route>
+                        <Route
+                            path=":id"
+                            element={
+                                <ProtectedRoute>
+                                    <OrderReport />
+                                </ProtectedRoute>
+                            }
+                        ></Route>
+                    </Route>
 
                     <Route path="register" element={<CustomerForm />}></Route>
                 </Route>
