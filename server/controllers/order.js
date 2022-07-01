@@ -74,7 +74,7 @@ class OrderController {
         // console.log(orderDateTime);
 
         // Payment Call
-        let paymentResult = false; // ### to payment Gateway
+        let paymentResult = true; // ### to payment Gateway
 
         if (!paymentResult && orderDetails.paymentMethod === "CARD") {
             error = "Payment Failed";
