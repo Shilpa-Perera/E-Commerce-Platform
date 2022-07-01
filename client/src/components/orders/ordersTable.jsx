@@ -33,7 +33,13 @@ class OrdersTable extends Component {
             content: ({ order_id }) => (
                 <div className="d-flex flex-column flex-lg-row mb-3">
                     <span className="me-2 my-2 my-lg-0">
-                        <Link to={`/orders/${order_id}`}>
+                        <Link
+                            to={
+                                this.props.userType === "customer"
+                                    ? `/customers/orders/${order_id}`
+                                    : `/orders/${order_id}`
+                            }
+                        >
                             <button className="btn btn-success btn-sm hover-focus">
                                 <span className="me-2">View Order</span>
                                 <i className="fa fa-eye"></i>
