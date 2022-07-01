@@ -137,6 +137,14 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                             Quaterly Sales Report
                                         </NavLink>
                                     </li>
+                                    <li>
+                                        <NavLink
+                                            className="dropdown-item hover-focus"
+                                            to="/reports/products/interest/"
+                                        >
+                                            Product Interest Reports
+                                        </NavLink>
+                                    </li>
                                 </ul>
                             </li>
                         )}

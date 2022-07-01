@@ -41,7 +41,7 @@ import CategoryForm from "./components/category/categoryForm";
 import MockPaymentGateway from "./components/paymentGateway";
 import Customers from "./components/customer/customers";
 import CategoryLink from "./components/category/linkCategory";
-import ProductInterestReport from "./components/reports/productInterestReport";
+import ProductInterestReportPage from "./components/reports/productInterestReport/productInterestReportPage";
 import OrderReport from "./components/orders/orderSummary";
 import QuaterlySalesReport from "./components/reports/quaterlySalesReport";
 
@@ -75,6 +75,7 @@ function App() {
 							<Products
 								isAlbum={true}
 								isTable={false}
+								isReport={false}
 								user={user}
 							/>
 						}
@@ -169,6 +170,7 @@ function App() {
 									<Products
 										isAlbum={false}
 										isTable={true}
+										isReport={false}
 										user={user}
 									/>
 								</ProtectedRoute>
@@ -296,14 +298,30 @@ function App() {
 
 				<Route path="/reports">
 					<Route path="products">
-						<Route
-							path="interest/:id"
-							element={
-								<ProtectedRoute permissions={[ROLE.ADMIN]}>
-									<ProductInterestReport />
-								</ProtectedRoute>
-							}
-						></Route>
+						<Route path="interest">
+							<Route
+								index
+								element={
+									<ProtectedRoute permissions={[ROLE.ADMIN]}>
+										<Products
+											isAlbum={false}
+											isTable={false}
+											isReport={true}
+											user={user}
+										/>
+									</ProtectedRoute>
+								}
+							></Route>
+
+							<Route
+								path=":id"
+								element={
+									<ProtectedRoute permissions={[ROLE.ADMIN]}>
+										<ProductInterestReportPage />
+									</ProtectedRoute>
+								}
+							></Route>
+						</Route>
 					</Route>
 
 					<Route
