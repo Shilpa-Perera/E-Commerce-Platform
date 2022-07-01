@@ -4,7 +4,8 @@ const router = express();
 
 router.get("/", OrderController.getAllOrders);
 router.get("/:id", OrderController.getOrderCart);
-// router.post("/", OrderController.postOrder);
+router.post("/checkout", OrderController.setOrderDetails);
+router.post("/checkout/payment", OrderController.confirmAndSetOrder);
 // router.put("/:id", OrderController.putOrder);
 
 module.exports = router;

@@ -53,7 +53,7 @@ export function getCartId() {
 
 export function removeCart() {
 	encryptStorage.removeItem("cart_id");
-	encryptStorage.removeItem("item_count");
+	sessionStorage.setItem("item_count", 0);
 }
 
 export function getItemCount() {
