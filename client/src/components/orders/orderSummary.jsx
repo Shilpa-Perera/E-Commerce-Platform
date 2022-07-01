@@ -17,9 +17,14 @@ class OrderSummary extends Form {
     };
 
     async componentDidMount() {
-        let customer_id = null;
-        const { user_id, role } = await getCurrentUser();
         const { id } = this.props;
+        let customer_id = null;
+        let user_id,
+            role = null;
+        try {
+            const { user_id: user_id, role: role } = await getCurrentUser();
+        } catch (e) {}
+        
         const { data: s } = await getOrder(id);
         try {
             customer_id = s.orderDetails[0].customer_id;
