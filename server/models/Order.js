@@ -17,7 +17,9 @@ class Order {
 
     static fetchAll() {
         const select_all_query = "SELECT * FROM `order` ORDER BY date ASC;";
-        return db.execute(select_all_query);
+        const result = db.execute(select_all_query);
+        console.log(result);
+        return result;
     }
 
     static async getOrderById(orderId) {
