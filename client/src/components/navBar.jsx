@@ -150,96 +150,107 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                 </ul>
                             </li>
                         )}
-
-                        {user && !isAdmin && (
-                            <li className="nav-item">
-                                <NavLink
-                                    className="nav-link hover-focus"
-                                    to={`/orders/${user.user_id}`}
-                                >
-                                    My Orders
-                                </NavLink>
-                            </li>
-                        )}
-                        {user && !isAdmin && (
-                            <li className="nav-item">
-                                <NavLink
-                                    className="nav-link hover-focus"
-                                    to={`/customers/${user.user_id}`}
-                                >
-                                    Profile
-                                </NavLink>
-                            </li>
-                        )}
                     </ul>
                     <ul className="navbar-nav ms-auto">
-                        <li className="nav-item dropdown">
-                            <span
-                                className="nav-link dropdown-toggle hover-focus"
-                                role="button"
-                                id="profileDropdown"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                            >
-                                <MdManageAccounts
-                                    className="mt-1"
-                                    size={30}
-                                    style={{ fill: "grey" }}
-                                ></MdManageAccounts>
-                            </span>
-                            <ul
-                                className="dropdown-menu collapsed"
-                                id="profile-collapse"
-                                aria-labelledby="profileDropdown"
-                            >
-                                {!user && (
-                                    <li>
-                                        <NavLink
-                                            className="dropdown-item hover-focus"
-                                            to="/customers/register"
+                        {!user && (
+                            <li className="nav-item d-flex align-items-center">
+                                <NavLink
+                                    className="hover-focus"
+                                    to="/customers/register"
+                                >
+                                    <span className="">
+                                        <FaAddressBook
+                                            className="mt-1"
+                                            size={30}
+                                            style={{ fill: "grey" }}
+                                        ></FaAddressBook>
+                                        <span
+                                            className="ms-2"
+                                            style={{
+                                                "text-decoration":
+                                                    "none !important",
+                                                color: "grey",
+                                            }}
                                         >
-                                            <span className="ms-2">
-                                                <FaAddressBook></FaAddressBook>
-                                                <span className="ms-2">
-                                                    Register
-                                                </span>
-                                            </span>
-                                        </NavLink>
-                                    </li>
-                                )}
-                                {!user && (
-                                    <li>
-                                        <NavLink
-                                            className="dropdown-item hover-focus"
-                                            to="/login"
+                                            Register
+                                        </span>
+                                    </span>
+                                </NavLink>
+                            </li>
+                        )}
+                        {!user && (
+                            <li className="nav-item d-flex align-items-center">
+                                <NavLink className="hover-focus" to="/login">
+                                    <span className="ms-2">
+                                        <MdLogin
+                                            className="mt-1"
+                                            size={30}
+                                            style={{ fill: "grey" }}
+                                        ></MdLogin>
+                                        <span
+                                            className="ms-2"
+                                            style={{
+                                                "text-decoration":
+                                                    "none !important",
+                                                color: "grey",
+                                            }}
                                         >
-                                            <span className="ms-2">
-                                                <MdLogin></MdLogin>
+                                            Login
+                                        </span>
+                                    </span>
+                                </NavLink>
+                            </li>
+                        )}
+                        {user && (
+                            <li className="nav-item dropdown">
+                                <span
+                                    className="nav-link dropdown-toggle hover-focus"
+                                    role="button"
+                                    id="profileDropdown"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                >
+                                    <MdManageAccounts
+                                        className="mt-1"
+                                        size={30}
+                                        style={{ fill: "grey" }}
+                                    ></MdManageAccounts>
+                                </span>
+                                <ul
+                                    className="dropdown-menu collapsed"
+                                    id="profile-collapse"
+                                    aria-labelledby="profileDropdown"
+                                >
+                                    {user && !isAdmin && (
+                                        <li>
+                                            <NavLink
+                                                className="dropdown-item hover-focus"
+                                                to={`/customers/${user.user_id}`}
+                                            >
                                                 <span className="ms-2">
-                                                    Login
+                                                    Profile
                                                 </span>
-                                            </span>
-                                        </NavLink>
-                                    </li>
-                                )}
-
-                                {user && (
-                                    <li>
-                                        <NavLink
-                                            className="dropdown-item hover-focus"
-                                            to="/logout"
-                                        >
-                                            <span className="ms-2">
-                                                <MdLogout></MdLogout>
+                                            </NavLink>
+                                        </li>
+                                    )}
+                                    {user && (
+                                        <li>
+                                            <NavLink
+                                                className="dropdown-item hover-focus"
+                                                to="/logout"
+                                            >
                                                 <span className="ms-2">
-                                                    Logout
+                                                    <MdLogout></MdLogout>
+                                                    <span className="ms-2">
+                                                        Logout
+                                                    </span>
                                                 </span>
-                                            </span>
-                                        </NavLink>
-                                    </li>
-                                )}
-                            </ul>
-                        </li>
+                                            </NavLink>
+                                        </li>
+                                    )}
+                                </ul>
+                            </li>
+                        )}
 
                         <li className="nav-item d-flex align-items-center">
                             <span
