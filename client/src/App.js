@@ -231,11 +231,6 @@ function App() {
                     element={<OrderReport />}
                 ></Route>
 
-                <Route
-                    path="/order-summary/:id"
-                    element={<OrderReport />}
-                ></Route>
-
                 <Route path="/cart">
                     <Route
                         index
