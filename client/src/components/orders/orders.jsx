@@ -22,9 +22,9 @@ class Orders extends Component {
         const { role, user_id } = await getCurrentUser();
         this.setState({ userType: role });
         if (role === "admin") {
-            orders = await (await getOrders()).data;
+            orders = (await getOrders()).data;
         } else if (role === "customer") {
-            orders = await (await getCustomerOrders(user_id)).data;
+            orders = (await getCustomerOrders(user_id)).data;
         }
         this.setState({ orders });
     }
