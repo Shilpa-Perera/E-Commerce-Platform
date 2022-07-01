@@ -1,12 +1,16 @@
 import React, { Component } from "react";
 import _ from "lodash";
-import { getOrders } from "../../services/orderService";
+import { getCustomerOrders, getOrders } from "../../services/orderService";
 import { paginate } from "../../utils/paginate";
 import OrdersTable from "./ordersTable";
 import SearchBox from "../common/searchBox";
+import Pagination from "../common/pagination";
+import { getCustomer } from "../../services/customerService";
+import { getCurrentUser } from "../../services/authService";
 
 class Orders extends Component {
     state = {
+        userType: null,
         orders: [],
         searchQuery: "",
         currentPage: 1,
@@ -15,7 +19,16 @@ class Orders extends Component {
     };
 
     async componentDidMount() {
-        const { data: orders } = await getOrders();
+        let orders = null;
+        const { role, user_id } = await getCurrentUser();
+        console.log(role,user_id,getCurrentUser());
+        this.setState({ userType: role });
+        if (role === "admin") {
+            console.log("admin utto");
+            orders  = await (await getOrders()).data;
+        } else if (role === "customer") {
+            orders = await (await getCustomerOrders(user_id)).data;
+        }
         this.setState({ orders });
     }
 
@@ -36,6 +49,10 @@ class Orders extends Component {
         this.setState({ sortBy });
     };
 
+    handlePageChange = (page) => {
+        this.setState({ currentPage: page });
+    };
+
     handleSort = (sortBy) => {
         if (sortBy.path) this.setState({ sortBy });
     };
@@ -53,9 +70,7 @@ class Orders extends Component {
         if (searchQuery)
             filtered = allOrders.filter((p) => {
                 const title = p.order_id;
-                const queryRegEx = new RegExp(
-                    `.*${searchQuery}.*`
-                );
+                const queryRegEx = new RegExp(`.*${searchQuery}.*`);
                 return queryRegEx.test(title);
             });
 
@@ -68,13 +83,11 @@ class Orders extends Component {
         );
 
         const orders = paginate(sorted, currentPage, pageSize);
-        return { totalCount: 10, data: orders };
+        return { totalCount: sorted.length, data: orders };
     };
 
     render() {
-        const {
-            searchQuery,
-        } = this.state;
+        const { searchQuery, pageSize, currentPage } = this.state;
         const { totalCount, data: orders } = this.getPagedData();
         const plh = "Enter order ID";
         return (
@@ -93,6 +106,12 @@ class Orders extends Component {
                         orders={orders}
                         sortBy={this.state.sortBy}
                         onSort={this.handleSort}
+                    />
+                    <Pagination
+                        itemsCount={totalCount}
+                        pageSize={pageSize}
+                        currentPage={currentPage}
+                        onPageChange={this.handlePageChange}
                     />
                 </div>
             </div>
