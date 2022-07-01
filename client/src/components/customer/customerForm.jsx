@@ -17,7 +17,8 @@ class CustomerFormBody extends Form {
     state = {
         data: {
             customer_id: -1,
-            name: "",
+            first_name: "",
+            last_name: "",
             email: "",
             password: "",
             addresses: [
@@ -46,7 +47,8 @@ class CustomerFormBody extends Form {
 
     schema = {
         customer_id: Joi.number(),
-        name: Joi.string().min(3).max(255).required().label("Name"),
+        first_name: Joi.string().min(3).max(255).required().label("First Name"),
+        last_name: Joi.string().min(3).max(255).required().label("Last Name"),
         email: Joi.string().min(3).max(255).required().email().label("Email"),
         password: Joi.string().min(5).max(1024).required().label("Password"),
         addresses: Joi.array()
@@ -185,7 +187,7 @@ class CustomerFormBody extends Form {
             await saveCustomer(data);
             const user = getCurrentUser();
 
-            user.role === ROLE.ADMIN
+            user && user.role === ROLE.ADMIN
                 ? this.props.navigate("/customers")
                 : this.props.navigate("/");
             // console.log("state", this.state);
@@ -281,7 +283,8 @@ class CustomerFormBody extends Form {
                 <div className="row  div-dark">
                     <div className="col mb-3">
                         <form onSubmit={this.handleSubmit}>
-                            {this.renderInput("name", "Name")}
+                            {this.renderInput("first_name", "First Name")}
+                            {this.renderInput("last_name", "Last Name")}
 
                             {customerId === -1
                                 ? this.renderInput("email", "Email")
