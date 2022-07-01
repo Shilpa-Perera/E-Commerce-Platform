@@ -7,6 +7,12 @@ class OrderController {
         res.send(allOrders[0]);
     }
 
+    static async getCustomerOrders(req, res) {
+        const { id: customerId } = req.params;
+        const allCustomerOrders = await Order.getCustomerOrders(customerId);
+        return res.status(200).send(allCustomerOrders[0]);
+    }
+
     static async getOrderCart(req, res, next) {
         const { id } = req.params;
         const orderCart = await Order.getOrderCart(id);
@@ -26,12 +32,12 @@ class OrderController {
         let error = validation[1];
         let estimatedDeliveryTime = 6; // ## fix calculation
         if (validateResult) {
-            console.log("valid" , error);
-            
+            console.log("valid", error);
+
             return res.status(200).send([test, error, estimatedDeliveryTime]);
         }
 
-        return res.status(200).send([test,error]);
+        return res.status(200).send([test, error]);
     }
 
     static validateData(data) {
@@ -54,18 +60,19 @@ class OrderController {
             return [false, "Invalid ZIP code"];
         }
 
-
         return [true, "All set"];
     }
 
-
-    static async confirmAndSetOrder(req, res, next){
+    static async confirmAndSetOrder(req, res, next) {
         const orderDetails = req.body;
         let error = null;
         let sellDateTime = null;
-        let paymentStatus = 'PENDING';
+        let paymentStatus = "PENDING";
         // console.log(orderDetails);
-        const orderDateTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        const orderDateTime = new Date()
+            .toISOString()
+            .slice(0, 19)
+            .replace("T", " ");
         // console.log(orderDateTime);
 
         // Payment Call
@@ -75,16 +82,16 @@ class OrderController {
         if (!paymentResult) {
             error = "Payment Failed";
             return res.status(200).send([orderDetails, error]);
-            
-        }else if(orderDetails.paymentMethod === 'CARD'){
+        } else if (orderDetails.paymentMethod === "CARD") {
             sellDateTime = orderDateTime;
-            paymentStatus = 'PAID';
+            paymentStatus = "PAID";
         }
-        
+
         const finalDataFormat = {
             cartId: orderDetails.cartId,
             orderDateTime: orderDateTime,
-            orderName: orderDetails.data.firstName+ " " + orderDetails.data.lastName,
+            orderName:
+                orderDetails.data.firstName + " " + orderDetails.data.lastName,
             orderDeliveryAddress: orderDetails.data.deliveryAddress,
             zipCode: orderDetails.data.zipcode,
             orderTelephone: orderDetails.data.telephone,
@@ -92,15 +99,14 @@ class OrderController {
             paymentMethod: orderDetails.paymentMethod,
             customerId: orderDetails.customerId,
             sellDateTime: sellDateTime,
-            sellPaymentStatus: paymentStatus
-
-        }
+            sellPaymentStatus: paymentStatus,
+        };
         try {
-            error = await Order.insertNewOrder(finalDataFormat); 
+            error = await Order.insertNewOrder(finalDataFormat);
         } catch (e) {
             error = "Payment Failed";
         }
-        
+
         let newOrderId = error[0].at(-2)[0].orderIdOutput;
         return res.status(200).send([orderDetails, newOrderId]);
     }
