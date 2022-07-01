@@ -288,6 +288,14 @@ function App() {
 							</ProtectedRoute>
 						}
 					></Route>
+					<Route
+						path="orders"
+						element={
+							<ProtectedRoute>
+								<Orders/>
+							</ProtectedRoute>
+						}
+					></Route>
 
 					<Route path="register" element={<CustomerForm />}></Route>
 				</Route>
