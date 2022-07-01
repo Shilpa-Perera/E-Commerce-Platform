@@ -283,8 +283,17 @@ class CustomerFormBody extends Form {
                 <div className="row  div-dark">
                     <div className="col mb-3">
                         <form onSubmit={this.handleSubmit}>
-                            {this.renderInput("first_name", "First Name")}
-                            {this.renderInput("last_name", "Last Name")}
+                            <div className="row">
+                                <div className="col">
+                                    {this.renderInput(
+                                        "first_name",
+                                        "First Name"
+                                    )}
+                                </div>
+                                <div className="col">
+                                    {this.renderInput("last_name", "Last Name")}
+                                </div>
+                            </div>
 
                             {customerId === -1
                                 ? this.renderInput("email", "Email")
@@ -488,7 +497,12 @@ class CustomerFormBody extends Form {
                                                     }
                                                 />
                                             </div>
-                                            <div className="col">
+                                            <div
+                                                className="col"
+                                                style={{
+                                                    "margin-top": "25px",
+                                                }}
+                                            >
                                                 <button
                                                     key={
                                                         "mobile-btn-" +
