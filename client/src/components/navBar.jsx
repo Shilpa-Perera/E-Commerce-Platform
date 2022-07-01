@@ -157,6 +157,7 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                 <NavLink
                                     className="hover-focus"
                                     to="/customers/register"
+                                    style={{ textDecorationLine: "none" }}
                                 >
                                     <span className="">
                                         <FaAddressBook
@@ -166,11 +167,7 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                         ></FaAddressBook>
                                         <span
                                             className="ms-2"
-                                            style={{
-                                                "text-decoration":
-                                                    "none !important",
-                                                color: "grey",
-                                            }}
+                                            style={{ color: "grey" }}
                                         >
                                             Register
                                         </span>
@@ -180,7 +177,11 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                         )}
                         {!user && (
                             <li className="nav-item d-flex align-items-center">
-                                <NavLink className="hover-focus" to="/login">
+                                <NavLink
+                                    className="hover-focus"
+                                    to="/login"
+                                    style={{ textDecorationLine: "none" }}
+                                >
                                     <span className="ms-2">
                                         <MdLogin
                                             className="mt-1"
@@ -189,11 +190,7 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                         ></MdLogin>
                                         <span
                                             className="ms-2"
-                                            style={{
-                                                "text-decoration":
-                                                    "none !important",
-                                                color: "grey",
-                                            }}
+                                            style={{ color: "grey" }}
                                         >
                                             Login
                                         </span>
