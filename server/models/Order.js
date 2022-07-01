@@ -27,6 +27,13 @@ class Order {
         return result[0];
     }
 
+    static async getCustomerOrders(customerId) {
+        const customer_order_query =
+            "SELECT * FROM `order` WHERE customer_id = ?";
+        const result = await db.execute(customer_order_query, [customerId]);
+        return result;
+    }
+
     static async updateOrderStatus(orderStatus, orderId) {
         const update_status_query =
             "UPDATE sell SET delivery_state = ? WHERE order_id = ?";
