@@ -5,7 +5,6 @@ import { paginate } from "../../utils/paginate";
 import OrdersTable from "./ordersTable";
 import SearchBox from "../common/searchBox";
 import Pagination from "../common/pagination";
-import { getCustomer } from "../../services/customerService";
 import { getCurrentUser } from "../../services/authService";
 
 class Orders extends Component {
@@ -21,11 +20,9 @@ class Orders extends Component {
     async componentDidMount() {
         let orders = null;
         const { role, user_id } = await getCurrentUser();
-        console.log(role,user_id,getCurrentUser());
         this.setState({ userType: role });
         if (role === "admin") {
-            console.log("admin utto");
-            orders  = await (await getOrders()).data;
+            orders = await (await getOrders()).data;
         } else if (role === "customer") {
             orders = await (await getCustomerOrders(user_id)).data;
         }
