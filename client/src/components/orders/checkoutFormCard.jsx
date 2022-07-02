@@ -38,8 +38,14 @@ class CheckoutFormCard extends Form {
             .label("Delivery Address"),
 
         city: Joi.string().required().min(1).max(250).label("City"),
-        zipcode: Joi.string().required().min(5).max(5).label("ZIP Code"),
+        zipcode: Joi.string()
+            .regex(/^\+?\d{0,3}\s?\(?\d{3}\)?[-\s]?\d{3}[-\s]?\d{4}$/)
+            .required()
+            .min(5)
+            .max(5)
+            .label("ZIP Code"),
         telephone: Joi.string()
+            .regex(/^\+?\d{0,3}\s?\(?\d{3}\)?[-\s]?\d{3}[-\s]?\d{4}$/)
             .required()
             .min(10)
             .max(12)
