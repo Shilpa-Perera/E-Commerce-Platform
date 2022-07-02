@@ -123,6 +123,23 @@ class Form extends Component {
         );
     }
 
+    renderInputWithCustomError(name, label, customError, type = "text", disabled = false) {
+        const { data, errors } = this.state;
+        const error = errors[name] ? customError : "";
+
+        return (
+            <Input
+                type={type}
+                name={name}
+                value={data[name]}
+                label={label}
+                onChange={this.handleChange}
+                error={error}
+                disabled={disabled}
+            />
+        );
+    }
+
     renderFloatingInput(name, label, type = "text", disabled = false) {
         const { data, errors } = this.state;
 
