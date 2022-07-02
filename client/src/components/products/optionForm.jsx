@@ -123,7 +123,11 @@ class OptionsForm extends Form {
                     <div className="input-group mb-2">
                         <input
                             type="text"
-                            className="form-control"
+                            className={
+                                valueError
+                                    ? "form-control is-invalid"
+                                    : "form-control"
+                            }
                             id="value_name"
                             aria-describedby="value-button"
                             onChange={this.handleValueChange}
@@ -136,10 +140,10 @@ class OptionsForm extends Form {
                             <span className="me-2">Add Value</span>
                             <i className="fa fa-plus-circle"></i>
                         </span>
+                        {valueError && (
+                            <div className="invalid-feedback">{valueError}</div>
+                        )}
                     </div>
-                    {valueError && (
-                        <div className="alert alert-danger">{valueError}</div>
-                    )}
                     {this.renderStyledButton(
                         "Add Option",
                         "hover-focus",
