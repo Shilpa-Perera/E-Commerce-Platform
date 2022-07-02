@@ -60,6 +60,10 @@ class OrderController {
             return [false, "Invalid ZIP code"];
         }
 
+        if (!/^\+?\d{0,3}\s?\(?\d{3}\)?[-\s]?\d{3}[-\s]?\d{4}$/.test(dataArray.zipcode)) {
+            return [false, "Invalid Telephone"];
+        }
+
         return [true, "All set"];
     }
 
