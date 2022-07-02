@@ -44,6 +44,7 @@ import CategoryLink from "./components/category/linkCategory";
 import ProductInterestReport from "./components/reports/productInterestReport";
 import OrderReport from "./components/orders/orderSummary";
 import QuaterlySalesReport from "./components/reports/quaterlySalesReport";
+import MaxSaleProducts from "./components/reports/maxSaleProductsReport";
 
 function App() {
 	const [theme, setTheme] = useState(getTheme());
@@ -309,6 +310,14 @@ function App() {
 						element={
 							<ProtectedRoute permissions={[ROLE.ADMIN]}>
 								<QuaterlySalesReport />
+							</ProtectedRoute>
+						}
+					></Route>
+					<Route
+						path="max-sale-products-report"
+						element={
+							<ProtectedRoute permissions={[ROLE.ADMIN]}>
+								<MaxSaleProducts />
 							</ProtectedRoute>
 						}
 					></Route>
