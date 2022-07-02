@@ -3,7 +3,7 @@ const { Order } = require("../models/Order");
 const { DateTime } = require("../util/dateTime");
 
 class OrderController {
-    static async getAllOrders(res) {
+    static async getAllOrders(req, res) {
         const allOrders = await Order.fetchAll();
         res.send(allOrders[0]);
     }
