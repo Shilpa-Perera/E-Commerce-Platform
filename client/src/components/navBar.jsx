@@ -169,7 +169,7 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                     className="nav-link hover-focus"
                                     to="/customers/register"
                                     style={{
-                                        "text-decoration": "none",
+                                        textDecoration: "none",
                                         color: "grey",
                                     }}
                                 >
@@ -189,7 +189,7 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                     className="nav-link hover-focus"
                                     to="/login"
                                     style={{
-                                        "text-decoration": "none",
+                                        textDecoration: "none",
                                         color: "grey",
                                     }}
                                 >
