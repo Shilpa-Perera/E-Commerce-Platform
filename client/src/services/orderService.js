@@ -40,3 +40,8 @@ export function validateAndConfirmOrder(details) {
         ])
     );
 }
+
+export function updateOrderStatus(orderDetails){
+    console.log(orderDetails);
+    return orderDetails;
+}
