@@ -70,7 +70,6 @@ class CheckoutFormCard extends Form {
                 const { data: customer } = await getCustomer(
                     this.state.customerId
                 );
-                console.log(customer);
                 const customerAddress =
                     customer.addresses[0].po_box +
                     ", " +
@@ -124,7 +123,6 @@ class CheckoutFormCard extends Form {
     };
 
     render() {
-        console.log(this.state.errors);
         if (this.state.loading) return <Loading />;
         if (this.state.page === null) {
             return (
