@@ -124,7 +124,7 @@ create table if not exists customer_address (
 create table if not exists customer_mobile (
     telephone_id int unsigned auto_increment primary key,
     customer_id int unsigned not null,
-    mobile varchar(12),
+    mobile varchar(20),
     foreign key (customer_id) references customer(customer_id) on delete cascade
 );
 

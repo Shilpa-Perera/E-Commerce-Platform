@@ -326,14 +326,16 @@ function validateCustomer(customer) {
                 po_box: Joi.string(),
                 street_name: Joi.string(),
                 city: Joi.string(),
-                postal_code: Joi.string(),
+                postal_code: Joi.number(),
             })
             .required()
             .min(1),
         mobiles: Joi.array()
             .items({
                 telephone_id: Joi.number(),
-                mobile: Joi.string().pattern(new RegExp("^[+0][0-9]+")),
+                mobile: Joi.string().regex(
+                    /^\+?\d{0,3}\s?\(?\d{3}\)?[-\s]?\d{3}[-\s]?\d{4}$/
+                ),
             })
             .required()
             .min(1),

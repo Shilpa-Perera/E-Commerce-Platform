@@ -55,7 +55,7 @@ class CustomerFormBody extends Form {
             .items({
                 index: Joi.number(),
                 address_id: Joi.number(),
-                po_box: Joi.number().label("Po Box"),
+                po_box: Joi.string().label("Po Box"),
                 street_name: Joi.string().min(3).label("Street Name"),
                 city: Joi.string().label("City"),
                 postal_code: Joi.number().label("Postal Code"),
@@ -66,7 +66,9 @@ class CustomerFormBody extends Form {
             .items({
                 index: Joi.number(),
                 telephone_id: Joi.number(),
-                mobile: Joi.string().min(10).max(12).label("Contact No"),
+                mobile: Joi.string()
+                    .regex(/^\+?\d{0,3}\s?\(?\d{3}\)?[-\s]?\d{3}[-\s]?\d{4}$/)
+                    .label("Contact No"),
             })
             .required()
             .min(1),
@@ -76,13 +78,15 @@ class CustomerFormBody extends Form {
         index: Joi.number(),
 
         address_id: Joi.number(),
-        po_box: Joi.number().label("Po Box"),
+        po_box: Joi.string().label("Po Box"),
         street_name: Joi.string().label("Street Name"),
         city: Joi.string().label("City"),
         postal_code: Joi.number().label("Postal Code"),
 
         telephone_id: Joi.number(),
-        mobile: Joi.string().min(10).max(12).label("Contact No"),
+        mobile: Joi.string()
+            .regex(/^\+?\d{0,3}\s?\(?\d{3}\)?[-\s]?\d{3}[-\s]?\d{4}$/)
+            .label("Contact No"),
     };
 
     // constructor() {
@@ -423,7 +427,7 @@ class CustomerFormBody extends Form {
                                                             "postal_code" +
                                                             address.index
                                                         }
-                                                        type="text"
+                                                        type="number"
                                                         label="Postal Code"
                                                         name="postal_code"
                                                         value={
@@ -487,7 +491,7 @@ class CustomerFormBody extends Form {
                                                     key={
                                                         "mobile" + mobile.index
                                                     }
-                                                    type="text"
+                                                    type="tel"
                                                     label="Contact No"
                                                     name="mobile"
                                                     value={mobile.mobile}
