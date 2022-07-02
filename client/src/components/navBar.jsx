@@ -166,19 +166,17 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                         {!user && (
                             <li className="nav-item d-flex align-items-center">
                                 <NavLink
-                                    className="hover-focus"
+                                    className="nav-link hover-focus"
                                     to="/customers/register"
                                     style={{ textDecorationLine: "none" }}
                                 >
                                     <span className="">
                                         <FaAddressBook
-                                            className="mt-1"
                                             size={30}
                                             style={{ fill: "grey" }}
                                         ></FaAddressBook>
                                         <span
                                             className="ms-2"
-                                            style={{ color: "grey" }}
                                         >
                                             Register
                                         </span>
@@ -189,19 +187,17 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                         {!user && (
                             <li className="nav-item d-flex align-items-center">
                                 <NavLink
-                                    className="hover-focus"
+                                    className="nav-link hover-focus"
                                     to="/login"
                                     style={{ textDecorationLine: "none" }}
                                 >
                                     <span className="ms-2">
                                         <MdLogin
-                                            className="mt-1"
                                             size={30}
                                             style={{ fill: "grey" }}
                                         ></MdLogin>
                                         <span
                                             className="ms-2"
-                                            style={{ color: "grey" }}
                                         >
                                             Login
                                         </span>
@@ -219,7 +215,6 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                     aria-expanded="false"
                                 >
                                     <MdManageAccounts
-                                        className="mt-1"
                                         size={30}
                                         style={{ fill: "grey" }}
                                     ></MdManageAccounts>
@@ -235,8 +230,11 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                                 className="dropdown-item hover-focus"
                                                 to={`/customers/${user.user_id}`}
                                             >
-                                                <span className="ms-2">
-                                                    Profile
+                                                <span>
+                                                    <i className="fa fa-user-o"></i>
+                                                    <span className="ms-2">
+                                                        Profile
+                                                    </span>
                                                 </span>
                                             </NavLink>
                                         </li>
@@ -247,7 +245,7 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                                 className="dropdown-item hover-focus"
                                                 to="/logout"
                                             >
-                                                <span className="ms-2">
+                                                <span>
                                                     <MdLogout></MdLogout>
                                                     <span className="ms-2">
                                                         Logout
@@ -262,7 +260,7 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
 
                         <li className="nav-item d-flex align-items-center">
                             <span
-                                className="ms-2 pointer"
+                                className="ms-2 pointer nav-link"
                                 onClick={() => toggleTheme(!theme)}
                                 data-bs-toggle="tooltip"
                                 data-bs-placement="bottom"
@@ -284,7 +282,6 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                 >
                                     <span className="ms-2">
                                         <MdShoppingCart
-                                            className="mt-1"
                                             size={30}
                                             style={{ fill: "grey" }}
                                         />
