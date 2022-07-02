@@ -40,8 +40,7 @@ class OrderController {
 
     static validateData(data) {
         const dataArray = data.data;
-
-        console.log(dataArray);
+        
         for (const [key, value] of Object.entries(dataArray)) {
             if (value === "") {
                 return [false, "Empty Field"];
