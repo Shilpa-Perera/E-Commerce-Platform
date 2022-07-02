@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { ImSun } from "react-icons/im";
 import { MdManageAccounts, MdLogin, MdLogout } from "react-icons/md";
-import { FaAddressBook } from "react-icons/fa";
+import { FaAddressBook, FaRegUser } from "react-icons/fa";
 import { BsMoonStarsFill } from "react-icons/bs";
 import { MdShoppingCart } from "react-icons/md";
 
@@ -175,11 +175,7 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                             size={30}
                                             style={{ fill: "grey" }}
                                         ></FaAddressBook>
-                                        <span
-                                            className="ms-2"
-                                        >
-                                            Register
-                                        </span>
+                                        <span className="ms-2">Register</span>
                                     </span>
                                 </NavLink>
                             </li>
@@ -196,11 +192,7 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                             size={30}
                                             style={{ fill: "grey" }}
                                         ></MdLogin>
-                                        <span
-                                            className="ms-2"
-                                        >
-                                            Login
-                                        </span>
+                                        <span className="ms-2">Login</span>
                                     </span>
                                 </NavLink>
                             </li>
@@ -231,7 +223,7 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                                 to={`/customers/${user.user_id}`}
                                             >
                                                 <span>
-                                                    <i className="fa fa-user-o"></i>
+                                                    <FaRegUser></FaRegUser>
                                                     <span className="ms-2">
                                                         Profile
                                                     </span>
