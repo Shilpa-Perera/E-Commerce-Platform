@@ -118,6 +118,7 @@ class CheckoutFormCard extends Form {
     };
 
     render() {
+        console.log(this.state.errors);
         if (this.state.loading) return <Loading />;
         if (this.state.page === null) {
             return (
