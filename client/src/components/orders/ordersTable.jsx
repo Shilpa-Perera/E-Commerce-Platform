@@ -56,7 +56,6 @@ class OrdersTable extends Component {
 
     render() {
         const { orders, sortBy, onSort } = this.props;
-        console.log(orders);
         return (
             <div className="pb-5">
                 <div className="container div-dark">
