@@ -1,5 +1,6 @@
 const _ = require("lodash");
 const { Order } = require("../models/Order");
+const { DateTime } = require("../util/dateTime");
 
 class OrderController {
     static async getAllOrders(res) {
@@ -40,7 +41,7 @@ class OrderController {
 
     static validateData(data) {
         const dataArray = data.data;
-        
+
         for (const [key, value] of Object.entries(dataArray)) {
             if (value === "") {
                 return [false, "Empty Field"];
@@ -59,7 +60,11 @@ class OrderController {
             return [false, "Invalid ZIP code"];
         }
 
-        if (!/^\+?\d{0,3}\s?\(?\d{3}\)?[-\s]?\d{3}[-\s]?\d{4}$/.test(dataArray.zipcode)) {
+        if (
+            !/^\+?\d{0,3}\s?\(?\d{3}\)?[-\s]?\d{3}[-\s]?\d{4}$/.test(
+                dataArray.telephone
+            )
+        ) {
             return [false, "Invalid Telephone"];
         }
 
@@ -71,12 +76,7 @@ class OrderController {
         let error = null;
         let sellDateTime = null;
         let paymentStatus = "PENDING";
-        // console.log(orderDetails);
-        const orderDateTime = new Date()
-            .toISOString()
-            .slice(0, 19)
-            .replace("T", " ");
-        // console.log(orderDateTime);
+        const orderDateTime = DateTime.getDBreadyCurrentDateTime();
 
         // Payment Call
         let paymentResult = true; // ### to payment Gateway
