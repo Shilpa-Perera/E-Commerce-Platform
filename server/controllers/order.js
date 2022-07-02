@@ -2,12 +2,18 @@ const _ = require("lodash");
 const { Order } = require("../models/Order");
 
 class OrderController {
-    static async getAllOrders(req, res, next) {
+    static async getAllOrders(res) {
         const allOrders = await Order.fetchAll();
         res.send(allOrders[0]);
     }
 
-    static async getOrderCart(req, res, next) {
+    static async getCustomerOrders(req, res) {
+        const { id: customerId } = req.params;
+        const allCustomerOrders = await Order.getCustomerOrders(customerId);
+        return res.status(200).send(allCustomerOrders[0]);
+    }
+
+    static async getOrderCart(req, res) {
         const { id } = req.params;
         const orderCart = await Order.getOrderCart(id);
         const orderDetails = await Order.getOrderById(id);
@@ -15,23 +21,21 @@ class OrderController {
             orderDetails: orderDetails,
             orderCart: orderCart[0],
         };
-        console.log("api - order id: ", id);
         res.send(orderArray);
     }
 
-    static async setOrderDetails(req, res, next) {
+    static async setOrderDetails(req, res) {
         const test = req.body;
         const validation = OrderController.validateData(test);
         let validateResult = validation[0];
         let error = validation[1];
         let estimatedDeliveryTime = 6; // ## fix calculation
         if (validateResult) {
-            console.log("valid" , error);
-            
+            console.log("valid", error);
+
             return res.status(200).send([test, error, estimatedDeliveryTime]);
         }
-
-        return res.status(200).send([test,error]);
+        return res.status(200).send([test, error]);
     }
 
     static validateData(data) {
@@ -54,38 +58,37 @@ class OrderController {
             return [false, "Invalid ZIP code"];
         }
 
-
         return [true, "All set"];
     }
 
-
-    static async confirmAndSetOrder(req, res, next){
+    static async confirmAndSetOrder(req, res) {
         const orderDetails = req.body;
-        let finalOrderVal;
         let error = null;
         let sellDateTime = null;
-        let paymentStatus = 'PENDING';
-        console.log(orderDetails);
-        const orderDateTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        let paymentStatus = "PENDING";
+        // console.log(orderDetails);
+        const orderDateTime = new Date()
+            .toISOString()
+            .slice(0, 19)
+            .replace("T", " ");
         // console.log(orderDateTime);
 
         // Payment Call
-
         let paymentResult = true; // ### to payment Gateway
 
-        if (!paymentResult) {
+        if (!paymentResult && orderDetails.paymentMethod === "CARD") {
             error = "Payment Failed";
             return res.status(200).send([orderDetails, error]);
-            
-        }else if(orderDetails.paymentMethod === 'CARD'){
+        } else if (orderDetails.paymentMethod === "CARD") {
             sellDateTime = orderDateTime;
-            paymentStatus = 'PAID';
+            paymentStatus = "PAID";
         }
-        
+
         const finalDataFormat = {
             cartId: orderDetails.cartId,
             orderDateTime: orderDateTime,
-            orderName: orderDetails.data.firstName+ " " + orderDetails.data.lastName,
+            orderName:
+                orderDetails.data.firstName + " " + orderDetails.data.lastName,
             orderDeliveryAddress: orderDetails.data.deliveryAddress,
             zipCode: orderDetails.data.zipcode,
             orderTelephone: orderDetails.data.telephone,
@@ -93,17 +96,15 @@ class OrderController {
             paymentMethod: orderDetails.paymentMethod,
             customerId: orderDetails.customerId,
             sellDateTime: sellDateTime,
-            sellPaymentStatus: paymentStatus
-
-        }
+            sellPaymentStatus: paymentStatus,
+        };
         try {
-            error = await Order.insertNewOrder(finalDataFormat); 
+            error = await Order.insertNewOrder(finalDataFormat);
         } catch (e) {
             error = "Payment Failed";
         }
-        
+
         let newOrderId = error[0].at(-2)[0].orderIdOutput;
-        console.log("New Order Inserted with Order Id: ", newOrderId);
         return res.status(200).send([orderDetails, newOrderId]);
     }
 }

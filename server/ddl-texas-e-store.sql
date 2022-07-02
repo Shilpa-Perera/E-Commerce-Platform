@@ -43,7 +43,7 @@ DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `order_transaction` (IN `orderCartId` INT(10), IN `orderDate` DATETIME, IN `orderName` VARCHAR(255), IN `orderAddress` VARCHAR(255), IN `orderZipcode` VARCHAR(10), IN `orderPhoneNumber` VARCHAR(255), IN `orderDeliveryMethod` ENUM('STORE-PICKUP','DELIVERY'), IN `orderPaymentMethod` ENUM('CASH','CARD'), IN `orderCustomerId` INT(10), IN `sellDateTime` DATETIME, IN `sellPaymentStatus` ENUM('PENDING','PAID'), OUT `orderIdOutput` INT(10))  BEGIN
+CREATE PROCEDURE `order_transaction` (IN `orderCartId` INT(10), IN `orderDate` DATETIME, IN `orderName` VARCHAR(255), IN `orderAddress` VARCHAR(255), IN `orderZipcode` VARCHAR(10), IN `orderPhoneNumber` VARCHAR(255), IN `orderDeliveryMethod` ENUM('STORE-PICKUP','DELIVERY'), IN `orderPaymentMethod` ENUM('CASH','CARD'), IN `orderCustomerId` INT(10), IN `sellDateTime` DATETIME, IN `sellPaymentStatus` ENUM('PENDING','PAID'), OUT `orderIdOutput` INT(10))  BEGIN
  
  DECLARE exit handler for sqlexception
    BEGIN
@@ -64,7 +64,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `order_transaction` (IN `orderCartId
  SELECT orderIdOutput;
  END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `order_transaction_guest` (IN `orderCartId` INT(10), IN `orderDate` DATETIME, IN `orderName` VARCHAR(255), IN `orderAddress` VARCHAR(255), IN `orderZipcode` VARCHAR(10), IN `orderPhoneNumber` VARCHAR(255), IN `orderDeliveryMethod` ENUM('STORE-PICKUP','DELIVERY'), IN `orderPaymentMethod` ENUM('CASH','CARD'), IN `orderCustomerId` INT(10), IN `sellDateTime` DATETIME, IN `sellPaymentStatus` ENUM('PENDING','PAID'), OUT `orderIdOutput` INT(10))  BEGIN
+CREATE PROCEDURE `order_transaction_guest` (IN `orderCartId` INT(10), IN `orderDate` DATETIME, IN `orderName` VARCHAR(255), IN `orderAddress` VARCHAR(255), IN `orderZipcode` VARCHAR(10), IN `orderPhoneNumber` VARCHAR(255), IN `orderDeliveryMethod` ENUM('STORE-PICKUP','DELIVERY'), IN `orderPaymentMethod` ENUM('CASH','CARD'), IN `orderCustomerId` INT(10), IN `sellDateTime` DATETIME, IN `sellPaymentStatus` ENUM('PENDING','PAID'), OUT `orderIdOutput` INT(10))  BEGIN
  
 
  START TRANSACTION;
@@ -78,7 +78,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `order_transaction_guest` (IN `order
  SELECT orderIdOutput;
  END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `update_product_variants_quantity_from_cart` (IN `cartId` INT)  BEGIN  
+CREATE PROCEDURE `update_product_variants_quantity_from_cart` (IN `cartId` INT)  BEGIN  
 	DECLARE i INT DEFAULT 0;
 	SELECT @n:=COUNT(*) FROM `variant` NATURAL JOIN cart_product WHERE cart_id=cartId;
 	SET i=0;
@@ -101,7 +101,8 @@ create table if not exists admin (
 
 create table if not exists customer (
     customer_id int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(1024) NOT NULL
 );
@@ -123,7 +124,7 @@ create table if not exists customer_address (
 create table if not exists customer_mobile (
     telephone_id int unsigned auto_increment primary key,
     customer_id int unsigned not null,
-    mobile varchar(12),
+    mobile varchar(20),
     foreign key (customer_id) references customer(customer_id) on delete cascade
 );
 
@@ -167,7 +168,7 @@ create table if not exists product (
 
 
 
-create table if not exists product_category(
+create table if not exists product_category (
     product_id          int unsigned    not null,
     category_id         int unsigned    not null,
     sub_category_id     int unsigned    not null,
@@ -197,7 +198,7 @@ create table if not exists variant (
     product_id      int unsigned    not null,
     variant_name    varchar(255)    not null,
     price           decimal(15, 2)  not null,
-    quantity        int not null,
+    quantity        int             not null,
 
     foreign key (product_id)    references      product(product_id)     on delete cascade
 );
@@ -241,7 +242,7 @@ create table if not exists variant_values (
 
 
 
-create table if not exists variant_image(
+create table if not exists variant_image (
     variant_id      int unsigned    not null,
     image_name      varchar(255)    primary key,
 

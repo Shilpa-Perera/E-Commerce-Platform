@@ -70,7 +70,13 @@ class CustomerController {
             return res.status(400).send("Email already registered");
 
         customer = new Customer(
-            _.pick(req.body, ["name", "email", "password", "mobiles"])
+            _.pick(req.body, [
+                "first_name",
+                "last_name",
+                "email",
+                "password",
+                "mobiles",
+            ])
         );
 
         // hash password
@@ -88,7 +94,7 @@ class CustomerController {
         console.log("customer saved");
         const token = customer.generateAuthToken();
         res.header("x-auth-token", token).send(
-            _.pick(customer, ["user_id", "name", "email"])
+            _.pick(customer, ["user_id", "first_name", "last_name", "email"])
         );
     }
 
@@ -99,7 +105,8 @@ class CustomerController {
         // no change of email and password
         const customer = new Customer({
             customer_id: req.params.id,
-            name: req.body.name,
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
             email: req.body.email,
             mobiles: [],
         });
@@ -134,7 +141,7 @@ class CustomerController {
         await customer.update();
 
         // add newly added addresses and mobiles
-        console.log("put:", customer.addresses);
+        // console.log("put:", customer.addresses);
         if (customer.addresses.length) await customer.saveAddresses();
         if (customer.mobiles.length) await customer.saveMobiles();
 

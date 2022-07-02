@@ -6,20 +6,39 @@ import htmlToPdfmake from "html-to-pdfmake";
 import { getOrder } from "../../services/orderService";
 import { useParams, Link } from "react-router-dom";
 import NotFound from "../notFound";
+import Loading from "../common/loading";
+import { getCurrentUser } from "../../services/authService";
 
 class OrderSummary extends Form {
     state = {
         orderDetails: null,
         cart: null,
+        loading: true,
     };
 
     async componentDidMount() {
         const { id } = this.props;
+        let customer_id = null;
+        let user_id,
+            role = null;
+        try {
+            const { user_id: user_id, role: role } = await getCurrentUser();
+        } catch (e) {}
+        
         const { data: s } = await getOrder(id);
+        try {
+            customer_id = s.orderDetails[0].customer_id;
+        } catch (error) {}
+
+        if (role === "customer" && user_id !== customer_id) {
+            this.setState({ loading: false });
+            return;
+        }
         if (s.orderCart.length === 0 || s.orderDetails.length === 0) {
             return;
         }
         this.setState({ orderDetails: s.orderDetails, cart: s.orderCart });
+        this.setState({ loading: false });
     }
 
     printDocument() {
@@ -40,6 +59,7 @@ class OrderSummary extends Form {
     }
 
     render() {
+        if (this.state.loading) return <Loading />;
         const { cart, orderDetails } = this.state;
 
         if (cart && orderDetails) {
@@ -86,7 +106,7 @@ class OrderSummary extends Form {
                                                         Order Report
                                                     </h4>{" "}
                                                     <h5>
-                                                        Order ID:{" "}
+                                                        Order No:{" "}
                                                         {orderDetails.order_id}
                                                     </h5>{" "}
                                                 </div>

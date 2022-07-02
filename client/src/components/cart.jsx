@@ -189,7 +189,7 @@ class Cart extends Component {
 									<Link to="/products">
 										<button
 											type="button"
-											className="btn btn-outline-secondary"
+											className="btn btn-outline-primary"
 										>
 											Continue Shopping
 											<IoArrowForward

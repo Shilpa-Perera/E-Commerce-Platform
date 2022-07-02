@@ -14,6 +14,7 @@ import Pagination from "../common/pagination";
 import ProductsTable from "./productsTable";
 import { toast } from "react-toastify";
 import Loading from "../common/loading";
+import ProductInterestTable from "../reports/productInterestReport/productInterestTable";
 
 class Products extends Component {
     state = {
@@ -190,7 +191,7 @@ class Products extends Component {
     render() {
         if (this.state.loading) return <Loading />;
 
-        const { isAlbum, isTable, user } = this.props;
+        const { isAlbum, isTable, isReport, user } = this.props;
         const { length: count } = this.state.products;
         if (count === 0)
             return (
@@ -267,6 +268,13 @@ class Products extends Component {
                                 sortBy={this.state.sortBy}
                                 onSort={this.handleSort}
                                 deleteProduct={this.handleDeleteProduct}
+                            />
+                        )}
+                        {isReport && (
+                            <ProductInterestTable
+                                products={products}
+                                sortBy={this.state.sortBy}
+                                onSort={this.handleSort}
                             />
                         )}
                         <Pagination

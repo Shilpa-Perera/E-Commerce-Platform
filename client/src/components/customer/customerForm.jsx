@@ -17,7 +17,8 @@ class CustomerFormBody extends Form {
     state = {
         data: {
             customer_id: -1,
-            name: "",
+            first_name: "",
+            last_name: "",
             email: "",
             password: "",
             addresses: [
@@ -46,14 +47,15 @@ class CustomerFormBody extends Form {
 
     schema = {
         customer_id: Joi.number(),
-        name: Joi.string().min(3).max(255).required().label("Name"),
+        first_name: Joi.string().min(3).max(255).required().label("First Name"),
+        last_name: Joi.string().min(3).max(255).required().label("Last Name"),
         email: Joi.string().min(3).max(255).required().email().label("Email"),
         password: Joi.string().min(5).max(1024).required().label("Password"),
         addresses: Joi.array()
             .items({
                 index: Joi.number(),
                 address_id: Joi.number(),
-                po_box: Joi.number().label("Po Box"),
+                po_box: Joi.string().label("Po Box"),
                 street_name: Joi.string().min(3).label("Street Name"),
                 city: Joi.string().label("City"),
                 postal_code: Joi.number().label("Postal Code"),
@@ -64,7 +66,9 @@ class CustomerFormBody extends Form {
             .items({
                 index: Joi.number(),
                 telephone_id: Joi.number(),
-                mobile: Joi.string().min(10).max(12).label("Contact No"),
+                mobile: Joi.string()
+                    .regex(/^\+?\d{0,3}\s?\(?\d{3}\)?[-\s]?\d{3}[-\s]?\d{4}$/)
+                    .label("Contact No"),
             })
             .required()
             .min(1),
@@ -74,13 +78,15 @@ class CustomerFormBody extends Form {
         index: Joi.number(),
 
         address_id: Joi.number(),
-        po_box: Joi.number().label("Po Box"),
+        po_box: Joi.string().label("Po Box"),
         street_name: Joi.string().label("Street Name"),
         city: Joi.string().label("City"),
         postal_code: Joi.number().label("Postal Code"),
 
         telephone_id: Joi.number(),
-        mobile: Joi.string().min(10).max(12).label("Contact No"),
+        mobile: Joi.string()
+            .regex(/^\+?\d{0,3}\s?\(?\d{3}\)?[-\s]?\d{3}[-\s]?\d{4}$/)
+            .label("Contact No"),
     };
 
     // constructor() {
@@ -185,7 +191,7 @@ class CustomerFormBody extends Form {
             await saveCustomer(data);
             const user = getCurrentUser();
 
-            user.role === ROLE.ADMIN
+            user && user.role === ROLE.ADMIN
                 ? this.props.navigate("/customers")
                 : this.props.navigate("/");
             // console.log("state", this.state);
@@ -266,7 +272,8 @@ class CustomerFormBody extends Form {
             addresses,
             mobiles,
             customer_id: customerId,
-            name,
+            first_name,
+            last_name,
         } = this.state.data;
         // console.log("render: ", addresses);
         // console.log("render state: ", this.state);
@@ -275,13 +282,25 @@ class CustomerFormBody extends Form {
             <div className="container  mb-5">
                 <div className="p-4">
                     <h1>
-                        {customerId === -1 ? "Register" : `${name}'s Profile`}
+                        {customerId === -1
+                            ? "Register"
+                            : `${first_name} ${last_name}'s Profile`}
                     </h1>
                 </div>
                 <div className="row  div-dark">
                     <div className="col mb-3">
                         <form onSubmit={this.handleSubmit}>
-                            {this.renderInput("name", "Name")}
+                            <div className="row">
+                                <div className="col">
+                                    {this.renderInput(
+                                        "first_name",
+                                        "First Name"
+                                    )}
+                                </div>
+                                <div className="col">
+                                    {this.renderInput("last_name", "Last Name")}
+                                </div>
+                            </div>
 
                             {customerId === -1
                                 ? this.renderInput("email", "Email")
@@ -408,7 +427,7 @@ class CustomerFormBody extends Form {
                                                             "postal_code" +
                                                             address.index
                                                         }
-                                                        type="text"
+                                                        type="number"
                                                         label="Postal Code"
                                                         name="postal_code"
                                                         value={
@@ -472,7 +491,7 @@ class CustomerFormBody extends Form {
                                                     key={
                                                         "mobile" + mobile.index
                                                     }
-                                                    type="text"
+                                                    type="tel"
                                                     label="Contact No"
                                                     name="mobile"
                                                     value={mobile.mobile}
@@ -485,7 +504,12 @@ class CustomerFormBody extends Form {
                                                     }
                                                 />
                                             </div>
-                                            <div className="col">
+                                            <div
+                                                className="col"
+                                                style={{
+                                                    "margin-top": "25px",
+                                                }}
+                                            >
                                                 <button
                                                     key={
                                                         "mobile-btn-" +
