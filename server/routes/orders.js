@@ -6,6 +6,6 @@ router.get("/", OrderController.getAllOrders);
 router.get("/:id", OrderController.getOrderCart);
 router.post("/checkout", OrderController.setOrderDetails);
 router.post("/checkout/payment", OrderController.confirmAndSetOrder);
-// router.put("/:id", OrderController.putOrder);
+router.put("/update", OrderController.updateOrderStatus);
 
 module.exports = router;

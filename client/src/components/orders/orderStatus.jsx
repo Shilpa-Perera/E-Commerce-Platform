@@ -1,10 +1,11 @@
-import { Joi } from "joi-browser";
+import { Link, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import { updateOrderStatus } from "../../services/orderService";
 import Form from "../common/form";
 // ## WIP
 export class OrderStatus extends Form {
     state = {
-        loading: true,
+        orderId: null,
         data: {
             payment_status: "",
             delivery_state: "",
@@ -12,55 +13,93 @@ export class OrderStatus extends Form {
 
         errors: [],
     };
-    
 
-    // schema = {
-    //     payment_status: Joi.string().validate(["PENDING", "PAID"]),
-    //     delivery_state: Joi.validate(
-    //        [ "PROCESSING",
-    //         "OUTFORDELIVERY",
-    //         "DELIVERED"]
-    //     ),
-    // };
     schema = {
-        payment_status: ["x","y"],
-        delivery_state: "x",
+        payment_status: ["PAID", "PENDING"],
+        delivery_state: ["PROCESSING", "OUTFORDELIVERY", "DELIVERED"],
     };
 
     async componentDidMount() {
+        console.log();
         const data = {
             payment_status: this.props.status.paymentState,
             delivery_state: this.props.status.deliveryState,
         };
-        this.setState({ data: data });
-    }
-
-    update() {
-        console.log(this.state);
+        this.setState({ data: data, orderId: this.props.orderId });
     }
 
     doSubmit = async () => {
-        console.log(await updateOrderStatus(this.state));
+        const result = await updateOrderStatus(this.state);
+        toast.success("result[0]");
     };
 
     render() {
         const { data } = this.state;
         return (
-            <form onSubmit={this.doSubmit}>
-                {this.renderSelect("payment_status", "Payment status", [
-                    { id: 1, name: "PENDING" },
-                    { id: 2, name: "PAID" },
-                ])}
-                {this.renderSelect("delivery_state", "Delivery status", [
-                    { id: 1, name: "PROCESSING" },
-                    { id: 2, name: "OUTFORDELIVERY" },
-                    { id: 3, name: "DELIVERED" },
-                ])}
-                <div> Payment status: {data.payment_status}</div>
-                <div> Delivery status: {data.delivery_state}</div>
-                {this.renderButton("Update")}
-                <button>fff</button>
+            <form className="container" onSubmit={this.doSubmit}>
+                <div className="row mb-4  gx-5">
+                    <div className="col-6">
+                        {this.renderSelect("payment_status", "Payment status", [
+                            { id: "PENDING", name: "Pending" },
+                            { id: "PAID", name: "Paid" },
+                        ])}
+                    </div>
+
+                    <div className="col-6">
+                        {" "}
+                        {this.renderSelect(
+                            "delivery_state",
+                            "Delivery status",
+                            [
+                                { id: "PROCESSING", name: "Processing" },
+                                {
+                                    id: "OUTFORDELIVERY",
+                                    name: "Out for delivery",
+                                },
+                                { id: "DELIVERED", name: "delivered" },
+                            ]
+                        )}
+                    </div>
+                </div>
+
+                <div className="row gx-5">
+                    <div className="col">
+                        <div className="p-3">
+                            <Link
+                                className="btn btn-success col-12 hover-focus"
+                                to="/orders"
+                            >
+                                <i
+                                    className="fa fa-home"
+                                    aria-hidden="true"
+                                ></i>
+                            </Link>
+                        </div>
+                    </div>
+                    <div className="col">
+                        <div className="p-3">
+                            {this.renderStyledButton(
+                                "Update",
+                                "btn btn-danger col-12 hover-focus",
+                                () => {
+                                    <i
+                                        className="fa fa-home"
+                                        aria-hidden="true"
+                                    ></i>;
+                                }
+                            )}
+                        </div>
+                    </div>
+                </div>
             </form>
         );
     }
 }
+
+function OrderUpdateState(props) {
+    const { id } = useParams();
+    console.log(useParams());
+    return <OrderStatus {...{ props, id }} />;
+}
+
+export default OrderUpdateState;

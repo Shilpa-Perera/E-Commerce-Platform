@@ -112,6 +112,22 @@ class OrderController {
         let newOrderId = error[0].at(-2)[0].orderIdOutput;
         return res.status(200).send([orderDetails, newOrderId]);
     }
+
+    static async updateOrderStatus(req, res) {
+        let error = "Updated Successfully!";
+        const data = {
+            deliveryStatus: req.body.data.delivery_state,
+            paymentStatus: req.body.data.payment_status,
+            orderId: req.body.orderId,
+        };
+
+        try {
+            await Order.updateOrderStatus(data);
+        } catch (error) {
+            error = "Error Try Again!"
+        } 
+        return res.status(200).send([error])
+    }
 }
 
 module.exports.OrderController = OrderController;
