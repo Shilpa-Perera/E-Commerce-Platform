@@ -7,8 +7,9 @@ import Joi, { schema } from "joi-browser";
 import { format, parseISO } from "date-fns";
 import Form from "../../common/form";
 import { getMaxSaleProducts } from "../../../services/reportService";
-import BarChart from "../../common/barChart";
+import { elementToPdf } from "../../../utils/pdfUtils";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import MaxSaleProductsModal from "./maxSaleProductsModal";
 
 class MaxSalesProductsReport extends Form {
 	state = {
@@ -19,6 +20,9 @@ class MaxSalesProductsReport extends Form {
 		},
 		errors: {},
 		report: [],
+		labels: [],
+		values: [],
+		modalShow: false,
 	};
 
 	schema = Joi.object({
@@ -37,9 +41,24 @@ class MaxSalesProductsReport extends Form {
 			number
 		);
 
-		this.setState({ report: max_sales[0] }, () => {
-			console.log(this.state.report[2]);
+		let labels = [];
+		let values = [];
+		max_sales[0].forEach((element) => {
+			labels.push(element.product_title + " " + element.variant_name);
+			values.push(element.sales);
 		});
+
+		this.setState({ report: max_sales[0] }, () => {
+			console.log(this.state.report);
+		});
+
+		const modalShow = true;
+		this.setState({ labels, values, modalShow });
+	};
+
+	handleDownload = (elementId) => {
+		const filename = `Max-Sales-Report`;
+		elementToPdf(elementId, filename);
 	};
 
 	render() {
@@ -119,14 +138,24 @@ class MaxSalesProductsReport extends Form {
 						</div>
 						<div className="col-sm mt-2">
 							<button
-								className="btn btn-outline-success hover-focus"
+								className="btn btn-info btn-sm hover-focus"
 								onClick={this.handleSubmit}
 							>
-								Find
+								<span className="me-2">View Report</span>
+								<i className="fa fa-bar-chart"></i>
 							</button>
 						</div>
 					</div>
-					{/* {this.state.report.length > 0 && <BarChart labels={} data = {} /> } */}
+
+					<MaxSaleProductsModal
+						show={this.state.modalShow}
+						onHide={() => this.setState({ modalShow: false })}
+						labels={this.state.labels}
+						data={this.state.values}
+						report={this.state.report}
+						handleDownloadReport={this.handleDownload}
+						elementId="max-sales"
+					></MaxSaleProductsModal>
 				</div>
 			</ThemeProvider>
 		);

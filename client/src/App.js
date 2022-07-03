@@ -45,6 +45,7 @@ import ProductInterestReportPage from "./components/reports/productInterestRepor
 import OrderReport from "./components/orders/orderSummary";
 import QuaterlySalesReport from "./components/reports/quaterlySalesReport/quaterlySalesReport";
 import MaxSaleProducts from "./components/reports/maxSaleProductsReport/maxSaleProductsReport";
+import MaxSaleProductReportDownload from "./components/reports/maxSaleProductsReport/maxSaleProductReportTable";
 function App() {
 	const [theme, setTheme] = useState(getTheme());
 	const [item_count, setItemCount] = useState(getItemCount());
@@ -370,6 +371,14 @@ function App() {
 							</ProtectedRoute>
 						}
 					></Route>
+					{/* <Route
+						path="/reports/max-sale-products-report/download"
+						element={
+							<ProtectedRoute permissions={[ROLE.ADMIN]}>
+								<MaxSaleProductReportDownload />
+							</ProtectedRoute>
+						}
+					></Route> */}
 				</Route>
 
 				<Route path="/" element={<Home />}></Route>

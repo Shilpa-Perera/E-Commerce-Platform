@@ -58,6 +58,7 @@ const QuaterlySalesReportModal = ({
 								<BarChart
 									labels={barChartInputs.labels}
 									data={barChartInputs.data}
+									label="Total Sales"
 								/>
 							</Col>
 						</Row>
