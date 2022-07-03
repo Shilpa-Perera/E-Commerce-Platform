@@ -123,8 +123,9 @@ class OrderController {
 
         try {
             await Order.updateOrderStatus(data);
+            error = "Staus Updated !"
         } catch (error) {
-            error = "Error Try Again!"
+            error = "Error Try Again !"
         } 
         return res.status(200).send([error])
     }
