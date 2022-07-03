@@ -43,7 +43,7 @@ import Customers from "./components/customer/customers";
 import CategoryLink from "./components/category/linkCategory";
 import ProductInterestReportPage from "./components/reports/productInterestReport/productInterestReportPage";
 import OrderReport from "./components/orders/orderSummary";
-import QuaterlySalesReport from "./components/reports/quaterlySalesReport";
+import QuaterlySalesReport from "./components/reports/quaterlySalesReport/quaterlySalesReport";
 
 function App() {
     const [theme, setTheme] = useState(getTheme());

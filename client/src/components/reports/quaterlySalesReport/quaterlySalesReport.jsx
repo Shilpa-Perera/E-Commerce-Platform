@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
-import { getQuaterlySalesReport } from "../../services/reportService";
+import { getQuaterlySalesReport } from "../../../services/reportService";
 import {
     Col,
     Modal,
@@ -10,10 +10,10 @@ import {
     Card,
     Button,
 } from "react-bootstrap";
-
-import QuaterlySalesReportTable from "./quaterlySalesReportComponents/quaterlySalesReportTable";
-import { elementToPdf } from "./../../utils/pdfUtils";
-import QuaterlySalesReportModal from "./quaterlySalesReportComponents/quaterlySalesReportModal";
+import BarChart from "./barChart";
+import QuaterlySalesReportTable from "./quaterlySalesReportTable";
+import { elementToPdf } from "../../../utils/pdfUtils";
+import QuaterlySalesReportModal from "./quaterlySalesReportModal";
 
 class QuaterlySalesReport extends Component {
     state = {
@@ -147,72 +147,72 @@ class QuaterlySalesReport extends Component {
                             </Card>
 
                             {report.length !== 0 && (
-                                <QuaterlySalesReportModal
-                                    key={index}
-                                    show={showReports[index]}
-                                    handleHide={this.closeReport}
-                                    handleDownloadReport={this.downloadReport}
-                                    elementId={elementId}
-                                    dataSource={dataSource}
-                                    year={startYear + index}
-                                    index={index}
-                                    barChartInputs={barChartInputs}
-                                />
-                                // <Modal
+                                // <QuaterlySalesReportModal
                                 //     key={index}
                                 //     show={showReports[index]}
-                                //     onHide={() => this.closeReport(index)}
-                                //     size="lg"
-                                //     aria-labelledby="contained-modal-title-vcenter"
-                                //     fullscreen={true}
-                                // >
-                                //     <Modal.Header closeButton>
-                                //         <div class="d-flex justify-content-left">
-                                //             <Button
-                                //                 variant="primary"
-                                //                 onClick={() =>
-                                //                     this.downloadReport(
-                                //                         elementId,
-                                //                         startYear + index
-                                //                     )
-                                //                 }
-                                //                 key={index}
-                                //             >
-                                //                 Download
-                                //             </Button>
-                                //         </div>
-                                //     </Modal.Header>
-                                //     <Modal.Body className="show-grid">
-                                //         <div id={elementId}>
-                                //             <Container>
-                                //                 <h3>
-                                //                     {startYear + index} Quaterly
-                                //                     Sales Report
-                                //                 </h3>
-                                //                 <Row>
-                                //                     <Col md={4}>
-                                //                         <QuaterlySalesReportTable
-                                //                             dataSource={
-                                //                                 dataSource
-                                //                             }
-                                //                         />
-                                //                     </Col>
+                                //     handleHide={this.closeReport}
+                                //     handleDownloadReport={this.downloadReport}
+                                //     elementId={elementId}
+                                //     dataSource={dataSource}
+                                //     year={startYear + index}
+                                //     index={index}
+                                //     barChartInputs={barChartInputs}
+                                // />
+                                <Modal
+                                    key={index}
+                                    show={showReports[index]}
+                                    onHide={() => this.closeReport(index)}
+                                    size="lg"
+                                    aria-labelledby="contained-modal-title-vcenter"
+                                    fullscreen={true}
+                                >
+                                    <Modal.Header closeButton>
+                                        <div class="d-flex justify-content-left">
+                                            <Button
+                                                variant="primary"
+                                                onClick={() =>
+                                                    this.downloadReport(
+                                                        elementId,
+                                                        startYear + index
+                                                    )
+                                                }
+                                                key={index}
+                                            >
+                                                Download
+                                            </Button>
+                                        </div>
+                                    </Modal.Header>
+                                    <Modal.Body className="show-grid">
+                                        <div id={elementId}>
+                                            <Container>
+                                                <h3>
+                                                    {startYear + index} Quaterly
+                                                    Sales Report
+                                                </h3>
+                                                <Row>
+                                                    <Col md={4}>
+                                                        <QuaterlySalesReportTable
+                                                            dataSource={
+                                                                dataSource
+                                                            }
+                                                        />
+                                                    </Col>
 
-                                //                     <Col md={8}>
-                                //                         <BarChart
-                                //                             labels={
-                                //                                 barChartInputs.labels
-                                //                             }
-                                //                             data={
-                                //                                 barChartInputs.data
-                                //                             }
-                                //                         />
-                                //                     </Col>
-                                //                 </Row>
-                                //             </Container>
-                                //         </div>
-                                //     </Modal.Body>
-                                // </Modal>
+                                                    <Col md={8}>
+                                                        <BarChart
+                                                            labels={
+                                                                barChartInputs.labels
+                                                            }
+                                                            data={
+                                                                barChartInputs.data
+                                                            }
+                                                        />
+                                                    </Col>
+                                                </Row>
+                                            </Container>
+                                        </div>
+                                    </Modal.Body>
+                                </Modal>
                             )}
 
                             {report.length === 0 && (
