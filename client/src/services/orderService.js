@@ -5,7 +5,11 @@ const apiUrl = process.env.REACT_APP_API_URL;
 const apiEndpoint = apiUrl + "/orders";
 
 export function getOrders() {
-    return http.get(apiEndpoint);
+    try {
+        return http.get(apiEndpoint);
+    } catch (error) {
+        return null;
+    }
 }
 export function getCustomerOrders(customerId) {
     return http.get(apiUrl + "/customers/orders/" + customerId);
@@ -35,4 +39,9 @@ export function validateAndConfirmOrder(details) {
             "customerId",
         ])
     );
+}
+
+export function updateOrderStatus(orderDetails){
+    const result = http.put(`${apiEndpoint}/update`, _.pick(orderDetails, ["data", "orderId"]));
+    console.log(result);
 }

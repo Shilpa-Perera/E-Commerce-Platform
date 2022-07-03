@@ -17,7 +17,7 @@ class Order {
 
     static fetchAll() {
         const select_all_query = "SELECT * FROM `order` ORDER BY date ASC;";
-        const result = db.execute(select_all_query,[]);
+        const result = db.execute(select_all_query, []);
         return result;
     }
 
@@ -35,12 +35,13 @@ class Order {
         return result;
     }
 
-    static async updateOrderStatus(orderStatus, orderId) {
+    static async updateOrderStatus(data) {
         const update_status_query =
-            "UPDATE sell SET delivery_state = ? WHERE order_id = ?";
+            "UPDATE `sell` SET `delivery_state`=?, `payment_state`=? WHERE order_id = ?";
         const result = await db.execute(update_status_query, [
-            orderStatus,
-            orderId,
+            data.deliveryStatus,
+            data.paymentStatus,
+            data.orderId,
         ]);
         return result;
     }

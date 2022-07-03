@@ -36,9 +36,7 @@ class OrderView extends Component {
             let cart = null;
             try {
                 orderValues = orderDisplayValues.orderDetails[0];
-                console.log(orderValues); // ## WIP: temporary
                 cart = orderDisplayValues.cart;
-                let t = orderValues.order_id;
             } catch (error) {
                 return (
                     <div className="pb-5">
@@ -199,6 +197,7 @@ class OrderView extends Component {
                                                 deliveryState:
                                                     orderValues.delivery_state,
                                             }}
+                                            orderId={orderValues.order_id}
                                         />
                                     </div>
                                 </div>

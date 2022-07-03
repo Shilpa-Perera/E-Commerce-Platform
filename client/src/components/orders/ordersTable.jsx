@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { IoArrowForward } from "react-icons/io5";
+import { MdOutlineNoBackpack } from "react-icons/md";
 import { Link } from "react-router-dom";
 import Table from "../common/table";
 
@@ -60,12 +62,56 @@ class OrdersTable extends Component {
                     <h3 className="mb-4">Manage Orders</h3>
                     <div className="mt-5">
                         <div className="table-responsive order-table-container">
-                            <Table
-                                columns={this.columns}
-                                data={orders}
-                                sortColumn={sortBy}
-                                onSort={onSort}
-                            />
+                            {orders.length !== 0 && (
+                                <Table
+                                    columns={this.columns}
+                                    data={orders}
+                                    sortColumn={sortBy}
+                                    onSort={onSort}
+                                />
+                            )}
+                            {orders.length === 0 && (
+                                <div>
+                                    <p className="fs-3 text-center fw-bold">
+                                        Currently no orders
+                                    </p>
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "center",
+                                            padding: "50px",
+                                        }}
+                                    >
+                                        <MdOutlineNoBackpack
+                                            size={100}
+                                            style={{ color: "grey" }}
+                                        />
+                                    </div>
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "center",
+                                            padding: "50px",
+                                        }}
+                                    >
+                                        {this.props.userType === "customer" && (
+                                            <Link to="/products">
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-outline-primary"
+                                                >
+                                                    Continue Shopping
+                                                    <IoArrowForward
+                                                        style={{
+                                                            marginLeft: 10,
+                                                        }}
+                                                    />
+                                                </button>
+                                            </Link>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

@@ -75,8 +75,8 @@ class CheckoutFormCard extends Form {
                     ", " +
                     customer.addresses[0].street_name;
                 data = {
-                    firstName: customer.name,
-                    lastName: customer.name,
+                    firstName: customer.first_name,
+                    lastName: customer.last_name,
                     email: customer.email,
                     deliveryAddress: customerAddress,
                     city: customer.addresses[0].city,
