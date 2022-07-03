@@ -13,6 +13,7 @@ import {
 import { Bar } from "react-chartjs-2";
 import BarChart from "./quaterlySalesReportComponents/barChart";
 import QuaterlySalesReportTable from "./quaterlySalesReportComponents/quaterlySalesReportTable";
+import { elementToPdf } from "./../../utils/pdfUtils";
 
 class QuaterlySalesReport extends Component {
     state = {
@@ -43,11 +44,8 @@ class QuaterlySalesReport extends Component {
         const reports = [...this.state.reports];
         const showReports = [...this.state.showReports];
 
-        // to test wit sample
         showReports[index] = true;
-        // every variant should be there.... or product
         reports[index] = loadedReport;
-        // console.log("loadedReport", loadedReport);
 
         const { dataSource, barChartInputs } = this.mapReportToDataSource(
             reports[index]
@@ -84,7 +82,6 @@ class QuaterlySalesReport extends Component {
                 item.sell_total
             );
         });
-        // console.log("data", data);
 
         Object.keys(data).forEach((key) => {
             barChartInputs.labels.push(key);
@@ -95,21 +92,6 @@ class QuaterlySalesReport extends Component {
             const dataSourceItem = { variant_name: key, ...data[key] };
             dataSource.push(dataSourceItem);
         });
-
-        // console.log("barChartInputs", barChartInputs);
-        // for (let i = 0; i < report[0].length; i++) {
-        //     const row = {
-        //         variant_name: report[0][i].variant_name,
-        //         q1: report[0][i].sell_total,
-        //         q2: report[1][i].sell_total,
-        //         q3: report[2][i].sell_total,
-        //         q4: report[3][i].sell_total,
-        //     };
-        //     dataSource.push(row);
-
-        //     barChartInputs.labels.push(row.variant_name);
-        //     barChartInputs.data.push(row.q1 + row.q2 + row.q3 + row.q4);
-        // }
 
         return {
             dataSource: dataSource,
@@ -127,6 +109,11 @@ class QuaterlySalesReport extends Component {
         this.setState({ reports, showReports });
     }
 
+    downloadReport(elementId, year) {
+        const filename = `${year} - Quaterly Sales Report`;
+        elementToPdf(elementId, filename);
+    }
+
     render() {
         const {
             startYear,
@@ -136,6 +123,8 @@ class QuaterlySalesReport extends Component {
             dataSource,
             barChartInputs,
         } = this.state;
+
+        const elementId = `quaterly-sales-report`;
 
         return (
             <Container>
@@ -167,32 +156,50 @@ class QuaterlySalesReport extends Component {
                                     fullscreen={true}
                                 >
                                     <Modal.Header closeButton>
-                                        <Modal.Title>
-                                            {startYear + index} Quaterly Sales
-                                            Report
-                                        </Modal.Title>
+                                        <div class="d-flex justify-content-left">
+                                            <Button
+                                                variant="primary"
+                                                onClick={() =>
+                                                    this.downloadReport(
+                                                        elementId,
+                                                        startYear + index
+                                                    )
+                                                }
+                                                key={index}
+                                            >
+                                                Download
+                                            </Button>
+                                        </div>
                                     </Modal.Header>
                                     <Modal.Body className="show-grid">
-                                        <Container>
-                                            <Row>
-                                                <Col md={4}>
-                                                    <QuaterlySalesReportTable
-                                                        dataSource={dataSource}
-                                                    />
-                                                </Col>
+                                        <div id={elementId}>
+                                            <Container>
+                                                <h3>
+                                                    {startYear + index} Quaterly
+                                                    Sales Report
+                                                </h3>
+                                                <Row>
+                                                    <Col md={4}>
+                                                        <QuaterlySalesReportTable
+                                                            dataSource={
+                                                                dataSource
+                                                            }
+                                                        />
+                                                    </Col>
 
-                                                <Col md={8}>
-                                                    <BarChart
-                                                        labels={
-                                                            barChartInputs.labels
-                                                        }
-                                                        data={
-                                                            barChartInputs.data
-                                                        }
-                                                    />
-                                                </Col>
-                                            </Row>
-                                        </Container>
+                                                    <Col md={8}>
+                                                        <BarChart
+                                                            labels={
+                                                                barChartInputs.labels
+                                                            }
+                                                            data={
+                                                                barChartInputs.data
+                                                            }
+                                                        />
+                                                    </Col>
+                                                </Row>
+                                            </Container>
+                                        </div>
                                     </Modal.Body>
                                 </Modal>
                             )}
