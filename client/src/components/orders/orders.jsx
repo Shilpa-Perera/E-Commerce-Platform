@@ -109,6 +109,7 @@ class Orders extends Component {
                         sortBy={this.state.sortBy}
                         onSort={this.handleSort}
                         loading={this.state.loading}
+                        searchQuery= {this.state.searchQuery}
                     />
                     <Pagination
                         itemsCount={totalCount}
