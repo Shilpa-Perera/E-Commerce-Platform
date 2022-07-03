@@ -3,6 +3,8 @@ import { IoArrowForward } from "react-icons/io5";
 import { MdOutlineNoBackpack } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { stringEncrypt } from "../../utils/stringEncryptDecrypt";
+import Loading from "../common/loading";
+
 import Table from "../common/table";
 
 class OrdersTable extends Component {
@@ -58,12 +60,13 @@ class OrdersTable extends Component {
     ];
 
     render() {
-        const { orders, sortBy, onSort } = this.props;
+        const { orders, sortBy, onSort, loading } = this.props;
         return (
             <div className="pb-5">
                 <div className="container div-dark">
                     <h3 className="mb-4">Manage Orders</h3>
                     <div className="mt-5">
+                        {loading && <Loading />}
                         <div className="table-responsive order-table-container">
                             {orders.length !== 0 && (
                                 <Table
@@ -73,7 +76,7 @@ class OrdersTable extends Component {
                                     onSort={onSort}
                                 />
                             )}
-                            {orders.length === 0 && (
+                            {orders.length === 0 && !loading && (
                                 <div>
                                     <p className="fs-3 text-center fw-bold">
                                         Currently no orders
