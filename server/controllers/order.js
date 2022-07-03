@@ -1,6 +1,7 @@
 const _ = require("lodash");
 const { Order } = require("../models/Order");
 const { DateTime } = require("../util/dateTime");
+const { Delivery } = require("../util/delivery");
 
 class OrderController {
     static async getAllOrders(req, res) {
@@ -30,7 +31,10 @@ class OrderController {
         const validation = OrderController.validateData(test);
         let validateResult = validation[0];
         let error = validation[1];
-        let estimatedDeliveryTime = 6; // ## fix calculation
+        let estimatedDeliveryTime = await Delivery.calcDeliveryEstimation(
+            test.data.zipcode,
+            test.cartId
+        ); // Estimated Delivery days calculation
         if (validateResult) {
             console.log("valid", error);
 
@@ -123,11 +127,11 @@ class OrderController {
 
         try {
             await Order.updateOrderStatus(data);
-            error = "Staus Updated !"
+            error = "Staus Updated !";
         } catch (error) {
-            error = "Error Try Again !"
-        } 
-        return res.status(200).send([error])
+            error = "Error Try Again !";
+        }
+        return res.status(200).send([error]);
     }
 }
 
