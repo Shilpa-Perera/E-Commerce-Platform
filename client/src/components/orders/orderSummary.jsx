@@ -20,7 +20,6 @@ class OrderSummary extends Form {
     async componentDidMount() {
         let orderId = null;
         const { id } = this.props;
-        console.log(id);
 
         try {
             orderId = await stringDecrypt(id);
@@ -40,7 +39,10 @@ class OrderSummary extends Form {
 
         try {
             customer_id = s.orderDetails[0].customer_id;
-        } catch (error) {}
+        } catch (error) {
+            this.setState({ loading: false });
+            return;
+        }
 
         if (role === "customer" && user_id !== customer_id) {
             this.setState({ loading: false });
