@@ -42,6 +42,5 @@ export function validateAndConfirmOrder(details) {
 }
 
 export function updateOrderStatus(orderDetails){
-    const result = http.put(`${apiEndpoint}/update`, _.pick(orderDetails, ["data", "orderId"]));
-    console.log(result);
+    return http.put(`${apiEndpoint}/update`, _.pick(orderDetails, ["data", "orderId"]));
 }
