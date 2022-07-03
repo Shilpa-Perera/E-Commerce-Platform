@@ -78,7 +78,7 @@ class OrderCheckoutForm extends Component {
         } else if (!cartId) {
             return (
                 <div>
-                    <p class="fs-3 text-center fw-bold">
+                    <p className="fs-3 text-center fw-bold">
                         Currently no items in the cart
                     </p>
                     <div
