@@ -4,9 +4,11 @@ import { getOrder } from "../../services/orderService";
 import { OrderStatus } from "./orderStatus";
 import OrdersCartTable from "./orderViewCartTable";
 import Loading from "../common/loading";
+import NotFound from "../notFound";
 
 class OrderView extends Component {
     state = {
+        loading: true,
         order: null,
         cart: null,
         orderDetails: null,
@@ -15,44 +17,37 @@ class OrderView extends Component {
     async componentDidMount() {
         const { id } = this.props;
         const { data: s } = await getOrder(id);
-        this.setState({ orderDetails: s.orderDetails, cart: s.orderCart });
+        this.setState({
+            orderDetails: s.orderDetails,
+            cart: s.orderCart,
+            loading: false,
+        });
+
+        this.setValues();
     }
 
     setValues() {
         const { cart, orderDetails } = this.state;
-
-        //If cart and orderDetails are empty
-        if (cart !== null && orderDetails !== null) {
-            return { orderDetails, cart };
-        } else {
-            return null;
-        }
+        try {
+            //If cart and orderDetails are empty
+            if (cart.length !== 0 && orderDetails.length !== 0) {
+                this.setState({ loading: false });
+                return { orderDetails, cart };
+            } else {
+                this.setState({ loading: false });
+                return null;
+            }
+        } catch (error) {}
     }
 
     render() {
-        const orderDisplayValues = this.setValues();
+        if (this.state.loading === true) {
+            return <Loading />;
+        }
+        const { orderDetails, cart } = this.state;
+        const orderDisplayValues = orderDetails[0];
         if (orderDisplayValues) {
-            let orderValues = null;
-            let cart = null;
-            try {
-                orderValues = orderDisplayValues.orderDetails[0];
-                cart = orderDisplayValues.cart;
-            } catch (error) {
-                return (
-                    <div className="pb-5">
-                        <div className="container div-dark text-center">
-                            <h2> Invalid order</h2>
-                            <Link to={`/orders/`}>
-                                <button className="btn btn-primary btn-sm hover-focus">
-                                    <span className="me-2">Go to Orders</span>
-                                    <i className="fa fa-refresh"></i>
-                                </button>
-                            </Link>
-                        </div>
-                    </div>
-                );
-            }
-
+            const orderValues = orderDisplayValues;
             return (
                 <div className="container-fluid mb-5">
                     <div className="row">
@@ -198,6 +193,9 @@ class OrderView extends Component {
                                                     orderValues.delivery_state,
                                             }}
                                             orderId={orderValues.order_id}
+                                            orderPaymentMethod={
+                                                orderValues.payment_method
+                                            }
                                         />
                                     </div>
                                 </div>
@@ -207,13 +205,7 @@ class OrderView extends Component {
                 </div>
             );
         } else {
-            return (
-                <div className="pb-5">
-                    <div className="container div-dark">
-                        <Loading />
-                    </div>
-                </div>
-            );
+            return NotFound();
         }
     }
 }
