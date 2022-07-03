@@ -37,7 +37,14 @@ drop table if exists product;
 drop table if exists category_link;
 drop table if exists sub_category;
 drop table if exists category;
+drop view if exists texas_e_store.items ;
 
+create view items as  select p.product_title, v.variant_name, cp.number_of_items ,s. date_time 
+        from sell s join `order` o using (order_id) 
+                    join cart_product cp using(cart_id)
+                    join variant v using (variant_id)  
+                    join product p using(product_id) 
+                    where s.delivery_state = "PROCESSING" and  s.payment_state = "PAID" ;
 
 DELIMITER $$
 --
@@ -88,6 +95,12 @@ CREATE PROCEDURE `update_product_variants_quantity_from_cart` (IN `cartId` INT) 
         UPDATE `variant` SET `quantity` = quantity-CAST( @qval AS SIGNED ) WHERE `variant`.`variant_id` = @variantId;
   		SET i = i + 1;
 	END WHILE;
+END$$
+
+CREATE PROCEDURE max_sales (IN start_date datetime , IN end_date datetime , IN no_of_rows int(3))
+    BEGIN
+        select product_title, variant_name , sum(number_of_items) as sales from items where date_time between start_date and end_date
+        group by product_title,variant_name order by sales desc limit no_of_rows ;
 END$$
 
 DELIMITER ;
