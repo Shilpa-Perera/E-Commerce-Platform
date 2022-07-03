@@ -126,16 +126,14 @@ class CustomerFormBody extends Form {
     async populateCustomer() {
         try {
             const customerId = this.props.params.id;
-            console.log("customerId", customerId, typeof customerId);
             if (!customerId) return;
 
             const errors = {
                 addresses: [],
                 mobiles: [],
             };
-            // console.log(" get customer");
             const { data: customer } = await getCustomer(customerId);
-            // console.log("customer:", customer);
+
             for (let index = 0; index < customer.addresses.length; index++) {
                 const address = customer.addresses[index];
                 address.index = index;
@@ -150,13 +148,9 @@ class CustomerFormBody extends Form {
 
                 errors.mobiles.push({});
             }
-            // delete customer.customer_id;
+
             customer.password = "password";
 
-            // console.log("data", customer);
-            console.log("set state");
-            console.log(customer);
-            console.log("new errors", errors);
             this.setState({ data: customer, errors: errors });
         } catch (ex) {
             toast.error("No customer found.");
@@ -164,12 +158,9 @@ class CustomerFormBody extends Form {
     }
 
     async componentDidMount() {
-        // console.log("componentDidMount");
         // check if data is allowed
         const user = getCurrentUser();
         const customerId = this.props.params.id;
-        console.log("role:", user);
-        console.log("customerId:", typeof customerId);
 
         if (!customerId) return;
         else if (
@@ -185,7 +176,6 @@ class CustomerFormBody extends Form {
 
     doSubmit = async () => {
         try {
-            // console.log("front state", this.state.data);
             const data = { ...this.state.data };
 
             await saveCustomer(data);
@@ -194,7 +184,7 @@ class CustomerFormBody extends Form {
             user && user.role === ROLE.ADMIN
                 ? this.props.navigate("/customers")
                 : this.props.navigate("/");
-            // console.log("state", this.state);
+
             // this.props.navigate("/");
         } catch (ex) {
             console.log(ex);
@@ -234,7 +224,6 @@ class CustomerFormBody extends Form {
 
     handleDeleteAddress = async (e, address) => {
         e.preventDefault();
-        console.log(address);
 
         const originalData = this.state.data;
         const addresses = originalData.addresses.filter(
@@ -258,7 +247,7 @@ class CustomerFormBody extends Form {
 
     handleArrayChange = ({ currentTarget: input }) => {
         const { arrayName, elementId } = input.dataset;
-        console.log("handleArrayChange", arrayName, elementId);
+
         const { data } = this.state;
 
         const element = { ...data[arrayName][elementId] };
@@ -275,9 +264,7 @@ class CustomerFormBody extends Form {
             first_name,
             last_name,
         } = this.state.data;
-        // console.log("render: ", addresses);
-        // console.log("render state: ", this.state);
-        // console.log("errors", this.state.errors);
+
         return (
             <div className="container  mb-5">
                 <div className="p-4">
