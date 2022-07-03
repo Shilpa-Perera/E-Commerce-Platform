@@ -16,7 +16,7 @@ export class OrderStatus extends Form {
 
     schema = {
         payment_status: ["PAID", "PENDING"],
-        delivery_state: ["PROCESSING", "OUTFORDELIVERY", "DELIVERED"],
+        delivery_state: ["PROCESSING", "OUT-FOR-DELIVERY", "DELIVERED"],
     };
 
     async componentDidMount() {
@@ -64,7 +64,7 @@ export class OrderStatus extends Form {
                             [
                                 { id: "PROCESSING", name: "Processing" },
                                 {
-                                    id: "OUTFORDELIVERY",
+                                    id: "OUT-FOR-DELIVERY",
                                     name: "Out for delivery",
                                 },
                                 { id: "DELIVERED", name: "delivered" },
