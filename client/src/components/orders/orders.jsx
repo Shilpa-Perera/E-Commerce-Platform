@@ -6,9 +6,11 @@ import OrdersTable from "./ordersTable";
 import SearchBox from "../common/searchBox";
 import Pagination from "../common/pagination";
 import { getCurrentUser } from "../../services/authService";
+import Loading from "../common/loading";
 
 class Orders extends Component {
     state = {
+        loading: true,
         userType: null,
         orders: [],
         searchQuery: "",
@@ -27,6 +29,7 @@ class Orders extends Component {
             orders = (await getCustomerOrders(user_id)).data;
         }
         this.setState({ orders });
+        this.setState({ loading: false });
     }
 
     handleSearch = (searchQuery) => {
@@ -99,11 +102,13 @@ class Orders extends Component {
                             />
                         </div>
                     </div>
+
                     <OrdersTable
                         userType={userType}
                         orders={orders}
                         sortBy={this.state.sortBy}
                         onSort={this.handleSort}
+                        loading={this.state.loading}
                     />
                     <Pagination
                         itemsCount={totalCount}
