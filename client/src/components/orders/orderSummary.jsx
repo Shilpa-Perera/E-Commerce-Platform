@@ -18,6 +18,8 @@ class OrderSummary extends Form {
 
     async componentDidMount() {
         const { id } = this.props;
+        console.log(id);
+        const orderId = this.decryptId(id);
         let customer_id = null;
         let user_id,
             role = null;
@@ -25,7 +27,7 @@ class OrderSummary extends Form {
             const { user_id: user_id, role: role } = await getCurrentUser();
         } catch (e) {}
 
-        const { data: s } = await getOrder(id);
+        const { data: s } = await getOrder(orderId);
         try {
             customer_id = s.orderDetails[0].customer_id;
         } catch (error) {}
@@ -56,6 +58,14 @@ class OrderSummary extends Form {
             return total;
         });
         return total;
+    }
+
+    decryptId(id) {
+        const CryptoJS = require("crypto-js");
+        // Decrypt
+        const bytes = CryptoJS.AES.decrypt(id, "orderID SECRETKEY");
+        const originalText = bytes.toString(CryptoJS.enc.Utf8);
+        return originalText;
     }
 
     render() {
@@ -314,12 +324,6 @@ class OrderSummary extends Form {
 function OrderReport(props) {
     let { id } = useParams();
 
-    var CryptoJS = require("crypto-js");
-    // Decrypt
-    var bytes = CryptoJS.AES.decrypt(id, "orderID SECRETKEY");
-    var originalText = bytes.toString(CryptoJS.enc.Utf8);
-    id = originalText;
-    
     return <OrderSummary {...{ props, id }} />;
 }
 
