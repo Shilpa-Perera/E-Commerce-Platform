@@ -44,7 +44,7 @@ import CategoryLink from "./components/category/linkCategory";
 import ProductInterestReportPage from "./components/reports/productInterestReport/productInterestReportPage";
 import OrderReport from "./components/orders/orderSummary";
 import QuaterlySalesReport from "./components/reports/quaterlySalesReport/quaterlySalesReport";
-import MaxSaleProducts from "./components/reports/maxSaleProductsReport";
+import MaxSaleProducts from "./components/reports/maxSaleProductsReport/maxSaleProductsReport";
 function App() {
 	const [theme, setTheme] = useState(getTheme());
 	const [item_count, setItemCount] = useState(getItemCount());
@@ -366,7 +366,7 @@ function App() {
 						path="max-sale-products-report"
 						element={
 							<ProtectedRoute permissions={[ROLE.ADMIN]}>
-								<MaxSaleProducts />
+								<MaxSaleProducts theme={theme} />
 							</ProtectedRoute>
 						}
 					></Route>
