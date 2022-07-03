@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { IoArrowForward } from "react-icons/io5";
 import { MdOutlineNoBackpack } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { stringEncrypt } from "../../utils/stringEncryptDecrypt";
 import Table from "../common/table";
 
 class OrdersTable extends Component {
@@ -38,7 +39,7 @@ class OrdersTable extends Component {
                         <Link
                             to={
                                 this.props.userType === "customer"
-                                    ? `/customers/orders/${this.encryptOrderId(order_id)}`
+                                    ? `/customers/orders/${stringEncrypt(order_id)}`
                                     : `/orders/${order_id}`
                             }
                         >
