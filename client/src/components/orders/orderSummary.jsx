@@ -8,6 +8,7 @@ import { useParams, Link } from "react-router-dom";
 import NotFound from "../notFound";
 import Loading from "../common/loading";
 import { getCurrentUser } from "../../services/authService";
+import { stringDecrypt } from "../../utils/stringEncryptDecrypt";
 
 class OrderSummary extends Form {
     state = {
@@ -17,9 +18,17 @@ class OrderSummary extends Form {
     };
 
     async componentDidMount() {
+        let orderId = null;
         const { id } = this.props;
         console.log(id);
-        const orderId = this.decryptId(id);
+
+        try {
+            orderId = await stringDecrypt(id);
+        } catch (error) {
+            this.setState({ loading: false });
+            return;
+        }
+
         let customer_id = null;
         let user_id,
             role = null;
@@ -28,6 +37,7 @@ class OrderSummary extends Form {
         } catch (e) {}
 
         const { data: s } = await getOrder(orderId);
+
         try {
             customer_id = s.orderDetails[0].customer_id;
         } catch (error) {}
@@ -58,14 +68,6 @@ class OrderSummary extends Form {
             return total;
         });
         return total;
-    }
-
-    decryptId(id) {
-        const CryptoJS = require("crypto-js");
-        // Decrypt
-        const bytes = CryptoJS.AES.decrypt(id, "orderID SECRETKEY");
-        const originalText = bytes.toString(CryptoJS.enc.Utf8);
-        return originalText;
     }
 
     render() {
