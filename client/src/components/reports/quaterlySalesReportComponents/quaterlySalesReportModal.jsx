@@ -1,13 +1,27 @@
 import React from "react";
+import {
+    Col,
+    Modal,
+    Row,
+    Table,
+    Container,
+    Card,
+    Button,
+} from "react-bootstrap";
+import { Bar } from "react-chartjs-2";
+import BarChart from "./barChart";
+import QuaterlySalesReportTable from "./quaterlySalesReportTable";
 
-const quaterlySalesReportModal = ({
+const QuaterlySalesReportModal = ({
     key,
     show,
     handleHide,
     handleDownloadReport,
     elementId,
-    startYear,
-    QuaterlySalesReportTable,
+    year,
+    index,
+    dataSource,
+    barChartInputs,
 }) => {
     return (
         <Modal
@@ -22,9 +36,7 @@ const quaterlySalesReportModal = ({
                 <div class="d-flex justify-content-left">
                     <Button
                         variant="primary"
-                        onClick={() =>
-                            handleDownloadReport(elementId, startYear + index)
-                        }
+                        onClick={() => handleDownloadReport(elementId, year)}
                         key={index}
                     >
                         Download
@@ -34,7 +46,7 @@ const quaterlySalesReportModal = ({
             <Modal.Body className="show-grid">
                 <div id={elementId}>
                     <Container>
-                        <h3>{startYear + index} Quaterly Sales Report</h3>
+                        <h3>{year} Quaterly Sales Report</h3>
                         <Row>
                             <Col md={4}>
                                 <QuaterlySalesReportTable
@@ -56,4 +68,4 @@ const quaterlySalesReportModal = ({
     );
 };
 
-export default quaterlySalesReportModal;
+export default QuaterlySalesReportModal;
