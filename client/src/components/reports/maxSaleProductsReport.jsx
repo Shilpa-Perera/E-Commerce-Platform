@@ -6,7 +6,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Joi, { schema } from "joi-browser";
 import { format, parseISO } from "date-fns";
 import Form from "../common/form";
-import { th } from "date-fns/locale";
+import { getMaxSaleProducts } from "../../services/reportService";
 
 class MaxSalesProductsReport extends Form {
 	state = {
@@ -16,6 +16,7 @@ class MaxSalesProductsReport extends Form {
 			number: 0,
 		},
 		errors: {},
+		report: {},
 	};
 
 	schema = Joi.object({
@@ -24,7 +25,17 @@ class MaxSalesProductsReport extends Form {
 		number: Joi.number().less(10).required().label("Number of Records"),
 	});
 
-	doSubmit = () => {};
+	doSubmit = async () => {
+		const { start, end, number } = this.state.data;
+		let start_ = format(new Date(start), "yyyy-MM-dd HH:mm:ss");
+		let end_ = format(new Date(end), "yyyy-MM-dd HH:mm:ss");
+		const { data: max_sales } = await getMaxSaleProducts(
+			start_,
+			end_,
+			number
+		);
+		console.log(max_sales);
+	};
 
 	render() {
 		return (
@@ -37,12 +48,8 @@ class MaxSalesProductsReport extends Form {
 								inputFormat="MM-dd-yyyy"
 								value={this.state.data.start}
 								onChange={(newValue) => {
-									const date = format(
-										new Date(newValue),
-										"MM-dd-yyyy"
-									);
 									let st = this.state;
-									st.data.start = date;
+									st.data.start = newValue;
 									this.setState(st);
 								}}
 								renderInput={(params) => (
@@ -63,13 +70,8 @@ class MaxSalesProductsReport extends Form {
 								inputFormat="MM-dd-yyyy"
 								value={this.state.data.end}
 								onChange={(newValue) => {
-									const date = format(
-										new Date(newValue),
-										"MM-dd-yyyy"
-									);
-
 									let st = this.state;
-									st.data.end = date;
+									st.data.end = newValue;
 									this.setState(st);
 								}}
 								renderInput={(params) => (
@@ -113,6 +115,7 @@ class MaxSalesProductsReport extends Form {
 						</button>
 					</div>
 				</div>
+				{}
 			</div>
 		);
 	}

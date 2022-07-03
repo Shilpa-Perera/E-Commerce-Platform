@@ -11,7 +11,7 @@ router.get(
 	ReportController.getProductInterestReport
 );
 router.get(
-	"/prducts/max_sale/:start_date/:end_date/:no_of_rows",
+	"/max_sale/:start_date/:end_date/:no_of_rows",
 	[auth, authPage([ROLE.ADMIN])],
 	ReportController.getMaxSaleProductsReport
 );
