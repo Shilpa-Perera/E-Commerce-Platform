@@ -79,7 +79,9 @@ class OrdersTable extends Component {
                             {orders.length === 0 && !loading && (
                                 <div>
                                     <p className="fs-3 text-center fw-bold">
-                                        Currently no orders
+                                        {this.props.searchQuery !== ""
+                                            ? "No orders Found"
+                                            : "Currently no orders"}
                                     </p>
                                     <div
                                         style={{
