@@ -10,10 +10,15 @@ export const stringEncrypt = (obj) => {
 
 export const stringDecrypt = (encryptedText) => {
     // Here use .toString(ENC) directly, not .toString(ENC.Utf8)
-    const decryptedStr = AES.decrypt(
-        decodeURIComponent(encryptedText),
-        SECRET_KEY
-    ).toString(ENC);
+    let decryptedStr = null;
+    try {
+        decryptedStr = AES.decrypt(
+            decodeURIComponent(encryptedText),
+            SECRET_KEY
+        ).toString(ENC);
+    } catch (error) {
+        return null;
+    } 
 
     try {
         const result = JSON.parse(decryptedStr);
