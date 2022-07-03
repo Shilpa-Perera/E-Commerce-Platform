@@ -5,6 +5,7 @@ import Form from "../common/form";
 import { validateAndConfirmOrder } from "../../services/orderService";
 import { toast } from "react-toastify";
 import Loading from "../common/loading";
+import { stringEncrypt } from "../../utils/stringEncryptDecrypt";
 
 class CheckoutPayment extends Form {
     state = {
@@ -114,18 +115,9 @@ class CheckoutPayment extends Form {
 
         let orderIdOutput = data[1];
 
-        console.log(orderIdOutput);
-        var CryptoJS = require("crypto-js");
-
-        // Encrypt
-        var ciphertext = CryptoJS.AES.encrypt(
-            orderIdOutput.toString(),
-            "orderID SECRETKEY"
-        ).toString();
-
         // remove cart from session
         this.props.onCheckout();
-        window.location = "/order-summary/" + ciphertext;
+        window.location = "/order-summary/" + stringEncrypt(orderIdOutput);
     };
 
     render() {
