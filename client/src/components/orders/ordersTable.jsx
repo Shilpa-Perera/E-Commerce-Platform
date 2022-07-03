@@ -38,7 +38,7 @@ class OrdersTable extends Component {
                         <Link
                             to={
                                 this.props.userType === "customer"
-                                    ? `/customers/orders/${order_id}`
+                                    ? `/customers/orders/${this.encryptOrderId(order_id)}`
                                     : `/orders/${order_id}`
                             }
                         >
@@ -53,6 +53,17 @@ class OrdersTable extends Component {
             label: "Action",
         },
     ];
+
+    encryptOrderId(orderId) {
+        var CryptoJS = require("crypto-js");
+
+        // Encrypt
+        var ciphertext = CryptoJS.AES.encrypt(
+            orderId.toString(),
+            "orderID SECRETKEY"
+        ).toString();
+        return ciphertext;
+    }
 
     render() {
         const { orders, sortBy, onSort } = this.props;

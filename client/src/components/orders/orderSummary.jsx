@@ -24,7 +24,7 @@ class OrderSummary extends Form {
         try {
             const { user_id: user_id, role: role } = await getCurrentUser();
         } catch (e) {}
-        
+
         const { data: s } = await getOrder(id);
         try {
             customer_id = s.orderDetails[0].customer_id;
@@ -112,7 +112,9 @@ class OrderSummary extends Form {
                                                 </div>
                                             </div>
                                             <hr />
-                                            <h6 className="h5">Order Details</h6>
+                                            <h6 className="h5">
+                                                Order Details
+                                            </h6>
                                             <div className="products ">
                                                 <p className="">
                                                     Order Date-Time:{" "}
@@ -310,7 +312,14 @@ class OrderSummary extends Form {
 }
 
 function OrderReport(props) {
-    const { id } = useParams();
+    let { id } = useParams();
+
+    var CryptoJS = require("crypto-js");
+    // Decrypt
+    var bytes = CryptoJS.AES.decrypt(id, "orderID SECRETKEY");
+    var originalText = bytes.toString(CryptoJS.enc.Utf8);
+    id = originalText;
+    
     return <OrderSummary {...{ props, id }} />;
 }
 
