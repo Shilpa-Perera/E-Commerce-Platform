@@ -94,7 +94,7 @@ class OrderView extends Component {
                                             htmlFor="f1"
                                             className="col-sm-4 col-form-label"
                                         >
-                                            Date
+                                            Date and time
                                         </label>
                                         <div className="col-sm-6">
                                             <input
