@@ -176,10 +176,6 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
 								<NavLink
 									className="nav-link hover-focus"
 									to="/customers/register"
-									style={{
-										"text-decoration": "none",
-										color: "grey",
-									}}
 								>
 									<span className="">
 										<FaAddressBook
@@ -196,10 +192,6 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
 								<NavLink
 									className="nav-link hover-focus"
 									to="/login"
-									style={{
-										"text-decoration": "none",
-										color: "grey",
-									}}
 								>
 									<span className="ms-2">
 										<MdLogin

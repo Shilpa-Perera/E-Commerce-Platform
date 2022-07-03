@@ -38,8 +38,14 @@ class CheckoutFormCard extends Form {
             .label("Delivery Address"),
 
         city: Joi.string().required().min(1).max(250).label("City"),
-        zipcode: Joi.string().required().min(5).max(5).label("ZIP Code"),
+        zipcode: Joi.string()
+            .regex(/(^\d{5}$)|(^\d{5}-\d{4}$)/)
+            .required()
+            .min(5)
+            .max(5)
+            .label("ZIP Code"),
         telephone: Joi.string()
+            .regex(/^\+?\d{0,3}\s?\(?\d{3}\)?[-\s]?\d{3}[-\s]?\d{4}$/)
             .required()
             .min(10)
             .max(12)
@@ -64,14 +70,13 @@ class CheckoutFormCard extends Form {
                 const { data: customer } = await getCustomer(
                     this.state.customerId
                 );
-                console.log(customer);
                 const customerAddress =
                     customer.addresses[0].po_box +
                     ", " +
                     customer.addresses[0].street_name;
                 data = {
-                    firstName: customer.name,
-                    lastName: customer.name,
+                    firstName: customer.first_name,
+                    lastName: customer.last_name,
                     email: customer.email,
                     deliveryAddress: customerAddress,
                     city: customer.addresses[0].city,
@@ -134,7 +139,8 @@ class CheckoutFormCard extends Form {
                             {this.renderInput("email", "Email Address")}
                         </div>
                         <div className="col-12 form-group mb-3">
-                            {this.renderInput("telephone", "Telephone Number")}
+                            
+                            {this.renderInputWithCustomError("telephone", "Telephone Number", "Invalid Telephone Number")}
                         </div>
 
                         <div className="col-12 form-group mb-3">
@@ -149,7 +155,7 @@ class CheckoutFormCard extends Form {
                         </div>
 
                         <div className="col-6 form-group mb-3">
-                            {this.renderInput("zipcode", "ZIP Code")}
+                            {this.renderInputWithCustomError("zipcode", "ZIP Code", "Invalid ZIP Code")}
                         </div>
 
                         <div className="col-12 form-group mb-3">

@@ -67,9 +67,9 @@ class OrderSummary extends Form {
             return (
                 <div className="container h-100 py-5">
                     <div className="row d-flex h-100">
-                        <h3 className="d-inline-block">Order Summary</h3>
+                        <h2 className="d-inline-block">Order Summary</h2>
 
-                        <div className="App container mt-5 card">
+                        <div className="App container mt-3 card">
                             <div className="row align-items-start p-3">
                                 <Link
                                     className="btn btn-danger col-1 p-1 m-1 hover-focus"
@@ -90,7 +90,7 @@ class OrderSummary extends Form {
                                     ></i>
                                 </button>
                             </div>
-                            <div className="m-3">
+                            <div className="mb-5">
                                 <div className="row d-flex justify-content-center">
                                     <div className="col-md-8">
                                         <div
@@ -102,7 +102,7 @@ class OrderSummary extends Form {
                                                     <h3 className="justify-content-center">
                                                         TEXAS E STORE
                                                     </h3>{" "}
-                                                    <h4 className="font-weight-bold">
+                                                    <h4 className="font-weight-bold h4">
                                                         Order Report
                                                     </h4>{" "}
                                                     <h5>
@@ -112,13 +112,13 @@ class OrderSummary extends Form {
                                                 </div>
                                             </div>
                                             <hr />
-                                            <h6 className="">Order Details</h6>
+                                            <h6 className="h5">Order Details</h6>
                                             <div className="products ">
                                                 <p className="">
                                                     Order Date-Time:{" "}
                                                     {orderDetails.date}
                                                 </p>{" "}
-                                                <table className="table table-borderless">
+                                                <table className="table table-borderless ">
                                                     <tbody>
                                                         <tr className="content">
                                                             <td className="col-6">
@@ -153,7 +153,7 @@ class OrderSummary extends Form {
                                                     </tbody>
                                                 </table>
                                             </div>{" "}
-                                            <h6 className="">Order items</h6>
+                                            <h6 className="h5">Order items</h6>
                                             <hr />
                                             <div className="products overflow-auto table-responsive checkout-cart-container">
                                                 <table className="table">
@@ -218,7 +218,7 @@ class OrderSummary extends Form {
                                                 <table className="table table-borderless">
                                                     <tbody>
                                                         <tr className="content">
-                                                            <td>
+                                                            <td className="h5">
                                                                 {" "}
                                                                 TOTAL :{" "}
                                                                 {new Intl.NumberFormat(
@@ -239,7 +239,7 @@ class OrderSummary extends Form {
                                                     </tbody>
                                                 </table>
                                             </div>{" "}
-                                            <h6 className="">
+                                            <h6 className="h5">
                                                 Payment Details
                                             </h6>
                                             <hr />
@@ -269,7 +269,7 @@ class OrderSummary extends Form {
                                                     </tbody>
                                                 </table>
                                             </div>{" "}
-                                            <h6 className="">
+                                            <h6 className="h5">
                                                 Delivery Details
                                             </h6>
                                             <hr />

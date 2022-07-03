@@ -1,8 +1,9 @@
 const _ = require("lodash");
 const { Order } = require("../models/Order");
+const { DateTime } = require("../util/dateTime");
 
 class OrderController {
-    static async getAllOrders(res) {
+    static async getAllOrders(req, res) {
         const allOrders = await Order.fetchAll();
         res.send(allOrders[0]);
     }
@@ -40,6 +41,7 @@ class OrderController {
 
     static validateData(data) {
         const dataArray = data.data;
+
         for (const [key, value] of Object.entries(dataArray)) {
             if (value === "") {
                 return [false, "Empty Field"];
@@ -58,6 +60,14 @@ class OrderController {
             return [false, "Invalid ZIP code"];
         }
 
+        if (
+            !/^\+?\d{0,3}\s?\(?\d{3}\)?[-\s]?\d{3}[-\s]?\d{4}$/.test(
+                dataArray.telephone
+            )
+        ) {
+            return [false, "Invalid Telephone"];
+        }
+
         return [true, "All set"];
     }
 
@@ -66,12 +76,7 @@ class OrderController {
         let error = null;
         let sellDateTime = null;
         let paymentStatus = "PENDING";
-        // console.log(orderDetails);
-        const orderDateTime = new Date()
-            .toISOString()
-            .slice(0, 19)
-            .replace("T", " ");
-        // console.log(orderDateTime);
+        const orderDateTime = DateTime.getDBreadyCurrentDateTime();
 
         // Payment Call
         let paymentResult = true; // ### to payment Gateway
@@ -106,6 +111,22 @@ class OrderController {
 
         let newOrderId = error[0].at(-2)[0].orderIdOutput;
         return res.status(200).send([orderDetails, newOrderId]);
+    }
+
+    static async updateOrderStatus(req, res) {
+        let error = "Updated Successfully!";
+        const data = {
+            deliveryStatus: req.body.data.delivery_state,
+            paymentStatus: req.body.data.payment_status,
+            orderId: req.body.orderId,
+        };
+
+        try {
+            await Order.updateOrderStatus(data);
+        } catch (error) {
+            error = "Error Try Again!"
+        } 
+        return res.status(200).send([error])
     }
 }
 
