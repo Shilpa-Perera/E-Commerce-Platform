@@ -35,7 +35,7 @@ export class OrderStatus extends Form {
         const result = await updateOrderStatus(this.state).then(
             (response) => response.data
         );
-        toast.info(result[0], {
+        toast.success(result[0], {
             theme: "dark",
         });
     }
@@ -50,10 +50,16 @@ export class OrderStatus extends Form {
             <form className="container" onSubmit={this.doSubmit}>
                 <div className="row mb-4  gx-5">
                     <div className="col-6">
-                        {this.renderSelect("payment_status", "Payment status", [
-                            { id: "PENDING", name: "Pending" },
-                            { id: "PAID", name: "Paid" },
-                        ])}
+                        {this.renderSelect(
+                            "payment_status",
+                            "Payment status",
+                            this.props.orderPaymentMethod !== "CARD"
+                                ? [
+                                      { id: "PENDING", name: "Pending" },
+                                      { id: "PAID", name: "Paid" },
+                                  ]
+                                : [{ id: "PAID", name: "Paid" }]
+                        )}
                     </div>
 
                     <div className="col-6">
