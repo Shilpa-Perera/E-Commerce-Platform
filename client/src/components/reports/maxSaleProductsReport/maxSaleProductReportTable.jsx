@@ -12,7 +12,7 @@ const MaxSaleProductsReportTable = ({ data }) => {
 				</thead>
 				<tbody>
 					{data.map((element, index) => (
-						<tr>
+						<tr key={index}>
 							<td>
 								{element.product_title +
 									" " +

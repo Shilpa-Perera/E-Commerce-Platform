@@ -16,7 +16,7 @@ class MaxSalesProductsReport extends Form {
 		data: {
 			start: "",
 			end: "",
-			number: 0,
+			number: null,
 		},
 		errors: {},
 		report: [],
@@ -48,17 +48,15 @@ class MaxSalesProductsReport extends Form {
 			values.push(element.sales);
 		});
 
-		this.setState({ report: max_sales[0] }, () => {
-			console.log(this.state.report);
-		});
+		this.setState({ report: max_sales[0] });
 
 		const modalShow = true;
 		this.setState({ labels, values, modalShow });
 	};
 
-	handleDownload = (elementId) => {
+	handleDownload = () => {
 		const filename = `Max-Sales-Report`;
-		elementToPdf(elementId, filename);
+		elementToPdf("max-sales", filename);
 	};
 
 	render() {
@@ -71,12 +69,12 @@ class MaxSalesProductsReport extends Form {
 			<ThemeProvider theme={darkTheme}>
 				<div className="container">
 					<div className="row">
-						<div className="col-sm">
+						<div className="col-sm mb-5">
 							<LocalizationProvider dateAdapter={AdapterDateFns}>
 								<DatePicker
 									label="Start Date"
 									inputFormat="MM-dd-yyyy"
-									value={this.state.data.start}
+									value={this.state.data.start || null}
 									onChange={(newValue) => {
 										let st = this.state;
 										st.data.start = newValue;
@@ -93,12 +91,12 @@ class MaxSalesProductsReport extends Form {
 								)}
 							</LocalizationProvider>
 						</div>
-						<div className="col-sm">
+						<div className="col-sm mb-5">
 							<LocalizationProvider dateAdapter={AdapterDateFns}>
 								<DatePicker
 									label="End Date"
 									inputFormat="MM-dd-yyyy"
-									value={this.state.data.end}
+									value={this.state.data.end || null}
 									onChange={(newValue) => {
 										let st = this.state;
 										st.data.end = newValue;
@@ -115,12 +113,12 @@ class MaxSalesProductsReport extends Form {
 								)}
 							</LocalizationProvider>
 						</div>
-						<div className="col-sm">
+						<div className="col-sm mb-5">
 							<TextField
 								id="outlined-basic"
 								label="No of Records"
 								variant="outlined"
-								value={this.state.data.number}
+								value={this.state.data.number || ""}
 								onChange={(newValue) => {
 									const { value } = newValue.target;
 									let st = this.state;
@@ -153,9 +151,9 @@ class MaxSalesProductsReport extends Form {
 						labels={this.state.labels}
 						data={this.state.values}
 						report={this.state.report}
-						handleDownloadReport={this.handleDownload}
-						elementId="max-sales"
-					></MaxSaleProductsModal>
+						handledownload={this.handleDownload}
+						// elementId="max-sales"
+					/>
 				</div>
 			</ThemeProvider>
 		);

@@ -17,7 +17,7 @@ export default function MaxSaleProductsModal(props) {
 			</Modal.Header>
 			<Modal.Body>
 				{props.report.length > 0 && (
-					<div id={props.elementId}>
+					<div id="max-sales">
 						<Container>
 							<Row>
 								<Col xs={6}>
@@ -47,10 +47,7 @@ export default function MaxSaleProductsModal(props) {
 					<i className="fa fa-close"></i>
 				</Button>
 
-				<Button
-					variant="primary"
-					onClick={() => props.handleDownloadReport(props.elementId)}
-				>
+				<Button variant="primary" onClick={props.handledownload}>
 					<span className="me-2">Download</span>
 					<i className="fa fa-download"></i>
 				</Button>
