@@ -1,4 +1,5 @@
 const { Variant } = require("../models/Variant");
+const { CustomerAddress } = require("../models/Customer");
 
 class Delivery {
     static async calcDeliveryEstimation(zipcode, cartId) {
@@ -6,6 +7,12 @@ class Delivery {
         deliveryDays =
             Delivery.calcDistanceEstimation(zipcode) +
             (await Delivery.estimationStockCalc(cartId));
+        return deliveryDays;
+    }
+
+    static async calcVariantDeliveryEstimation(zipcode, stock) {
+        let deliveryDays = Delivery.calcDistanceEstimation(zipcode);
+        deliveryDays += stock <= 0 ? 3 : 0;
         return deliveryDays;
     }
 
@@ -57,6 +64,20 @@ class Delivery {
     static async estimationStockCalc(cartId) {
         const isOutOfStock = await Variant.checkCartItemVariantStock(cartId);
         return isOutOfStock ? 3 : 0;
+    }
+
+    static async getDeliveryEstimationByUserAndVariant(userId, stock) {
+        const addresses = await CustomerAddress.getAddressesById(userId);
+
+        for (const address of addresses) {
+            address.estimated_delivery =
+                await Delivery.calcVariantDeliveryEstimation(
+                    address.postal_code,
+                    stock
+                );
+        }
+
+        return addresses;
     }
 }
 

@@ -61,6 +61,22 @@ class CustomerAddress {
     }
 
     async save() {}
+
+    static async getAddressesById(customerId) {
+        const get_address_query = `
+            select
+                *
+            from
+                customer_address
+            where
+                customer_id = ?
+        `;
+
+        const [addresses, _] = await db.execute(get_address_query, [
+            customerId,
+        ]);
+        return addresses;
+    }
 }
 
 class CustomerMobile {

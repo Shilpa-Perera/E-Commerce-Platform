@@ -5,6 +5,7 @@ import { getVariant, getVariantById } from "../../services/variantService";
 import Carousel from "../common/carousel";
 import { variantImageUrl } from "../../services/imageService";
 import Loading from "../common/loading";
+import ProductEstimatedDelivery from "./productEstimatedDelivery";
 
 class ProductBody extends Component {
     state = {
@@ -125,6 +126,7 @@ class ProductBody extends Component {
 
         const { user } = this.props;
         const isCustomer = !(user && user.role === "admin");
+        const isLoggedCustomer = user && user.role === "customer";
 
         const { product, variant, images } = this.state;
         if (product) {
@@ -135,6 +137,8 @@ class ProductBody extends Component {
                 product.options && product.options.length > 0;
             const price = variant === null ? product.price : variant.price;
             const noVariant = variant === null ? true : null;
+            const inStock =
+                variant !== null && variant.quantity > 0 ? true : null;
             const outOfStock =
                 variant !== null && variant.quantity <= 0 ? true : null;
 
@@ -256,6 +260,19 @@ class ProductBody extends Component {
                                 )}
                                 {productAvailability && (
                                     <React.Fragment>
+                                        {isLoggedCustomer &&
+                                            variant &&
+                                            variantAvailability && (
+                                                <ProductEstimatedDelivery
+                                                    addresses={
+                                                        variant.addresses
+                                                    }
+                                                    availability={
+                                                        variantAvailability
+                                                    }
+                                                    inStock={inStock}
+                                                />
+                                            )}
                                         <div className="d-flex flex-row-reverse mt-5">
                                             <div>
                                                 <h4>

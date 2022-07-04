@@ -1,10 +1,22 @@
 const _ = require("lodash");
+const jwt = require("jsonwebtoken");
 const { Variant, validateVariant } = require("../models/Variant");
+const config = require("config");
+const ROLE = require("../util/roles.json");
+const { Delivery } = require("../util/delivery");
 
 class VariantController {
     static async getVariant(req, res, next) {
         const { body } = req.query;
         const { product_id, options } = JSON.parse(body);
+
+        const token = req.header("x-auth-token");
+        let user = null;
+        try {
+            user = token
+                ? jwt.verify(token, config.get("jwtPrivateKey"))
+                : null;
+        } catch (e) {}
 
         let variantIds = false;
         let variantIdResults = [];
@@ -25,8 +37,18 @@ class VariantController {
         if (variantIds.length === 1) {
             const variantId = variantIds[0];
             const variant = await Variant.getVariant(variantId);
+
             const allImages = await Variant.fetchAllImages(variantId);
             variant.images = allImages[0];
+
+            variant.addresses =
+                user && user.role === ROLE.CUSTOMER
+                    ? await Delivery.getDeliveryEstimationByUserAndVariant(
+                          user.user_id,
+                          variant.quantity
+                      )
+                    : [];
+
             return res.send(variant);
         }
         return res.send({ variant_id: 0 });
@@ -43,6 +65,22 @@ class VariantController {
 
         const allImages = await Variant.fetchAllImages(variantId);
         variant.images = allImages[0];
+
+        const token = req.header("x-auth-token");
+        let user = null;
+        try {
+            user = token
+                ? jwt.verify(token, config.get("jwtPrivateKey"))
+                : null;
+        } catch (e) {}
+
+        variant.addresses =
+            user && user.role === ROLE.CUSTOMER
+                ? await Delivery.getDeliveryEstimationByUserAndVariant(
+                      user.user_id,
+                      variant.quantity
+                  )
+                : [];
 
         return res.send(variant);
     }
