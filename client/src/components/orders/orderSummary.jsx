@@ -131,7 +131,7 @@ class OrderSummary extends Form {
                                             </h6>
                                             <div className="products ">
                                                 <p className="">
-                                                    Order Date-Time:{" "}
+                                                    Order Date - Time:{" "}
                                                     {orderDetails.date}
                                                 </p>{" "}
                                                 <table className="table table-borderless ">
@@ -285,7 +285,8 @@ class OrderSummary extends Form {
                                                                     orderDetails.payment_state
                                                                 }{" "}
                                                                 <br />
-                                                                Payment Date :{" "}
+                                                                Payment Date -
+                                                                Time :{" "}
                                                                 {
                                                                     orderDetails.date_time
                                                                 }{" "}
