@@ -98,7 +98,10 @@ class OrderController {
             orderDateTime: orderDateTime,
             orderName:
                 orderDetails.data.firstName + " " + orderDetails.data.lastName,
-            orderDeliveryAddress: orderDetails.data.deliveryAddress,
+            orderDeliveryAddress:
+                orderDetails.data.deliveryAddress +
+                ", " +
+                orderDetails.data.city,
             zipCode: orderDetails.data.zipcode,
             orderTelephone: orderDetails.data.telephone,
             deliveryMethod: orderDetails.deliveryMethod,
