@@ -59,3 +59,7 @@ export function deleteCustomer(customerId) {
 export function deleteCustomerAddress(addressId) {
     return http.delete(`${apiEndpoint}/addresses/${addressId}`);
 }
+
+export function deleteCustomerMobile(mobileId) {
+    return http.delete(`${apiEndpoint}/mobiles/${mobileId}`);
+}

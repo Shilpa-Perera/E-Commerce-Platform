@@ -162,12 +162,31 @@ class CustomerController {
             customerAddress
         );
         const user = req.user;
-        // console.log("deleteCustomerAddress, user: ", user);
+
         if (
             user.role === ROLE.ADMIN ||
             user.user_id === customerAddress.customer_id
         ) {
             const result = await CustomerAddress.deleteById(req.params.id);
+            res.send(result);
+        } else return res.status(403).send("Access Denied");
+    }
+
+    static async deleteCustomerMobile(req, res, next) {
+        // admin or mobile.customer_id should be customer's
+        const customerMobile = await CustomerMobile.getById(req.params.id);
+        if (!customerMobile)
+            return res
+                .status(404)
+                .send("The customer mobile with given ID not found");
+
+        const user = req.user;
+
+        if (
+            user.role === ROLE.ADMIN ||
+            user.user_id === customerMobile.customer_id
+        ) {
+            const result = await CustomerMobile.deleteById(req.params.id);
             res.send(result);
         } else return res.status(403).send("Access Denied");
     }

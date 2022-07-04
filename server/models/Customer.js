@@ -70,6 +70,26 @@ class CustomerMobile {
         this.mobile = customerMobileDetails.mobile;
     }
 
+    static async getById(mobileId) {
+        const sql = "select * from customer_mobile where telephone_id=?";
+
+        const [mobiles, _] = await db.execute(sql, [mobileId]);
+        return new CustomerMobile(mobiles[0]);
+    }
+
+    static async deleteById(mobileId) {
+        let sql = "delete from customer_mobile where telephone_id=?";
+
+        const result = await db.execute(sql, [mobileId], (err, results) => {
+            if (err) {
+                throw err;
+            } else {
+                console.log("results: ", results);
+            }
+        });
+        return result;
+    }
+
     async update() {
         let sql =
             "update customer_mobile \

@@ -7,6 +7,7 @@ import {
     getCustomer,
     saveCustomer,
     deleteCustomerAddress,
+    deleteCustomerMobile,
 } from "../../services/customerService";
 import Input from "../common/input";
 import { getCurrentUser } from "../../services/authService";
@@ -238,7 +239,30 @@ class CustomerFormBody extends Form {
                 await deleteCustomerAddress(address.address_id);
             } catch (ex) {
                 if (ex.response && ex.response.status === 404)
-                    toast.error("This book has already deleted.");
+                    toast.error("This customer address has already deleted.");
+
+                this.setState({ data: originalData });
+            }
+        }
+    };
+
+    handleDeleteMobile = async (e, mobile) => {
+        e.preventDefault();
+
+        const originalData = this.state.data;
+        const mobiles = originalData.mobiles.filter(
+            (m) => m.index !== mobile.index
+        );
+        const updateData = { ...originalData };
+        updateData.mobiles = mobiles;
+        this.setState({ data: updateData });
+
+        if (mobile.telephone_id !== -1) {
+            try {
+                await deleteCustomerMobile(mobile.telephone_id);
+            } catch (ex) {
+                if (ex.response && ex.response.status === 404)
+                    toast.error("This customer mobile has already deleted.");
 
                 this.setState({ data: originalData });
             }
@@ -503,6 +527,12 @@ class CustomerFormBody extends Form {
                                                         mobile.index
                                                     }
                                                     className="btn btn-danger mb-3"
+                                                    onClick={(e) =>
+                                                        this.handleDeleteMobile(
+                                                            e,
+                                                            mobile
+                                                        )
+                                                    }
                                                 >
                                                     Delete
                                                 </button>
