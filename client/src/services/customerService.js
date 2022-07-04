@@ -35,7 +35,7 @@ export function saveCustomer(customer) {
     body.mobiles = mobiles;
     body.addresses = addresses;
 
-    console.log("saveCustomer", body);
+    // console.log("saveCustomer", body);
     if (body.customer_id !== -1) {
         // update routine
         const url = customerUrl(body.customer_id);
