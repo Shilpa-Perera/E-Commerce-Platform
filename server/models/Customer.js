@@ -161,9 +161,15 @@ class Customer {
     // POST
     // inside awaits should call within a transaction
     async save() {
-        await this.saveCustomer();
-        await this.saveMobiles();
-        await this.saveAddresses();
+        const connection = await db.getConnection();
+
+        try {
+            await connection.beginTransaction();
+            await this.saveCustomer(connection);
+            await this.saveMobiles(connection);
+            await this.saveAddresses(connection);
+            await connection.commit();
+        } catch (ex) {}
     }
 
     generateQueryToSave() {
@@ -244,11 +250,11 @@ class Customer {
         );
     }
 
-    async saveCustomer() {
+    async saveCustomer(connection) {
         let sql =
             "insert into customer (first_name,last_name,email,password) values (?,?,?,?);";
 
-        await db.execute(
+        await connection.execute(
             sql,
             [this.first_name, this.last_name, this.email, this.password],
             (err, results) => {
@@ -265,14 +271,14 @@ class Customer {
     async updateMobiles() {}
 
     // before executing "cusomter_id" should be SET
-    async saveMobiles() {
+    async saveMobiles(connection) {
         // this.mobiles not include "customer_id"
 
         const query = this.getSaveMobilesQueryWithParams().query;
         const params = this.getSaveMobilesQueryWithParams().params;
         // console.log(query);
         // console.log(params);
-        await db.execute(query, params, (err, results) => {
+        await connection.execute(query, params, (err, results) => {
             if (err) {
                 throw err;
             } else {
@@ -282,11 +288,11 @@ class Customer {
     }
 
     // before executing "cusomter_id" should be SET
-    async saveAddresses() {
+    async saveAddresses(connection) {
         const query = this.getSaveAddressesQueryWithParams().query;
         const params = this.getSaveAddressesQueryWithParams().params;
 
-        await db.execute(query, params, (err, results) => {
+        await connection.execute(query, params, (err, results) => {
             if (err) {
                 throw err;
             } else {
