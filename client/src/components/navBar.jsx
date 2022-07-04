@@ -222,6 +222,14 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
 									id="profile-collapse"
 									aria-labelledby="profileDropdown"
 								>
+									<li>
+										<span className="dropdown-item">
+											{isAdmin ? user.name : `${user.first_name} ${user.last_name}`}
+										</span>
+									</li>
+									<li>
+										<hr className="dropdown-divider" />
+									</li>
 									{user && !isAdmin && (
 										<li>
 											<NavLink
