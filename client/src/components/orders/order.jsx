@@ -127,6 +127,25 @@ class OrderView extends Component {
                                     </div>
                                     <div className="mb-3 row">
                                         <label
+                                            htmlFor="f5"
+                                            className="col-sm-4 col-form-label"
+                                        >
+                                            ZIP code
+                                        </label>
+                                        <div className="col-sm-6">
+                                            <input
+                                                type="text"
+                                                readOnly
+                                                className="form-control-plaintext"
+                                                id="f5"
+                                                value={
+                                                    orderValues.zip_code
+                                                }
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="mb-3 row">
+                                        <label
                                             htmlFor="f1"
                                             className="col-sm-4 col-form-label"
                                         >
