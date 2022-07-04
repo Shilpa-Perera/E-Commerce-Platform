@@ -10,6 +10,7 @@ import Loading from "../common/loading";
 import { getCurrentUser } from "../../services/authService";
 import { stringDecrypt } from "../../utils/stringEncryptDecrypt";
 
+//## Fix time to local timezone
 class OrderSummary extends Form {
     state = {
         orderDetails: null,
@@ -75,7 +76,6 @@ class OrderSummary extends Form {
     render() {
         if (this.state.loading) return <Loading />;
         const { cart, orderDetails } = this.state;
-
         if (cart && orderDetails) {
             const orderDetails = this.state.orderDetails[0];
             return (
@@ -153,6 +153,16 @@ class OrderSummary extends Form {
                                                             <td className="col-6">
                                                                 {
                                                                     orderDetails.delivery_address
+                                                                }
+                                                            </td>
+                                                        </tr>
+                                                        <tr className="content">
+                                                            <td className="col-6">
+                                                                ZIP code
+                                                            </td>
+                                                            <td className="col-6">
+                                                                {
+                                                                    orderDetails.zip_code
                                                                 }
                                                             </td>
                                                         </tr>
