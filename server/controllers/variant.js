@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 const { Variant, validateVariant } = require("../models/Variant");
 const config = require("config");
 const ROLE = require("../util/roles.json");
-const { CustomerAddress } = require("../models/Customer");
 const { Delivery } = require("../util/delivery");
 
 class VariantController {
@@ -66,6 +65,22 @@ class VariantController {
 
         const allImages = await Variant.fetchAllImages(variantId);
         variant.images = allImages[0];
+
+        const token = req.header("x-auth-token");
+        let user = null;
+        try {
+            user = token
+                ? jwt.verify(token, config.get("jwtPrivateKey"))
+                : null;
+        } catch (e) {}
+
+        variant.addresses =
+            user && user.role === ROLE.CUSTOMER
+                ? await Delivery.getDeliveryEstimationByUserAndVariant(
+                      user.user_id,
+                      variant.quantity
+                  )
+                : [];
 
         return res.send(variant);
     }
