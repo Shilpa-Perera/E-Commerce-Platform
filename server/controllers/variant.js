@@ -42,20 +42,13 @@ class VariantController {
             const allImages = await Variant.fetchAllImages(variantId);
             variant.images = allImages[0];
 
-            if (user && user.role === ROLE.CUSTOMER) {
-                const addresses = await CustomerAddress.getAddressesById(
-                    user.user_id
-                );
-                for (const address of addresses) {
-                    address.estimated_delivery =
-                        await Delivery.calcVariantDeliveryEstimation(
-                            address.postal_code,
-                            variant.quantity
-                        );
-                }
-
-                variant.addresses = addresses;
-            }
+            variant.addresses =
+                user && user.role === ROLE.CUSTOMER
+                    ? await Delivery.getDeliveryEstimationByUserAndVariant(
+                          user.user_id,
+                          variant.quantity
+                      )
+                    : [];
 
             return res.send(variant);
         }
