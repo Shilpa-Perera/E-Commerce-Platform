@@ -198,6 +198,16 @@ class CheckoutFormCard extends Form {
                                             type="text"
                                             data-bs-toggle="dropdown"
                                             aria-expanded="false"
+                                            style={
+                                                this.state.errors
+                                                    .deliveryAddress ===
+                                                '"Delivery Address" is not allowed to be empty'
+                                                    ? {
+                                                          position: "relative",
+                                                          top: "-13px",
+                                                      }
+                                                    : {}
+                                            }
                                         ></button>
                                         <ul className="dropdown-menu dropdown-menu-end">
                                             {adddressArray.map((e, i) => {
@@ -221,8 +231,6 @@ class CheckoutFormCard extends Form {
                                 </div>
                             </div>
                         )}
-                        {/* {this.state.customerId && (
-                        )} */}
 
                         <div className="col-6 form-group mb-3">
                             {this.renderInput("city", "City")}
@@ -237,7 +245,10 @@ class CheckoutFormCard extends Form {
                         </div>
 
                         <div className="col-12 form-group mb-3">
-                            {this.renderStyledButton("Proceed to Payment","hover-focus")}
+                            {this.renderStyledButton(
+                                "Proceed to Payment",
+                                "hover-focus"
+                            )}
                         </div>
                     </div>
                 </form>
