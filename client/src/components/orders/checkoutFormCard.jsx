@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import Form from "../common/form";
 import Joi from "joi-browser";
 import { setOrderDetails } from "../../services/orderService";
@@ -25,6 +24,8 @@ class CheckoutFormCard extends Form {
         page: null,
         estimatedDelivery: null,
         customerId: null,
+        adddressArray: null,
+        addressId: null,
         errors: [],
     };
 
@@ -83,6 +84,10 @@ class CheckoutFormCard extends Form {
                     zipcode: customer.addresses[0].postal_code,
                     telephone: customer.mobiles[0].mobile,
                 };
+                this.setState({
+                    adddressArray: customer.addresses,
+                    addressId: customer.addresses[0].address_id,
+                });
             } catch (error) {
                 return this.setState({ data: data, loading: false });
             }
@@ -122,9 +127,31 @@ class CheckoutFormCard extends Form {
         this.setState({ loading: false });
     };
 
+    updateAddress(x = 0) {
+        const updatedAddress = this.state.adddressArray[x];
+        const customerAddress =
+            updatedAddress.po_box + ", " + updatedAddress.street_name;
+
+        let data = {
+            firstName: this.state.data.firstName,
+            lastName: this.state.data.lastName,
+            email: this.state.data.email,
+            deliveryAddress: customerAddress,
+            city: updatedAddress.city,
+            zipcode: updatedAddress.postal_code,
+            telephone: this.state.data.telephone,
+        };
+        this.setState({ data: data });
+    }
+
     render() {
+        let adddressArray = null;
         if (this.state.loading) return <Loading />;
         if (this.state.page === null) {
+            this.state.customerId !== null
+                ? (adddressArray = this.state.adddressArray)
+                : (adddressArray = null);
+
             return (
                 <form onSubmit={this.handleSubmit}>
                     <div className="row p-5 div-dark">
@@ -139,23 +166,74 @@ class CheckoutFormCard extends Form {
                             {this.renderInput("email", "Email Address")}
                         </div>
                         <div className="col-12 form-group mb-3">
-                            
-                            {this.renderInputWithCustomError("telephone", "Telephone Number", "Invalid Telephone Number")}
-                        </div>
-
-                        <div className="col-12 form-group mb-3">
-                            {this.renderInput(
-                                "deliveryAddress",
-                                "Delivery Address"
+                            {this.renderInputWithCustomError(
+                                "telephone",
+                                "Telephone Number",
+                                "Invalid Telephone Number"
                             )}
                         </div>
+
+                        {!this.state.customerId && (
+                            <div className="col-12 mb-3 form-group">
+                                {this.renderInput(
+                                    "deliveryAddress",
+                                    "Street Address"
+                                )}
+                            </div>
+                        )}
+                        {this.state.customerId && (
+                            <div className="col-12 row pe-0">
+                                <div className="col-11 mb-3 form-group mb-0 pe-0">
+                                    <div className="">
+                                        {this.renderInput(
+                                            "deliveryAddress",
+                                            "Street Address"
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="col-1 mb-2 position-relative ps-0 pe-0">
+                                    <div className="position-absolute top-50 start-50 translate-middle w-100">
+                                        <button
+                                            className="btn btn-outline-secondary dropdown-toggle w-100"
+                                            type="text"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                        ></button>
+                                        <ul className="dropdown-menu dropdown-menu-end">
+                                            {adddressArray.map((e, i) => {
+                                                return (
+                                                    <li
+                                                        className="dropdown-item"
+                                                        onClick={() => {
+                                                            return this.updateAddress(
+                                                                i
+                                                            );
+                                                        }}
+                                                    >
+                                                        {e.po_box +
+                                                            " " +
+                                                            e.street_name}
+                                                    </li>
+                                                );
+                                            })}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        {/* {this.state.customerId && (
+                        )} */}
 
                         <div className="col-6 form-group mb-3">
                             {this.renderInput("city", "City")}
                         </div>
 
                         <div className="col-6 form-group mb-3">
-                            {this.renderInputWithCustomError("zipcode", "ZIP Code", "Invalid ZIP Code")}
+                            {this.renderInputWithCustomError(
+                                "zipcode",
+                                "ZIP Code",
+                                "Invalid ZIP Code"
+                            )}
                         </div>
 
                         <div className="col-12 form-group mb-3">
