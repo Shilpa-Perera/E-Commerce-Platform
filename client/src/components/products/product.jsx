@@ -5,6 +5,7 @@ import { getVariant, getVariantById } from "../../services/variantService";
 import Carousel from "../common/carousel";
 import { variantImageUrl } from "../../services/imageService";
 import Loading from "../common/loading";
+import ProductEstimatedDelivery from "./productEstimatedDelivery";
 
 class ProductBody extends Component {
     state = {
@@ -19,32 +20,39 @@ class ProductBody extends Component {
 
     async populateVariant() {
         const { id: product_id } = this.props;
-        let { selectedOptions: options } = this.state;
+        let { selectedOptions: options, product } = this.state;
 
-        if (options.length > 0) {
-            for (const option of options) {
-                if (option.value_id === 0) {
-                    return;
-                }
-            }
-
-            try {
-                const { data: variant } = await getVariant(product_id, options);
-
-                let images = [];
-                if (variant.variant_id !== 0 && variant.images.length > 0) {
-                    for (const { image_name } of variant.images) {
-                        images.push(variantImageUrl(image_name));
+        let variant = null;
+        try {
+            if (options.length > 0) {
+                for (const option of options) {
+                    if (option.value_id === 0) {
+                        return;
                     }
-                } else {
-                    images = [...this.state.defaultImages];
                 }
 
-                this.setState({ variant, images });
-            } catch (e) {
-                if (e.response && e.response.status === 404)
-                    this.props.replace("/not-found");
+                const { data } = await getVariant(product_id, options);
+                variant = data;
+            } else {
+                const { data } = await getVariantById(
+                    product.default_variant_id
+                );
+                variant = data;
             }
+
+            let images = [];
+            if (variant.variant_id !== 0 && variant.images.length > 0) {
+                for (const { image_name } of variant.images) {
+                    images.push(variantImageUrl(image_name));
+                }
+            } else {
+                images = [...this.state.defaultImages];
+            }
+
+            this.setState({ variant, images });
+        } catch (e) {
+            if (e.response && e.response.status === 404)
+                this.props.replace("/not-found");
         }
     }
 
@@ -118,10 +126,12 @@ class ProductBody extends Component {
 
         const { user } = this.props;
         const isCustomer = !(user && user.role === "admin");
+        const isLoggedCustomer = user && user.role === "customer";
 
         const { product, variant, images } = this.state;
         if (product) {
-            const available = product.availability === "AVAILABLE";
+            const productAvailability = product.availability === "AVAILABLE";
+            const variantAvailability = variant && variant.variant_id !== 0;
 
             const optionsAvailable =
                 product.options && product.options.length > 0;
@@ -129,7 +139,8 @@ class ProductBody extends Component {
             const noVariant = variant === null ? true : null;
             const inStock =
                 variant !== null && variant.quantity > 0 ? true : null;
-            const outOfStock = inStock ? null : true;
+            const outOfStock =
+                variant !== null && variant.quantity <= 0 ? true : null;
 
             return (
                 <div className="container-fluid mb-5">
@@ -247,8 +258,21 @@ class ProductBody extends Component {
                                         </table>
                                     </div>
                                 )}
-                                {available && (
+                                {productAvailability && (
                                     <React.Fragment>
+                                        {isLoggedCustomer &&
+                                            variant &&
+                                            variantAvailability && (
+                                                <ProductEstimatedDelivery
+                                                    addresses={
+                                                        variant.addresses
+                                                    }
+                                                    availability={
+                                                        variantAvailability
+                                                    }
+                                                    inStock={inStock}
+                                                />
+                                            )}
                                         <div className="d-flex flex-row-reverse mt-5">
                                             <div>
                                                 <h4>
@@ -260,31 +284,33 @@ class ProductBody extends Component {
                                                 </h4>
                                             </div>
                                         </div>
-                                        {variant && inStock && isCustomer && (
-                                            <div className="d-flex flex-row-reverse mt-5">
-                                                <div>
-                                                    <button
-                                                        className="btn btn-outline-success hover-focus"
-                                                        onClick={() =>
-                                                            this.props.onAddToCart(
-                                                                this.state
-                                                                    .variant
-                                                                    .variant_id
-                                                            )
-                                                        }
-                                                    >
-                                                        Add to cart
-                                                        <span className="ms-2">
-                                                            <i className="fa fa-cart-plus"></i>
-                                                        </span>
-                                                    </button>
+                                        {variant &&
+                                            variantAvailability &&
+                                            isCustomer && (
+                                                <div className="d-flex flex-row-reverse mt-5">
+                                                    <div>
+                                                        <button
+                                                            className="btn btn-outline-success hover-focus"
+                                                            onClick={() =>
+                                                                this.props.onAddToCart(
+                                                                    this.state
+                                                                        .variant
+                                                                        .variant_id
+                                                                )
+                                                            }
+                                                        >
+                                                            Add to cart
+                                                            <span className="ms-2">
+                                                                <i className="fa fa-cart-plus"></i>
+                                                            </span>
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        )}
-                                        {variant && outOfStock && (
+                                            )}
+                                        {outOfStock && (
                                             <div className="container mt-5">
                                                 <div
-                                                    className="alert alert-danger d-flex align-items-center"
+                                                    className="alert alert-warning d-flex align-items-center"
                                                     role="alert"
                                                 >
                                                     <div className="bi flex-shrink-0 me-2">
@@ -299,7 +325,7 @@ class ProductBody extends Component {
                                         )}
                                     </React.Fragment>
                                 )}
-                                {!available && (
+                                {!productAvailability && (
                                     <div className="container mt-5">
                                         <div
                                             className="alert alert-danger d-flex align-items-center"
@@ -310,6 +336,22 @@ class ProductBody extends Component {
                                             </div>
                                             <div>
                                                 Item is currently unavailable!
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                                {variant && !variantAvailability && (
+                                    <div className="container mt-5">
+                                        <div
+                                            className="alert alert-danger d-flex align-items-center"
+                                            role="alert"
+                                        >
+                                            <div className="bi flex-shrink-0 me-2">
+                                                <i className="fa fa-warning"></i>
+                                            </div>
+                                            <div>
+                                                Selected variant is currently
+                                                unavailable!
                                             </div>
                                         </div>
                                     </div>

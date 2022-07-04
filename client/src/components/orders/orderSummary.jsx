@@ -8,7 +8,9 @@ import { useParams, Link } from "react-router-dom";
 import NotFound from "../notFound";
 import Loading from "../common/loading";
 import { getCurrentUser } from "../../services/authService";
+import { stringDecrypt } from "../../utils/stringEncryptDecrypt";
 
+//## Fix time to local timezone
 class OrderSummary extends Form {
     state = {
         orderDetails: null,
@@ -17,18 +19,31 @@ class OrderSummary extends Form {
     };
 
     async componentDidMount() {
+        let orderId = null;
         const { id } = this.props;
+
+        try {
+            orderId = await stringDecrypt(id);
+        } catch (error) {
+            this.setState({ loading: false });
+            return;
+        }
+
         let customer_id = null;
         let user_id,
             role = null;
         try {
             const { user_id: user_id, role: role } = await getCurrentUser();
         } catch (e) {}
-        
-        const { data: s } = await getOrder(id);
+
+        const { data: s } = await getOrder(orderId);
+
         try {
             customer_id = s.orderDetails[0].customer_id;
-        } catch (error) {}
+        } catch (error) {
+            this.setState({ loading: false });
+            return;
+        }
 
         if (role === "customer" && user_id !== customer_id) {
             this.setState({ loading: false });
@@ -61,7 +76,6 @@ class OrderSummary extends Form {
     render() {
         if (this.state.loading) return <Loading />;
         const { cart, orderDetails } = this.state;
-
         if (cart && orderDetails) {
             const orderDetails = this.state.orderDetails[0];
             return (
@@ -112,10 +126,12 @@ class OrderSummary extends Form {
                                                 </div>
                                             </div>
                                             <hr />
-                                            <h6 className="h5">Order Details</h6>
+                                            <h6 className="h5">
+                                                Order Details
+                                            </h6>
                                             <div className="products ">
                                                 <p className="">
-                                                    Order Date-Time:{" "}
+                                                    Order Date - Time:{" "}
                                                     {orderDetails.date}
                                                 </p>{" "}
                                                 <table className="table table-borderless ">
@@ -137,6 +153,16 @@ class OrderSummary extends Form {
                                                             <td className="col-6">
                                                                 {
                                                                     orderDetails.delivery_address
+                                                                }
+                                                            </td>
+                                                        </tr>
+                                                        <tr className="content">
+                                                            <td className="col-6">
+                                                                ZIP code
+                                                            </td>
+                                                            <td className="col-6">
+                                                                {
+                                                                    orderDetails.zip_code
                                                                 }
                                                             </td>
                                                         </tr>
@@ -259,7 +285,8 @@ class OrderSummary extends Form {
                                                                     orderDetails.payment_state
                                                                 }{" "}
                                                                 <br />
-                                                                Payment Date :{" "}
+                                                                Payment Date -
+                                                                Time :{" "}
                                                                 {
                                                                     orderDetails.date_time
                                                                 }{" "}
@@ -310,7 +337,8 @@ class OrderSummary extends Form {
 }
 
 function OrderReport(props) {
-    const { id } = useParams();
+    let { id } = useParams();
+
     return <OrderSummary {...{ props, id }} />;
 }
 

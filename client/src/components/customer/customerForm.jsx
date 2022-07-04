@@ -336,8 +336,8 @@ class CustomerFormBody extends Form {
                                     <div className="container   p-5 ">
                                         {addresses.map((address, index) => (
                                             <div
-                                                key={index}
                                                 className="row card mb-3 dark"
+                                                key={index}
                                             >
                                                 <div className="col ">
                                                     <Input
@@ -498,8 +498,8 @@ class CustomerFormBody extends Form {
                                     <h3>Mobiles</h3>
                                 </div>
                                 <div className="container mb-5  p-5 div-dark">
-                                    {mobiles.map((mobile) => (
-                                        <div className="row">
+                                    {mobiles.map((mobile, index) => (
+                                        <div className="row" key={index}>
                                             <div className="col">
                                                 <Input
                                                     data-array-name="mobiles"
@@ -526,7 +526,7 @@ class CustomerFormBody extends Form {
                                             <div
                                                 className="col"
                                                 style={{
-                                                    "margin-top": "25px",
+                                                    marginTop: "25px",
                                                 }}
                                             >
                                                 <button

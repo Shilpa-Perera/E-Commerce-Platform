@@ -38,7 +38,7 @@ class ProductInterestReportPageBody extends ProductInterestReport {
 
     render() {
         const { product, options, data, loading } = this.state;
-        const elementId = "p-i-report";
+        const elementId = "p-i-report-page";
 
         if (loading) return <Loading />;
 

@@ -195,6 +195,13 @@ class Variant {
     static getSchema() {
         return Variant.#schema;
     }
+
+    static async checkCartItemVariantStock(cartId) {
+        const stock_level_query =
+            "SELECT * FROM variant NATURAL JOIN cart_product WHERE cart_id = ? AND quantity<=0;";
+        const [result] = await db.execute(stock_level_query, [cartId]);
+        return result.length > 0;
+    }
 }
 
 function validateVariant(variant, props) {

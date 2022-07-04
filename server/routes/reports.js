@@ -6,20 +6,20 @@ const { ReportController } = require("../controllers/report");
 const router = express();
 
 router.get(
-    "/products/interest/:id",
-    [auth, authPage([ROLE.ADMIN])],
-    ReportController.getProductInterestReport
+	"/products/interest/:id",
+	[auth, authPage([ROLE.ADMIN])],
+	ReportController.getProductInterestReport
 );
 router.get(
-    "/prducts/max_sale/:start_date/:end_date",
-    [auth, authPage([ROLE.ADMIN])],
-    ReportController.getMaxSaleProductsReport
+	"/max_sale/:start_date/:end_date/:no_of_rows",
+	[auth, authPage([ROLE.ADMIN])],
+	ReportController.getMaxSaleProductsReport
 );
 
 router.get(
-    "/quaterly-sales-report/:year",
-    [auth, authPage([ROLE.ADMIN])],
-    ReportController.getQuaterlySalesReport
+	"/quaterly-sales-report/:year",
+	[auth, authPage([ROLE.ADMIN])],
+	ReportController.getQuaterlySalesReport
 );
 
 module.exports = router;
