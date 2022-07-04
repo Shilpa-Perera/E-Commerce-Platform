@@ -205,7 +205,12 @@ class Customer {
             await this.saveMobiles(connection);
             await this.saveAddresses(connection);
             await connection.commit();
-        } catch (ex) {}
+        } catch (ex) {
+            await connection.rollback();
+            await connection.release();
+            throw ex;
+        }
+        await connection.release();
     }
 
     generateQueryToSave() {
@@ -290,18 +295,14 @@ class Customer {
         let sql =
             "insert into customer (first_name,last_name,email,password) values (?,?,?,?);";
 
-        await connection.execute(
-            sql,
-            [this.first_name, this.last_name, this.email, this.password],
-            (err, results) => {
-                if (err) {
-                    throw err;
-                } else {
-                    console.log("results: ", results);
-                }
-            }
-        );
-        this.customer_id = (await Customer.findByEmail(this.email)).customer_id;
+        const result = await connection.execute(sql, [
+            this.first_name,
+            this.last_name,
+            this.email,
+            this.password,
+        ]);
+        connection.unprepare(sql);
+        this.customer_id = result[0].insertId;
     }
 
     async updateMobiles() {}
