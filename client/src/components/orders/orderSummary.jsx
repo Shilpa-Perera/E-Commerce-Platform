@@ -105,7 +105,7 @@ class OrderSummary extends Form {
                                 </button>
                             </div>
                             <div className="mb-5">
-                                <div className="row d-flex justify-content-center">
+                                <div className="row d-flex justify-content-center pb-4">
                                     <div className="col-md-8">
                                         <div
                                             id="divToPrint"
