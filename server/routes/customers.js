@@ -6,20 +6,36 @@ const express = require("express");
 const { OrderController } = require("../controllers/order");
 const router = express();
 
-router.get("/addresses", [auth], CustomerController.getCustomerAddresses);
-router.get("/mobiles", [auth], CustomerController.getCustomerMobiles);
+router.get(
+    "/addresses",
+    [auth, authPage([ROLE.ADMIN, ROLE.CUSTOMER])],
+    CustomerController.getCustomerAddresses
+);
+router.get(
+    "/mobiles",
+    [auth, authPage([ROLE.ADMIN, ROLE.CUSTOMER])],
+    CustomerController.getCustomerMobiles
+);
 router.get("/orders/:id", [auth], OrderController.getCustomerOrders);
-router.get("/", CustomerController.getAllCustomers);
+router.get(
+    "/",
+    [auth, authPage([ROLE.ADMIN])],
+    CustomerController.getAllCustomers
+);
 router.get(
     "/:id",
     [auth, authPage([ROLE.ADMIN, ROLE.CUSTOMER])],
     CustomerController.getCustomer
 );
 router.post("/", CustomerController.postCustomer);
-router.put("/:id", [auth], CustomerController.updateCustomer);
+router.put(
+    "/:id",
+    [auth, authPage([ROLE.ADMIN, ROLE.CUSTOMER])],
+    CustomerController.updateCustomer
+);
 router.delete(
     "/addresses/:id",
-    [auth],
+    [auth, authPage([ROLE.ADMIN, ROLE.CUSTOMER])],
     CustomerController.deleteCustomerAddress
 );
 router.delete(
