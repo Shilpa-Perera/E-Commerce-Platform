@@ -329,8 +329,11 @@ class CustomerFormBody extends Form {
                                 </div>
                                 <div className="">
                                     <div className="container   p-5 ">
-                                        {addresses.map((address) => (
-                                            <div className="row card mb-3 dark">
+                                        {addresses.map((address, index) => (
+                                            <div
+                                                key={index}
+                                                className="row card mb-3 dark"
+                                            >
                                                 <div className="col ">
                                                     <Input
                                                         data-array-name="addresses"
