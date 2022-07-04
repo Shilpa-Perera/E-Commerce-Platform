@@ -58,7 +58,7 @@ CREATE PROCEDURE `order_transaction` (IN `orderCartId` INT(10), IN `orderDate` D
    SELECT @newOrder :=order_id FROM `order` WHERE cart_id = orderCartId;
    INSERT INTO `sell` (`date_time`, `order_id`, `delivery_state`, `payment_state`) VALUES (sellDateTime, @newOrder, 'PROCESSING', sellPaymentStatus);
    CALL update_product_variants_quantity_from_cart(orderCartId);
-   UPDATE `cart` SET `state` = 'INACTIVE' WHERE `cart`.`cart_id` = orderCartId;
+   UPDATE `cart` SET `state` = 'INACTIVE', customer_id = orderCustomerId WHERE `cart`.`cart_id` = orderCartId;
  SET orderIdOutput = @newOrder;
  COMMIT;
  SELECT orderIdOutput;
