@@ -19,10 +19,9 @@ class CustomerController {
         const customer = await Customer.fetchAllInfoById(req.params.id);
         if (!customer)
             return res.status(404).send("The customer with given ID not found");
-        // console.log("getCustomer: inside", customer);
+
         const user = req.user;
-        // console.log("req.params.id", req.params.id, typeof req.params.id);
-        // console.log("user.user_id", user.user_id, typeof user.user_id);
+
         if (
             user.role === ROLE.ADMIN ||
             user.user_id === parseInt(req.params.id)
@@ -33,28 +32,18 @@ class CustomerController {
             // console.log("can't send user, access denied");
             return res.status(403).send("Access Denied");
         }
-
-        // if (!req.query.type || req.query.type === '1') {
-        //   // only basic details
-        //   const customer = await Customer.findById(req.params.id);
-        //   res.send(customer);
-        // }
-        // else if (req.query.type === '2') {
-        //   // all details
-
-        // }
     }
 
     static async getCustomerAddresses(req, res, next) {
         const user = req.user;
-        console.log("getCustomerAddresses", user);
+
         const customerAddresses = await Customer.fetchAddresses(user.user_id);
         res.send(customerAddresses);
     }
 
     static async getCustomerMobiles(req, res, next) {
         const user = req.user;
-        console.log("getCustomerMobiles", user);
+
         const customerMobiles = await Customer.fetchMobiles(user.user_id);
         res.send(customerMobiles);
     }
@@ -91,7 +80,7 @@ class CustomerController {
         });
 
         await customer.save();
-        console.log("customer saved");
+
         const token = customer.generateAuthToken();
         res.header("x-auth-token", token).send(
             _.pick(customer, ["user_id", "first_name", "last_name", "email"])
@@ -117,7 +106,6 @@ class CustomerController {
                 customer_id: req.params.id,
                 ...address,
             });
-            // console.log(addressObj);
 
             // has a error not fixed... if req.body.addresses contain address_id with them.. this will work..
             if (addressObj.address_id !== -1) await addressObj.update();
@@ -131,7 +119,6 @@ class CustomerController {
                 customer_id: req.params.id,
                 ...mobile,
             });
-            // console.log(mobileObj);
 
             if (mobileObj.telephone_id !== -1) await mobileObj.update();
             else customer.mobiles.push(mobileObj);
@@ -157,10 +144,7 @@ class CustomerController {
             return res
                 .status(404)
                 .send("The customer address with given ID not found");
-        console.log(
-            "deleteCustomerAddress, customerAddress: ",
-            customerAddress
-        );
+
         const user = req.user;
 
         if (
