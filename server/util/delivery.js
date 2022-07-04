@@ -9,6 +9,12 @@ class Delivery {
         return deliveryDays;
     }
 
+    static async calcVariantDeliveryEstimation(zipcode, stock) {
+        let deliveryDays = Delivery.calcDistanceEstimation(zipcode);
+        deliveryDays += stock <= 0 ? 3 : 0;
+        return deliveryDays;
+    }
+
     static calcDistanceEstimation(zipcode) {
         const mainCities = [
             "00100",
