@@ -39,13 +39,6 @@ drop table if exists sub_category;
 drop table if exists category;
 drop view if exists texas_e_store.items ;
 
-create view items as  select p.product_title, v.variant_name, cp.number_of_items ,s. date_time 
-        from sell s join `order` o using (order_id) 
-                    join cart_product cp using(cart_id)
-                    join variant v using (variant_id)  
-                    join product p using(product_id) 
-                    where s.delivery_state = "PROCESSING" and  s.payment_state = "PAID" ;
-
 DELIMITER $$
 --
 -- Procedures
@@ -315,3 +308,10 @@ alter table product
     add constraint FK_Product_DefaultVariant
         foreign key (default_variant_id)
         references variant(variant_id);
+
+create view items as  select p.product_title, v.variant_name, cp.number_of_items ,s. date_time
+                      from sell s join `order` o using (order_id)
+                                  join cart_product cp using(cart_id)
+                                  join variant v using (variant_id)
+                                  join product p using(product_id)
+                      where s.delivery_state = 'PROCESSING' and  s.payment_state = 'PAID' ;
