@@ -41,13 +41,13 @@ export function saveCustomer(customer) {
         const url = customerUrl(body.customer_id);
         delete body.customer_id;
 
-        console.log("send to update url", body);
+        // console.log("send to update url", body);
         return http.put(url, body);
     } else {
         // register routine
         delete body.customer_id;
 
-        console.log("post body: ", body);
+        // console.log("post body: ", body);
         return http.post(apiEndpoint, body);
     }
 }

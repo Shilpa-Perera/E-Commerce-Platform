@@ -22,6 +22,7 @@ export function loginUserWithJwt(jwt) {
 
 export function logoutUser() {
     localStorage.removeItem(tokenKey);
+    http.setJwt("");
 }
 
 export function getJwt() {

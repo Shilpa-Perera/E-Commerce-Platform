@@ -184,8 +184,13 @@ class CustomerFormBody extends Form {
 
             user && user.role === ROLE.ADMIN
                 ? this.props.navigate("/customers")
-                : this.props.navigate("/");
+                : this.props.navigate(`/customers/${user.user_id}`);
 
+            if (user) {
+                toast.success("Customer updated successfully.", {
+                    theme: "dark",
+                });
+            }
             // this.props.navigate("/");
         } catch (ex) {
             console.log(ex);
