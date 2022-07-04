@@ -194,10 +194,20 @@ class CheckoutFormCard extends Form {
                                 <div className="col-1 mb-2 position-relative ps-0 pe-0">
                                     <div className="position-absolute top-50 start-50 translate-middle w-100">
                                         <button
-                                            className="btn btn-outline-secondary dropdown-toggle w-100"
+                                            className="btn btn-outline-secondary dropdown-toggle w-100 hover-focus"
                                             type="text"
                                             data-bs-toggle="dropdown"
                                             aria-expanded="false"
+                                            style={
+                                                this.state.errors
+                                                    .deliveryAddress ===
+                                                '"Delivery Address" is not allowed to be empty'
+                                                    ? {
+                                                          position: "relative",
+                                                          top: "-13px",
+                                                      }
+                                                    : {}
+                                            }
                                         ></button>
                                         <ul className="dropdown-menu dropdown-menu-end">
                                             {adddressArray.map((e, i) => {
@@ -221,8 +231,6 @@ class CheckoutFormCard extends Form {
                                 </div>
                             </div>
                         )}
-                        {/* {this.state.customerId && (
-                        )} */}
 
                         <div className="col-6 form-group mb-3">
                             {this.renderInput("city", "City")}
@@ -237,7 +245,10 @@ class CheckoutFormCard extends Form {
                         </div>
 
                         <div className="col-12 form-group mb-3">
-                            {this.renderStyledButton("Proceed to Payment")}
+                            {this.renderStyledButton(
+                                "Proceed to Payment",
+                                "hover-focus"
+                            )}
                         </div>
                     </div>
                 </form>

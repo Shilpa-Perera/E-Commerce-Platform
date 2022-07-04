@@ -182,12 +182,18 @@ class CustomerFormBody extends Form {
             await saveCustomer(data);
             const user = getCurrentUser();
 
-            user && user.role === ROLE.ADMIN
-                ? this.props.navigate("/customers")
-                : this.props.navigate(`/customers/${user.user_id}`);
-
             if (user) {
+                if (user.role === ROLE.ADMIN) {
+                    this.props.navigate("/customers");
+                } else if (user.role === ROLE.CUSTOMER) {
+                    this.props.navigate(`/customers/${user.user_id}`);
+                }
                 toast.success("Customer updated successfully.", {
+                    theme: "dark",
+                });
+            } else {
+                this.props.navigate("/");
+                toast.success("Customer registered successfully.", {
                     theme: "dark",
                 });
             }
