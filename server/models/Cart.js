@@ -14,13 +14,19 @@ class Cart {
 		return db.execute("select * from cart;");
 	}
 
-	static async getCartByID(cart_id) {
-		let stmt = `select * from cart where cart_id=? ;`;
-		const [cart, _] = await db.execute(stmt, [cart_id]);
-		if (cart.length > 0) {
-			return cart[0];
-		}
-		return false;
+	// static async getCartByID(cart_id) {
+	// 	let stmt = `select * from cart where cart_id=? ;`;
+	// 	const [cart, _] = await db.execute(stmt, [cart_id]);
+	// 	if (cart.length > 0) {
+	// 		return cart[0];
+	// 	}
+	// 	return false;
+	// }
+
+	static async getCartByCustomerID(cusomter_id) {
+		let stmt = `select cart_id from cart where customer_id=? and state=?`;
+		const [cart_id, _] = await db.execute(stmt, [cusomter_id, "ACTIVE"]);
+		return cart_id;
 	}
 
 	static async getNewGuestCart() {
