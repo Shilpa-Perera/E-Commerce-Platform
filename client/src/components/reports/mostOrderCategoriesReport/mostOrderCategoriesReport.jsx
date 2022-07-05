@@ -20,22 +20,7 @@ ChartJS.register(
     Legend
 );
 
-class ProductInterestReport extends Component {
-    months = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-    ];
-
+class MostOrderCategoriesReport extends Component {
     getOptions = () => {
         return {
             indexAxis: "y",
@@ -51,7 +36,7 @@ class ProductInterestReport extends Component {
                 },
                 title: {
                     display: true,
-                    text: "Product Interest Report",
+                    text: "Category with Most Orders",
                 },
             },
             scale: {
@@ -71,19 +56,18 @@ class ProductInterestReport extends Component {
                     display: true,
                     title: {
                         display: true,
-                        text: "Month",
+                        text: "Category",
                     },
                 },
             },
         };
     };
 
-    getData = ({ product_title }, reportData) => {
+    getData = (reportData) => {
         const data = {
             labels: [],
             datasets: [
                 {
-                    label: product_title,
                     data: [],
                     borderColor: "rgb(53, 162, 235)",
                     backgroundColor: "rgba(53, 162, 235, 0.5)",
@@ -93,11 +77,7 @@ class ProductInterestReport extends Component {
 
         if (reportData.length > 0) {
             for (const reportDataItem of reportData) {
-                data.labels.push(
-                    `${this.months[reportDataItem.month - 1]} ${
-                        reportDataItem.year
-                    }`
-                );
+                data.labels.push(reportDataItem.category_name);
                 data.datasets[0].data.push(reportDataItem.count);
             }
 
@@ -111,14 +91,11 @@ class ProductInterestReport extends Component {
         return data;
     };
 
-    renderCanvasHeading = (title) => {
+    renderCanvasHeading = () => {
         return (
             <div>
                 <div className="d-flex justify-content-center mb-2">
-                    <h1>Product Interest Report</h1>
-                </div>
-                <div className="d-flex justify-content-center mb-4">
-                    <h3>{title}</h3>
+                    <h1>Category with Most Orders</h1>
                 </div>
             </div>
         );
@@ -135,4 +112,4 @@ class ProductInterestReport extends Component {
     };
 }
 
-export default ProductInterestReport;
+export default MostOrderCategoriesReport;
