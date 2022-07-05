@@ -19,6 +19,14 @@ class OrderController {
         const { id } = req.params;
         const orderCart = await Order.getOrderCart(id);
         const orderDetails = await Order.getOrderById(id);
+
+        orderDetails[0].date = DateTime.convertToLocalDateTime(
+            orderDetails[0].date
+        );
+        orderDetails[0].date_time = DateTime.convertToLocalDateTime(
+            orderDetails[0].date_time
+        );
+
         const orderArray = {
             orderDetails: orderDetails,
             orderCart: orderCart[0],
@@ -27,20 +35,22 @@ class OrderController {
     }
 
     static async setOrderDetails(req, res) {
-        const test = req.body;
-        const validation = OrderController.validateData(test);
+        const orderData = req.body;
+        const validation = OrderController.validateData(orderData);
         let validateResult = validation[0];
         let error = validation[1];
         let estimatedDeliveryTime = await Delivery.calcDeliveryEstimation(
-            test.data.zipcode,
-            test.cartId
+            orderData.data.zipcode,
+            orderData.cartId
         ); // Estimated Delivery days calculation
         if (validateResult) {
             console.log("valid", error);
 
-            return res.status(200).send([test, error, estimatedDeliveryTime]);
+            return res
+                .status(200)
+                .send([orderData, error, estimatedDeliveryTime]);
         }
-        return res.status(200).send([test, error]);
+        return res.status(200).send([orderData, error]);
     }
 
     static validateData(data) {
