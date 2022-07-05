@@ -6,6 +6,7 @@ import {
 } from "../../services/categoryService";
 import CategoryList from "../products/categoryList";
 import SubCategoryList from "../products/subCategoryList";
+import { toast } from "react-toastify";
 
 class CategoryLink extends Component {
     state = {
@@ -45,6 +46,10 @@ class CategoryLink extends Component {
 
         this.setState({
             subCategories: subCategories,
+        });
+
+        toast.success("Link SubCategory Successfully.", {
+            theme: "dark",
         });
     };
 
