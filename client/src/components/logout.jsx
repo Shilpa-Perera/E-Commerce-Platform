@@ -9,7 +9,8 @@ function Logout({ setUser }) {
 		const user = auth.getCurrentUser();
 		const cart_id = getCartId();
 
-		if (user && cart_id === undefined) {
+		if (user && cart_id !== undefined) {
+			// not old carts login and just logout case
 			const id = user.user_id;
 			setCustomerId(getCartId(), id);
 		}

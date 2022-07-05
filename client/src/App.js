@@ -282,6 +282,7 @@ function App() {
 						<Logout
 							setUser={(user) => {
 								setUser(user);
+								setItemCount(0);
 							}}
 						/>
 					}
