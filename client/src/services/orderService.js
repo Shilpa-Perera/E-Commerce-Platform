@@ -42,5 +42,5 @@ export function validateAndConfirmOrder(details) {
 }
 
 export function updateOrderStatus(orderDetails){
-    return http.put(`${apiEndpoint}/update`, _.pick(orderDetails, ["data", "orderId"]));
+    return http.put(`${apiEndpoint}/update`, _.pick(orderDetails, ["data", "orderId", "initialPaymentState"]));
 }
