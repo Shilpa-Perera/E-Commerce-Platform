@@ -14,8 +14,19 @@ class ProductInterestReportModal extends ProductInterestReport {
         const elementId = "p-i-report-modal";
 
         if (available) {
-            options = this.getOptions();
-            data = this.getData(product, reportData);
+            options = this.getOptions(
+                "Product Interest Report",
+                "Orders Count",
+                "Month",
+                true
+            );
+            data = this.getData(
+                product.product_title,
+                reportData,
+                "",
+                "count",
+                this.getLabel
+            );
         }
 
         return (

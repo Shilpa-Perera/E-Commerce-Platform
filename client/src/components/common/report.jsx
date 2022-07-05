@@ -8,8 +8,8 @@ import {
     Title,
     Tooltip,
 } from "chart.js";
+import { getChartBackgroundColors } from "../../utils/chartColors";
 import { Bar } from "react-chartjs-2";
-import { getChartBackgroundColors } from "../../../utils/chartColors";
 
 ChartJS.register(
     CategoryScale,
@@ -20,54 +20,19 @@ ChartJS.register(
     Legend
 );
 
-class MostOrderCategoriesReport extends Component {
-    getOptions = () => {
-        return {
-            indexAxis: "y",
-            elements: {
-                bar: {
-                    borderWidth: 2,
-                },
-            },
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: false,
-                },
-                title: {
-                    display: true,
-                    text: "Category with Most Orders",
-                },
-            },
-            scale: {
-                ticks: {
-                    precision: 0,
-                },
-            },
-            scales: {
-                x: {
-                    display: true,
-                    title: {
-                        display: true,
-                        text: "Orders Count",
-                    },
-                },
-                y: {
-                    display: true,
-                    title: {
-                        display: true,
-                        text: "Category",
-                    },
-                },
-            },
-        };
-    };
-
-    getData = (reportData) => {
+class Report extends Component {
+    getData = (
+        title,
+        reportData,
+        labelProperty,
+        valueProperty,
+        labelCallback = null
+    ) => {
         const data = {
             labels: [],
             datasets: [
                 {
+                    label: title,
                     data: [],
                     borderColor: "rgb(53, 162, 235)",
                     backgroundColor: "rgba(53, 162, 235, 0.5)",
@@ -77,8 +42,11 @@ class MostOrderCategoriesReport extends Component {
 
         if (reportData.length > 0) {
             for (const reportDataItem of reportData) {
-                data.labels.push(reportDataItem.category_name);
-                data.datasets[0].data.push(reportDataItem.count);
+                if (labelCallback === null)
+                    data.labels.push(reportDataItem[labelProperty]);
+                else data.labels.push(labelCallback(reportDataItem));
+
+                data.datasets[0].data.push(reportDataItem[valueProperty]);
             }
 
             const { borderColors, bgColors } = getChartBackgroundColors(
@@ -91,14 +59,46 @@ class MostOrderCategoriesReport extends Component {
         return data;
     };
 
-    renderCanvasHeading = () => {
-        return (
-            <div>
-                <div className="d-flex justify-content-center mb-2">
-                    <h1>Category with Most Orders</h1>
-                </div>
-            </div>
-        );
+    getOptions = (title, xAxisLabel, yAxisLabel, isHorizontal = false) => {
+        return {
+            indexAxis: isHorizontal ? "y" : "x",
+            elements: {
+                bar: {
+                    borderWidth: 2,
+                },
+            },
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false,
+                },
+                title: {
+                    display: true,
+                    text: title,
+                },
+            },
+            scale: {
+                ticks: {
+                    precision: 0,
+                },
+            },
+            scales: {
+                x: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: xAxisLabel,
+                    },
+                },
+                y: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: yAxisLabel,
+                    },
+                },
+            },
+        };
     };
 
     renderCanvas = (options, data) => {
@@ -112,4 +112,4 @@ class MostOrderCategoriesReport extends Component {
     };
 }
 
-export default MostOrderCategoriesReport;
+export default Report;

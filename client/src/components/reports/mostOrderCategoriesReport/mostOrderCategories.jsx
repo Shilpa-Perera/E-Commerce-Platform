@@ -1,20 +1,40 @@
-import { Component } from "react";
+import React from "react";
 import { getMostOrderCategories } from "../../../services/reportService";
 import Loading from "../../common/loading";
 import { elementToPdf } from "../../../utils/pdfUtils";
-import MostOrderCategoriesReport from "./mostOrderCategoriesReport";
+import Report from "../../common/report";
 
-class MostOrderCategories extends MostOrderCategoriesReport {
+class MostOrderCategories extends Report {
     state = {
         options: null,
         data: null,
         loading: true,
     };
 
+    renderCanvasHeading = () => {
+        return (
+            <div>
+                <div className="d-flex justify-content-center mb-2">
+                    <h1>Category with Most Orders</h1>
+                </div>
+            </div>
+        );
+    };
+
     async componentDidMount() {
         const { data: reportData } = await getMostOrderCategories();
-        const options = this.getOptions();
-        const data = this.getData(reportData);
+        const options = this.getOptions(
+            "Category with Most Orders",
+            "Orders Count",
+            "Category",
+            true
+        );
+        const data = this.getData(
+            "Category with Most Orders",
+            reportData,
+            "category_name",
+            "count"
+        );
         this.setState({ options, data, loading: false });
     }
 
