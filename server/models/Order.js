@@ -37,10 +37,22 @@ class Order {
 
     static async updateOrderStatus(data) {
         const update_status_query =
-            "UPDATE `sell` SET `delivery_state`=?, `payment_state`=? WHERE order_id = ?";
+            "UPDATE `sell` SET `delivery_state`=?, `payment_state`=? WHERE `order_id`=?";
+        result = await db.execute(update_status_query, [
+            data.deliveryStatus,
+            data.paymentStatus,
+            data.orderId,
+        ]);
+        return result;
+    }
+
+    static async updateOrderStatuswithTime(data, paymentTime) {
+        const update_status_query =
+            "UPDATE `sell` SET `delivery_state` = ?, `payment_state` = ?, `date_time` = ? WHERE `order_id` = ?";
         const result = await db.execute(update_status_query, [
             data.deliveryStatus,
             data.paymentStatus,
+            paymentTime,
             data.orderId,
         ]);
         return result;
