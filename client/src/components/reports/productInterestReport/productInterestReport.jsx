@@ -46,7 +46,7 @@ class ProductInterestReport extends Component {
             responsive: true,
             plugins: {
                 legend: {
-                    position: "right",
+                    display: false,
                 },
                 title: {
                     display: true,
