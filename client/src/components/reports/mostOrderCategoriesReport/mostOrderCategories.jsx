@@ -15,7 +15,7 @@ class MostOrderCategories extends Report {
         return (
             <div>
                 <div className="d-flex justify-content-center mb-2">
-                    <h1>Category with Most Orders</h1>
+                    <h1>Most Sold Categories</h1>
                 </div>
             </div>
         );
@@ -24,13 +24,13 @@ class MostOrderCategories extends Report {
     async componentDidMount() {
         const { data: reportData } = await getMostOrderCategories();
         const options = this.getOptions(
-            "Category with Most Orders",
+            "Most Sold Categories",
             "Orders Count",
             "Category",
             true
         );
         const data = this.getData(
-            "Category with Most Orders",
+            "Most Sold Categories",
             reportData,
             "category_name",
             "count"
