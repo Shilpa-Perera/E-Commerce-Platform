@@ -92,8 +92,8 @@ END$$
 
 CREATE PROCEDURE max_sales (IN start_date datetime , IN end_date datetime , IN no_of_rows int(3))
     BEGIN
-        select product_title, variant_name , sum(number_of_items) as sales from items where date_time between start_date and end_date
-        group by product_title,variant_name order by sales desc limit no_of_rows ;
+        select product_title, sum(number_of_items) as sales from items where date_time between start_date and end_date
+        group by product_title order by sales desc limit no_of_rows ;
 END$$
 
 DELIMITER ;
