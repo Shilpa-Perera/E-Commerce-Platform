@@ -94,7 +94,7 @@ class OrderView extends Component {
                                             htmlFor="f1"
                                             className="col-sm-4 col-form-label"
                                         >
-                                            Date and time
+                                            Order Date - time
                                         </label>
                                         <div className="col-sm-6">
                                             <input
@@ -138,9 +138,7 @@ class OrderView extends Component {
                                                 readOnly
                                                 className="form-control-plaintext"
                                                 id="f5"
-                                                value={
-                                                    orderValues.zip_code
-                                                }
+                                                value={orderValues.zip_code}
                                             />
                                         </div>
                                     </div>
@@ -195,6 +193,28 @@ class OrderView extends Component {
                                                 id="f1"
                                                 value={
                                                     orderValues.payment_method
+                                                }
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="mb-3 row">
+                                        <label
+                                            htmlFor="f11"
+                                            className="col-sm-4 col-form-label"
+                                        >
+                                            Payment Date - Time
+                                        </label>
+                                        <div className="col-sm-6">
+                                            <input
+                                                type="text"
+                                                readOnly
+                                                className="form-control-plaintext"
+                                                id="f11"
+                                                value={
+                                                    orderValues.date_time !==
+                                                    null
+                                                        ? orderValues.date_time
+                                                        : "No payment made"
                                                 }
                                             />
                                         </div>
