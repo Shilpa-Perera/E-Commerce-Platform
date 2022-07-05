@@ -125,14 +125,26 @@ class OrderController {
 
     static async updateOrderStatus(req, res) {
         let error = "Updated Successfully!";
+        let time = null; // Date Time of updated Payment
         const data = {
             deliveryStatus: req.body.data.delivery_state,
             paymentStatus: req.body.data.payment_status,
             orderId: req.body.orderId,
         };
 
+        req.body.initialPaymentState === "PENDING" &&
+        data.paymentStatus === "PAID"
+            ? (time = await DateTime.getDBreadyCurrentDateTime())
+            : (time = null);
+
+        req.body.initialPaymentState === data.paymentStatus
+            ? (time = false)
+            : (time = time);
+
         try {
-            await Order.updateOrderStatus(data);
+            time === false
+                ? await Order.updateOrderStatus(data)
+                : await Order.updateOrderStatuswithTime(data, time);
         } catch (error) {
             error = "Error Try Again !";
         }
