@@ -5,7 +5,7 @@ import { EncryptStorage } from "encrypt-storage";
 const encrtption_key = process.env.REACT_APP_ENCRYPTION_KEY;
 export const encryptStorage = new EncryptStorage(encrtption_key, {
 	prefix: "@cart",
-	storageType: "sessionStorage",
+	storageType: "localStorage",
 });
 
 const apiUrl = process.env.REACT_APP_API_URL;
