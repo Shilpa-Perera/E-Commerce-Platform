@@ -58,6 +58,22 @@ class ProductInterestReport extends Component {
                     precision: 0,
                 },
             },
+            scales: {
+                x: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Orders Count'
+                    }
+                },
+                y: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Month'
+                    }
+                }
+            }
         };
     };
 
