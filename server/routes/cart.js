@@ -8,6 +8,7 @@ router.get("/:id", CartController.getCartByCustomerID);
 router.get("/", CartController.getAllCarts);
 
 router.post("/", CartController.addProductToCart);
+router.put("/:id", CartController.setCustomerId);
 router.put("/", CartController.updateItemCount);
 
 router.delete("/:cart_id/:variant_id", CartController.deleteProduct);

@@ -37,6 +37,13 @@ class CartController {
 		res.status(201).send("Success");
 	}
 
+	static async setCustomerId(req, res, next) {
+		const cart_id = req.params.id;
+		const customer_id = req.body.customer_id;
+		await Cart.setCustomerId(cart_id, customer_id);
+		res.status(201).send("Success");
+	}
+
 	static async getNewGuestCart(req, res, next) {
 		const cart_id = await Cart.getNewGuestCart();
 		res.send(cart_id);

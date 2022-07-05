@@ -47,6 +47,16 @@ export async function setCartId() {
 	}
 }
 
+export function setOldCartId(cart_id) {
+	removeCart();
+	encryptStorage.setItem("cart_id", cart_id);
+}
+
+export function setCustomerId(cart_id, customer_id) {
+	//setting customer id in cart when logging out
+	return http.put(`${apiEndpoint}/${cart_id}`, { customer_id: customer_id });
+}
+
 export function getCartId() {
 	return encryptStorage.getItem("cart_id");
 }
@@ -81,4 +91,8 @@ export function addProductToCart(obj) {
 
 export function getNewCartId() {
 	return http.get(newCartUrl());
+}
+
+export function getCartIdByCusId(customer_id) {
+	return http.get(`${apiEndpoint}/${customer_id}`);
 }

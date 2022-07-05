@@ -26,7 +26,7 @@ class Cart {
 	static async getCartByCustomerID(cusomter_id) {
 		let stmt = `select cart_id from cart where customer_id=? and state=?`;
 		const [cart_id, _] = await db.execute(stmt, [cusomter_id, "ACTIVE"]);
-		return cart_id;
+		return cart_id[0];
 	}
 
 	static async getNewGuestCart() {
@@ -50,6 +50,11 @@ class Cart {
 	static async updateItemCount(cart_id, variant_id, number_of_items) {
 		let stmt = `update cart_product set number_of_items = ? where cart_id = ? and variant_id = ? `;
 		await db.execute(stmt, [number_of_items, cart_id, variant_id]);
+	}
+
+	static async setCustomerId(cart_id, customer_id) {
+		let stmt = `update cart set customer_id = ? where cart_id = ?`;
+		await db.execute(stmt, [customer_id, cart_id]);
 	}
 
 	static async deleteProduct(cart_id, variant_id) {
