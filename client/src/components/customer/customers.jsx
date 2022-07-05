@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { getCustomers } from "./../../services/customerService";
 import _ from "lodash";
 import { paginate } from "../../utils/paginate";
+import Pagination from "../common/pagination";
 import CustomersTable from "./customersTable";
 
 class Customers extends Component {
@@ -17,6 +18,10 @@ class Customers extends Component {
         const { data: customers } = await getCustomers();
         this.setState({ customers: customers });
     }
+
+    handlePageChange = (page) => {
+        this.setState({ currentPage: page });
+    };
 
     getPagedData = () => {
         const {
@@ -38,7 +43,7 @@ class Customers extends Component {
         );
 
         const customers = paginate(sorted, currentPage, pageSize);
-        return { totalCount: 10, data: customers };
+        return { totalCount: filtered.length, data: customers };
     };
 
     handleSort = (sortColumn) => {
@@ -47,6 +52,7 @@ class Customers extends Component {
 
     render() {
         const { length: count } = this.state.customers;
+        const { pageSize, currentPage } = this.state;
         const { totalCount, data: customers } = this.getPagedData();
         const { sortColumn } = this.state;
         if (count === 0) return <p>There are no customers in the database.</p>;
@@ -57,6 +63,12 @@ class Customers extends Component {
                     customers={customers}
                     sortColumn={sortColumn}
                     onSort={this.handleSort}
+                />
+                <Pagination
+                    itemsCount={totalCount}
+                    pageSize={pageSize}
+                    currentPage={currentPage}
+                    onPageChange={this.handlePageChange}
                 />
             </div>
         );
