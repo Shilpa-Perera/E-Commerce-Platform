@@ -1,5 +1,6 @@
 import { Modal, Button, Row, Col, Container } from "react-bootstrap";
 import BarChart from "../../common/barChart";
+import MaxSaleBarChart from "./maxSaleProductReportBarChart";
 import MaxSalesProductsReportTable from "./maxSaleProductReportTable";
 
 export default function MaxSaleProductsModal(props) {
@@ -9,11 +10,14 @@ export default function MaxSaleProductsModal(props) {
 			onHide={props.onHide}
 			size="xl"
 			aria-labelledby="contained-modal-title-vcenter"
-			dialogClassName="modal-90w"
+			dialogClassName="modal-90vh"
 			centered
 		>
 			<Modal.Header closeButton>
-				<Modal.Title id="contained-modal-title-vcenter">
+				<Modal.Title
+					id="contained-modal-title-vcenter"
+					className="ms-auto"
+				>
 					Products with most number of sales
 				</Modal.Title>
 			</Modal.Header>
@@ -23,14 +27,14 @@ export default function MaxSaleProductsModal(props) {
 						<Container>
 							<Row>
 								<Col xs={6}>
-									<BarChart
-										labels={props.labels}
-										data={props.data}
-										label="Number of Sales"
+									<MaxSaleBarChart
+										key="bar-chart"
+										report={props.report}
 									/>
 								</Col>
 								<Col xs={6}>
 									<MaxSalesProductsReportTable
+										key="table"
 										data={props.report}
 									></MaxSalesProductsReportTable>
 								</Col>
