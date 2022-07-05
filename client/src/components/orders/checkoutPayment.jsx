@@ -95,6 +95,7 @@ class CheckoutPayment extends Form {
     };
 
     doSubmit = async () => {
+        this.setState({loading:true});
         const details = {
             ...this.state.orderDetails,
             totalPrice: this.state.totalAmount,
@@ -110,6 +111,7 @@ class CheckoutPayment extends Form {
             toast.warning("Payment Failed. Try again", {
                 theme: "dark",
             });
+            this.setState({loading:false});
             return;
         }
 
@@ -117,6 +119,7 @@ class CheckoutPayment extends Form {
 
         // remove cart from session
         this.props.onCheckout();
+        this.setState({loading:false});
         window.location = "/order-summary/" + stringEncrypt(orderIdOutput);
     };
 
