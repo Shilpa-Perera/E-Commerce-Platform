@@ -5,6 +5,7 @@ import Form from "../common/form";
 
 export class OrderStatus extends Form {
     state = {
+        initialPaymentState: null,
         orderId: null,
         data: {
             payment_status: "",
@@ -28,6 +29,7 @@ export class OrderStatus extends Form {
             data: data,
             orderId: this.props.orderId,
             paymentMethod: this.props.orderPaymentMethod,
+            initialPaymentState: this.props.status.paymentState,
         });
     }
 
@@ -35,9 +37,19 @@ export class OrderStatus extends Form {
         const result = await updateOrderStatus(this.state).then(
             (response) => response.data
         );
-        toast.success(result[0], {
-            theme: "dark",
-        });
+        if (result[0] === "Error Try Again !") {
+            toast.error(result[0], {
+                theme: "dark",
+            });
+            return;
+        } else {
+            this.setState({
+                initialPaymentState: this.state.data.payment_status,
+            });
+            toast.success(result[0], {
+                theme: "dark",
+            });
+        }
     }
 
     doSubmit = (event) => {
