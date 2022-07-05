@@ -14,6 +14,13 @@ h4,
 }
 
 /* Custom Styling for Order */
+.drop-bt{
+  z-index: 5;
+}
+
+.drop-div{
+  z-index: 1;
+}
 .order-cart-table-container{
   padding: 5px;
   margin: 2px;
