@@ -314,4 +314,4 @@ create view items as  select p.product_title, v.variant_name, cp.number_of_items
                                   join cart_product cp using(cart_id)
                                   join variant v using (variant_id)
                                   join product p using(product_id)
-                      where s.delivery_state = 'PROCESSING' and  s.payment_state = 'PAID' ;
+                                  where s.payment_state = 'PAID' ;
