@@ -85,7 +85,7 @@ class CategoryLink extends Component {
                         {selectedCategory && subCategories && (
                             <div>
                                 <h1 className="d-inline-block text-muted pb-5">
-                                    Click Sub Categories to Add
+                                    Click Sub Categories to Link
                                 </h1>
                                 <SubCategoryList
                                     subCategories={subCategories}
