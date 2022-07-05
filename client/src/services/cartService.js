@@ -63,26 +63,12 @@ export function getCartId() {
 
 export function removeCart() {
 	encryptStorage.removeItem("cart_id");
-	sessionStorage.setItem("item_count", 0);
+	// sessionStorage.setItem("item_count", 0);
 }
 
-export function getItemCount() {
-	if (!sessionStorage.getItem("item_count")) {
-		sessionStorage.setItem("item_count", 0);
-	}
-
-	return sessionStorage.getItem("item_count");
-}
-
-export function incrementItemCount() {
-	let item_count = parseInt(sessionStorage.getItem("item_count"));
-	item_count++;
-	sessionStorage.setItem("item_count", item_count.toString());
-}
-export function decrementItemCount() {
-	let item_count = parseInt(sessionStorage.getItem("item_count"));
-	item_count--;
-	sessionStorage.setItem("item_count", item_count.toString());
+export async function getItemCount(cart_id) {
+	const { data: products } = await getCartProducts(cart_id);
+	return products.length;
 }
 
 export function addProductToCart(obj) {

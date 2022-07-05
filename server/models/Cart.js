@@ -38,8 +38,20 @@ class Cart {
 	}
 
 	static async getCartProducts(id) {
-		let stmt = `select cp.cart_id , cp.variant_id , v.variant_name , cp.number_of_items , v.price , p.product_title , p.product_id , p.image_name from 
-                    cart_product cp natural join variant v inner join product p using (product_id) where cart_id=? and cp.number_of_items > 0;`;
+		let stmt = `select cp.cart_id , 
+						   cp.variant_id , 
+						   v.variant_name , 
+						   cp.number_of_items , 
+						   v.price , 
+						   p.product_title , 
+						   p.product_id , 
+						   p.image_name 
+						   from 
+                    cart_product cp natural join 
+					variant v inner join product 
+					p using (product_id) 
+					where cart_id=? and 
+					cp.number_of_items > 0;`;
 		const [products, _] = await db.execute(stmt, [id]);
 		if (products.length > 0) {
 			return products;

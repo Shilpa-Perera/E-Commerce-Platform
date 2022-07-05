@@ -3,7 +3,11 @@ import { Navigate, useNavigate } from "react-router-dom";
 import Joi from "joi-browser";
 import Form from "./common/form";
 import auth from "../services/authService";
-import { getCartIdByCusId, setOldCartId } from "../services/cartService";
+import {
+	getCartIdByCusId,
+	setOldCartId,
+	getCartProducts,
+} from "../services/cartService";
 
 class LoginFormBody extends Form {
 	state = {
@@ -19,11 +23,16 @@ class LoginFormBody extends Form {
 	doSubmit = async () => {
 		try {
 			const { data } = this.state;
+
+			/* cart works */
 			await auth.loginCustomer(data.username, data.password);
 			const { data: cart } = await getCartIdByCusId(
 				auth.getCurrentUser().user_id
 			);
 			setOldCartId(cart.cart_id);
+			const { data: products } = await getCartProducts(cart.cart_id);
+			this.props.onLogin(products.length);
+
 			this.props.setUser(auth.getCurrentUser());
 			this.props.navigate("/");
 		} catch (ex) {

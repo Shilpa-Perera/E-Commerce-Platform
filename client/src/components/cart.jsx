@@ -73,7 +73,7 @@ class Cart extends Component {
 	handleDelete = async (cart_id, variant_id) => {
 		await deletedProduct(cart_id, variant_id);
 		await this.cartProducts();
-		this.props.onDeleteFromCart();
+		this.props.onDeleteFromCart(cart_id);
 	};
 
 	render() {
