@@ -44,7 +44,7 @@ class MaxSalesProductsReport extends Form {
 		let labels = [];
 		let values = [];
 		max_sales[0].forEach((element) => {
-			labels.push(element.product_title + " " + element.variant_name);
+			labels.push(element.product_title);
 			values.push(element.sales);
 		});
 

@@ -7,8 +7,9 @@ export default function MaxSaleProductsModal(props) {
 		<Modal
 			show={props.show}
 			onHide={props.onHide}
-			size="lg"
+			size="xl"
 			aria-labelledby="contained-modal-title-vcenter"
+			dialogClassName="modal-90w"
 			centered
 		>
 			<Modal.Header closeButton>
@@ -47,11 +48,12 @@ export default function MaxSaleProductsModal(props) {
 					<span className="me-2">Close</span>
 					<i className="fa fa-close"></i>
 				</Button>
-
-				<Button variant="primary" onClick={props.handledownload}>
-					<span className="me-2">Download</span>
-					<i className="fa fa-download"></i>
-				</Button>
+				{props.report.length !== 0 && (
+					<Button variant="primary" onClick={props.handledownload}>
+						<span className="me-2">Download</span>
+						<i className="fa fa-download"></i>
+					</Button>
+				)}
 			</Modal.Footer>
 		</Modal>
 	);
