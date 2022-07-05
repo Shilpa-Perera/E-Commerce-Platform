@@ -287,9 +287,9 @@ class OrderSummary extends Form {
                                                                 <br />
                                                                 Payment Date -
                                                                 Time :{" "}
-                                                                {
-                                                                    orderDetails.date_time
-                                                                }{" "}
+                                                                {orderDetails.date_time
+                                                                    ? orderDetails.date_time
+                                                                    : "PAYMENT PENDING"}{" "}
                                                                 <br />{" "}
                                                             </td>
                                                         </tr>
