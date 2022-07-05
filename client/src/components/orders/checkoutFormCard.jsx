@@ -26,6 +26,8 @@ class CheckoutFormCard extends Form {
         customerId: null,
         adddressArray: null,
         addressId: null,
+        mobileNumberArray: null,
+        mobileNumberId: null,
         errors: [],
     };
 
@@ -87,6 +89,8 @@ class CheckoutFormCard extends Form {
                 this.setState({
                     adddressArray: customer.addresses,
                     addressId: customer.addresses[0].address_id,
+                    mobileNumberArray: customer.mobiles,
+                    mobileNumberId: customer.mobiles[0].telephone_id,
                 });
             } catch (error) {
                 return this.setState({ data: data, loading: false });
@@ -141,16 +145,37 @@ class CheckoutFormCard extends Form {
             zipcode: updatedAddress.postal_code,
             telephone: this.state.data.telephone,
         };
-        this.setState({ data: data });
+        let errors = this.state.errors;
+        delete errors.deliveryAddress;
+        this.setState({ data: data, errors: errors });
+    }
+    updateTelephone(x = 0) {
+        const telephoneNumber = this.state.mobileNumberArray[x].mobile;
+        let data = {
+            firstName: this.state.data.firstName,
+            lastName: this.state.data.lastName,
+            email: this.state.data.email,
+            deliveryAddress: this.state.data.deliveryAddress,
+            city: this.state.data.city,
+            zipcode: this.state.data.zipcode,
+            telephone: telephoneNumber,
+        };
+        let errors = this.state.errors;
+        delete errors.telephone;
+        this.setState({ data: data, errors: errors });
     }
 
     render() {
         let adddressArray = null;
+        let mobileNumberArray = null;
         if (this.state.loading) return <Loading />;
         if (this.state.page === null) {
             this.state.customerId !== null
                 ? (adddressArray = this.state.adddressArray)
                 : (adddressArray = null);
+            this.state.customerId !== null
+                ? (mobileNumberArray = this.state.mobileNumberArray)
+                : (mobileNumberArray = null);
 
             return (
                 <form onSubmit={this.handleSubmit}>
@@ -165,19 +190,73 @@ class CheckoutFormCard extends Form {
                         <div className="col-12 form-group mb-3">
                             {this.renderInput("email", "Email Address")}
                         </div>
-                        <div className="col-12 form-group mb-3">
-                            {this.renderInputWithCustomError(
-                                "telephone",
-                                "Telephone Number",
-                                "Invalid Telephone Number"
-                            )}
-                        </div>
+
+                        {!this.state.customerId && (
+                            <div className="col-12 form-group mb-3">
+                                {this.renderInputWithCustomError(
+                                    "telephone",
+                                    "Telephone Number",
+                                    "Invalid Telephone Number"
+                                )}
+                            </div>
+                        )}
+
+                        {this.state.customerId && (
+                            <div className="col-12 row pe-0">
+                                <div className="col-11 mb-3 form-group mb-0 pe-0">
+                                    <div className="">
+                                        {this.renderInputWithCustomError(
+                                            "telephone",
+                                            "Telephone Number",
+                                            "Invalid Telephone Number"
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="col-1 mb-2 position-relative ps-0 pe-0">
+                                    <div className="position-absolute top-50 start-50 translate-middle w-100 drop-bt">
+                                        <button
+                                            className="btn btn-outline-secondary dropdown-toggle w-100 hover-focus"
+                                            type="text"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                            style={
+                                                this.state.errors.hasOwnProperty(
+                                                    "telephone"
+                                                )
+                                                    ? {
+                                                          position: "relative",
+                                                          top: "-13px",
+                                                      }
+                                                    : {}
+                                            }
+                                        ></button>
+                                        <ul className="dropdown-menu dropdown-menu-end">
+                                            {mobileNumberArray.map((e, i) => {
+                                                return (
+                                                    <li
+                                                        className="dropdown-item"
+                                                        onClick={() => {
+                                                            return this.updateTelephone(
+                                                                i
+                                                            );
+                                                        }}
+                                                    >
+                                                        {e.mobile}
+                                                    </li>
+                                                );
+                                            })}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
 
                         {!this.state.customerId && (
                             <div className="col-12 mb-3 form-group">
-                                {this.renderInput(
+                                {this.renderInputWithCustomError(
                                     "deliveryAddress",
-                                    "Street Address"
+                                    "Street Address",
+                                    "Required valid street addresss (Max 1000 chr)"
                                 )}
                             </div>
                         )}
@@ -185,13 +264,15 @@ class CheckoutFormCard extends Form {
                             <div className="col-12 row pe-0">
                                 <div className="col-11 mb-3 form-group mb-0 pe-0">
                                     <div className="">
-                                        {this.renderInput(
+                                        {this.renderInputWithCustomError(
                                             "deliveryAddress",
-                                            "Street Address"
+                                            "Street Address",
+                                            "Required valid street addresss"
                                         )}
                                     </div>
                                 </div>
-                                <div className="col-1 mb-2 position-relative ps-0 pe-0">
+                                {/* drop-div: class to fix overlapping issue */}
+                                <div className="col-1 mb-2 position-relative ps-0 pe-0 drop-div">
                                     <div className="position-absolute top-50 start-50 translate-middle w-100">
                                         <button
                                             className="btn btn-outline-secondary dropdown-toggle w-100 hover-focus"
@@ -199,9 +280,9 @@ class CheckoutFormCard extends Form {
                                             data-bs-toggle="dropdown"
                                             aria-expanded="false"
                                             style={
-                                                this.state.errors
-                                                    .deliveryAddress ===
-                                                '"Delivery Address" is not allowed to be empty'
+                                                this.state.errors.hasOwnProperty(
+                                                    "deliveryAddress"
+                                                )
                                                     ? {
                                                           position: "relative",
                                                           top: "-13px",

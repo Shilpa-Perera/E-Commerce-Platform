@@ -82,15 +82,17 @@ class OrderController {
         let paymentStatus = "PENDING";
         const orderDateTime = DateTime.getDBreadyCurrentDateTime();
 
-        // Payment Call
-        let paymentResult = true; // ### to payment Gateway
+        if (orderDetails.paymentMethod === "CARD") {
+            // Payment Call
+            let paymentResult = true; // ### to payment Gateway
 
-        if (!paymentResult && orderDetails.paymentMethod === "CARD") {
-            error = "Payment Failed";
-            return res.status(200).send([orderDetails, error]);
-        } else if (orderDetails.paymentMethod === "CARD") {
-            sellDateTime = orderDateTime;
-            paymentStatus = "PAID";
+            if (!paymentResult) {
+                error = "Payment Failed";
+                return res.status(200).send([orderDetails, error]);
+            } else {
+                sellDateTime = orderDateTime;
+                paymentStatus = "PAID";
+            }
         }
 
         const finalDataFormat = {
@@ -113,7 +115,8 @@ class OrderController {
         try {
             error = await Order.insertNewOrder(finalDataFormat);
         } catch (e) {
-            error = "Payment Failed";
+            error = "Order Failed";
+            return res.status(200).send([orderDetails, error]);
         }
 
         let newOrderId = error[0].at(-2)[0].orderIdOutput;
@@ -130,7 +133,6 @@ class OrderController {
 
         try {
             await Order.updateOrderStatus(data);
-            error = "Staus Updated !";
         } catch (error) {
             error = "Error Try Again !";
         }

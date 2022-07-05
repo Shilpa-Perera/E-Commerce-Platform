@@ -6,6 +6,7 @@ import {
 } from "../../services/categoryService";
 import CategoryList from "../products/categoryList";
 import SubCategoryList from "../products/subCategoryList";
+import { toast } from "react-toastify";
 
 class CategoryLink extends Component {
     state = {
@@ -46,6 +47,10 @@ class CategoryLink extends Component {
         this.setState({
             subCategories: subCategories,
         });
+
+        toast.success("Link SubCategory Successfully.", {
+            theme: "dark",
+        });
     };
 
     handleClearCategorySelection = () => {
@@ -78,16 +83,18 @@ class CategoryLink extends Component {
                     </div>
                     <div className="col-md-8 col-lg-9 col-xxl-10">
                         {selectedCategory && subCategories && (
-                            <SubCategoryList
-                                subCategories={subCategories}
-                                handleSubCategorySelect={
-                                    this.handleSubCategorySelect
-                                }
-                                selectedSubCategory={selectedSubCategory}
-                                // handleClearSelection={
-                                //     this.handleClearSubCategorySelection
-                                // }
-                            />
+                            <div>
+                                <h1 className="d-inline-block text-muted pb-5">
+                                    Click Sub Categories to Link
+                                </h1>
+                                <SubCategoryList
+                                    subCategories={subCategories}
+                                    handleSubCategorySelect={
+                                        this.handleSubCategorySelect
+                                    }
+                                    selectedSubCategory={selectedSubCategory}
+                                />
+                            </div>
                         )}
                     </div>
                 </div>
