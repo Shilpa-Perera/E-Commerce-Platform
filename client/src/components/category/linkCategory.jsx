@@ -78,16 +78,18 @@ class CategoryLink extends Component {
                     </div>
                     <div className="col-md-8 col-lg-9 col-xxl-10">
                         {selectedCategory && subCategories && (
-                            <SubCategoryList
-                                subCategories={subCategories}
-                                handleSubCategorySelect={
-                                    this.handleSubCategorySelect
-                                }
-                                selectedSubCategory={selectedSubCategory}
-                                // handleClearSelection={
-                                //     this.handleClearSubCategorySelection
-                                // }
-                            />
+                            <div>
+                                <h1 className="d-inline-block text-muted pb-5">
+                                    Click Sub Categories to Add
+                                </h1>
+                                <SubCategoryList
+                                    subCategories={subCategories}
+                                    handleSubCategorySelect={
+                                        this.handleSubCategorySelect
+                                    }
+                                    selectedSubCategory={selectedSubCategory}
+                                />
+                            </div>
                         )}
                     </div>
                 </div>
