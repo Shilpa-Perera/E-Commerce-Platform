@@ -9,6 +9,7 @@ import {
     Tooltip,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import { getChartBackgroundColors } from "../../../utils/chartColors";
 
 ChartJS.register(
     CategoryScale,
@@ -43,6 +44,22 @@ class MostOrderCategoriesReport extends Component {
                     precision: 0,
                 },
             },
+            scales: {
+                x: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: "Orders Count",
+                    },
+                },
+                y: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: "Category",
+                    },
+                },
+            },
         };
     };
 
@@ -63,6 +80,12 @@ class MostOrderCategoriesReport extends Component {
                 data.labels.push(reportDataItem.category_name);
                 data.datasets[0].data.push(reportDataItem.count);
             }
+
+            const { borderColors, bgColors } = getChartBackgroundColors(
+                reportData.length
+            );
+            data.datasets[0].borderColor = borderColors;
+            data.datasets[0].backgroundColor = bgColors;
         }
 
         return data;
