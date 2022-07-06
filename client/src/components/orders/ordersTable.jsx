@@ -78,11 +78,33 @@ class OrdersTable extends Component {
     ];
 
     render() {
-        const { orders, sortBy, onSort, loading } = this.props;
+        let { orders, sortBy, onSort, loading, filterOnClick, filterBy } =
+            this.props;
+        if (orders.length === 0) {
+            return Loading();
+        }
+        filterBy !== null
+            ? (orders = orders.filter((e) => {
+                  return e.payment_state === this.props.filterBy;
+              }))
+            : (orders = orders);
         return (
             <div className="pb-5">
                 <div className="container div-dark">
-                    <h3 className="mb-4">Manage Orders</h3>
+                    <div className="row">
+                        <h3 className="mb-2 col-9">Manage Orders</h3>
+                        <div className="col-3">
+                            <select
+                                className="form-select"
+                                aria-label=".form-select-sm example"
+                                onChange={filterOnClick}
+                            >
+                                <option value="">All</option>
+                                <option value="PAID">Paid</option>
+                                <option value="PENDING">Pending</option>
+                            </select>
+                        </div>
+                    </div>
                     <div className="mt-5">
                         {loading && <Loading />}
                         <div className="table-responsive order-table-container">
