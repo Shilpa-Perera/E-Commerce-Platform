@@ -158,8 +158,12 @@ class Product {
                 sc.sub_category_name
             from
                 product_category pc
-                join category c on pc.category_id = c.category_id
-                join sub_category sc on pc.sub_category_id = sc.sub_category_id
+                join
+                    category c
+                    on pc.category_id = c.category_id
+                left outer join
+                    sub_category sc
+                    on pc.sub_category_id = sc.sub_category_id
             where
                 pc.product_id = ?
         `;
