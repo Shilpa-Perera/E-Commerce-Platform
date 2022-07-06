@@ -11,7 +11,9 @@ class OrdersTable extends Component {
     columns = [
         { path: "order_id", label: "Order No" },
         { path: "date", label: "Date" },
-        { path: "order_name", label: "Name" },
+        this.props.userType === "customer"
+            ? { path: null, label: null }
+            : { path: "order_name", label: "Name" },
         {
             key: "payment_method",
             content: ({ payment_method }) => (
@@ -40,13 +42,15 @@ class OrdersTable extends Component {
             ),
             label: "Delivery Status",
         },
-        {
-            key: "phone_number",
-            content: ({ phone_number }) => (
-                <span className="me-2 my-2 my-lg-0">{phone_number}</span>
-            ),
-            label: "Phone number",
-        },
+        this.props.userType === "customer"
+            ? { key: "phone_number", content: null, label: null }
+            : {
+                  key: "phone_number",
+                  content: ({ phone_number }) => (
+                      <span className="me-2 my-2 my-lg-0">{phone_number}</span>
+                  ),
+                  label: "Phone number",
+              },
         {
             key: "order_idK",
             content: ({ order_id }) => (
