@@ -23,13 +23,13 @@ class AddCategoryForm extends Form {
         this.setState({ categories });
     }
 
-    checkCategoryExists = async (new_category_name) => {
+    checkCategoryExists = (new_category_name) => {
         for (let category in this.state.Categories) {
             if (category.toLowerCase() === new_category_name.toLowerCase()) {
                 return true;
             }
-            return false;
         }
+        return false;
     };
 
     doSubmit = async () => {

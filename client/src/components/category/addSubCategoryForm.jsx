@@ -26,7 +26,7 @@ class AddSubCategoryForm extends Form {
         this.setState({ subCategories });
     }
 
-    checkSubCategoryExists = async (new_sub_category_name) => {
+    checkSubCategoryExists = (new_sub_category_name) => {
         for (let subCategory in this.state.subCategories) {
             if (
                 subCategory.toLowerCase() ===
@@ -34,8 +34,8 @@ class AddSubCategoryForm extends Form {
             ) {
                 return true;
             }
-            return false;
         }
+        return false;
     };
 
     doSubmit = async () => {
