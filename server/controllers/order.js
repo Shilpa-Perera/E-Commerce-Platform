@@ -6,12 +6,18 @@ const { Delivery } = require("../util/delivery");
 class OrderController {
     static async getAllOrders(req, res) {
         const allOrders = await Order.fetchAll();
-        res.send(allOrders[0]);
+
+        allOrders[0].map((e)=>e.date = DateTime.convertToLocalDateTime(e.date))
+
+        return res.send(allOrders[0]);
     }
 
     static async getCustomerOrders(req, res) {
         const { id: customerId } = req.params;
         const allCustomerOrders = await Order.getCustomerOrders(customerId);
+
+        allCustomerOrders[0].map((e)=>e.date = DateTime.convertToLocalDateTime(e.date))
+
         return res.status(200).send(allCustomerOrders[0]);
     }
 

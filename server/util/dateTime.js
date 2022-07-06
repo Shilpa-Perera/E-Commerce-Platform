@@ -11,7 +11,7 @@ class DateTime {
     static convertToLocalDateTime(date) {
         if (date) {
             const utcDate = new Date(date);
-            return utcDate.toString().split("GMT")[0];
+            return utcDate.toString().split(" GMT")[0];
         }
         return null;
     }
