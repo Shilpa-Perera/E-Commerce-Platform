@@ -315,6 +315,8 @@ class Customer {
         const params = this.getSaveMobilesQueryWithParams().params;
         // console.log(query);
         // console.log(params);
+        if (!connection) connection = db;
+
         await connection.execute(query, params, (err, results) => {
             if (err) {
                 throw err;
@@ -328,6 +330,8 @@ class Customer {
     async saveAddresses(connection) {
         const query = this.getSaveAddressesQueryWithParams().query;
         const params = this.getSaveAddressesQueryWithParams().params;
+
+        if (!connection) connection = db;
 
         await connection.execute(query, params, (err, results) => {
             if (err) {
