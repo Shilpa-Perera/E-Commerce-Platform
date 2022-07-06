@@ -101,15 +101,19 @@ class Orders extends Component {
                             />
                         </div>
                     </div>
+                    {userType !== null ? (
+                        <OrdersTable
+                            userType={userType}
+                            orders={orders}
+                            sortBy={this.state.sortBy}
+                            onSort={this.handleSort}
+                            loading={this.state.loading}
+                            searchQuery={this.state.searchQuery}
+                        />
+                    ) : (
+                        Loading()
+                    )}
 
-                    <OrdersTable
-                        userType={userType}
-                        orders={orders}
-                        sortBy={this.state.sortBy}
-                        onSort={this.handleSort}
-                        loading={this.state.loading}
-                        searchQuery={this.state.searchQuery}
-                    />
                     <Pagination
                         itemsCount={totalCount}
                         pageSize={pageSize}
