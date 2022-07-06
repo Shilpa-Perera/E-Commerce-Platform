@@ -2,11 +2,11 @@ use texas_e_store;
 
 # admin
 
-INSERT INTO admin (name, email, password) values  ('Achira', 'achira@gmail.com', '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka');
-INSERT INTO admin (name, email, password) values ('Chaturanga', 'chathuranga@gmail.com', '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka');
-INSERT INTO admin (name, email, password) values ('Sasitha', 'sasitha@gmail.com', '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka');
-INSERT INTO admin (name, email, password) values ('Thamindu', 'thamindu@gmail.com', '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka');
-INSERT INTO admin (name, email, password) values ('Shilpa', 'shilpa@gmail.com', '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka');
+insert into admin (name, email, password) values  ('Achira', 'achira@gmail.com', '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka');
+insert into admin (name, email, password) values ('Chaturanga', 'chathuranga@gmail.com', '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka');
+insert into admin (name, email, password) values ('Sasitha', 'sasitha@gmail.com', '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka');
+insert into admin (name, email, password) values ('Thamindu', 'thamindu@gmail.com', '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka');
+insert into admin (name, email, password) values ('Shilpa', 'shilpa@gmail.com', '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka');
 
 #categories
 
@@ -42,6 +42,9 @@ insert into sub_category (sub_category_name) values ('Wireless');
 insert into sub_category (sub_category_name) values ('4 G');
 insert into sub_category (sub_category_name) values ('ADSL');
 insert into sub_category (sub_category_name) values ('Gaming');
+insert into sub_category (sub_category_id, sub_category_name) values (17, 'Dell');
+insert into sub_category (sub_category_id, sub_category_name) values (19, 'Logitech');
+insert into sub_category (sub_category_id, sub_category_name) values (20, 'Corsair');
 
 insert into category_link (category_id, sub_category_id) values (1, 1);
 insert into category_link (category_id, sub_category_id) values (2, 1);
@@ -90,5 +93,8 @@ insert into category_link (category_id, sub_category_id) values (10, 13);
 insert into category_link (category_id, sub_category_id) values (10, 14);
 insert into category_link (category_id, sub_category_id) values (10, 15);
 insert into category_link (category_id, sub_category_id) values (8, 16);
-
-
+insert into category_link (category_id, sub_category_id) values (14, 16);
+insert into category_link (category_id, sub_category_id) values (14, 17);
+insert into category_link (category_id, sub_category_id) values (14, 19);
+insert into category_link (category_id, sub_category_id) values (12, 20);
+insert into category_link (category_id, sub_category_id) values (14, 20);
