@@ -99,7 +99,7 @@ export class OrderStatus extends Form {
                                 to="/orders"
                             >
                                 <i
-                                    className="fa fa-home"
+                                    className="fa fa-shopping-basket"
                                     aria-hidden="true"
                                 ></i>
                             </Link>
