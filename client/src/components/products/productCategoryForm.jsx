@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import Select from "../common/select";
 import { getSubCategories } from "../../services/categoryService";
+import { Link } from "react-router-dom";
 
 class ProductCategoryForm extends Component {
     state = {
         selectedCategory: 0,
         selectedSubCategory: 0,
+        noSubCategory: false,
         subCategories: [],
         subCategoryLoading: false,
         categoryErr: null,
@@ -21,11 +23,13 @@ class ProductCategoryForm extends Component {
         let subCategories = [];
         if (selectedCategory > 0) {
             const { data } = await getSubCategories(selectedCategory);
-            for (const category of data) {
-                subCategories.push({
-                    id: category.sub_category_id,
-                    name: category.sub_category_name,
-                });
+            if (data) {
+                for (const category of data) {
+                    subCategories.push({
+                        id: category.sub_category_id,
+                        name: category.sub_category_name,
+                    });
+                }
             }
         } else {
             categoryErr = "Please select a category";
@@ -35,8 +39,13 @@ class ProductCategoryForm extends Component {
             selectedCategory,
             categoryErr,
             subCategories,
+            noSubCategory: false,
             subCategoryLoading: false,
         });
+    };
+
+    handleNoSubcategory = () => {
+        this.setState({ noSubCategory: true });
     };
 
     handleSubCategoryChange = ({ currentTarget: input }) => {
@@ -51,8 +60,12 @@ class ProductCategoryForm extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
-        const { selectedCategory, selectedSubCategory, subCategories } =
-            this.state;
+        const {
+            selectedCategory,
+            selectedSubCategory,
+            subCategories,
+            noSubCategory,
+        } = this.state;
         let errCnt = 0;
 
         if (selectedCategory > 0) {
@@ -62,28 +75,34 @@ class ProductCategoryForm extends Component {
             ++errCnt;
         }
 
-        if (selectedSubCategory > 0) {
+        if (noSubCategory || selectedSubCategory > 0) {
             this.setState({ subCategoryErr: null });
         } else {
             this.setState({ subCategoryErr: "Select a subcategory." });
             ++errCnt;
         }
 
+        const subCategoryId = noSubCategory ? null : selectedSubCategory;
+        const subCategoryName = noSubCategory
+            ? null
+            : subCategories.find(
+                  (subcategory) => subcategory.id === selectedSubCategory
+              ).name;
+
         if (errCnt === 0) {
             this.props.onSubmit({
                 category_id: selectedCategory,
-                sub_category_id: selectedSubCategory,
+                sub_category_id: subCategoryId,
                 category_name: this.props.categories.find(
                     (category) => category.id === selectedCategory
                 ).name,
-                sub_category_name: subCategories.find(
-                    (subcategory) => subcategory.id === selectedSubCategory
-                ).name,
+                sub_category_name: subCategoryName,
             });
             this.setState({
                 selectedCategory: 0,
                 selectedSubCategory: 0,
                 subCategories: [],
+                noSubCategory: false,
             });
         }
     };
@@ -92,12 +111,15 @@ class ProductCategoryForm extends Component {
         const {
             selectedCategory,
             selectedSubCategory,
+            noSubCategory,
             subCategoryLoading,
             subCategories,
             categoryErr,
             subCategoryErr,
         } = this.state;
         const { categories } = this.props;
+
+        const subCategoryAvailable = subCategories.length > 0;
 
         return (
             <div>
@@ -125,24 +147,65 @@ class ProductCategoryForm extends Component {
                                     </span>
                                 </div>
                             )}
-                            {!subCategoryLoading && (
-                                <Select
-                                    name={"sub_category_id"}
-                                    value={selectedSubCategory}
-                                    label={"Subcategory"}
-                                    error={subCategoryErr}
-                                    options={[
-                                        { id: 0, value: "" },
-                                        ...subCategories,
-                                    ]}
-                                    onChange={this.handleSubCategoryChange}
-                                />
+                            {!subCategoryLoading &&
+                                !noSubCategory &&
+                                subCategoryAvailable && (
+                                    <Select
+                                        name={"sub_category_id"}
+                                        value={selectedSubCategory}
+                                        label={"Subcategory"}
+                                        error={subCategoryErr}
+                                        options={[
+                                            { id: 0, value: "" },
+                                            ...subCategories,
+                                        ]}
+                                        onChange={this.handleSubCategoryChange}
+                                    />
+                                )}
+                            {!subCategoryLoading &&
+                                !noSubCategory &&
+                                !subCategoryAvailable && (
+                                    <div className="mb-3">
+                                        <div className="alert alert-warning">
+                                            <i className="fa fa-warning"></i>
+                                            <span className="mx-2">
+                                                No subcategories linked to this
+                                                category.
+                                            </span>
+                                            <Link
+                                                to="/categories/link-category"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                <span className="btn btn-sm btn-primary">
+                                                    <span className="me-2">
+                                                        Link
+                                                    </span>
+                                                    <i className="fa fa-external-link"></i>
+                                                </span>
+                                            </Link>
+                                        </div>
+                                    </div>
+                                )}
+                            {!noSubCategory && (
+                                <div className="mb-2">
+                                    <span
+                                        className="btn btn-warning me-2 mb-2"
+                                        onClick={this.handleNoSubcategory}
+                                    >
+                                        <span className="me-2">
+                                            No Subcategory
+                                        </span>
+                                        <i className="fa fa-question"></i>
+                                    </span>
+                                </div>
                             )}
                         </div>
                     )}
                     <button
                         disabled={
-                            selectedCategory === 0 || selectedSubCategory === 0
+                            selectedCategory === 0 ||
+                            (!noSubCategory && selectedSubCategory === 0)
                         }
                         className={`btn btn-primary hover-focus`}
                     >
