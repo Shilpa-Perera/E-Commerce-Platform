@@ -43,6 +43,7 @@ DELIMITER $$
 --
 -- Procedures
 --
+drop PROCEDURE if exists `order_transaction`;
 CREATE PROCEDURE `order_transaction` (IN `orderCartId` INT(10), IN `orderDate` DATETIME, IN `orderName` VARCHAR(255), IN `orderAddress` VARCHAR(255), IN `orderZipcode` VARCHAR(10), IN `orderPhoneNumber` VARCHAR(255), IN `orderDeliveryMethod` ENUM('STORE-PICKUP','DELIVERY'), IN `orderPaymentMethod` ENUM('CASH','CARD'), IN `orderCustomerId` INT(10), IN `sellDateTime` DATETIME, IN `sellPaymentStatus` ENUM('PENDING','PAID'), OUT `orderIdOutput` INT(10))  BEGIN
  
  DECLARE exit handler for sqlexception
@@ -64,6 +65,7 @@ CREATE PROCEDURE `order_transaction` (IN `orderCartId` INT(10), IN `orderDate` D
  SELECT orderIdOutput;
  END$$
 
+drop PROCEDURE if exists `order_transaction_guest`;
 CREATE PROCEDURE `order_transaction_guest` (IN `orderCartId` INT(10), IN `orderDate` DATETIME, IN `orderName` VARCHAR(255), IN `orderAddress` VARCHAR(255), IN `orderZipcode` VARCHAR(10), IN `orderPhoneNumber` VARCHAR(255), IN `orderDeliveryMethod` ENUM('STORE-PICKUP','DELIVERY'), IN `orderPaymentMethod` ENUM('CASH','CARD'), IN `orderCustomerId` INT(10), IN `sellDateTime` DATETIME, IN `sellPaymentStatus` ENUM('PENDING','PAID'), OUT `orderIdOutput` INT(10))  BEGIN
  
 
@@ -78,6 +80,7 @@ CREATE PROCEDURE `order_transaction_guest` (IN `orderCartId` INT(10), IN `orderD
  SELECT orderIdOutput;
  END$$
 
+drop PROCEDURE if exists `update_product_variants_quantity_from_cart`;
 CREATE PROCEDURE `update_product_variants_quantity_from_cart` (IN `cartId` INT)  BEGIN  
 	DECLARE i INT DEFAULT 0;
 	SELECT @n:=COUNT(*) FROM `variant` NATURAL JOIN cart_product WHERE cart_id=cartId;
@@ -90,6 +93,7 @@ CREATE PROCEDURE `update_product_variants_quantity_from_cart` (IN `cartId` INT) 
 	END WHILE;
 END$$
 
+drop PROCEDURE if exists max_sales;
 CREATE PROCEDURE max_sales (IN start_date datetime , IN end_date datetime , IN no_of_rows int(3))
     BEGIN
         select product_title, sum(number_of_items) as sales from items where date_time between start_date and end_date
