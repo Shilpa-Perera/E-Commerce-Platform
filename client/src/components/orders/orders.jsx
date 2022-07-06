@@ -89,7 +89,6 @@ class Orders extends Component {
     render() {
         const { searchQuery, pageSize, currentPage, userType } = this.state;
         const { totalCount, data: orders } = this.getPagedData();
-        const plh = "Enter order ID";
         return (
             <div className="container-fluid mb-5">
                 <div className="row">
@@ -98,7 +97,7 @@ class Orders extends Component {
                             <SearchBox
                                 value={searchQuery}
                                 onChange={this.handleSearch}
-                                placeholder={plh}
+                                placeholder={"Enter order ID"}
                             />
                         </div>
                     </div>
@@ -109,7 +108,7 @@ class Orders extends Component {
                         sortBy={this.state.sortBy}
                         onSort={this.handleSort}
                         loading={this.state.loading}
-                        searchQuery= {this.state.searchQuery}
+                        searchQuery={this.state.searchQuery}
                     />
                     <Pagination
                         itemsCount={totalCount}
