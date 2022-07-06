@@ -9,7 +9,7 @@ import Table from "../common/table";
 
 class OrdersTable extends Component {
     columns = [
-        { path: "order_id", label: "Order ID" },
+        { path: "order_id", label: "Order No" },
         { path: "date", label: "Date" },
         { path: "order_name", label: "Name" },
         {
@@ -20,11 +20,25 @@ class OrdersTable extends Component {
             label: "payment method",
         },
         {
+            key: "payment_state",
+            content: ({ payment_state }) => (
+                <span className="me-2 my-2 my-lg-0">{payment_state}</span>
+            ),
+            label: "Payment",
+        },
+        {
             key: "delivery_method",
             content: ({ delivery_method }) => (
                 <span className="me-2 my-2 my-lg-0">{delivery_method}</span>
             ),
             label: "Delivery Method",
+        },
+        {
+            key: "delivery_state",
+            content: ({ delivery_state }) => (
+                <span className="me-2 my-2 my-lg-0">{delivery_state}</span>
+            ),
+            label: "Delivery Status",
         },
         {
             key: "phone_number",
