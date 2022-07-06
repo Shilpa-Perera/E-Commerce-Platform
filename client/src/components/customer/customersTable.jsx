@@ -18,6 +18,7 @@ class CustomersTable extends Component {
         },
         { path: "email", label: "Email" },
         {
+            key: "view",
             content: (customer) => (
                 <Link to={`/customers/${customer.customer_id}`}>view</Link>
             ),

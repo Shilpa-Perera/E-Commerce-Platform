@@ -167,7 +167,7 @@ class QuaterlySalesReport extends Component {
                                     fullscreen={true}
                                 >
                                     <Modal.Header closeButton>
-                                        <div class="d-flex justify-content-left">
+                                        <div className="d-flex justify-content-left">
                                             <Button
                                                 variant="primary"
                                                 onClick={() =>

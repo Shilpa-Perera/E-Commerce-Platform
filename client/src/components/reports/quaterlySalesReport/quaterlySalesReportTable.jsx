@@ -15,7 +15,7 @@ const QuaterlySalesReportTable = ({ dataSource }) => {
             </thead>
             <tbody>
                 {dataSource.map((row, index) => (
-                    <tr>
+                    <tr key={index}>
                         <td>{row.variant_name}</td>
                         <td>{row.q1}</td>
                         <td>{row.q2}</td>
