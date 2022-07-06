@@ -14,6 +14,7 @@ class Orders extends Component {
         userType: null,
         orders: [],
         searchQuery: "",
+        filterBy: null,
         currentPage: 1,
         pageSize: 24,
         sortBy: { path: "order_id", order: "asc" },
@@ -86,6 +87,15 @@ class Orders extends Component {
         return { totalCount: sorted.length, data: orders };
     };
 
+    setFilter = (event) => {
+        const filtertype = event.target.value;
+        if (filtertype === "") {
+            this.setState({ filterBy: null });
+            return;
+        }
+        this.setState({ filterBy: filtertype });
+    };
+
     render() {
         const { searchQuery, pageSize, currentPage, userType } = this.state;
         const { totalCount, data: orders } = this.getPagedData();
@@ -109,6 +119,8 @@ class Orders extends Component {
                             onSort={this.handleSort}
                             loading={this.state.loading}
                             searchQuery={this.state.searchQuery}
+                            filterBy={this.state.filterBy}
+                            filterOnClick={this.setFilter}
                         />
                     ) : (
                         Loading()
