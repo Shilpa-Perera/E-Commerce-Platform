@@ -2,6 +2,7 @@ import React from "react";
 import Joi from "joi-browser";
 import Form from "../common/form";
 import { addCategory, getCategories } from "../../services/categoryService";
+import { toast } from "react-toastify";
 
 class AddCategoryForm extends Form {
     state = {
@@ -43,6 +44,13 @@ class AddCategoryForm extends Form {
                 errors: [],
             };
             this.setState(state);
+
+            toast.success(
+                `${this.state.data.new_category_name} is added added to category`,
+                {
+                    theme: "dark",
+                }
+            );
         } else {
             const errors = { ...this.state.errors };
             errors["adding_error"] = "Category Already Exists";

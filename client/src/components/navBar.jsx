@@ -88,6 +88,14 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                     <li>
                                         <NavLink
                                             className="dropdown-item hover-focus"
+                                            to="/categories/new"
+                                        >
+                                            Add Category or Sub Category
+                                        </NavLink>
+                                    </li>
+                                    <li>
+                                        <NavLink
+                                            className="dropdown-item hover-focus"
                                             to="/categories/link-category"
                                         >
                                             Link Category
