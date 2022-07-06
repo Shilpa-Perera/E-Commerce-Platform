@@ -14,8 +14,8 @@ const FloatingInput = ({ name, label, error, ...rest }) => {
                     placeholder={label}
                 />
                 <label htmlFor={name}>{label}</label>
+                {error && <div className="invalid-feedback">{error}</div>}
             </div>
-            {error && <div className="invalid-feedback">{error}</div>}
         </div>
     );
 };
