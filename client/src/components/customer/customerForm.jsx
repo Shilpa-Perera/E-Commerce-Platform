@@ -44,6 +44,10 @@ class CustomerFormBody extends Form {
             addresses: [{}],
             mobiles: [{}],
         },
+        profile: {
+            first_name: "",
+            last_name: "",
+        },
     };
 
     schema = {
@@ -90,11 +94,6 @@ class CustomerFormBody extends Form {
             .label("Contact No"),
     };
 
-    // constructor() {
-    //   super();
-    //   // const user = getCurrentUser();
-    // }
-
     initiateErrors = () => {
         const errors = {
             addresses: [],
@@ -135,6 +134,11 @@ class CustomerFormBody extends Form {
             };
             const { data: customer } = await getCustomer(customerId);
 
+            const profile = {
+                first_name: customer.first_name,
+                last_name: customer.last_name,
+            };
+
             for (let index = 0; index < customer.addresses.length; index++) {
                 const address = customer.addresses[index];
                 address.index = index;
@@ -152,7 +156,7 @@ class CustomerFormBody extends Form {
 
             customer.password = "password";
 
-            this.setState({ data: customer, errors: errors });
+            this.setState({ data: customer, errors: errors, profile: profile });
         } catch (ex) {
             toast.error("No customer found.");
         }
@@ -280,6 +284,8 @@ class CustomerFormBody extends Form {
         }
     };
 
+    getProfileName = {};
+
     handleArrayChange = ({ currentTarget: input }) => {
         const { arrayName, elementId } = input.dataset;
 
@@ -300,13 +306,15 @@ class CustomerFormBody extends Form {
             last_name,
         } = this.state.data;
 
+        const profile = this.state.profile;
+
         return (
             <div className="container  mb-5">
                 <div className="p-4">
                     <h1>
                         {customerId === -1
                             ? "Register"
-                            : `${first_name} ${last_name}'s Profile`}
+                            : `${profile.first_name} ${profile.last_name}'s Profile`}
                     </h1>
                 </div>
                 <div className="row  div-dark">
