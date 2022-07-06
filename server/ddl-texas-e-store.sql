@@ -177,9 +177,9 @@ create table if not exists product (
 create table if not exists product_category (
     product_id          int unsigned    not null,
     category_id         int unsigned    not null,
-    sub_category_id     int unsigned    not null,
+    sub_category_id     int unsigned    null,
 
-    primary key (product_id, category_id, sub_category_id),
+    unique (product_id, category_id, sub_category_id),
 
     foreign key (product_id)        references      product(product_id)             on delete cascade,
     foreign key (category_id)       references      category(category_id)           on delete cascade,

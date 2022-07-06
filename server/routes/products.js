@@ -47,6 +47,11 @@ router.post(
     ProductController.postCustomFeature
 );
 router.post(
+    "/product-categories/default",
+    [auth, authPage([ROLE.ADMIN])],
+    ProductController.postProductCategoryDefault
+);
+router.post(
     "/product-categories",
     [auth, authPage([ROLE.ADMIN])],
     ProductController.postProductCategory
@@ -78,6 +83,11 @@ router.delete(
     "/feature/:id",
     [auth, authPage([ROLE.ADMIN])],
     ProductController.deleteFeature
+);
+router.delete(
+    "/product-categories/default/:product_id/:category_id",
+    [auth, authPage([ROLE.ADMIN])],
+    ProductController.deleteProductCategoryDefault
 );
 router.delete(
     "/product-categories/:product_id/:category_id/:sub_category_id",

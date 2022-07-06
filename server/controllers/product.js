@@ -60,8 +60,17 @@ class ProductController {
         }
 
         for (const productCategory of product_categories) {
-            const { error: error_pc } =
-                validateProductCategory(productCategory);
+            let error_pc;
+            if (productCategory.sub_category_id) {
+                const { error } = validateProductCategory(productCategory);
+                error_pc = error;
+            } else {
+                const { category_id } = productCategory;
+                const { error } = Joi.object({
+                    category_id: Joi.number().min(1),
+                }).validate({ category_id });
+                error_pc = error;
+            }
             if (error_pc)
                 return res.status(400).send(error_pc.details[0].message);
         }
@@ -101,6 +110,23 @@ class ProductController {
         if (error) return res.status(400).send(error.details[0].message);
 
         await Product.addProductCategory(product_id, product_category);
+
+        res.send({ success: true });
+    }
+
+    static async postProductCategoryDefault(req, res, next) {
+        const { product_id, product_category } = req.body;
+        const { category_id } = product_category;
+
+        let { error } = Joi.object({
+            category_id: Joi.number().min(1),
+        }).validate({ category_id });
+        if (error) return res.status(400).send(error.details[0].message);
+
+        error = validateProductId(product_id);
+        if (error) return res.status(400).send(error.details[0].message);
+
+        await Product.addProductCategoryDefault(product_id, category_id);
 
         res.send({ success: true });
     }
@@ -185,6 +211,11 @@ class ProductController {
             category_id,
             sub_category_id
         );
+    }
+
+    static async deleteProductCategoryDefault(req, res, next) {
+        const { product_id, category_id } = req.params;
+        await Product.deleteProductCategoryDefault(product_id, category_id);
     }
 
     static async deleteProduct(req, res, next) {
