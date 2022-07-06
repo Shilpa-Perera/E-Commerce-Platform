@@ -16,7 +16,8 @@ class Order {
     }
 
     static fetchAll() {
-        const select_all_query = "SELECT * FROM `order` ORDER BY date ASC;";
+        const select_all_query =
+            "SELECT * FROM `order` NATURAL JOIN sell ORDER BY date ASC;";
         const result = db.execute(select_all_query, []);
         return result;
     }
@@ -30,7 +31,7 @@ class Order {
 
     static async getCustomerOrders(customerId) {
         const customer_order_query =
-            "SELECT * FROM `order` WHERE customer_id = ?";
+            "SELECT * FROM `order` NATURAL JOIN sell WHERE customer_id = ?";
         const result = await db.execute(customer_order_query, [customerId]);
         return result;
     }
