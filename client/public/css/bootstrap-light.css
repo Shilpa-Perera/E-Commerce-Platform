@@ -59,6 +59,11 @@ h4,
   max-height: 300px;
   margin: 5px;
   overflow: auto;
+}
+.summary-cart-container{
+  max-height: 300px;
+  margin: 5px;
+  overflow: auto;
   background-color: #f5f5f5;
   border-radius: 5px;
   border: 1px solid #c8c9ca;
