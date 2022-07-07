@@ -109,7 +109,7 @@ class OrderSummary extends Form {
                                     <div className="col-md-8">
                                         <div
                                             id="divToPrint"
-                                            className="border p-3"
+                                            className="border rounded-3 p-3"
                                         >
                                             <div className="d-flex flex-row">
                                                 <div className="d-flex flex-column">
