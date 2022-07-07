@@ -38,10 +38,11 @@ class Form extends Component {
     validateProperty = ({ name, value }, fromAdditional = false) => {
         const obj = { [name]: value };
         if (!fromAdditional) {
-            const { error } = Joi.object({ [name]: this.schema[name] }).validate(obj);
+            const { error } = Joi.object({
+                [name]: this.schema[name],
+            }).validate(obj);
             return error ? error.details[0].message : null;
-        }
-        else {
+        } else {
             // console.log("validateProperty", obj)
             const { error } = Joi.object({
                 [name]: this.additionalSchema[name],
@@ -106,17 +107,6 @@ class Form extends Component {
             </button>
         );
     }
-    renderStyledButtonwithOnclick(label, additionalClasses = "", callback = null, onClick = null) {
-        return (
-            <button
-                disabled={this.validate()}
-                className={`btn btn-primary ${additionalClasses}`}
-                onClick={onClick}           >
-                <span className="me-2">{label}</span>
-                {callback && callback()}
-            </button>
-        );
-    }
 
     renderInput(name, label, type = "text", disabled = false) {
         const { data, errors } = this.state;
@@ -134,7 +124,13 @@ class Form extends Component {
         );
     }
 
-    renderInputWithCustomError(name, label, customError, type = "text", disabled = false) {
+    renderInputWithCustomError(
+        name,
+        label,
+        customError,
+        type = "text",
+        disabled = false
+    ) {
         const { data, errors } = this.state;
         const error = errors[name] ? customError : "";
 
