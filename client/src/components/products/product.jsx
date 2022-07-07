@@ -14,6 +14,7 @@ class ProductBody extends Component {
         variant: null,
         selectedOptions: [],
         images: [],
+        defaultVariantImages: [],
         item_count: this.props.item_count,
     };
 
@@ -28,7 +29,8 @@ class ProductBody extends Component {
             if (options.length > 0) {
                 for (const option of options) {
                     if (option.value_id === 0) {
-                        this.setState({ variant: null })
+                        const images = [...this.state.defaultVariantImages];
+                        this.setState({ variant, images });
                         return;
                     }
                 }
@@ -94,9 +96,12 @@ class ProductBody extends Component {
             }
 
             let images = [];
+            let defaultVariantImages = [];
             if (variant.images.length > 0) {
                 for (const { image_name } of variant.images) {
-                    images.push(variantImageUrl(image_name));
+                    const img = variantImageUrl(image_name);
+                    images.push(img);
+                    defaultVariantImages.push(img);
                 }
             } else {
                 images = [...this.defaultImages];
@@ -107,6 +112,7 @@ class ProductBody extends Component {
                 selectedOptions,
                 variant: null,
                 images,
+                defaultVariantImages,
             });
         } catch (e) {
             if (e.response && e.response.status === 404)
