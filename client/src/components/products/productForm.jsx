@@ -473,76 +473,78 @@ class ProductFormBody extends Form {
                     <h3>Product Categories</h3>
                     <div className="row row-cols-1 row-cols-sm-1 row-cols-md-2">
                         <div className="col mb-3">
-                            <table className="table table-hover">
-                                <TableHeader
-                                    columns={this.product_category_columns}
-                                    sortColumn={null}
-                                />
-                                <tbody>
-                                    {this.state.current_product_categories.map(
-                                        (productCategory, index) => {
-                                            productCategory.index = index;
-                                            return (
-                                                <tr key={"1-" + index}>
-                                                    <td>
-                                                        {
-                                                            productCategory.category_name
-                                                        }
-                                                    </td>
-                                                    <td>
-                                                        {
-                                                            productCategory.sub_category_name
-                                                        }
-                                                    </td>
-                                                    <td>
-                                                        <button
-                                                            className="btn btn-danger hover-focus"
-                                                            onClick={() =>
-                                                                this.handleDeleteProductCategory(
-                                                                    productCategory
-                                                                )
+                            <div className="table-responsive">
+                                <table className="table table-hover">
+                                    <TableHeader
+                                        columns={this.product_category_columns}
+                                        sortColumn={null}
+                                    />
+                                    <tbody>
+                                        {this.state.current_product_categories.map(
+                                            (productCategory, index) => {
+                                                productCategory.index = index;
+                                                return (
+                                                    <tr key={"1-" + index}>
+                                                        <td>
+                                                            {
+                                                                productCategory.category_name
                                                             }
-                                                        >
-                                                            <i className="fa fa-fw fa-trash-o"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            );
-                                        }
-                                    )}
-                                    {this.state.data.product_categories.map(
-                                        (productCategory, index) => {
-                                            productCategory.index = index;
-                                            return (
-                                                <tr key={"2-" + index}>
-                                                    <td>
-                                                        {
-                                                            productCategory.category_name
-                                                        }
-                                                    </td>
-                                                    <td>
-                                                        {
-                                                            productCategory.sub_category_name
-                                                        }
-                                                    </td>
-                                                    <td>
-                                                        <button
-                                                            className="btn btn-danger hover-focus"
-                                                            onClick={() =>
-                                                                this.handleDeleteProductCategory(
-                                                                    productCategory
-                                                                )
+                                                        </td>
+                                                        <td>
+                                                            {
+                                                                productCategory.sub_category_name
                                                             }
-                                                        >
-                                                            <i className="fa fa-fw fa-trash-o"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            );
-                                        }
-                                    )}
-                                </tbody>
-                            </table>
+                                                        </td>
+                                                        <td>
+                                                            <button
+                                                                className="btn btn-danger hover-focus"
+                                                                onClick={() =>
+                                                                    this.handleDeleteProductCategory(
+                                                                        productCategory
+                                                                    )
+                                                                }
+                                                            >
+                                                                <i className="fa fa-fw fa-trash-o"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            }
+                                        )}
+                                        {this.state.data.product_categories.map(
+                                            (productCategory, index) => {
+                                                productCategory.index = index;
+                                                return (
+                                                    <tr key={"2-" + index}>
+                                                        <td>
+                                                            {
+                                                                productCategory.category_name
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            {
+                                                                productCategory.sub_category_name
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            <button
+                                                                className="btn btn-danger hover-focus"
+                                                                onClick={() =>
+                                                                    this.handleDeleteProductCategory(
+                                                                        productCategory
+                                                                    )
+                                                                }
+                                                            >
+                                                                <i className="fa fa-fw fa-trash-o"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            }
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         <div className="col mt-3">
                             <ProductCategoryForm
@@ -556,108 +558,110 @@ class ProductFormBody extends Form {
                     <h3>Custom Features</h3>
                     <div className="row row-cols-1 row-cols-sm-1 row-cols-md-2">
                         <div className="col mb-3">
-                            <table className="table table-hover">
-                                <TableHeader
-                                    columns={this.custom_features_columns}
-                                    sortColumn={null}
-                                />
-                                <tbody>
-                                    {this.state.current_custom_features.map(
-                                        (feature, index) => {
-                                            feature.index = index;
-                                            return (
-                                                <tr key={"1-" + index}>
-                                                    <td>
-                                                        {
-                                                            feature.custom_feature_name
-                                                        }
-                                                    </td>
-                                                    <td>
-                                                        {
-                                                            feature.custom_feature_val
-                                                        }
-                                                    </td>
-                                                    <td>
-                                                        <div
-                                                            className="btn-group btn-group-sm"
-                                                            role="toolbar"
-                                                            aria-label="Actions Toolbar"
-                                                        >
-                                                            <button
-                                                                className="btn btn-warning hover-focus"
-                                                                onClick={() =>
-                                                                    this.handleEditCustomFeature(
-                                                                        feature
-                                                                    )
-                                                                }
+                            <div className="table-responsive">
+                                <table className="table table-hover">
+                                    <TableHeader
+                                        columns={this.custom_features_columns}
+                                        sortColumn={null}
+                                    />
+                                    <tbody>
+                                        {this.state.current_custom_features.map(
+                                            (feature, index) => {
+                                                feature.index = index;
+                                                return (
+                                                    <tr key={"1-" + index}>
+                                                        <td>
+                                                            {
+                                                                feature.custom_feature_name
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            {
+                                                                feature.custom_feature_val
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            <div
+                                                                className="btn-group btn-group-sm"
+                                                                role="toolbar"
+                                                                aria-label="Actions Toolbar"
                                                             >
-                                                                <i className="fa fa-fw fa-pencil-square-o"></i>
-                                                            </button>
-                                                            <button
-                                                                className="btn btn-danger hover-focus"
-                                                                onClick={() =>
-                                                                    this.handleDeleteCustomFeature(
-                                                                        feature
-                                                                    )
-                                                                }
+                                                                <button
+                                                                    className="btn btn-warning hover-focus"
+                                                                    onClick={() =>
+                                                                        this.handleEditCustomFeature(
+                                                                            feature
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <i className="fa fa-fw fa-pencil-square-o"></i>
+                                                                </button>
+                                                                <button
+                                                                    className="btn btn-danger hover-focus"
+                                                                    onClick={() =>
+                                                                        this.handleDeleteCustomFeature(
+                                                                            feature
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <i className="fa fa-fw fa-trash-o"></i>
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            }
+                                        )}
+                                        {this.state.data.custom_features.map(
+                                            (feature, index) => {
+                                                feature.index = index;
+                                                return (
+                                                    <tr key={"2-" + index}>
+                                                        <td>
+                                                            {
+                                                                feature.custom_feature_name
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            {
+                                                                feature.custom_feature_val
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            <div
+                                                                className="btn-group btn-group-sm"
+                                                                role="toolbar"
+                                                                aria-label="Actions Toolbar"
                                                             >
-                                                                <i className="fa fa-fw fa-trash-o"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            );
-                                        }
-                                    )}
-                                    {this.state.data.custom_features.map(
-                                        (feature, index) => {
-                                            feature.index = index;
-                                            return (
-                                                <tr key={"2-" + index}>
-                                                    <td>
-                                                        {
-                                                            feature.custom_feature_name
-                                                        }
-                                                    </td>
-                                                    <td>
-                                                        {
-                                                            feature.custom_feature_val
-                                                        }
-                                                    </td>
-                                                    <td>
-                                                        <div
-                                                            className="btn-group btn-group-sm"
-                                                            role="toolbar"
-                                                            aria-label="Actions Toolbar"
-                                                        >
-                                                            <button
-                                                                className="btn btn-warning hover-focus"
-                                                                onClick={() =>
-                                                                    this.handleEditCustomFeature(
-                                                                        feature
-                                                                    )
-                                                                }
-                                                            >
-                                                                <i className="fa fa-fw fa-pencil-square-o"></i>
-                                                            </button>
-                                                            <button
-                                                                className="btn btn-danger hover-focus"
-                                                                onClick={() =>
-                                                                    this.handleDeleteCustomFeature(
-                                                                        feature
-                                                                    )
-                                                                }
-                                                            >
-                                                                <i className="fa fa-fw fa-trash-o"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            );
-                                        }
-                                    )}
-                                </tbody>
-                            </table>
+                                                                <button
+                                                                    className="btn btn-warning hover-focus"
+                                                                    onClick={() =>
+                                                                        this.handleEditCustomFeature(
+                                                                            feature
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <i className="fa fa-fw fa-pencil-square-o"></i>
+                                                                </button>
+                                                                <button
+                                                                    className="btn btn-danger hover-focus"
+                                                                    onClick={() =>
+                                                                        this.handleDeleteCustomFeature(
+                                                                            feature
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <i className="fa fa-fw fa-trash-o"></i>
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            }
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
                             <div className="collapse" id="collapseTarget">
                                 <EditCustomFeaturesForm
                                     data={this.state.edit_custom_feature}
@@ -679,58 +683,64 @@ class ProductFormBody extends Form {
                     <h3>Options</h3>
                     <div className="row row-cols-1 row-cols-sm-1 row-cols-md-2 mt-2">
                         <div className="col mb-3">
-                            <table className="table table-hover">
-                                <TableHeader
-                                    columns={this.option_columns}
-                                    sortColumn={null}
-                                />
-                                <tbody>
-                                    {this.state.current_options.map(
-                                        (option, index) => (
-                                            <tr key={"1-" + index}>
-                                                <td>{option.option_name}</td>
-                                                <td>
-                                                    {option.values
-                                                        .map(
-                                                            (value) =>
-                                                                value.value_name
-                                                        )
-                                                        .join(", ")}
-                                                </td>
-                                            </tr>
-                                        )
-                                    )}
-                                    {this.state.data.options.map(
-                                        (option, index) => (
-                                            <tr key={"2-" + index}>
-                                                <td>{option.option_name}</td>
-                                                <td>
-                                                    {option.values
-                                                        .map(
-                                                            (value) =>
-                                                                value.value_name
-                                                        )
-                                                        .join(", ")}
-                                                </td>
-                                                {this.state.isNew && (
+                            <div className="table-responsive">
+                                <table className="table table-hover">
+                                    <TableHeader
+                                        columns={this.option_columns}
+                                        sortColumn={null}
+                                    />
+                                    <tbody>
+                                        {this.state.current_options.map(
+                                            (option, index) => (
+                                                <tr key={"1-" + index}>
                                                     <td>
-                                                        <button
-                                                            className="btn btn-sm btn-danger"
-                                                            onClick={() =>
-                                                                this.handleDeleteOption(
-                                                                    index
-                                                                )
-                                                            }
-                                                        >
-                                                            <i className="fa fa-trash-o"></i>
-                                                        </button>
+                                                        {option.option_name}
                                                     </td>
-                                                )}
-                                            </tr>
-                                        )
-                                    )}
-                                </tbody>
-                            </table>
+                                                    <td>
+                                                        {option.values
+                                                            .map(
+                                                                (value) =>
+                                                                    value.value_name
+                                                            )
+                                                            .join(", ")}
+                                                    </td>
+                                                </tr>
+                                            )
+                                        )}
+                                        {this.state.data.options.map(
+                                            (option, index) => (
+                                                <tr key={"2-" + index}>
+                                                    <td>
+                                                        {option.option_name}
+                                                    </td>
+                                                    <td>
+                                                        {option.values
+                                                            .map(
+                                                                (value) =>
+                                                                    value.value_name
+                                                            )
+                                                            .join(", ")}
+                                                    </td>
+                                                    {this.state.isNew && (
+                                                        <td>
+                                                            <button
+                                                                className="btn btn-sm btn-danger"
+                                                                onClick={() =>
+                                                                    this.handleDeleteOption(
+                                                                        index
+                                                                    )
+                                                                }
+                                                            >
+                                                                <i className="fa fa-trash-o"></i>
+                                                            </button>
+                                                        </td>
+                                                    )}
+                                                </tr>
+                                            )
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         <div className="col mb-3">
                             {this.state.isNew && (

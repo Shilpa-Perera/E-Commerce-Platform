@@ -158,99 +158,103 @@ class ProductBody extends Component {
                                     <h5 className="text-muted mb-3">
                                         Features
                                     </h5>
-                                    <table className="table table-borderless">
-                                        <tbody>
-                                            {product.custom_features.map(
-                                                (feature, index) => (
-                                                    <tr key={index}>
-                                                        <th scope="row">
-                                                            {
-                                                                feature.custom_feature_name
-                                                            }
-                                                        </th>
-                                                        <td>
-                                                            {
-                                                                feature.custom_feature_val
-                                                            }
-                                                        </td>
-                                                    </tr>
-                                                )
-                                            )}
-                                            <tr>
-                                                <th scope="row">
-                                                    Product weight
-                                                </th>
-                                                <td>
-                                                    {product.product_weight}{" "}
-                                                    grams
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    <div className="table-responsive">
+                                        <table className="table table-borderless">
+                                            <tbody>
+                                                {product.custom_features.map(
+                                                    (feature, index) => (
+                                                        <tr key={index}>
+                                                            <th scope="row">
+                                                                {
+                                                                    feature.custom_feature_name
+                                                                }
+                                                            </th>
+                                                            <td>
+                                                                {
+                                                                    feature.custom_feature_val
+                                                                }
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                )}
+                                                <tr>
+                                                    <th scope="row">
+                                                        Product weight
+                                                    </th>
+                                                    <td>
+                                                        {product.product_weight}{" "}
+                                                        grams
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                                 {optionsAvailable && (
                                     <div className="div-dark mt-5 mb-3">
                                         <h5 className="text-muted">
                                             Select your options
                                         </h5>
-                                        <table className="table table-borderless">
-                                            <tbody>
-                                                {product.options.map(
-                                                    (option, index) => (
-                                                        <tr key={index}>
-                                                            <th scope="row">
-                                                                {
-                                                                    option.option_name
-                                                                }
-                                                            </th>
-                                                            <td>
-                                                                <select
-                                                                    onChange={
-                                                                        this
-                                                                            .handleSelect
+                                        <div className="table-responsive">
+                                            <table className="table table-borderless">
+                                                <tbody>
+                                                    {product.options.map(
+                                                        (option, index) => (
+                                                            <tr key={index}>
+                                                                <th scope="row">
+                                                                    {
+                                                                        option.option_name
                                                                     }
-                                                                    className="form-select"
-                                                                    name={
-                                                                        option.option_id
-                                                                    }
-                                                                    id={
-                                                                        option.option_id
-                                                                    }
-                                                                >
-                                                                    <option
-                                                                        value={
-                                                                            0
+                                                                </th>
+                                                                <td>
+                                                                    <select
+                                                                        onChange={
+                                                                            this
+                                                                                .handleSelect
                                                                         }
-                                                                    ></option>
-                                                                    {option.values.map(
-                                                                        (
-                                                                            value,
-                                                                            idx
-                                                                        ) => (
-                                                                            <option
-                                                                                id={
-                                                                                    value.value_id
-                                                                                }
-                                                                                value={
-                                                                                    value.value_id
-                                                                                }
-                                                                                key={
-                                                                                    idx
-                                                                                }
-                                                                            >
-                                                                                {
-                                                                                    value.value_name
-                                                                                }
-                                                                            </option>
-                                                                        )
-                                                                    )}
-                                                                </select>
-                                                            </td>
-                                                        </tr>
-                                                    )
-                                                )}
-                                            </tbody>
-                                        </table>
+                                                                        className="form-select"
+                                                                        name={
+                                                                            option.option_id
+                                                                        }
+                                                                        id={
+                                                                            option.option_id
+                                                                        }
+                                                                    >
+                                                                        <option
+                                                                            value={
+                                                                                0
+                                                                            }
+                                                                        ></option>
+                                                                        {option.values.map(
+                                                                            (
+                                                                                value,
+                                                                                idx
+                                                                            ) => (
+                                                                                <option
+                                                                                    id={
+                                                                                        value.value_id
+                                                                                    }
+                                                                                    value={
+                                                                                        value.value_id
+                                                                                    }
+                                                                                    key={
+                                                                                        idx
+                                                                                    }
+                                                                                >
+                                                                                    {
+                                                                                        value.value_name
+                                                                                    }
+                                                                                </option>
+                                                                            )
+                                                                        )}
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                        )
+                                                    )}
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 )}
                                 {productAvailability && (

@@ -30,46 +30,50 @@ class NotAddedVariantsTable extends Component {
                         </span>
                     </div>
                 )}
-                <table className="table table-hover">
-                    <TableHeader
-                        columns={this.columns}
-                        sortColumn={null}
-                        onSort={null}
-                    />
-                    <tbody>
-                        {optionsAvailable &&
-                            variants.map((variant, index) => (
-                                <tr key={index}>
+                <div className="table-responsive">
+                    <table className="table table-hover">
+                        <TableHeader
+                            columns={this.columns}
+                            sortColumn={null}
+                            onSort={null}
+                        />
+                        <tbody>
+                            {optionsAvailable &&
+                                variants.map((variant, index) => (
+                                    <tr key={index}>
+                                        <td>
+                                            <OptionTable
+                                                options={variant.options}
+                                            />
+                                        </td>
+                                        <td>
+                                            <AddVariantForm
+                                                variant={variant}
+                                                addVariant={
+                                                    this.props.addVariant
+                                                }
+                                            />
+                                        </td>
+                                    </tr>
+                                ))}
+                            {optionsUnavailable && defaultUnavailable && (
+                                <tr>
                                     <td>
-                                        <OptionTable
-                                            options={variant.options}
-                                        />
+                                        <span className="fw-bold">Default</span>
                                     </td>
                                     <td>
                                         <AddVariantForm
-                                            variant={variant}
-                                            addVariant={this.props.addVariant}
+                                            variant={null}
+                                            addVariant={
+                                                this.props.addDefaultVariant
+                                            }
                                         />
                                     </td>
                                 </tr>
-                            ))}
-                        {optionsUnavailable && defaultUnavailable && (
-                            <tr>
-                                <td>
-                                    <span className="fw-bold">Default</span>
-                                </td>
-                                <td>
-                                    <AddVariantForm
-                                        variant={null}
-                                        addVariant={
-                                            this.props.addDefaultVariant
-                                        }
-                                    />
-                                </td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         );
     }

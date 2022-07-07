@@ -288,7 +288,7 @@ class VariantFormBody extends Component {
                 ? "row row-cols-1 div-dark pt-2 mb-5"
                 : "row row-cols-1 row-cols-sm-1 row-cols-lg-2 div-dark pt-2 mb-5";
         const addedVariantsTableClasses =
-            editVariant === null ? "col mb-3 p-5" : "col mb-3 p-5 col-lg-8";
+            editVariant === null ? "col mb-3 p-3 p-md-5" : "col mb-3 p-5 col-lg-8";
 
         if (product) {
             const { editVariant } = this.state;
@@ -323,7 +323,7 @@ class VariantFormBody extends Component {
                             </div>
                         </div>
                         <div className="row row-cols-1">
-                            <div className="col mb-3 p-5 div-dark">
+                            <div className="col mb-3 p-3 p-md-5 div-dark">
                                 <NotAddedVariantsTable
                                     options={availableVariants}
                                     addVariant={this.addVariant}
