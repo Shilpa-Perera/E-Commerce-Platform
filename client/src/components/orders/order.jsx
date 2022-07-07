@@ -5,7 +5,6 @@ import { OrderStatus } from "./orderStatus";
 import OrdersCartTable from "./orderViewCartTable";
 import Loading from "../common/loading";
 import NotFound from "../notFound";
-import { IoReloadSharp } from "react-icons/io5";
 
 class OrderView extends Component {
     state = {
@@ -39,11 +38,11 @@ class OrderView extends Component {
                 this.setState({ loading: false });
                 return null;
             }
-        } catch (error) { }
+        } catch (error) {}
     }
 
     async updateValues() {
-        this.setState({ loading: true })
+        this.setState({ loading: true });
         const { id } = this.props;
         const { data: s } = await getOrder(id);
         this.setState({
@@ -55,9 +54,9 @@ class OrderView extends Component {
         this.setValues();
     }
 
-    orderStatusValue = (x) => {
+    orderStatusValue = () => {
         this.updateValues();
-    }
+    };
 
     render() {
         if (this.state.loading === true) {
@@ -231,7 +230,7 @@ class OrderView extends Component {
                                                 id="f11"
                                                 value={
                                                     orderValues.date_time !==
-                                                        null
+                                                    null
                                                         ? orderValues.date_time
                                                         : "No payment made"
                                                 }
@@ -254,7 +253,9 @@ class OrderView extends Component {
                                             orderPaymentMethod={
                                                 orderValues.payment_method
                                             }
-                                            onUpdateValue={this.orderStatusValue}
+                                            onUpdateValue={
+                                                this.orderStatusValue
+                                            }
                                         />
                                     </div>
                                 </div>
