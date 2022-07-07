@@ -35,7 +35,7 @@ insert into product (product_id, product_title, sku, product_weight, image_name,
 insert into product (product_id, product_title, sku, product_weight, image_name, availability) values (35, 'Canon 70D', '134512', 2200, '82f5d3cd-1b62-45e2-bd85-efe0c66342a7.png', 'AVAILABLE');
 insert into product (product_id, product_title, sku, product_weight, image_name, availability) values (36, 'Dell S2421HN', '145415', 2000, 'd6791aba-1efa-467a-ab6a-af6bab1f1567.png', 'AVAILABLE');
 insert into product (product_id, product_title, sku, product_weight, image_name, availability) values (37, 'MSI PRO MP271', '115545', 2200, '5f25ed54-6832-4a83-891d-b2b0ff542ad4.png', 'AVAILABLE');
-insert into product (product_id, product_title, sku, product_weight, image_name, availability) values (38, 'I phone 12', '114414', 1000, '620efdae-2053-4523-a495-a17a7f1c9a65.png', 'AVAILABLE');
+insert into product (product_id, product_title, sku, product_weight, image_name, availability) values (38, 'iPhone 12', '114414', 1000, '620efdae-2053-4523-a495-a17a7f1c9a65.png', 'AVAILABLE');
 insert into product (product_id, product_title, sku, product_weight, image_name, availability) values (39, 'Asus VZ229h ', '154515', 2200, 'b2506959-51fe-4eae-8024-76315bc453e2.png', 'AVAILABLE');
 
 
