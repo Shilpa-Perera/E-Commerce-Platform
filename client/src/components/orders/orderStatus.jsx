@@ -98,6 +98,8 @@ export class OrderStatus extends Form {
                                 className="btn btn-success col-12 hover-focus"
                                 to="/orders"
                             >
+                                {" "}
+                                Orders {" "}
                                 <i
                                     className="fa fa-shopping-basket"
                                     aria-hidden="true"

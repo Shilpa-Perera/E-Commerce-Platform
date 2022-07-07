@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getOrder } from "../../services/orderService";
 import { OrderStatus } from "./orderStatus";
 import OrdersCartTable from "./orderViewCartTable";
