@@ -5,7 +5,7 @@ import { EncryptStorage } from "encrypt-storage";
 const encrtption_key = process.env.REACT_APP_ENCRYPTION_KEY;
 export const encryptStorage = new EncryptStorage(encrtption_key, {
 	prefix: "@cart",
-	storageType: "sessionStorage",
+	storageType: "localStorage",
 });
 
 const apiUrl = process.env.REACT_APP_API_URL;
@@ -47,32 +47,28 @@ export async function setCartId() {
 	}
 }
 
+export function setOldCartId(cart_id) {
+	removeCart();
+	encryptStorage.setItem("cart_id", cart_id);
+}
+
+export function setCustomerId(cart_id, customer_id) {
+	//setting customer id in cart when logging out
+	return http.put(`${apiEndpoint}/${cart_id}`, { customer_id: customer_id });
+}
+
 export function getCartId() {
 	return encryptStorage.getItem("cart_id");
 }
 
 export function removeCart() {
 	encryptStorage.removeItem("cart_id");
-	sessionStorage.setItem("item_count", 0);
+	// sessionStorage.setItem("item_count", 0);
 }
 
-export function getItemCount() {
-	if (!sessionStorage.getItem("item_count")) {
-		sessionStorage.setItem("item_count", 0);
-	}
-
-	return sessionStorage.getItem("item_count");
-}
-
-export function incrementItemCount() {
-	let item_count = parseInt(sessionStorage.getItem("item_count"));
-	item_count++;
-	sessionStorage.setItem("item_count", item_count.toString());
-}
-export function decrementItemCount() {
-	let item_count = parseInt(sessionStorage.getItem("item_count"));
-	item_count--;
-	sessionStorage.setItem("item_count", item_count.toString());
+export async function getItemCount(cart_id) {
+	const { data: products } = await getCartProducts(cart_id);
+	return products.length;
 }
 
 export function addProductToCart(obj) {
@@ -81,4 +77,8 @@ export function addProductToCart(obj) {
 
 export function getNewCartId() {
 	return http.get(newCartUrl());
+}
+
+export function getCartIdByCusId(customer_id) {
+	return http.get(`${apiEndpoint}/${customer_id}`);
 }

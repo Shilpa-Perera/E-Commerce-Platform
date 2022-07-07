@@ -43,8 +43,10 @@ export default function SubCategoryList({
                         selectedItem={selectedSubCategory}
                         textProperty={"sub_category_name"}
                         valueProperty={"sub_category_id"}
-                        additionalClasses={"flex-column flex-sm-row"}
-                        additionalItemClasses={"border-0 rounded-pill mb-2 me-2"}
+                        additionalClasses={"flex-column flex-sm-row flex-wrap"}
+                        additionalItemClasses={
+                            "border-0 rounded-pill mb-2 me-2"
+                        }
                     />
                 </div>
             </div>

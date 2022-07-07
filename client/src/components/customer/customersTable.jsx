@@ -4,17 +4,25 @@ import Table from "../common/table";
 
 class CustomersTable extends Component {
     columns = [
-        { path: "customer_id", label: "Customer ID" },
         {
-            path: "name",
-            label: "Name",
-            content: (customer) => (
-                <Link to={`/customers/${customer.customer_id}`}>
-                    {customer.name}
-                </Link>
-            ),
+            path: "customer_id",
+            label: "Customer ID",
+        },
+        {
+            path: "first_name",
+            label: "First Name",
+        },
+        {
+            path: "last_name",
+            label: "Last Name",
         },
         { path: "email", label: "Email" },
+        {
+            key: "view",
+            content: (customer) => (
+                <Link to={`/customers/${customer.customer_id}`}>view</Link>
+            ),
+        },
     ];
     render() {
         const { customers, sortColumn, onSort } = this.props;

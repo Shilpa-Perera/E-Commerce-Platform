@@ -81,9 +81,8 @@ class Product {
             product.custom_features = await Product.getCustomFeatures(
                 productId
             );
-            product.product_categories = await Product.getProductCategoriesWithNames(
-                productId
-            );
+            product.product_categories =
+                await Product.getProductCategoriesWithNames(productId);
             product.options = await Product.getOptions(productId);
         }
 
@@ -159,8 +158,12 @@ class Product {
                 sc.sub_category_name
             from
                 product_category pc
-                join category c on pc.category_id = c.category_id
-                join sub_category sc on pc.sub_category_id = sc.sub_category_id
+                join
+                    category c
+                    on pc.category_id = c.category_id
+                left outer join
+                    sub_category sc
+                    on pc.sub_category_id = sc.sub_category_id
             where
                 pc.product_id = ?
         `;
@@ -256,6 +259,18 @@ class Product {
         ]);
     }
 
+    static async addProductCategoryDefault(productId, categoryId) {
+        const insert_product_category_default_query = `
+            insert into product_category (product_id, category_id)
+            values (?, ?)
+        `;
+
+        await db.execute(insert_product_category_default_query, [
+            productId,
+            categoryId,
+        ]);
+    }
+
     static async updateCustomFeature(customFeature) {
         const { custom_feature_id, custom_feature_name, custom_feature_val } =
             customFeature;
@@ -321,17 +336,30 @@ class Product {
     async saveProductCategories(connection) {
         for (const { category_id, sub_category_id } of this
             .product_categories) {
-            const insert_product_category_query = `
+            if (sub_category_id) {
+                const insert_product_category_query = `
                 insert into product_category (product_id, category_id, sub_category_id)
                 values (?, ?, ?)
             `;
 
-            await connection.execute(insert_product_category_query, [
-                this.product_id,
-                category_id,
-                sub_category_id,
-            ]);
-            connection.unprepare(insert_product_category_query);
+                await connection.execute(insert_product_category_query, [
+                    this.product_id,
+                    category_id,
+                    sub_category_id,
+                ]);
+                connection.unprepare(insert_product_category_query);
+            } else {
+                const insert_product_category_default_query = `
+                insert into product_category (product_id, category_id)
+                values (?, ?)
+            `;
+
+                await connection.execute(
+                    insert_product_category_default_query,
+                    [this.product_id, category_id]
+                );
+                connection.unprepare(insert_product_category_default_query);
+            }
         }
     }
 
@@ -464,6 +492,22 @@ class Product {
             productId,
             categoryId,
             subCategoryId,
+        ]);
+    }
+
+    static async deleteProductCategoryDefault(productId, categoryId) {
+        const delete_product_category_default_query = `
+            delete
+                from product_category
+                where
+                    product_id = ?
+                    and category_id = ?
+                    and sub_category_id is null
+        `;
+
+        await db.execute(delete_product_category_default_query, [
+            productId,
+            categoryId,
         ]);
     }
 

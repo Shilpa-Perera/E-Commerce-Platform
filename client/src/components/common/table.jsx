@@ -4,14 +4,20 @@ import TableBody from "./tableBody";
 
 const Table = ({ columns, sortColumn, onSort, data, idProperty }) => {
     return (
-        <table className="table table-hover">
-            <TableHeader
-                columns={columns}
-                sortColumn={sortColumn}
-                onSort={onSort}
-            />
-            <TableBody data={data} columns={columns} idProperty={idProperty} />
-        </table>
+        <div className="table-responsive">
+            <table className="table table-hover">
+                <TableHeader
+                    columns={columns}
+                    sortColumn={sortColumn}
+                    onSort={onSort}
+                />
+                <TableBody
+                    data={data}
+                    columns={columns}
+                    idProperty={idProperty}
+                />
+            </table>
+        </div>
     );
 };
 

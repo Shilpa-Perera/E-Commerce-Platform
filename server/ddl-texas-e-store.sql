@@ -43,6 +43,7 @@ DELIMITER $$
 --
 -- Procedures
 --
+drop PROCEDURE if exists `order_transaction`;
 CREATE PROCEDURE `order_transaction` (IN `orderCartId` INT(10), IN `orderDate` DATETIME, IN `orderName` VARCHAR(255), IN `orderAddress` VARCHAR(255), IN `orderZipcode` VARCHAR(10), IN `orderPhoneNumber` VARCHAR(255), IN `orderDeliveryMethod` ENUM('STORE-PICKUP','DELIVERY'), IN `orderPaymentMethod` ENUM('CASH','CARD'), IN `orderCustomerId` INT(10), IN `sellDateTime` DATETIME, IN `sellPaymentStatus` ENUM('PENDING','PAID'), OUT `orderIdOutput` INT(10))  BEGIN
  
  DECLARE exit handler for sqlexception
@@ -58,12 +59,13 @@ CREATE PROCEDURE `order_transaction` (IN `orderCartId` INT(10), IN `orderDate` D
    SELECT @newOrder :=order_id FROM `order` WHERE cart_id = orderCartId;
    INSERT INTO `sell` (`date_time`, `order_id`, `delivery_state`, `payment_state`) VALUES (sellDateTime, @newOrder, 'PROCESSING', sellPaymentStatus);
    CALL update_product_variants_quantity_from_cart(orderCartId);
-   UPDATE `cart` SET `state` = 'INACTIVE' WHERE `cart`.`cart_id` = orderCartId;
+   UPDATE `cart` SET `state` = 'INACTIVE', customer_id = orderCustomerId WHERE `cart`.`cart_id` = orderCartId;
  SET orderIdOutput = @newOrder;
  COMMIT;
  SELECT orderIdOutput;
  END$$
 
+drop PROCEDURE if exists `order_transaction_guest`;
 CREATE PROCEDURE `order_transaction_guest` (IN `orderCartId` INT(10), IN `orderDate` DATETIME, IN `orderName` VARCHAR(255), IN `orderAddress` VARCHAR(255), IN `orderZipcode` VARCHAR(10), IN `orderPhoneNumber` VARCHAR(255), IN `orderDeliveryMethod` ENUM('STORE-PICKUP','DELIVERY'), IN `orderPaymentMethod` ENUM('CASH','CARD'), IN `orderCustomerId` INT(10), IN `sellDateTime` DATETIME, IN `sellPaymentStatus` ENUM('PENDING','PAID'), OUT `orderIdOutput` INT(10))  BEGIN
  
 
@@ -78,6 +80,7 @@ CREATE PROCEDURE `order_transaction_guest` (IN `orderCartId` INT(10), IN `orderD
  SELECT orderIdOutput;
  END$$
 
+drop PROCEDURE if exists `update_product_variants_quantity_from_cart`;
 CREATE PROCEDURE `update_product_variants_quantity_from_cart` (IN `cartId` INT)  BEGIN  
 	DECLARE i INT DEFAULT 0;
 	SELECT @n:=COUNT(*) FROM `variant` NATURAL JOIN cart_product WHERE cart_id=cartId;
@@ -90,10 +93,11 @@ CREATE PROCEDURE `update_product_variants_quantity_from_cart` (IN `cartId` INT) 
 	END WHILE;
 END$$
 
+drop PROCEDURE if exists max_sales;
 CREATE PROCEDURE max_sales (IN start_date datetime , IN end_date datetime , IN no_of_rows int(3))
     BEGIN
-        select product_title, variant_name , sum(number_of_items) as sales from items where date_time between start_date and end_date
-        group by product_title,variant_name order by sales desc limit no_of_rows ;
+        select product_title, sum(number_of_items) as sales from items where date_time between start_date and end_date
+        group by product_title order by sales desc limit no_of_rows ;
 END$$
 
 DELIMITER ;
@@ -177,9 +181,9 @@ create table if not exists product (
 create table if not exists product_category (
     product_id          int unsigned    not null,
     category_id         int unsigned    not null,
-    sub_category_id     int unsigned    not null,
+    sub_category_id     int unsigned    null,
 
-    primary key (product_id, category_id, sub_category_id),
+    unique (product_id, category_id, sub_category_id),
 
     foreign key (product_id)        references      product(product_id)             on delete cascade,
     foreign key (category_id)       references      category(category_id)           on delete cascade,
@@ -314,4 +318,4 @@ create view items as  select p.product_title, v.variant_name, cp.number_of_items
                                   join cart_product cp using(cart_id)
                                   join variant v using (variant_id)
                                   join product p using(product_id)
-                      where s.delivery_state = 'PROCESSING' and  s.payment_state = 'PAID' ;
+                                  where s.payment_state = 'PAID' ;

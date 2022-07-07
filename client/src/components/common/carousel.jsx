@@ -1,6 +1,7 @@
 import React from "react";
+import CarouselImage from "./carouselImage";
 
-function Carousel({ id, images }) {
+function Carousel({ id, images, defaultImage }) {
     return (
         <div>
             <div
@@ -31,10 +32,9 @@ function Carousel({ id, images }) {
                             }
                             key={index}
                         >
-                            <img
-                                src={image}
-                                className="d-block w-100"
-                                alt="..."
+                            <CarouselImage
+                                img={image}
+                                defaultImg={defaultImage}
                             />
                         </div>
                     ))}

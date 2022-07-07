@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getOrder } from "../../services/orderService";
 import { OrderStatus } from "./orderStatus";
 import OrdersCartTable from "./orderViewCartTable";
@@ -98,7 +98,7 @@ class OrderView extends Component {
                                             htmlFor="f1"
                                             className="col-sm-4 col-form-label fw-bold"
                                         >
-                                            Date and time
+                                            Order Date - time
                                         </label>
                                         <div className="col-sm-6">
                                             <input
@@ -142,9 +142,7 @@ class OrderView extends Component {
                                                 readOnly
                                                 className="form-control-plaintext"
                                                 id="f5"
-                                                value={
-                                                    orderValues.zip_code
-                                                }
+                                                value={orderValues.zip_code}
                                             />
                                         </div>
                                     </div>

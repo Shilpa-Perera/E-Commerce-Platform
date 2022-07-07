@@ -14,6 +14,7 @@ class Orders extends Component {
         userType: null,
         orders: [],
         searchQuery: "",
+        filterBy: null,
         currentPage: 1,
         pageSize: 24,
         sortBy: { path: "order_id", order: "asc" },
@@ -86,10 +87,18 @@ class Orders extends Component {
         return { totalCount: sorted.length, data: orders };
     };
 
+    setFilter = (event) => {
+        const filtertype = event.target.value;
+        if (filtertype === "") {
+            this.setState({ filterBy: null });
+            return;
+        }
+        this.setState({ filterBy: filtertype });
+    };
+
     render() {
         const { searchQuery, pageSize, currentPage, userType } = this.state;
         const { totalCount, data: orders } = this.getPagedData();
-        const plh = "Enter order ID";
         return (
             <div className="container-fluid mb-5">
                 <div className="row">
@@ -98,19 +107,25 @@ class Orders extends Component {
                             <SearchBox
                                 value={searchQuery}
                                 onChange={this.handleSearch}
-                                placeholder={plh}
+                                placeholder={"Enter order ID"}
                             />
                         </div>
                     </div>
+                    {userType !== null ? (
+                        <OrdersTable
+                            userType={userType}
+                            orders={orders}
+                            sortBy={this.state.sortBy}
+                            onSort={this.handleSort}
+                            loading={this.state.loading}
+                            searchQuery={this.state.searchQuery}
+                            filterBy={this.state.filterBy}
+                            filterOnClick={this.setFilter}
+                        />
+                    ) : (
+                        Loading()
+                    )}
 
-                    <OrdersTable
-                        userType={userType}
-                        orders={orders}
-                        sortBy={this.state.sortBy}
-                        onSort={this.handleSort}
-                        loading={this.state.loading}
-                        searchQuery= {this.state.searchQuery}
-                    />
                     <Pagination
                         itemsCount={totalCount}
                         pageSize={pageSize}

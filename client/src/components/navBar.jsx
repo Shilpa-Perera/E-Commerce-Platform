@@ -88,6 +88,14 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                     <li>
                                         <NavLink
                                             className="dropdown-item hover-focus"
+                                            to="/categories/new"
+                                        >
+                                            Add Category or Sub Category
+                                        </NavLink>
+                                    </li>
+                                    <li>
+                                        <NavLink
+                                            className="dropdown-item hover-focus"
                                             to="/categories/link-category"
                                         >
                                             Link Category
@@ -163,7 +171,7 @@ export default function NavBar({ theme, toggleTheme, item_count, user }) {
                                             className="dropdown-item hover-focus"
                                             to="/reports/most-order-categories"
                                         >
-                                            Most Order Categories
+                                            Most Sold Categories
                                         </NavLink>
                                     </li>
                                     <li>

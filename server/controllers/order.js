@@ -6,12 +6,21 @@ const { Delivery } = require("../util/delivery");
 class OrderController {
     static async getAllOrders(req, res) {
         const allOrders = await Order.fetchAll();
-        res.send(allOrders[0]);
+
+        allOrders[0].map(
+            (e) => (e.date = DateTime.convertToLocalDateTime(e.date))
+        );
+
+        return res.send(allOrders[0]);
     }
 
     static async getCustomerOrders(req, res) {
         const { id: customerId } = req.params;
         const allCustomerOrders = await Order.getCustomerOrders(customerId);
+        allCustomerOrders[0].map(
+            (e) => (e.date = DateTime.convertToLocalDateTime(e.date))
+        );
+
         return res.status(200).send(allCustomerOrders[0]);
     }
 
@@ -19,6 +28,14 @@ class OrderController {
         const { id } = req.params;
         const orderCart = await Order.getOrderCart(id);
         const orderDetails = await Order.getOrderById(id);
+
+        orderDetails[0].date = DateTime.convertToLocalDateTime(
+            orderDetails[0].date
+        );
+        orderDetails[0].date_time = DateTime.convertToLocalDateTime(
+            orderDetails[0].date_time
+        );
+
         const orderArray = {
             orderDetails: orderDetails,
             orderCart: orderCart[0],
@@ -27,20 +44,22 @@ class OrderController {
     }
 
     static async setOrderDetails(req, res) {
-        const test = req.body;
-        const validation = OrderController.validateData(test);
+        const orderData = req.body;
+        const validation = OrderController.validateData(orderData);
         let validateResult = validation[0];
         let error = validation[1];
         let estimatedDeliveryTime = await Delivery.calcDeliveryEstimation(
-            test.data.zipcode,
-            test.cartId
+            orderData.data.zipcode,
+            orderData.cartId
         ); // Estimated Delivery days calculation
         if (validateResult) {
             console.log("valid", error);
 
-            return res.status(200).send([test, error, estimatedDeliveryTime]);
+            return res
+                .status(200)
+                .send([orderData, error, estimatedDeliveryTime]);
         }
-        return res.status(200).send([test, error]);
+        return res.status(200).send([orderData, error]);
     }
 
     static validateData(data) {
@@ -82,15 +101,17 @@ class OrderController {
         let paymentStatus = "PENDING";
         const orderDateTime = DateTime.getDBreadyCurrentDateTime();
 
-        // Payment Call
-        let paymentResult = true; // ### to payment Gateway
+        if (orderDetails.paymentMethod === "CARD") {
+            // Payment Call
+            let paymentResult = true; // ### to payment Gateway
 
-        if (!paymentResult && orderDetails.paymentMethod === "CARD") {
-            error = "Payment Failed";
-            return res.status(200).send([orderDetails, error]);
-        } else if (orderDetails.paymentMethod === "CARD") {
-            sellDateTime = orderDateTime;
-            paymentStatus = "PAID";
+            if (!paymentResult) {
+                error = "Payment Failed";
+                return res.status(200).send([orderDetails, error]);
+            } else {
+                sellDateTime = orderDateTime;
+                paymentStatus = "PAID";
+            }
         }
 
         const finalDataFormat = {
@@ -113,7 +134,8 @@ class OrderController {
         try {
             error = await Order.insertNewOrder(finalDataFormat);
         } catch (e) {
-            error = "Payment Failed";
+            error = "Order Failed";
+            return res.status(200).send([orderDetails, error]);
         }
 
         let newOrderId = error[0].at(-2)[0].orderIdOutput;
@@ -122,15 +144,26 @@ class OrderController {
 
     static async updateOrderStatus(req, res) {
         let error = "Updated Successfully!";
+        let time = null; // Date Time of updated Payment
         const data = {
             deliveryStatus: req.body.data.delivery_state,
             paymentStatus: req.body.data.payment_status,
             orderId: req.body.orderId,
         };
 
+        req.body.initialPaymentState === "PENDING" &&
+        data.paymentStatus === "PAID"
+            ? (time = await DateTime.getDBreadyCurrentDateTime())
+            : (time = null);
+
+        req.body.initialPaymentState === data.paymentStatus
+            ? (time = false)
+            : (time = time);
+
         try {
-            await Order.updateOrderStatus(data);
-            error = "Staus Updated !";
+            time === false
+                ? await Order.updateOrderStatus(data)
+                : await Order.updateOrderStatuswithTime(data, time);
         } catch (error) {
             error = "Error Try Again !";
         }

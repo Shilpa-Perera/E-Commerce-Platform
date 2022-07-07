@@ -1,5 +1,4 @@
 import React from "react";
-import ProductCard from "./productCard";
 import { Link } from "react-router-dom";
 import ProductAlbumGrid from "./productAlbumGrid";
 
@@ -29,82 +28,88 @@ export default function ProductAlbum({
                         )}
                     </span>
                     <span>
-                        <table className="table table-borderless table-sm">
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <h6 className="d-inline-block fw-bold me-2">
-                                            Sort by
-                                        </h6>
-                                    </td>
-                                    {sortOptions.map((option) => (
-                                        <td key={option.id}>
-                                            <div className="form-check form-check-inline">
-                                                <span
-                                                    onClick={() =>
-                                                        onSortClick(option.id)
-                                                    }
-                                                >
-                                                    <input
-                                                        type="radio"
-                                                        id={option.id}
-                                                        name="sort"
-                                                        checked={
-                                                            sortBy.path ===
-                                                            option.id
-                                                        }
-                                                        onChange={() => {}}
-                                                        className="form-check-input"
-                                                    />
-                                                    <label
-                                                        className="ms-1 form-check-label pointer hover-focus"
-                                                        htmlFor={option.id}
-                                                    >
-                                                        {option.name}
-                                                    </label>
-                                                </span>
-                                            </div>
+                        <div className="table-responsive">
+                            <table className="table table-borderless table-sm">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <h6 className="d-inline-block fw-bold me-2">
+                                                Sort by
+                                            </h6>
                                         </td>
-                                    ))}
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h6 className="d-inline-block fw-bold me-2">
-                                            Order by
-                                        </h6>
-                                    </td>
-                                    {orderOptions.map((option) => (
-                                        <td key={option.id}>
-                                            <div className="form-check form-check-inline">
-                                                <span
-                                                    onClick={() =>
-                                                        onOptionClick(option.id)
-                                                    }
-                                                >
-                                                    <input
-                                                        type="radio"
-                                                        id={option.id}
-                                                        name="option"
-                                                        checked={
-                                                            sortBy.order ===
-                                                            option.id
+                                        {sortOptions.map((option) => (
+                                            <td key={option.id}>
+                                                <div className="form-check form-check-inline">
+                                                    <span
+                                                        onClick={() =>
+                                                            onSortClick(
+                                                                option.id
+                                                            )
                                                         }
-                                                        onChange={() => {}}
-                                                        className="form-check-input"
-                                                    />
-                                                    <label
-                                                        className="ms-1 form-check-label pointer hover-focus"
-                                                        htmlFor={option.id}
                                                     >
-                                                        {option.name}
-                                                    </label>
-                                                </span>
-                                            </div>
+                                                        <input
+                                                            type="radio"
+                                                            id={option.id}
+                                                            name="sort"
+                                                            checked={
+                                                                sortBy.path ===
+                                                                option.id
+                                                            }
+                                                            onChange={() => {}}
+                                                            className="form-check-input"
+                                                        />
+                                                        <label
+                                                            className="ms-1 form-check-label pointer hover-focus"
+                                                            htmlFor={option.id}
+                                                        >
+                                                            {option.name}
+                                                        </label>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        ))}
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h6 className="d-inline-block fw-bold me-2">
+                                                Order by
+                                            </h6>
                                         </td>
-                                    ))}
-                                </tr>
-                            </tbody>
-                        </table>
+                                        {orderOptions.map((option) => (
+                                            <td key={option.id}>
+                                                <div className="form-check form-check-inline">
+                                                    <span
+                                                        onClick={() =>
+                                                            onOptionClick(
+                                                                option.id
+                                                            )
+                                                        }
+                                                    >
+                                                        <input
+                                                            type="radio"
+                                                            id={option.id}
+                                                            name="option"
+                                                            checked={
+                                                                sortBy.order ===
+                                                                option.id
+                                                            }
+                                                            onChange={() => {}}
+                                                            className="form-check-input"
+                                                        />
+                                                        <label
+                                                            className="ms-1 form-check-label pointer hover-focus"
+                                                            htmlFor={option.id}
+                                                        >
+                                                            {option.name}
+                                                        </label>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        ))}
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </span>
                 </div>
                 <ProductAlbumGrid products={products} />

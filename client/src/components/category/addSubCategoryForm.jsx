@@ -5,6 +5,7 @@ import {
     addSubCategory,
     getAllSubCategories,
 } from "../../services/categoryService";
+import { toast } from "react-toastify";
 
 class AddSubCategoryForm extends Form {
     state = {
@@ -26,7 +27,7 @@ class AddSubCategoryForm extends Form {
         this.setState({ subCategories });
     }
 
-    checkSubCategoryExists = async (new_sub_category_name) => {
+    checkSubCategoryExists = (new_sub_category_name) => {
         for (let subCategory in this.state.subCategories) {
             if (
                 subCategory.toLowerCase() ===
@@ -34,8 +35,8 @@ class AddSubCategoryForm extends Form {
             ) {
                 return true;
             }
-            return false;
         }
+        return false;
     };
 
     doSubmit = async () => {
@@ -51,6 +52,13 @@ class AddSubCategoryForm extends Form {
                 errors: [],
             };
             this.setState(state);
+
+            toast.success(
+                `${this.state.data.new_sub_category_name} is added to sub category`,
+                {
+                    theme: "dark",
+                }
+            );
         } else {
             const errors = { ...this.state.errors };
             errors["adding_error"] = "Sub Category Already Exists";

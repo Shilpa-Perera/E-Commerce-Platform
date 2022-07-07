@@ -16,7 +16,8 @@ class Order {
     }
 
     static fetchAll() {
-        const select_all_query = "SELECT * FROM `order` ORDER BY date ASC;";
+        const select_all_query =
+            "SELECT * FROM `order` NATURAL JOIN sell ORDER BY date ASC;";
         const result = db.execute(select_all_query, []);
         return result;
     }
@@ -30,17 +31,29 @@ class Order {
 
     static async getCustomerOrders(customerId) {
         const customer_order_query =
-            "SELECT * FROM `order` WHERE customer_id = ?";
+            "SELECT * FROM `order` NATURAL JOIN sell WHERE customer_id = ?";
         const result = await db.execute(customer_order_query, [customerId]);
         return result;
     }
 
     static async updateOrderStatus(data) {
         const update_status_query =
-            "UPDATE `sell` SET `delivery_state`=?, `payment_state`=? WHERE order_id = ?";
+            "UPDATE `sell` SET `delivery_state`=?, `payment_state`=? WHERE `order_id`=?";
+        result = await db.execute(update_status_query, [
+            data.deliveryStatus,
+            data.paymentStatus,
+            data.orderId,
+        ]);
+        return result;
+    }
+
+    static async updateOrderStatuswithTime(data, paymentTime) {
+        const update_status_query =
+            "UPDATE `sell` SET `delivery_state` = ?, `payment_state` = ?, `date_time` = ? WHERE `order_id` = ?";
         const result = await db.execute(update_status_query, [
             data.deliveryStatus,
             data.paymentStatus,
+            paymentTime,
             data.orderId,
         ]);
         return result;

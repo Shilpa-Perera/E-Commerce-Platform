@@ -46,7 +46,7 @@ class CheckoutCartCard extends Component {
                         </ul>
                     </div>
                     <div className="list-group-item d-flex justify-content-between checkout-cart-list">
-                        <span>Total</span>
+                        <span>Total (LKR)</span>
                         <strong>{cartTotal}</strong>
                     </div>
                 </div>

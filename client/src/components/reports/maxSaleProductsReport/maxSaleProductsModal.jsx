@@ -1,17 +1,23 @@
 import { Modal, Button, Row, Col, Container } from "react-bootstrap";
 import BarChart from "../../common/barChart";
+import MaxSaleBarChart from "./maxSaleProductReportBarChart";
 import MaxSalesProductsReportTable from "./maxSaleProductReportTable";
 
 export default function MaxSaleProductsModal(props) {
 	return (
 		<Modal
-			{...props}
-			size="lg"
+			show={props.show}
+			onHide={props.onHide}
+			size="xl"
 			aria-labelledby="contained-modal-title-vcenter"
+			dialogClassName="modal-90vh"
 			centered
 		>
 			<Modal.Header closeButton>
-				<Modal.Title id="contained-modal-title-vcenter">
+				<Modal.Title
+					id="contained-modal-title-vcenter"
+					className="ms-auto"
+				>
 					Products with most number of sales
 				</Modal.Title>
 			</Modal.Header>
@@ -21,14 +27,14 @@ export default function MaxSaleProductsModal(props) {
 						<Container>
 							<Row>
 								<Col xs={6}>
-									<BarChart
-										labels={props.labels}
-										data={props.data}
-										label="Number of Sales"
+									<MaxSaleBarChart
+										key="bar-chart"
+										report={props.report}
 									/>
 								</Col>
 								<Col xs={6}>
 									<MaxSalesProductsReportTable
+										key="table"
 										data={props.report}
 									></MaxSalesProductsReportTable>
 								</Col>
@@ -46,11 +52,12 @@ export default function MaxSaleProductsModal(props) {
 					<span className="me-2">Close</span>
 					<i className="fa fa-close"></i>
 				</Button>
-
-				<Button variant="primary" onClick={props.handledownload}>
-					<span className="me-2">Download</span>
-					<i className="fa fa-download"></i>
-				</Button>
+				{props.report.length !== 0 && (
+					<Button variant="primary" onClick={props.handledownload}>
+						<span className="me-2">Download</span>
+						<i className="fa fa-download"></i>
+					</Button>
+				)}
 			</Modal.Footer>
 		</Modal>
 	);

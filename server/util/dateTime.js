@@ -7,6 +7,14 @@ class DateTime {
 
         return date[2] + "-" + date[1] + "-" + date[0] + orderDate[1];
     }
+
+    static convertToLocalDateTime(date) {
+        if (date) {
+            const utcDate = new Date(date);
+            return utcDate.toString().split(" GMT")[0];
+        }
+        return null;
+    }
 }
 
 module.exports.DateTime = DateTime;

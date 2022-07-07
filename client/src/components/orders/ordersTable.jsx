@@ -9,15 +9,24 @@ import Table from "../common/table";
 
 class OrdersTable extends Component {
     columns = [
-        { path: "order_id", label: "Order ID" },
+        { path: "order_id", label: "Order No" },
         { path: "date", label: "Date" },
-        { path: "order_name", label: "Name" },
+        this.props.userType === "customer"
+            ? { path: null, label: null }
+            : { path: "order_name", label: "Name" },
         {
             key: "payment_method",
             content: ({ payment_method }) => (
                 <span className="me-2 my-2 my-lg-0">{payment_method}</span>
             ),
             label: "payment method",
+        },
+        {
+            key: "payment_state",
+            content: ({ payment_state }) => (
+                <span className="me-2 my-2 my-lg-0">{payment_state}</span>
+            ),
+            label: "Payment",
         },
         {
             key: "delivery_method",
@@ -27,12 +36,21 @@ class OrdersTable extends Component {
             label: "Delivery Method",
         },
         {
-            key: "phone_number",
-            content: ({ phone_number }) => (
-                <span className="me-2 my-2 my-lg-0">{phone_number}</span>
+            key: "delivery_state",
+            content: ({ delivery_state }) => (
+                <span className="me-2 my-2 my-lg-0">{delivery_state}</span>
             ),
-            label: "Phone number",
+            label: "Delivery Status",
         },
+        this.props.userType === "customer"
+            ? { key: "phone_number", content: null, label: null }
+            : {
+                  key: "phone_number",
+                  content: ({ phone_number }) => (
+                      <span className="me-2 my-2 my-lg-0">{phone_number}</span>
+                  ),
+                  label: "Phone number",
+              },
         {
             key: "order_idK",
             content: ({ order_id }) => (
@@ -60,11 +78,33 @@ class OrdersTable extends Component {
     ];
 
     render() {
-        const { orders, sortBy, onSort, loading } = this.props;
+        let { orders, sortBy, onSort, loading, filterOnClick, filterBy } =
+            this.props;
+        if (orders.length === 0) {
+            return Loading();
+        }
+        filterBy !== null
+            ? (orders = orders.filter((e) => {
+                  return e.payment_state === this.props.filterBy;
+              }))
+            : (orders = orders);
         return (
             <div className="pb-5">
                 <div className="container div-dark">
-                    <h3 className="mb-4">Manage Orders</h3>
+                    <div className="row">
+                        <h3 className="mb-2 col-9">Manage Orders</h3>
+                        <div className="col-3">
+                            <select
+                                className="form-select"
+                                aria-label=".form-select-sm example"
+                                onChange={filterOnClick}
+                            >
+                                <option value="">All</option>
+                                <option value="PAID">Paid</option>
+                                <option value="PENDING">Pending</option>
+                            </select>
+                        </div>
+                    </div>
                     <div className="mt-5">
                         {loading && <Loading />}
                         <div className="table-responsive order-table-container">

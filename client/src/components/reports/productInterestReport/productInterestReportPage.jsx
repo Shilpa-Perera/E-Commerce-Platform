@@ -23,8 +23,20 @@ class ProductInterestReportPageBody extends ProductInterestReport {
                 productId
             );
 
-            const options = this.getOptions();
-            const data = this.getData(product, reportData);
+            const options = this.getOptions(
+                "Product Interest Report",
+                "Orders Count",
+                "Month",
+                true
+            );
+
+            const data = this.getData(
+                product.product_title,
+                reportData,
+                "",
+                "count",
+                this.getLabel
+            );
 
             this.setState({ product, options, data, loading: false });
         } catch (e) {

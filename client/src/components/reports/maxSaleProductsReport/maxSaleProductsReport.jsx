@@ -44,12 +44,11 @@ class MaxSalesProductsReport extends Form {
 		let labels = [];
 		let values = [];
 		max_sales[0].forEach((element) => {
-			labels.push(element.product_title + " " + element.variant_name);
+			labels.push(element.product_title);
 			values.push(element.sales);
 		});
 
 		this.setState({ report: max_sales[0] });
-
 		const modalShow = true;
 		this.setState({ labels, values, modalShow });
 	};
@@ -144,7 +143,7 @@ class MaxSalesProductsReport extends Form {
 							</button>
 						</div>
 					</div>
-
+					{/* {this.state.report.length > 0 && ( */}
 					<MaxSaleProductsModal
 						show={this.state.modalShow}
 						onHide={() => this.setState({ modalShow: false })}
@@ -154,6 +153,7 @@ class MaxSalesProductsReport extends Form {
 						handledownload={this.handleDownload}
 						// elementId="max-sales"
 					/>
+					{/* )} */}
 				</div>
 			</ThemeProvider>
 		);

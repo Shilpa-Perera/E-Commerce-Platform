@@ -14,6 +14,13 @@ h4,
 }
 
 /* Custom Styling for Order */
+.drop-bt{
+  z-index: 5;
+}
+
+.drop-div{
+  z-index: 1;
+}
 .order-cart-table-container{
   padding: 5px;
   margin: 2px;
@@ -51,18 +58,21 @@ h4,
   max-height: 300px;
   margin: 5px;
   overflow: auto;
+  background-color: #4e4e4e;
+  border-radius: 5px;
+  border: 1px solid #c8c9ca;
 }
 
 .checkout-cart-container::-webkit-scrollbar{
-  background-color: #333333;
+  background-color: #999999;
   height: 20px;
   width:10px;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 .checkout-cart-container::-webkit-scrollbar-thumb{
   background-color: #121212;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 .checkout-cart-container::-webkit-scrollbar-corner{

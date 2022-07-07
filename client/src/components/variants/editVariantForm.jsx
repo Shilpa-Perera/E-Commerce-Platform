@@ -44,22 +44,26 @@ class EditVariantForm extends Form {
                 <h4 className="text-warning mb-5">Edit Variant</h4>
                 <div>
                     <h5 className="text-danger mb-4">Selected Options</h5>
-                    <table className="table table-hover mb-5">
-                        <thead>
-                            <tr>
-                                <th>Option</th>
-                                <th>Value</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {options.map((option, index) => (
-                                <tr key={index}>
-                                    <th scope="row">{option.option_name}</th>
-                                    <td>{option.value_name}</td>
+                    <div className="table-responsive">
+                        <table className="table table-hover mb-5">
+                            <thead>
+                                <tr>
+                                    <th>Option</th>
+                                    <th>Value</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {options.map((option, index) => (
+                                    <tr key={index}>
+                                        <th scope="row">
+                                            {option.option_name}
+                                        </th>
+                                        <td>{option.value_name}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <h5 className="text-success mb-4">New values</h5>
                 <form onSubmit={this.handleSubmit}>

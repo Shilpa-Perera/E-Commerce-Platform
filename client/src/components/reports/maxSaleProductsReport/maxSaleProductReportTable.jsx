@@ -6,18 +6,14 @@ const MaxSaleProductsReportTable = ({ data }) => {
 			<Table striped bordered hover>
 				<thead>
 					<tr>
-						<th>Variant Name</th>
+						<th>Product Name</th>
 						<th>Number of Sales</th>
 					</tr>
 				</thead>
 				<tbody>
 					{data.map((element, index) => (
 						<tr key={index}>
-							<td>
-								{element.product_title +
-									" " +
-									element.variant_name}
-							</td>
+							<td>{element.product_title}</td>
 							<td>{element.sales}</td>
 						</tr>
 					))}

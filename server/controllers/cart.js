@@ -7,9 +7,14 @@ class CartController {
 		res.send(allCarts[0]);
 	}
 
-	static async getCartByID(req, res, next) {
-		const cart = await Cart.getCartByID(req.params.id);
-		res.send(cart);
+	// static async getCartByID(req, res, next) {
+	// 	const cart = await Cart.getCartByID(req.params.id);
+	// 	res.send(cart);
+	// }
+
+	static async getCartByCustomerID(req, res, next) {
+		const cart_id = await Cart.getCartByCustomerID(req.params.id);
+		res.send(cart_id);
 	}
 
 	static async getCartProducts(req, res, next) {
@@ -29,6 +34,13 @@ class CartController {
 		const variant_id = req.body.variant_id;
 		const number_of_items = req.body.number_of_items;
 		await Cart.updateItemCount(cart_id, variant_id, number_of_items);
+		res.status(201).send("Success");
+	}
+
+	static async setCustomerId(req, res, next) {
+		const cart_id = req.params.id;
+		const customer_id = req.body.customer_id;
+		await Cart.setCustomerId(cart_id, customer_id);
 		res.status(201).send("Success");
 	}
 
