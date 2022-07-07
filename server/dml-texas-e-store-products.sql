@@ -37,7 +37,12 @@ insert into product (product_id, product_title, sku, product_weight, image_name,
 insert into product (product_id, product_title, sku, product_weight, image_name, availability) values (37, 'MSI PRO MP271', '115545', 2200, '5f25ed54-6832-4a83-891d-b2b0ff542ad4.png', 'AVAILABLE');
 insert into product (product_id, product_title, sku, product_weight, image_name, availability) values (38, 'iPhone 12', '114414', 1000, '620efdae-2053-4523-a495-a17a7f1c9a65.png', 'AVAILABLE');
 insert into product (product_id, product_title, sku, product_weight, image_name, availability) values (39, 'Asus VZ229h ', '154515', 2200, 'b2506959-51fe-4eae-8024-76315bc453e2.png', 'AVAILABLE');
-
+insert into product (product_id, product_title, sku, product_weight, image_name, availability) values (40, 'Lexar® Professional 1667x SDXC™ UHS-II Card SILVER Series', '141365180', 50, '4e21ae07-6e12-4017-8186-bf5e75a5c24c.png', 'AVAILABLE');
+insert into product (product_id, product_title, sku, product_weight, image_name, availability) values (41, 'Anker 737 Power Bank', 'B1290', 589.67, 'a5a30d4c-7344-4372-8dbe-8c25345f4649.png', 'AVAILABLE');
+insert into product (product_id, product_title, sku, product_weight, image_name, availability) values (42, 'Anker 525 Power Bank', 'A1287', 280, 'fdecc520-e546-4a34-bd19-9765c4b82062.png', 'AVAILABLE');
+insert into product (product_id, product_title, sku, product_weight, image_name, availability) values (43, 'Baseus Adaman Metal Digital Display Quick Charge Power Bank', '145678', 624, 'a7fdf1e3-8482-4403-a115-828b89954503.png', 'AVAILABLE');
+insert into product (product_id, product_title, sku, product_weight, image_name, availability) values (44, 'Epson EcoTank L130 Single Function InkTank Printer', 'EPSON-I-L130', 2700, '08317a0c-4b9b-47ca-b07f-30d66a4b4202.png', 'AVAILABLE');
+insert into product (product_id, product_title, sku, product_weight, image_name, availability) values (45, 'Epson EcoTank L3150 Wi-Fi All-In-One Ink Tank Printer', 'EPSON-I-L3150', 3900, 'b65caccc-4e87-4d9c-bddd-e21f1f26c266.png', 'AVAILABLE');
 
 insert into product_category (product_id, category_id, sub_category_id) values (1, 1, 6);
 insert into product_category (product_id, category_id, sub_category_id) values (2, 1, 1);
@@ -80,6 +85,12 @@ insert into product_category (product_id, category_id, sub_category_id) values (
 insert into product_category (product_id, category_id, sub_category_id) values (37, 5, 22);
 insert into product_category (product_id, category_id, sub_category_id) values (38, 1, 1);
 insert into product_category (product_id, category_id, sub_category_id) values (39, 5, 8);
+insert into product_category (product_id, category_id, sub_category_id) values (40, 13, 23);
+insert into product_category (product_id, category_id, sub_category_id) values (41, 11, 24);
+insert into product_category (product_id, category_id, sub_category_id) values (42, 11, 24);
+insert into product_category (product_id, category_id, sub_category_id) values (43, 11, 25);
+insert into product_category (product_id, category_id, sub_category_id) values (44, 15, 26);
+insert into product_category (product_id, category_id, sub_category_id) values (45, 15, 26);
 
 insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (1, 1, 'Display', 'IPS LCD, 6.0 inches, 92.4 cm2 (~77.2% screen-to-body ratio), 1080 x 2160 pixels, 18:9 ratio (~403 ppi density)');
 insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (2, 1, 'Operating System', 'Android 8.1 (Oreo), upgradable to Android 10, Android One');
@@ -187,6 +198,39 @@ insert into custom_feature (custom_feature_id, product_id, custom_feature_name, 
 insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (104, 39, 'Panel Size', '22 inch');
 insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (105, 39, 'Aspect Ratio', '16:9');
 insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (106, 39, 'Panel Backlight', 'LED');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (107, 40, 'Speed Class', 'Class 10');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (108, 40, 'Writing Speed', 'up to 120MB/s');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (109, 40, 'Reading Speed', 'up to 250MB/s');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (110, 40, 'Dimension', '(L x W x H) 32 mm x 24 mm x 2.1 mm');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (111, 41, 'Connector Type', 'USB Type C');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (112, 41, 'Item Dimensions LxWxH', '7.22 x 3.24 x 0.94 inches');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (113, 41, 'Capacity', '25,600 mAh');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (114, 42, 'Capacity', '20,000mAh');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (115, 42, 'Connector Type', 'USB Type C');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (116, 42, 'Compatible Phone Models', 'Iphone, ipad, Samsung and other Android phones');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (117, 42, 'Color', 'Black');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (118, 43, 'Capacity', '20,000mAh');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (119, 43, 'Size', '154*65*27mm');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (120, 43, 'Connector Type', 'USB Type C');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (121, 44, 'Type', 'Inkjet');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (122, 44, 'Printing Resolution', '5760 x 1440 dpi');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (123, 44, 'Print Head / Ink - Number of Nozzles', '180 nozzles Black, 59 nozzles each colour');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (124, 44, 'System Requirements', 'Windows XP/XP Professional x64 Edition/Vista/7/8/8.1, Mac OS X 10.6.8, 10.7.x, 10.8.x, 10.9.x');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (125, 44, 'Dimension (W x D x H)', '482*222*182 mm');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (126, 44, 'Colors', 'Black,Yellow,Cyan,Magenta');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (127, 44, 'Paper Size', 'A4, A5, A6, B5, 10 cm x 15 cm (4” x 6”), 13 cm x 18 cm (5”x 7”), 9 cm x 13 cm (3.5”x 5”), Letter (8.5” x 11”), Legal (8.5” x 14”), Half Letter (5.5” x 8.5”), 13 cm x 20 cm (5” x 8”), 20 cm x 25 cm (8” x 10”), 16:9 wide size, 100 mm x148 mm, Envelopes');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (128, 44, 'Warranty', '1 Year or 14,000 Pages Whichever Comes First');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (129, 45, 'Type', 'Inkjet');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (130, 45, 'Printing Resolution', '5760 x 1440 dpi');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (131, 45, 'Print Head / Ink - Number of Nozzles', '180 x 1 Nozzles Black, 59 x 1 Nozzles Per Colour');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (132, 45, 'System Requirements', 'Windows XP / Vista / 7 / 8 / 8.1 / 10, Windows Server 2003 / 2008 / 2012 / 2016,Only printing and scanning functions are supported for Windows Server OS,Mac OS X 10.6.8 or later');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (133, 45, 'Bluetooth / NFC / Wif', 'WIFI');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (134, 45, 'Network - Network Protocol', 'TCP/IPv4, TCP/IPv6');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (135, 45, 'Network - Wireless LAN', 'SNMP, HTTP, DHCP, APIPA, PING, DDNS, mDNS, SLP, WSD, LLTD');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (136, 45, 'Dimension (W x D x H)', '375 mm x 347 mm x 179 mm');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (137, 45, 'Colors', 'Black');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (138, 45, 'Paper Size', 'Legal, Indian-Legal (215 x 345 mm), 8.5 x 13\", Letter, A4, 16K (195 x 270 mm), B5, A5, B6, A6, Hagaki (100 x 148 mm),5 x 7\", 4 x 6\", Envelopes: #10, DL, C6');
+insert into custom_feature (custom_feature_id, product_id, custom_feature_name, custom_feature_val) values (139, 45, 'Warranty', '1 Year Or 30,000 Pages Which Ever Comes First');
 
 insert into variant (variant_id, product_id, variant_name, price, quantity) values (1, 1, 'Black/Copper - 4GB ', 60000.00, 24);
 insert into variant (variant_id, product_id, variant_name, price, quantity) values (2, 1, 'White/Copper - 4GB', 60000.00, -1);
@@ -286,6 +330,15 @@ insert into variant (variant_id, product_id, variant_name, price, quantity) valu
 insert into variant (variant_id, product_id, variant_name, price, quantity) values (96, 38, 'Green 128GB', 180000.00, 4);
 insert into variant (variant_id, product_id, variant_name, price, quantity) values (97, 38, 'Green 256GB', 280000.00, 1);
 insert into variant (variant_id, product_id, variant_name, price, quantity) values (98, 39, '22 inch', 65000.00, 5);
+insert into variant (variant_id, product_id, variant_name, price, quantity) values (99, 40, 'Lexar® Professional SD - 64GB', 12000.00, 30);
+insert into variant (variant_id, product_id, variant_name, price, quantity) values (100, 40, 'Lexar® Professional SD - 256GB', 25000.00, 20);
+insert into variant (variant_id, product_id, variant_name, price, quantity) values (101, 40, 'Lexar® Professional SD - 128GB', 16000.00, 25);
+insert into variant (variant_id, product_id, variant_name, price, quantity) values (102, 41, 'Anker 737 Power Bank - Default', 60000.00, 15);
+insert into variant (variant_id, product_id, variant_name, price, quantity) values (103, 42, 'Anker 525 Power Bank - Default', 25000.00, 15);
+insert into variant (variant_id, product_id, variant_name, price, quantity) values (104, 43, 'Baseus Power Bank - Black', 21000.00, 15);
+insert into variant (variant_id, product_id, variant_name, price, quantity) values (105, 43, 'Baseus Power Bank - Blue', 21000.00, 15);
+insert into variant (variant_id, product_id, variant_name, price, quantity) values (106, 44, 'EPSON-L130 - Default', 78000.00, 10);
+insert into variant (variant_id, product_id, variant_name, price, quantity) values (107, 45, 'EPSON-L3150 - Default', 82000.00, 10);
 
 update product set default_variant_id = 1 where product_id = 1;
 update product set default_variant_id = 70 where product_id = 2;
@@ -322,6 +375,12 @@ update product set default_variant_id = 92 where product_id = 36;
 update product set default_variant_id = 93 where product_id = 37;
 update product set default_variant_id = 94 where product_id = 38;
 update product set default_variant_id = 98 where product_id = 39;
+update product set default_variant_id = 99 where product_id = 40;
+update product set default_variant_id = 102 where product_id = 41;
+update product set default_variant_id = 103 where product_id = 42;
+update product set default_variant_id = 104 where product_id = 43;
+update product set default_variant_id = 106 where product_id = 44;
+update product set default_variant_id = 107 where product_id = 45;
 
 insert into variant_option (option_id, product_id, option_name) values (1, 1, 'Color');
 insert into variant_option (option_id, product_id, option_name) values (2, 1, 'RAM');
@@ -355,6 +414,8 @@ insert into variant_option (option_id, product_id, option_name) values (29, 34, 
 insert into variant_option (option_id, product_id, option_name) values (30, 35, 'Lens');
 insert into variant_option (option_id, product_id, option_name) values (31, 38, 'Size');
 insert into variant_option (option_id, product_id, option_name) values (32, 38, 'Color');
+insert into variant_option (option_id, product_id, option_name) values (33, 40, 'Storage Capacity');
+insert into variant_option (option_id, product_id, option_name) values (34, 43, 'Color');
 
 insert into variant_option_values (value_id, product_id, option_id, value_name) values (1, 1, 1, 'Black/Copper');
 insert into variant_option_values (value_id, product_id, option_id, value_name) values (2, 1, 1, 'White/Copper');
@@ -437,6 +498,12 @@ insert into variant_option_values (value_id, product_id, option_id, value_name) 
 insert into variant_option_values (value_id, product_id, option_id, value_name) values (79, 38, 31, '256GB');
 insert into variant_option_values (value_id, product_id, option_id, value_name) values (80, 38, 32, 'Black');
 insert into variant_option_values (value_id, product_id, option_id, value_name) values (81, 38, 32, 'Green');
+insert into variant_option_values (value_id, product_id, option_id, value_name) values (82, 40, 33, '64GB');
+insert into variant_option_values (value_id, product_id, option_id, value_name) values (83, 40, 33, '128GB');
+insert into variant_option_values (value_id, product_id, option_id, value_name) values (84, 40, 33, '256GB');
+insert into variant_option_values (value_id, product_id, option_id, value_name) values (85, 43, 34, 'Black');
+insert into variant_option_values (value_id, product_id, option_id, value_name) values (86, 43, 34, 'Blue');
+
 
 insert into variant_values (product_id, variant_id, option_id, value_id) values (1, 1, 1, 1);
 insert into variant_values (product_id, variant_id, option_id, value_id) values (1, 1, 2, 3);
@@ -624,6 +691,11 @@ insert into variant_values (product_id, variant_id, option_id, value_id) values 
 insert into variant_values (product_id, variant_id, option_id, value_id) values (38 ,96, 32, 81);
 insert into variant_values (product_id, variant_id, option_id, value_id) values (38 ,97, 31, 79);
 insert into variant_values (product_id, variant_id, option_id, value_id) values (38 ,97, 32, 81);
+insert into variant_values (product_id, variant_id, option_id, value_id) values (40, 99, 33, 82);
+insert into variant_values (product_id, variant_id, option_id, value_id) values (40, 100, 33, 84);
+insert into variant_values (product_id, variant_id, option_id, value_id) values (40, 101, 33, 83);
+insert into variant_values (product_id, variant_id, option_id, value_id) values (43, 104, 34, 85);
+insert into variant_values (product_id, variant_id, option_id, value_id) values (43, 105, 34, 86);
 
 insert into variant_image (variant_id, image_name) values (1, '041aeb97-3284-4d54-908d-cd15a99a19ee.png');
 insert into variant_image (variant_id, image_name) values (1, '78793e99-21b9-4ab9-8144-66748036fdd6.png');
@@ -766,3 +838,22 @@ insert into variant_image (variant_id, image_name) values (94, 'bec258af-6996-4f
 insert into variant_image (variant_id, image_name) values (98, '14d595c9-8bf0-456b-86a1-b9f3a5de66c9.png');
 insert into variant_image (variant_id, image_name) values (98, 'a9e5bad2-5795-449c-9292-9932827f6d4c.png');
 insert into variant_image (variant_id, image_name) values (98, 'fe52ee8e-94ed-4034-94a3-0de2894667fb.png');
+insert into variant_image (variant_id, image_name) values (99, 'bdda0358-118f-4781-936d-0ed7f7294fba.png');
+insert into variant_image (variant_id, image_name) values (100, '26de8b08-e8a0-44c9-be6a-f2a3d41fb1b1.png');
+insert into variant_image (variant_id, image_name) values (101, '2bc7ffb6-c1bd-41bd-be8d-40f816344c44.png');
+insert into variant_image (variant_id, image_name) values (102, '4c92d262-fe63-420c-9b90-9105141a5085.png');
+insert into variant_image (variant_id, image_name) values (102, '743112a2-23ea-4e5e-a94e-013d2621b549.png');
+insert into variant_image (variant_id, image_name) values (102, '93a6315d-db99-433c-b0e0-38e0b2cf3d53.png');
+insert into variant_image (variant_id, image_name) values (102, 'a99241a4-a2e5-480e-b0de-ebdc83ab3f04.png');
+insert into variant_image (variant_id, image_name) values (103, '304f20f4-f432-457a-831a-6af9a060c30f.png');
+insert into variant_image (variant_id, image_name) values (103, '42de881c-ecde-4a49-bf2f-16f294cffb66.png');
+insert into variant_image (variant_id, image_name) values (103, 'c0aa8d50-0095-4fdb-a685-20a3f6d6a67e.png');
+insert into variant_image (variant_id, image_name) values (103, 'c51e7534-49e7-4a2c-9b79-07a86391b4d9.png');
+insert into variant_image (variant_id, image_name) values (104, 'df2b3deb-0ef8-4e16-b931-95f95f54b27d.png');
+insert into variant_image (variant_id, image_name) values (105, '0a08ed1e-dfb3-4b1c-b112-1b6bc31df68e.png');
+insert into variant_image (variant_id, image_name) values (106, '7356ae11-b359-4e57-bc80-fbbd792157f9.png');
+insert into variant_image (variant_id, image_name) values (106, '884b192e-934a-49f5-9c61-ad27fcd8f096.png');
+insert into variant_image (variant_id, image_name) values (106, 'b7f3606d-7b9a-40b5-93bd-73eca57d71bd.png');
+insert into variant_image (variant_id, image_name) values (107, '3a7fd05f-0d5b-46cb-bb1f-3591e82b827a.png');
+insert into variant_image (variant_id, image_name) values (107, '44e3fa2c-8a57-476f-b9fd-0cf884a38714.png');
+insert into variant_image (variant_id, image_name) values (107, '88d662a7-d275-41d6-9717-dfc3ed4468c8.png');

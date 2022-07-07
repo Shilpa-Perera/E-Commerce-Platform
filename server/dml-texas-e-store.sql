@@ -47,6 +47,10 @@ insert into sub_category (sub_category_id, sub_category_name) values (19, 'Logit
 insert into sub_category (sub_category_id, sub_category_name) values (20, 'Corsair');
 insert into sub_category (sub_category_id, sub_category_name) values (21,'Canon');
 insert into sub_category (sub_category_id, sub_category_name) values (22,'MSI');
+insert into sub_category (sub_category_id, sub_category_name) values (23, 'Lexar');
+insert into sub_category (sub_category_id, sub_category_name) values (24, 'Anker');
+insert into sub_category (sub_category_id, sub_category_name) values (25, 'Baseus');
+insert into sub_category (sub_category_id, sub_category_name) values (26, 'Epson');
 
 insert into category_link (category_id, sub_category_id) values (1, 1);
 insert into category_link (category_id, sub_category_id) values (2, 1);
@@ -102,3 +106,7 @@ insert into category_link (category_id, sub_category_id) values (12, 20);
 insert into category_link (category_id, sub_category_id) values (14, 20);
 insert into category_link (category_id, sub_category_id) values (4, 21);
 insert into category_link (category_id, sub_category_id) values (5, 22);
+insert into category_link (category_id, sub_category_id) values (13, 23);
+insert into category_link (category_id, sub_category_id) values (11, 24);
+insert into category_link (category_id, sub_category_id) values (11, 25);
+insert into category_link (category_id, sub_category_id) values (15, 26);
