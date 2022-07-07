@@ -28,6 +28,7 @@ class ProductBody extends Component {
             if (options.length > 0) {
                 for (const option of options) {
                     if (option.value_id === 0) {
+                        this.setState({ variant: null })
                         return;
                     }
                 }
