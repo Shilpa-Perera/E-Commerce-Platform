@@ -47,11 +47,17 @@ import MaxSaleProducts from "./components/reports/maxSaleProductsReport/maxSaleP
 import MostOrderCategories from "./components/reports/mostOrderCategoriesReport/mostOrderCategories";
 function App() {
 	const [theme, setTheme] = useState(getTheme());
-	const [item_count, setItemCount] = useState(0);
+	const [item_count, setItemCount] = useState();
 	const [user, setUser] = useState();
 
 	useEffect(() => {
 		setUser(getCurrentUser());
+		const fetchCount = async () => {
+			const count = await getItemCount(getCartId());
+			console.log(count);
+			setItemCount(count);
+		};
+		fetchCount();
 	}, []);
 
 	return (
