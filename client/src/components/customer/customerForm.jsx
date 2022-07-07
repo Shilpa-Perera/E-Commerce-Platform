@@ -74,6 +74,7 @@ class CustomerFormBody extends Form {
                 mobile: Joi.string()
                     .regex(/^\+?\d{0,3}\s?\(?\d{3}\)?[-\s]?\d{3}[-\s]?\d{4}$/)
                     .label("Contact No"),
+                // .message({ "custom.x": "hello {#w}!" }),
             })
             .required()
             .min(1),
@@ -92,6 +93,7 @@ class CustomerFormBody extends Form {
         mobile: Joi.string()
             .regex(/^\+?\d{0,3}\s?\(?\d{3}\)?[-\s]?\d{3}[-\s]?\d{4}$/)
             .label("Contact No"),
+        // .message({ "custom.x": "hello {#w}!" }),
     };
 
     initiateErrors = () => {
@@ -298,13 +300,7 @@ class CustomerFormBody extends Form {
     };
 
     render() {
-        const {
-            addresses,
-            mobiles,
-            customer_id: customerId,
-            first_name,
-            last_name,
-        } = this.state.data;
+        const { addresses, mobiles, customer_id: customerId } = this.state.data;
 
         const profile = this.state.profile;
 
@@ -480,21 +476,23 @@ class CustomerFormBody extends Form {
                                                     />
                                                 </div>
                                                 <div className="col-2">
-                                                    <button
-                                                        key={
-                                                            "address-btn-" +
-                                                            address.index
-                                                        }
-                                                        onClick={(e) =>
-                                                            this.handleDeleteAddress(
-                                                                e,
-                                                                address
-                                                            )
-                                                        }
-                                                        className="btn btn-danger mb-3"
-                                                    >
-                                                        Delete
-                                                    </button>
+                                                    {index > 0 && (
+                                                        <button
+                                                            key={
+                                                                "address-btn-" +
+                                                                address.index
+                                                            }
+                                                            onClick={(e) =>
+                                                                this.handleDeleteAddress(
+                                                                    e,
+                                                                    address
+                                                                )
+                                                            }
+                                                            className="btn btn-danger mb-3"
+                                                        >
+                                                            Delete
+                                                        </button>
+                                                    )}
                                                 </div>
                                             </div>
                                         ))}
@@ -543,21 +541,23 @@ class CustomerFormBody extends Form {
                                                     marginTop: "25px",
                                                 }}
                                             >
-                                                <button
-                                                    key={
-                                                        "mobile-btn-" +
-                                                        mobile.index
-                                                    }
-                                                    className="btn btn-danger mb-3"
-                                                    onClick={(e) =>
-                                                        this.handleDeleteMobile(
-                                                            e,
-                                                            mobile
-                                                        )
-                                                    }
-                                                >
-                                                    Delete
-                                                </button>
+                                                {index > 0 && (
+                                                    <button
+                                                        key={
+                                                            "mobile-btn-" +
+                                                            mobile.index
+                                                        }
+                                                        className="btn btn-danger mb-3"
+                                                        onClick={(e) =>
+                                                            this.handleDeleteMobile(
+                                                                e,
+                                                                mobile
+                                                            )
+                                                        }
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                )}
                                             </div>
                                         </div>
                                     ))}
