@@ -5,9 +5,11 @@ import { OrderStatus } from "./orderStatus";
 import OrdersCartTable from "./orderViewCartTable";
 import Loading from "../common/loading";
 import NotFound from "../notFound";
+import { IoReloadSharp } from "react-icons/io5";
 
 class OrderView extends Component {
     state = {
+        reload: true,
         loading: true,
         order: null,
         cart: null,
@@ -37,11 +39,24 @@ class OrderView extends Component {
                 this.setState({ loading: false });
                 return null;
             }
-        } catch (error) {}
+        } catch (error) { }
     }
 
-    orderStatusValue = (event)=>{
-        console.log(event.taget.payment_status);
+    async updateValues() {
+        this.setState({ loading: true })
+        const { id } = this.props;
+        const { data: s } = await getOrder(id);
+        this.setState({
+            orderDetails: s.orderDetails,
+            cart: s.orderCart,
+            loading: false,
+        });
+
+        this.setValues();
+    }
+
+    orderStatusValue = (x) => {
+        this.updateValues();
     }
 
     render() {
@@ -216,7 +231,7 @@ class OrderView extends Component {
                                                 id="f11"
                                                 value={
                                                     orderValues.date_time !==
-                                                    null
+                                                        null
                                                         ? orderValues.date_time
                                                         : "No payment made"
                                                 }
@@ -239,7 +254,7 @@ class OrderView extends Component {
                                             orderPaymentMethod={
                                                 orderValues.payment_method
                                             }
-                                            onUpdateValue={this.setValues}
+                                            onUpdateValue={this.orderStatusValue}
                                         />
                                     </div>
                                 </div>

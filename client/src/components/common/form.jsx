@@ -38,15 +38,15 @@ class Form extends Component {
     validateProperty = ({ name, value }, fromAdditional = false) => {
         const obj = { [name]: value };
         if (!fromAdditional) {
-          const { error } = Joi.object({ [name]: this.schema[name] }).validate(obj);
-          return error ? error.details[0].message : null;
-        } 
+            const { error } = Joi.object({ [name]: this.schema[name] }).validate(obj);
+            return error ? error.details[0].message : null;
+        }
         else {
-          // console.log("validateProperty", obj)
-          const { error } = Joi.object({
-            [name]: this.additionalSchema[name],
-          }).validate(obj);
-          return error ? error.details[0].message : null;
+            // console.log("validateProperty", obj)
+            const { error } = Joi.object({
+                [name]: this.additionalSchema[name],
+            }).validate(obj);
+            return error ? error.details[0].message : null;
         }
     };
 
@@ -55,8 +55,8 @@ class Form extends Component {
         const errors = this.validate();
         this.setState({ errors: errors || { ...this.initiateErrors() } });
         if (errors) {
-          // console.log("inside handle submit: ", errors);
-          return;
+            // console.log("inside handle submit: ", errors);
+            return;
         }
         // console.log("inside handle submit outside ", errors);
         this.doSubmit();
@@ -101,6 +101,17 @@ class Form extends Component {
                 disabled={this.validate()}
                 className={`btn btn-primary ${additionalClasses}`}
             >
+                <span className="me-2">{label}</span>
+                {callback && callback()}
+            </button>
+        );
+    }
+    renderStyledButtonwithOnclick(label, additionalClasses = "", callback = null, onClick = null) {
+        return (
+            <button
+                disabled={this.validate()}
+                className={`btn btn-primary ${additionalClasses}`}
+                onClick={onClick}           >
                 <span className="me-2">{label}</span>
                 {callback && callback()}
             </button>

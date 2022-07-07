@@ -68,9 +68,9 @@ export class OrderStatus extends Form {
                             "Payment",
                             this.props.orderPaymentMethod !== "CARD"
                                 ? [
-                                      { id: "PENDING", name: "Pending" },
-                                      { id: "PAID", name: "Paid" },
-                                  ]
+                                    { id: "PENDING", name: "Pending" },
+                                    { id: "PAID", name: "Paid" },
+                                ]
                                 : [{ id: "PAID", name: "Paid" }]
                         )}
                     </div>
@@ -106,9 +106,9 @@ export class OrderStatus extends Form {
                     </div>
                     <div className="col">
                         <div className="p-3">
-                            {this.renderStyledButton(
+                            {this.renderStyledButtonwithOnclick(
                                 "Update",
-                                "btn btn-danger col-12 hover-focus"
+                                "btn btn-danger col-12 hover-focus", null, ()=>{onUpdateValue("x")}
                             )}
                         </div>
                     </div>
