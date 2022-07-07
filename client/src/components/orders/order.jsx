@@ -40,6 +40,10 @@ class OrderView extends Component {
         } catch (error) {}
     }
 
+    orderStatusValue = (event)=>{
+        console.log(event.taget.payment_status);
+    }
+
     render() {
         if (this.state.loading === true) {
             return <Loading />;
@@ -58,7 +62,7 @@ class OrderView extends Component {
                                     <div className="mb-3 row">
                                         <label
                                             htmlFor="f1"
-                                            className="col-sm-4 col-form-label font-weight-bold"
+                                            className="col-sm-4 col-form-label fw-bold"
                                         >
                                             Order ID
                                         </label>
@@ -75,7 +79,7 @@ class OrderView extends Component {
                                     <div className="mb-3 row">
                                         <label
                                             htmlFor="f1"
-                                            className="col-sm-4 col-form-label"
+                                            className="col-sm-4 col-form-label fw-bold"
                                         >
                                             Name on order
                                         </label>
@@ -92,7 +96,7 @@ class OrderView extends Component {
                                     <div className="mb-3 row">
                                         <label
                                             htmlFor="f1"
-                                            className="col-sm-4 col-form-label"
+                                            className="col-sm-4 col-form-label fw-bold"
                                         >
                                             Date and time
                                         </label>
@@ -109,7 +113,7 @@ class OrderView extends Component {
                                     <div className="mb-3 row">
                                         <label
                                             htmlFor="f1"
-                                            className="col-sm-4 col-form-label"
+                                            className="col-sm-4 col-form-label fw-bold"
                                         >
                                             Delivery Address
                                         </label>
@@ -128,7 +132,7 @@ class OrderView extends Component {
                                     <div className="mb-3 row">
                                         <label
                                             htmlFor="f5"
-                                            className="col-sm-4 col-form-label"
+                                            className="col-sm-4 col-form-label fw-bold"
                                         >
                                             ZIP code
                                         </label>
@@ -147,7 +151,7 @@ class OrderView extends Component {
                                     <div className="mb-3 row">
                                         <label
                                             htmlFor="f1"
-                                            className="col-sm-4 col-form-label"
+                                            className="col-sm-4 col-form-label fw-bold"
                                         >
                                             Telephone
                                         </label>
@@ -164,7 +168,7 @@ class OrderView extends Component {
                                     <div className="mb-3 row">
                                         <label
                                             htmlFor="f1"
-                                            className="col-sm-4 col-form-label"
+                                            className="col-sm-4 col-form-label fw-bold"
                                         >
                                             Delivery Method
                                         </label>
@@ -183,7 +187,7 @@ class OrderView extends Component {
                                     <div className="mb-3 row">
                                         <label
                                             htmlFor="f1"
-                                            className="col-sm-4 col-form-label"
+                                            className="col-sm-4 col-form-label fw-bold"
                                         >
                                             Payment Method
                                         </label>
@@ -195,6 +199,28 @@ class OrderView extends Component {
                                                 id="f1"
                                                 value={
                                                     orderValues.payment_method
+                                                }
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="mb-3 row">
+                                        <label
+                                            htmlFor="f11"
+                                            className="col-sm-4 col-form-label fw-bold"
+                                        >
+                                            Payment Date - Time
+                                        </label>
+                                        <div className="col-sm-6">
+                                            <input
+                                                type="text"
+                                                readOnly
+                                                className="form-control-plaintext"
+                                                id="f11"
+                                                value={
+                                                    orderValues.date_time !==
+                                                    null
+                                                        ? orderValues.date_time
+                                                        : "No payment made"
                                                 }
                                             />
                                         </div>
@@ -215,6 +241,7 @@ class OrderView extends Component {
                                             orderPaymentMethod={
                                                 orderValues.payment_method
                                             }
+                                            onUpdateValue={this.setValues}
                                         />
                                     </div>
                                 </div>

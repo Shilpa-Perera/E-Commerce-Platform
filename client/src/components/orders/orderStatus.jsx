@@ -46,13 +46,14 @@ export class OrderStatus extends Form {
     };
 
     render() {
+        const {onUpdateValue} = this.props;
         return (
             <form className="container" onSubmit={this.doSubmit}>
                 <div className="row mb-4  gx-5">
                     <div className="col-6">
                         {this.renderSelect(
                             "payment_status",
-                            "Payment status",
+                            "Payment",
                             this.props.orderPaymentMethod !== "CARD"
                                 ? [
                                       { id: "PENDING", name: "Pending" },
@@ -64,18 +65,14 @@ export class OrderStatus extends Form {
 
                     <div className="col-6">
                         {" "}
-                        {this.renderSelect(
-                            "delivery_state",
-                            "Delivery status",
-                            [
-                                { id: "PROCESSING", name: "Processing" },
-                                {
-                                    id: "OUT-FOR-DELIVERY",
-                                    name: "Out for delivery",
-                                },
-                                { id: "DELIVERED", name: "delivered" },
-                            ]
-                        )}
+                        {this.renderSelect("delivery_state", "Delivery", [
+                            { id: "PROCESSING", name: "Processing" },
+                            {
+                                id: "OUT-FOR-DELIVERY",
+                                name: "Out for delivery",
+                            },
+                            { id: "DELIVERED", name: "delivered" },
+                        ])}
                     </div>
                 </div>
 
@@ -86,6 +83,8 @@ export class OrderStatus extends Form {
                                 className="btn btn-success col-12 hover-focus"
                                 to="/orders"
                             >
+                                {" "}
+                                Orders{" "}
                                 <i
                                     className="fa fa-home"
                                     aria-hidden="true"
