@@ -7,7 +7,9 @@ class OrderController {
     static async getAllOrders(req, res) {
         const allOrders = await Order.fetchAll();
 
-        allOrders[0].map((e)=>e.date = DateTime.convertToLocalDateTime(e.date))
+        allOrders[0].map(
+            (e) => (e.date = DateTime.convertToLocalDateTime(e.date))
+        );
 
         return res.send(allOrders[0]);
     }
@@ -15,8 +17,9 @@ class OrderController {
     static async getCustomerOrders(req, res) {
         const { id: customerId } = req.params;
         const allCustomerOrders = await Order.getCustomerOrders(customerId);
-
-        allCustomerOrders[0].map((e)=>e.date = DateTime.convertToLocalDateTime(e.date))
+        allCustomerOrders[0].map(
+            (e) => (e.date = DateTime.convertToLocalDateTime(e.date))
+        );
 
         return res.status(200).send(allCustomerOrders[0]);
     }
