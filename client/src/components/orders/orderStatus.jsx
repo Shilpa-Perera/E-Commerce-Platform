@@ -50,6 +50,10 @@ export class OrderStatus extends Form {
                 theme: "dark",
             });
         }
+
+        // Update the order Component using a callback function
+        const { onUpdateValue } = this.props;
+        onUpdateValue();
     }
 
     doSubmit = (event) => {
@@ -58,7 +62,6 @@ export class OrderStatus extends Form {
     };
 
     render() {
-        const { onUpdateValue } = this.props;
         return (
             <form className="container" onSubmit={this.doSubmit}>
                 <div className="row mb-4  gx-5">
@@ -68,9 +71,9 @@ export class OrderStatus extends Form {
                             "Payment",
                             this.props.orderPaymentMethod !== "CARD"
                                 ? [
-                                    { id: "PENDING", name: "Pending" },
-                                    { id: "PAID", name: "Paid" },
-                                ]
+                                      { id: "PENDING", name: "Pending" },
+                                      { id: "PAID", name: "Paid" },
+                                  ]
                                 : [{ id: "PAID", name: "Paid" }]
                         )}
                     </div>
@@ -106,9 +109,9 @@ export class OrderStatus extends Form {
                     </div>
                     <div className="col">
                         <div className="p-3">
-                            {this.renderStyledButtonwithOnclick(
+                            {this.renderStyledButton(
                                 "Update",
-                                "btn btn-danger col-12 hover-focus", null, ()=>{onUpdateValue("x")}
+                                "btn btn-danger col-12 hover-focus"
                             )}
                         </div>
                     </div>
