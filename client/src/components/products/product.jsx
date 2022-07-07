@@ -125,12 +125,14 @@ class ProductBody extends Component {
     render() {
         if (this.state.loading) return <Loading />;
 
-        const { user } = this.props;
-        const isCustomer = !(user && user.role === "admin");
+        const { user, push } = this.props;
+        const isAdmin = user && user.role === "admin";
+        const isCustomer = !isAdmin;
         const isLoggedCustomer = user && user.role === "customer";
 
         const { product, variant, images } = this.state;
         if (product) {
+            const { product_id } = product;
             const productAvailability = product.availability === "AVAILABLE";
             const variantAvailability = variant && variant.variant_id !== 0;
 
@@ -157,6 +159,21 @@ class ProductBody extends Component {
                                     id={`product-carousel`}
                                 />
                             </div>
+                            {isAdmin && variant && (
+                                <div className="d-flex justify-content-center mt-5">
+                                    <button
+                                        className="btn btn-primary hover-focus"
+                                        onClick={() =>
+                                            push(
+                                                `/products/${product_id}/variants/${variant.variant_id}/images`
+                                            )
+                                        }
+                                    >
+                                        <span className="me-2">Add Images</span>
+                                        <i className="fa fa-image"></i>
+                                    </button>
+                                </div>
+                            )}
                         </div>
                         <div className="col mb-3">
                             <div className="container">
@@ -325,6 +342,53 @@ class ProductBody extends Component {
                                                     <div>
                                                         Item is currently out of
                                                         stock!
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+                                        {isAdmin && (
+                                            <div className="container mt-5">
+                                                <div className="d-flex justify-content-end mb-2">
+                                                    <div className="btn-group">
+                                                        <button
+                                                            className="btn btn-warning hover-focus"
+                                                            onClick={() =>
+                                                                push(
+                                                                    `/products/edit/${product_id}/`
+                                                                )
+                                                            }
+                                                        >
+                                                            <span className="me-2">
+                                                                Edit Product
+                                                            </span>
+                                                            <i className="fa fa-edit"></i>
+                                                        </button>
+                                                        <button
+                                                            className="btn btn-primary hover-focus"
+                                                            onClick={() =>
+                                                                push(
+                                                                    `/products/${product_id}/variants/`
+                                                                )
+                                                            }
+                                                        >
+                                                            <span className="me-2">
+                                                                Manage Variants
+                                                            </span>
+                                                            <i className="fa fa-gears"></i>
+                                                        </button>
+                                                        <button
+                                                            className="btn btn-info hover-focus"
+                                                            onClick={() =>
+                                                                push(
+                                                                    `/reports/products/interest/${product_id}`
+                                                                )
+                                                            }
+                                                        >
+                                                            <span className="me-2">
+                                                                Interest Report
+                                                            </span>
+                                                            <i className="fa fa-bar-chart"></i>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
