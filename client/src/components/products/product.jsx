@@ -14,9 +14,10 @@ class ProductBody extends Component {
         variant: null,
         selectedOptions: [],
         images: [],
-        defaultImages: [],
         item_count: this.props.item_count,
     };
+
+    defaultImages = [`${process.env.PUBLIC_URL}/logo512.png`];
 
     async populateVariant() {
         const { id: product_id } = this.props;
@@ -46,7 +47,7 @@ class ProductBody extends Component {
                     images.push(variantImageUrl(image_name));
                 }
             } else {
-                images = [...this.state.defaultImages];
+                images = [...this.defaultImages];
             }
 
             this.setState({ variant, images });
@@ -97,21 +98,14 @@ class ProductBody extends Component {
                     images.push(variantImageUrl(image_name));
                 }
             } else {
-                images = [
-                    "https://c.s-microsoft.com/en-us/CMSImages/1920_Panel03_DeviceFamily_Pro7Plus.jpg?version=f4411094-f2e1-b89b-41d1-4517624580ae",
-                    "https://c.s-microsoft.com/en-us/CMSImages/Surface_F21_DeviceFamily_Studio2_V1_Blackfriday.jpg?version=72d8410c-3280-67f2-5c7a-c516caa6c728",
-                    "https://c.s-microsoft.com/en-us/CMSImages/Surface_F21_DeviceFamily_Laptop4_V1_Blackfriday.jpg?version=4258b51c-655a-37d6-fbd3-b8138d84dcae",
-                ];
+                images = [...this.defaultImages];
             }
-
-            const defaultImages = [...images];
 
             this.setState({
                 product,
                 selectedOptions,
                 variant: null,
                 images,
-                defaultImages,
             });
         } catch (e) {
             if (e.response && e.response.status === 404)
@@ -152,6 +146,7 @@ class ProductBody extends Component {
                             >
                                 <Carousel
                                     images={images}
+                                    defaultImage={this.defaultImages[0]}
                                     id={`product-carousel`}
                                 />
                             </div>
