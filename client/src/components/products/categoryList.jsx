@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ListGroup from "../common/listGroup";
 import { Link } from "react-router-dom";
 
@@ -9,8 +9,23 @@ export default function CategoryList({
     selectedCategory,
     handleClearSelection,
 }) {
+    const [scrolled, setScrolled] = useState(false);
+
+    const toggleScroll = () => {
+        const scrolled = document.documentElement.scrollTop;
+        if (scrolled > 20) {
+            setScrolled(true);
+        } else if (scrolled <= 20) {
+            setScrolled(false);
+        }
+    };
+
+    window.addEventListener("scroll", toggleScroll);
+
+    const listClasses = scrolled ? "py-5 sticky-md-top" : "pb-5";
+
     return (
-        <div className="pb-5">
+        <div className={listClasses}>
             <div className="container">
                 <div className="mb-3 d-flex justify-content-between">
                     <div>
