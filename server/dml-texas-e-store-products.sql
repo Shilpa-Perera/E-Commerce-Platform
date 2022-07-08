@@ -63,20 +63,26 @@ insert into product_category (product_id, category_id, sub_category_id) values (
 insert into product_category (product_id, category_id, sub_category_id) values (15, 10, 14);
 insert into product_category (product_id, category_id, sub_category_id) values (16, 6, 5);
 insert into product_category (product_id, category_id, sub_category_id) values (17, 5, 5);
+insert into product_category (product_id, category_id, sub_category_id) values (17, 5, 16);
 insert into product_category (product_id, category_id, sub_category_id) values (18, 5, 5);
 insert into product_category (product_id, category_id, sub_category_id) values (19, 7, 4);
 insert into product_category (product_id, category_id, sub_category_id) values (20, 9, 6);
 insert into product_category (product_id, category_id, sub_category_id) values (21, 9, 6);
 insert into product_category (product_id, category_id, sub_category_id) values (22, 7, 5);
 insert into product_category (product_id, category_id, sub_category_id) values (23, 8, 9);
+insert into product_category (product_id, category_id, sub_category_id) values (23, 8, 27);
 insert into product_category (product_id, category_id, sub_category_id) values (24, 8, 7);
 insert into product_category (product_id, category_id, sub_category_id) values (24, 8, 16);
 insert into product_category (product_id, category_id, sub_category_id) values (25, 1, 5);
+insert into product_category (product_id, category_id, sub_category_id) values (26, 14, 13);
 insert into product_category (product_id, category_id, sub_category_id) values (26, 14, 17);
+insert into product_category (product_id, category_id, sub_category_id) values (27, 14, 13);
 insert into product_category (product_id, category_id, sub_category_id) values (27, 14, 19);
+insert into product_category (product_id, category_id, sub_category_id) values (28, 14, 13);
 insert into product_category (product_id, category_id, sub_category_id) values (28, 14, 19);
 insert into product_category (product_id, category_id, sub_category_id) values (29, 14, 7);
 insert into product_category (product_id, category_id, sub_category_id) values (30, 12, 7);
+insert into product_category (product_id, category_id, sub_category_id) values (32, 12, 16);
 insert into product_category (product_id, category_id, sub_category_id) values (32, 12, 20);
 insert into product_category (product_id, category_id, sub_category_id) values (33, 13, 3);
 insert into product_category (product_id, category_id, sub_category_id) values (34, 4, 2);
@@ -89,6 +95,7 @@ insert into product_category (product_id, category_id, sub_category_id) values (
 insert into product_category (product_id, category_id, sub_category_id) values (41, 11, 24);
 insert into product_category (product_id, category_id, sub_category_id) values (42, 11, 24);
 insert into product_category (product_id, category_id, sub_category_id) values (43, 11, 25);
+insert into product_category (product_id, category_id, sub_category_id) values (43, 11, 28);
 insert into product_category (product_id, category_id, sub_category_id) values (44, 15, 26);
 insert into product_category (product_id, category_id, sub_category_id) values (45, 15, 26);
 
