@@ -81,14 +81,24 @@ class OrdersTable extends Component {
     ];
 
     render() {
-        let { orders, sortBy, onSort, loading, filterOnClick } = this.props;
+        let {
+            orders,
+            sortBy,
+            onSort,
+            loading,
+            filterOnClick,
+            filterOnClickDelivery,
+            totalOrdersCount,
+        } = this.props;
 
         return (
             <div className="pb-5">
                 <div className="container div-dark">
                     <div className="row">
-                        <h3 className="mb-2 col-9">Manage Orders</h3>
+                        <h3 className="mb-2 col-6">Manage Orders</h3>
                         <div className="col-3">
+                            {" "}
+                            Payment:
                             <select
                                 className="form-select"
                                 aria-label=".form-select-sm example"
@@ -99,6 +109,25 @@ class OrdersTable extends Component {
                                 <option value="PENDING">Pending</option>
                             </select>
                         </div>
+                        <div className="col-3">
+                            {" "}
+                            Delivery:
+                            <select
+                                className="form-select"
+                                aria-label=".form-select-sm example"
+                                onChange={filterOnClickDelivery}
+                            >
+                                <option value="">All</option>
+                                <option value="PROCESSING">Processing</option>
+                                <option value="OUT-FOR-DELIVERY">
+                                    Out for delivery
+                                </option>
+                                <option value="DELIVERED">Delivered</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <h5>Total: {totalOrdersCount}</h5>
                     </div>
                     <div className="mt-5">
                         {loading && <Loading />}

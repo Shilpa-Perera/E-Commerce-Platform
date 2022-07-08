@@ -15,6 +15,8 @@ class Orders extends Component {
         orders: [],
         searchQuery: "",
         filterBy: null,
+        filterBy2: null,
+        totalOrdersCount: null,
         currentPage: 1,
         pageSize: 24,
         sortBy: { path: "order_id", order: "asc" },
@@ -66,6 +68,7 @@ class Orders extends Component {
             pageSize,
             searchQuery,
             filterBy,
+            filterBy2,
         } = this.state;
 
         let filtered = allOrders;
@@ -80,6 +83,11 @@ class Orders extends Component {
                 return ele.payment_state === filterBy;
             });
         }
+        if (filterBy2) {
+            filtered = filtered.filter((ele) => {
+                return ele.delivery_state === filterBy2;
+            });
+        }
         const sorted = _.orderBy(
             filtered,
             (order) => {
@@ -87,18 +95,28 @@ class Orders extends Component {
             },
             [sortBy.order]
         );
-
+        
         const orders = paginate(sorted, currentPage, pageSize);
         return { totalCount: sorted.length, data: orders };
     };
 
     setFilter = (event) => {
         const filtertype = event.target.value;
+
         if (filtertype === "") {
             this.setState({ filterBy: null });
             return;
         }
         this.setState({ filterBy: filtertype, currentPage: 1 });
+        this.getPagedData();
+    };
+    setFilter2 = (event) => {
+        const filtertype = event.target.value;
+        if (filtertype === "") {
+            this.setState({ filterBy2: null });
+            return;
+        }
+        this.setState({ filterBy2: filtertype, currentPage: 1 });
         this.getPagedData();
     };
 
@@ -132,6 +150,8 @@ class Orders extends Component {
                             loading={this.state.loading}
                             searchQuery={this.state.searchQuery}
                             filterOnClick={this.setFilter}
+                            filterOnClickDelivery={this.setFilter2}
+                            totalOrdersCount={totalCount}
                         />
                     ) : (
                         Loading()
