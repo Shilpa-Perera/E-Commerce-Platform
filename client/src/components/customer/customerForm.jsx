@@ -13,6 +13,8 @@ import Input from "../common/input";
 import { getCurrentUser } from "../../services/authService";
 import ROLE from "../../utils/roles.json";
 import Table from "./../common/table";
+import CustomerAddress from "./customerAddress";
+import CustomerMobile from "./customerMobile";
 
 class CustomerFormBody extends Form {
     state = {
@@ -307,6 +309,8 @@ class CustomerFormBody extends Form {
         const { addresses, mobiles, customer_id: customerId } = this.state.data;
 
         const profile = this.state.profile;
+        const { addresses: addressesErrors, mobiles: mobilesErrors } =
+            this.state.errors;
 
         return (
             <div className="container  mb-5">
@@ -349,156 +353,19 @@ class CustomerFormBody extends Form {
                                 <div className="">
                                     <div className="container   p-5 ">
                                         {addresses.map((address, index) => (
-                                            <div
-                                                className="row card mb-3 dark"
-                                                key={index}
-                                            >
-                                                <div className="col ">
-                                                    <Input
-                                                        data-array-name="addresses"
-                                                        data-element-id={
-                                                            address.index
-                                                        }
-                                                        key={
-                                                            "po_box" +
-                                                            address.index
-                                                        }
-                                                        id={
-                                                            "po_box" +
-                                                            address.index
-                                                        }
-                                                        type="text"
-                                                        label="Po Box"
-                                                        name="po_box"
-                                                        value={
-                                                            addresses[
-                                                                address.index
-                                                            ].po_box
-                                                        }
-                                                        onChange={
-                                                            this.handleChange
-                                                        }
-                                                        error={
-                                                            this.state.errors
-                                                                .addresses[
-                                                                address.index
-                                                            ].po_box
-                                                        }
-                                                    />
-                                                    <Input
-                                                        data-array-name="addresses"
-                                                        data-element-id={
-                                                            address.index
-                                                        }
-                                                        id={
-                                                            "street_name" +
-                                                            address.index
-                                                        }
-                                                        key={
-                                                            "street_name" +
-                                                            address.index
-                                                        }
-                                                        type="text"
-                                                        label="Street Name"
-                                                        name="street_name"
-                                                        value={
-                                                            addresses[
-                                                                address.index
-                                                            ].street_name
-                                                        }
-                                                        onChange={
-                                                            this.handleChange
-                                                        }
-                                                        error={
-                                                            this.state.errors
-                                                                .addresses[
-                                                                address.index
-                                                            ].street_name
-                                                        }
-                                                    />
-                                                    <Input
-                                                        data-array-name="addresses"
-                                                        data-element-id={
-                                                            address.index
-                                                        }
-                                                        id={
-                                                            "city" +
-                                                            address.index
-                                                        }
-                                                        key={
-                                                            "city" +
-                                                            address.index
-                                                        }
-                                                        type="text"
-                                                        label="City"
-                                                        name="city"
-                                                        value={
-                                                            addresses[
-                                                                address.index
-                                                            ].city
-                                                        }
-                                                        onChange={
-                                                            this.handleChange
-                                                        }
-                                                        error={
-                                                            this.state.errors
-                                                                .addresses[
-                                                                address.index
-                                                            ].city
-                                                        }
-                                                    />
-                                                    <Input
-                                                        data-array-name="addresses"
-                                                        data-element-id={
-                                                            address.index
-                                                        }
-                                                        id={
-                                                            "postal_code" +
-                                                            address.index
-                                                        }
-                                                        key={
-                                                            "postal_code" +
-                                                            address.index
-                                                        }
-                                                        type="number"
-                                                        label="Postal Code"
-                                                        name="postal_code"
-                                                        value={
-                                                            addresses[
-                                                                address.index
-                                                            ].postal_code
-                                                        }
-                                                        onChange={
-                                                            this.handleChange
-                                                        }
-                                                        error={
-                                                            this.state.errors
-                                                                .addresses[
-                                                                address.index
-                                                            ].postal_code
-                                                        }
-                                                    />
-                                                </div>
-                                                <div className="col-2">
-                                                    {index > 0 && (
-                                                        <button
-                                                            key={
-                                                                "address-btn-" +
-                                                                address.index
-                                                            }
-                                                            onClick={(e) =>
-                                                                this.handleDeleteAddress(
-                                                                    e,
-                                                                    address
-                                                                )
-                                                            }
-                                                            className="btn btn-danger mb-3"
-                                                        >
-                                                            Delete
-                                                        </button>
-                                                    )}
-                                                </div>
-                                            </div>
+                                            <CustomerAddress
+                                                index={index}
+                                                address={address}
+                                                addressError={
+                                                    addressesErrors[
+                                                        address.index
+                                                    ]
+                                                }
+                                                handleChange={this.handleChange}
+                                                handleDeleteAddress={
+                                                    this.handleDeleteAddress
+                                                }
+                                            />
                                         ))}
                                         <button
                                             className="btn btn-warning mb-3"
@@ -515,55 +382,15 @@ class CustomerFormBody extends Form {
                                 </div>
                                 <div className="container mb-5  p-5 div-dark">
                                     {mobiles.map((mobile, index) => (
-                                        <div className="row" key={index}>
-                                            <div className="col">
-                                                <Input
-                                                    data-array-name="mobiles"
-                                                    data-element-id={
-                                                        mobile.index
-                                                    }
-                                                    id={"mobile" + mobile.index}
-                                                    key={
-                                                        "mobile" + mobile.index
-                                                    }
-                                                    type="tel"
-                                                    label="Contact No"
-                                                    name="mobile"
-                                                    value={mobile.mobile}
-                                                    onChange={this.handleChange}
-                                                    error={
-                                                        this.state.errors
-                                                            .mobiles[
-                                                            mobile.index
-                                                        ].mobile
-                                                    }
-                                                />
-                                            </div>
-                                            <div
-                                                className="col"
-                                                style={{
-                                                    marginTop: "25px",
-                                                }}
-                                            >
-                                                {index > 0 && (
-                                                    <button
-                                                        key={
-                                                            "mobile-btn-" +
-                                                            mobile.index
-                                                        }
-                                                        className="btn btn-danger mb-3"
-                                                        onClick={(e) =>
-                                                            this.handleDeleteMobile(
-                                                                e,
-                                                                mobile
-                                                            )
-                                                        }
-                                                    >
-                                                        Delete
-                                                    </button>
-                                                )}
-                                            </div>
-                                        </div>
+                                        <CustomerMobile
+                                            index={index}
+                                            mobile={mobile}
+                                            mobileError={mobilesErrors[index]}
+                                            handleChange={this.handleChange}
+                                            handleDeleteMobile={
+                                                this.handleDeleteMobile
+                                            }
+                                        />
                                     ))}
                                     <button
                                         className="btn btn-warning mb-3"
