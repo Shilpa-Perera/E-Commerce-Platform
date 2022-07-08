@@ -65,9 +65,12 @@ class OrdersTable extends Component {
                                     : `/orders/${order_id}`
                             }
                         >
-                            <button className="btn btn-success btn-sm hover-focus">
-                                <span className="me-2">View Order</span>
-                                <i className="fa fa-eye"></i>
+                            <button className="btn btn-primary btn-sm hover-focus">
+                                <span className="me-2">View</span>
+                                <i
+                                    className="fa fa-sliders"
+                                    aria-hidden="true"
+                                ></i>
                             </button>
                         </Link>
                     </span>
@@ -78,16 +81,8 @@ class OrdersTable extends Component {
     ];
 
     render() {
-        let { orders, sortBy, onSort, loading, filterOnClick, filterBy } =
-            this.props;
-        if (orders.length === 0) {
-            return Loading();
-        }
-        filterBy !== null
-            ? (orders = orders.filter((e) => {
-                  return e.payment_state === this.props.filterBy;
-              }))
-            : (orders = orders);
+        let { orders, sortBy, onSort, loading, filterOnClick } = this.props;
+
         return (
             <div className="pb-5">
                 <div className="container div-dark">

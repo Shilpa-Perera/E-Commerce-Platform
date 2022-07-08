@@ -24,10 +24,12 @@ class Report {
             where
                 p.product_id = ?
             group by
-                year(o.date),
-                month(o.date)
+                year,
+                month
             order by
-                count desc
+                count desc,
+                year desc,
+                month desc
         `;
 
         const [productInterestData, _] = await db.execute(

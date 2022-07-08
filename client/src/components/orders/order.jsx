@@ -8,6 +8,7 @@ import NotFound from "../notFound";
 
 class OrderView extends Component {
     state = {
+        reload: true,
         loading: true,
         order: null,
         cart: null,
@@ -40,6 +41,23 @@ class OrderView extends Component {
         } catch (error) {}
     }
 
+    async updateValues() {
+        this.setState({ loading: true });
+        const { id } = this.props;
+        const { data: s } = await getOrder(id);
+        this.setState({
+            orderDetails: s.orderDetails,
+            cart: s.orderCart,
+            loading: false,
+        });
+
+        this.setValues();
+    }
+
+    orderStatusValue = () => {
+        this.updateValues();
+    };
+
     render() {
         if (this.state.loading === true) {
             return <Loading />;
@@ -58,7 +76,7 @@ class OrderView extends Component {
                                     <div className="mb-3 row">
                                         <label
                                             htmlFor="f1"
-                                            className="col-sm-4 col-form-label font-weight-bold"
+                                            className="col-sm-4 col-form-label fw-bold"
                                         >
                                             Order ID
                                         </label>
@@ -75,7 +93,7 @@ class OrderView extends Component {
                                     <div className="mb-3 row">
                                         <label
                                             htmlFor="f1"
-                                            className="col-sm-4 col-form-label"
+                                            className="col-sm-4 col-form-label fw-bold"
                                         >
                                             Name on order
                                         </label>
@@ -92,7 +110,7 @@ class OrderView extends Component {
                                     <div className="mb-3 row">
                                         <label
                                             htmlFor="f1"
-                                            className="col-sm-4 col-form-label"
+                                            className="col-sm-4 col-form-label fw-bold"
                                         >
                                             Order Date - time
                                         </label>
@@ -109,7 +127,7 @@ class OrderView extends Component {
                                     <div className="mb-3 row">
                                         <label
                                             htmlFor="f1"
-                                            className="col-sm-4 col-form-label"
+                                            className="col-sm-4 col-form-label fw-bold"
                                         >
                                             Delivery Address
                                         </label>
@@ -128,7 +146,7 @@ class OrderView extends Component {
                                     <div className="mb-3 row">
                                         <label
                                             htmlFor="f5"
-                                            className="col-sm-4 col-form-label"
+                                            className="col-sm-4 col-form-label fw-bold"
                                         >
                                             ZIP code
                                         </label>
@@ -145,7 +163,7 @@ class OrderView extends Component {
                                     <div className="mb-3 row">
                                         <label
                                             htmlFor="f1"
-                                            className="col-sm-4 col-form-label"
+                                            className="col-sm-4 col-form-label fw-bold"
                                         >
                                             Telephone
                                         </label>
@@ -162,7 +180,7 @@ class OrderView extends Component {
                                     <div className="mb-3 row">
                                         <label
                                             htmlFor="f1"
-                                            className="col-sm-4 col-form-label"
+                                            className="col-sm-4 col-form-label fw-bold"
                                         >
                                             Delivery Method
                                         </label>
@@ -181,7 +199,7 @@ class OrderView extends Component {
                                     <div className="mb-3 row">
                                         <label
                                             htmlFor="f1"
-                                            className="col-sm-4 col-form-label"
+                                            className="col-sm-4 col-form-label fw-bold"
                                         >
                                             Payment Method
                                         </label>
@@ -200,7 +218,7 @@ class OrderView extends Component {
                                     <div className="mb-3 row">
                                         <label
                                             htmlFor="f11"
-                                            className="col-sm-4 col-form-label"
+                                            className="col-sm-4 col-form-label fw-bold"
                                         >
                                             Payment Date - Time
                                         </label>
@@ -234,6 +252,9 @@ class OrderView extends Component {
                                             orderId={orderValues.order_id}
                                             orderPaymentMethod={
                                                 orderValues.payment_method
+                                            }
+                                            onUpdateValue={
+                                                this.orderStatusValue
                                             }
                                         />
                                     </div>

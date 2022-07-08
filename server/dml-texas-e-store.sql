@@ -51,6 +51,8 @@ insert into sub_category (sub_category_id, sub_category_name) values (23, 'Lexar
 insert into sub_category (sub_category_id, sub_category_name) values (24, 'Anker');
 insert into sub_category (sub_category_id, sub_category_name) values (25, 'Baseus');
 insert into sub_category (sub_category_id, sub_category_name) values (26, 'Epson');
+insert into sub_category (sub_category_id, sub_category_name) values (27, 'All in One');
+insert into sub_category (sub_category_id, sub_category_name) values (28, 'Quick Charge');
 
 insert into category_link (category_id, sub_category_id) values (1, 1);
 insert into category_link (category_id, sub_category_id) values (2, 1);
@@ -96,9 +98,12 @@ insert into category_link (category_id, sub_category_id) values (2, 10);
 insert into category_link (category_id, sub_category_id) values (10, 11);
 insert into category_link (category_id, sub_category_id) values (10, 12);
 insert into category_link (category_id, sub_category_id) values (10, 13);
+insert into category_link (category_id, sub_category_id) values (14, 13);
 insert into category_link (category_id, sub_category_id) values (10, 14);
 insert into category_link (category_id, sub_category_id) values (10, 15);
+insert into category_link (category_id, sub_category_id) values (5, 16);
 insert into category_link (category_id, sub_category_id) values (8, 16);
+insert into category_link (category_id, sub_category_id) values (12, 16);
 insert into category_link (category_id, sub_category_id) values (14, 16);
 insert into category_link (category_id, sub_category_id) values (14, 17);
 insert into category_link (category_id, sub_category_id) values (14, 19);
@@ -110,3 +115,5 @@ insert into category_link (category_id, sub_category_id) values (13, 23);
 insert into category_link (category_id, sub_category_id) values (11, 24);
 insert into category_link (category_id, sub_category_id) values (11, 25);
 insert into category_link (category_id, sub_category_id) values (15, 26);
+insert into category_link (category_id, sub_category_id) values (8, 27);
+insert into category_link (category_id, sub_category_id) values (11, 28);

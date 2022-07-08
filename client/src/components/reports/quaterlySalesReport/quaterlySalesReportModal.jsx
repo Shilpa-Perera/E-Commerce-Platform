@@ -33,7 +33,7 @@ const QuaterlySalesReportModal = ({
 			fullscreen={true}
 		>
 			<Modal.Header closeButton>
-				<div class="d-flex justify-content-left">
+				<div className="d-flex justify-content-left">
 					<Button
 						variant="primary"
 						onClick={() => handleDownloadReport(elementId, year)}

@@ -50,6 +50,10 @@ export class OrderStatus extends Form {
                 theme: "dark",
             });
         }
+
+        // Update the order Component using a callback function
+        const { onUpdateValue } = this.props;
+        onUpdateValue();
     }
 
     doSubmit = (event) => {
@@ -64,7 +68,7 @@ export class OrderStatus extends Form {
                     <div className="col-6">
                         {this.renderSelect(
                             "payment_status",
-                            "Payment status",
+                            "Payment",
                             this.props.orderPaymentMethod !== "CARD"
                                 ? [
                                       { id: "PENDING", name: "Pending" },
@@ -76,18 +80,14 @@ export class OrderStatus extends Form {
 
                     <div className="col-6">
                         {" "}
-                        {this.renderSelect(
-                            "delivery_state",
-                            "Delivery status",
-                            [
-                                { id: "PROCESSING", name: "Processing" },
-                                {
-                                    id: "OUT-FOR-DELIVERY",
-                                    name: "Out for delivery",
-                                },
-                                { id: "DELIVERED", name: "delivered" },
-                            ]
-                        )}
+                        {this.renderSelect("delivery_state", "Delivery", [
+                            { id: "PROCESSING", name: "Processing" },
+                            {
+                                id: "OUT-FOR-DELIVERY",
+                                name: "Out for delivery",
+                            },
+                            { id: "DELIVERED", name: "delivered" },
+                        ])}
                     </div>
                 </div>
 
@@ -99,7 +99,7 @@ export class OrderStatus extends Form {
                                 to="/orders"
                             >
                                 {" "}
-                                Orders {" "}
+                                Orders{" "}
                                 <i
                                     className="fa fa-shopping-basket"
                                     aria-hidden="true"

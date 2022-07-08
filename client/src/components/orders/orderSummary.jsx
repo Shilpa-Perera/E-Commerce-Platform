@@ -181,7 +181,7 @@ class OrderSummary extends Form {
                                             </div>{" "}
                                             <h6 className="h5">Order items</h6>
                                             <hr />
-                                            <div className="products overflow-auto table-responsive checkout-cart-container">
+                                            <div className="products overflow-auto table-responsive checkout-cart-container summary-cart-container">
                                                 <table className="table">
                                                     <tbody>
                                                         <tr className="add">
