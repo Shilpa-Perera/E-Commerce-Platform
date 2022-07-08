@@ -64,6 +64,9 @@ class CartCard extends Component {
 							<button
 								className="btn btn-link px-2"
 								onClick={() => onIncrement(variant_id)}
+								disabled={
+									number_of_items >= 20 ? "disabled" : ""
+								}
 							>
 								<i className="fa fa-plus"></i>
 							</button>
