@@ -122,7 +122,7 @@ create table if not exists customer_address (
     po_box varchar(255),
     street_name varchar(255),
     city varchar(255),
-    postal_code varchar(255),
+    postal_code varchar(10),
     foreign key (customer_id) references customer(customer_id) on delete cascade
 );
 
