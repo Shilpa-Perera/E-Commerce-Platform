@@ -4,7 +4,7 @@ import TableBody from "./tableBody";
 
 const Table = ({ columns, sortColumn, onSort, data, idProperty }) => {
     return (
-        <div className="table-responsive">
+        <div className="table-responsive order-table-container">
             <table className="table table-hover">
                 <TableHeader
                     columns={columns}
