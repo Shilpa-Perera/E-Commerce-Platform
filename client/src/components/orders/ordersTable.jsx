@@ -45,12 +45,12 @@ class OrdersTable extends Component {
         this.props.userType === "customer"
             ? { key: "phone_number", content: null, label: null }
             : {
-                key: "phone_number",
-                content: ({ phone_number }) => (
-                    <span className="me-2 my-2 my-lg-0">{phone_number}</span>
-                ),
-                label: "Phone number",
-            },
+                  key: "phone_number",
+                  content: ({ phone_number }) => (
+                      <span className="me-2 my-2 my-lg-0">{phone_number}</span>
+                  ),
+                  label: "Phone number",
+              },
         {
             key: "order_idK",
             content: ({ order_id }) => (
@@ -60,8 +60,8 @@ class OrdersTable extends Component {
                             to={
                                 this.props.userType === "customer"
                                     ? `/customers/orders/${stringEncrypt(
-                                        order_id
-                                    )}`
+                                          order_id
+                                      )}`
                                     : `/orders/${order_id}`
                             }
                         >
@@ -78,13 +78,8 @@ class OrdersTable extends Component {
     ];
 
     render() {
-        let { orders, sortBy, onSort, loading, filterOnClick, filterBy } =
-            this.props;
-        filterBy !== null
-            ? (orders = orders.filter((e) => {
-                return e.payment_state === this.props.filterBy;
-            }))
-            : (orders = orders);
+        let { orders, sortBy, onSort, loading, filterOnClick } = this.props;
+
         return (
             <div className="pb-5">
                 <div className="container div-dark">
