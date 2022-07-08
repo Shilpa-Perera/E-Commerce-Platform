@@ -9,7 +9,7 @@ class CategoryForm extends Form {
         return (
             <div>
                 <div className="container">
-                    <div class="d-grid d-md-flex justify-content-md-end">
+                    <div className="d-grid d-md-flex justify-content-md-end">
                         <Link
                             className="btn btn-warning h5 hover-focus"
                             to="/categories/link-category"
