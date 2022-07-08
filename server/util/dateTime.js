@@ -9,11 +9,12 @@ class DateTime {
     }
 
     static convertToLocalDateTime(date) {
+        var moment = require("moment");
         if (date) {
-            const utcDate = new Date(date);
-            return utcDate.toString().split(" GMT")[0];
+            const datefinal = moment(date).format("YYYY-MM-DD HH:mm:ss");
+            return datefinal;
         }
-        return null;
+        return date;
     }
 }
 
