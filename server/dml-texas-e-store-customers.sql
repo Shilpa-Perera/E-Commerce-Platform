@@ -1,7 +1,3 @@
-use texas_e_store;
-
-# customer
-
 insert into customer (email, password, first_name, last_name) values ('hiruni@gmail.com', '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka', 'Hiruni', 'Silva');
 insert into customer (email, password, first_name, last_name) values ('paughton0@google.fr', '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka', 'Patrice', 'Aughton');
 insert into customer (email, password, first_name, last_name) values ('pbartozzi1@exblog.jp', '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka', 'Pat', 'Bartozzi');
@@ -84,6 +80,7 @@ insert into customer_address (customer_id, po_box, street_name, city, postal_cod
 insert into customer_address (customer_id, po_box, street_name, city, postal_code) values (37, '0451', 'Hoffman', 'Jinquan', '12400');
 insert into customer_address (customer_id, po_box, street_name, city, postal_code) values (38, '0451', 'Maryland', 'Kolumbug', '00100');
 insert into customer_address (customer_id, po_box, street_name, city, postal_code) values (39, '0124', 'Summer Ridge', 'Shikou', '00200');
+insert into customer_address (customer_id, po_box, street_name, city, postal_code) values (40, '0124', 'Summer Ridge', 'Shikou', '00200');
 
 
 # customer mobile
@@ -128,13 +125,4 @@ insert into customer_mobile (customer_id, mobile) values (37, '0741151312');
 insert into customer_mobile (customer_id, mobile) values (38, '0787849898');
 insert into customer_mobile (customer_id, mobile) values (39, '0717112145');
 insert into customer_mobile (customer_id, mobile) values (40, '0771121415');
-insert into customer_mobile (customer_id, mobile) values (41, '0741151312');
-insert into customer_mobile (customer_id, mobile) values (42, '0787849898');
-insert into customer_mobile (customer_id, mobile) values (43, '0771121415');
-insert into customer_mobile (customer_id, mobile) values (44, '0771121415');
-insert into customer_mobile (customer_id, mobile) values (45, '0717112145');
-insert into customer_mobile (customer_id, mobile) values (46, '0717112145');
-insert into customer_mobile (customer_id, mobile) values (47, '0717112145');
-insert into customer_mobile (customer_id, mobile) values (48, '0741151312');
-insert into customer_mobile (customer_id, mobile) values (49, '0771121415');
-insert into customer_mobile (customer_id, mobile) values (50, '0717112145');
+
