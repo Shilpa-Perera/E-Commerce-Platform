@@ -65,6 +65,7 @@ class Orders extends Component {
             currentPage,
             pageSize,
             searchQuery,
+            filterBy,
         } = this.state;
 
         let filtered = allOrders;
@@ -74,7 +75,11 @@ class Orders extends Component {
                 const queryRegEx = new RegExp(`.*${searchQuery}.*`);
                 return queryRegEx.test(title);
             });
-
+        if (filterBy) {
+            filtered = filtered.filter((ele) => {
+                return ele.payment_state === filterBy;
+            });
+        }
         const sorted = _.orderBy(
             filtered,
             (order) => {
@@ -93,7 +98,8 @@ class Orders extends Component {
             this.setState({ filterBy: null });
             return;
         }
-        this.setState({ filterBy: filtertype });
+        this.setState({ filterBy: filtertype, currentPage: 1 });
+        this.getPagedData();
     };
 
     render() {
@@ -111,6 +117,12 @@ class Orders extends Component {
                             />
                         </div>
                     </div>
+                    <Pagination
+                        itemsCount={totalCount}
+                        pageSize={pageSize}
+                        currentPage={currentPage}
+                        onPageChange={this.handlePageChange}
+                    />
                     {userType !== null ? (
                         <OrdersTable
                             userType={userType}
@@ -119,7 +131,6 @@ class Orders extends Component {
                             onSort={this.handleSort}
                             loading={this.state.loading}
                             searchQuery={this.state.searchQuery}
-                            filterBy={this.state.filterBy}
                             filterOnClick={this.setFilter}
                         />
                     ) : (
