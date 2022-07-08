@@ -65,9 +65,12 @@ class OrdersTable extends Component {
                                     : `/orders/${order_id}`
                             }
                         >
-                            <button className="btn btn-success btn-sm hover-focus">
-                                <span className="me-2">View Order</span>
-                                <i className="fa fa-eye"></i>
+                            <button className="btn btn-primary btn-sm hover-focus">
+                                <span className="me-2">View</span>
+                                <i
+                                    className="fa fa-sliders"
+                                    aria-hidden="true"
+                                ></i>
                             </button>
                         </Link>
                     </span>
