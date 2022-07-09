@@ -39,7 +39,13 @@ class ProductInterestReportPageBody extends ProductInterestReport {
                 this.getLabel
             );
 
-            this.setState({ product, options, data, reportData, loading: false });
+            this.setState({
+                product,
+                options,
+                data,
+                reportData,
+                loading: false,
+            });
         } catch (e) {
             if (e.response && e.response.status === 404)
                 this.props.replace("/not-found");
@@ -62,14 +68,7 @@ class ProductInterestReportPageBody extends ProductInterestReport {
                 <div id={elementId} className="mb-5 p-5">
                     {this.renderCanvasHeading(product.product_title)}
                     {this.renderCanvas(options, data)}
-                    {this.renderTable(
-                        reportData,
-                        this.labelProperty,
-                        this.valueProperty,
-                        this.yAxisLabel,
-                        this.xAxisLabel,
-                        this.getLabel
-                    )}
+                    {this.renderInterestTable(reportData)}
                 </div>
                 <div className="d-flex justify-content-center">
                     <button

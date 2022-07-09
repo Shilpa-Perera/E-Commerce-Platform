@@ -7,7 +7,7 @@ import { elementToPdf } from "../../../utils/pdfUtils";
 class ProductInterestReportModal extends ProductInterestReport {
     state = {
         showTable: false,
-    }
+    };
 
     render() {
         const { product, reportData, loading, onClose } = this.props;
@@ -66,13 +66,9 @@ class ProductInterestReportModal extends ProductInterestReport {
                                             product.product_title
                                         )}
                                         {this.renderCanvas(options, data)}
-                                        {showTable && this.renderTable(
-                                                reportData,
-                                                "",
-                                                "count",
-                                                "Month",
-                                                "Orders Count",
-                                                this.getLabel
+                                        {showTable &&
+                                            this.renderInterestTable(
+                                                reportData
                                             )}
                                     </div>
                                 )
@@ -83,7 +79,9 @@ class ProductInterestReportModal extends ProductInterestReport {
                                 <button
                                     type="button"
                                     className="btn btn-success"
-                                    onClick={() => this.setState({ showTable: true })}
+                                    onClick={() =>
+                                        this.setState({ showTable: true })
+                                    }
                                 >
                                     <span className="me-2">Show Table</span>
                                     <i className="fa fa-table"></i>
@@ -93,7 +91,9 @@ class ProductInterestReportModal extends ProductInterestReport {
                                 <button
                                     type="button"
                                     className="btn btn-warning"
-                                    onClick={() => this.setState({ showTable: false })}
+                                    onClick={() =>
+                                        this.setState({ showTable: false })
+                                    }
                                 >
                                     <span className="me-2">Hide Table</span>
                                     <i className="fa fa-table"></i>
