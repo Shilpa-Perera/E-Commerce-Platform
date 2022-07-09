@@ -117,33 +117,45 @@ class Report extends Component {
         valueProperty,
         labelName,
         valueName,
+        tableAdditionalClasses = "",
+        tableWrapperClasses = "",
         labelCallback = null
     ) => {
         return (
             <div className="container mt-5">
                 <div className="d-flex justify-content-center">
-                    <div className="table-responsive w-75">
-                        <table className="table text-center">
-                            <thead>
-                            <tr>
-                                <th scope="col">{labelName}</th>
-                                <th scope="col">{valueName}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {reportData.map((reportDataItem, index) => (
-                                <tr key={index}>
-                                    <td>
-                                        {labelCallback && labelCallback(reportDataItem)}
-                                        {!labelCallback && reportDataItem[labelProperty]}
-                                    </td>
-                                    <td>
-                                        {reportDataItem[valueProperty]}
-                                    </td>
-                                </tr>
-                            ))}
-                            </tbody>
-                        </table>
+                    <div className={tableWrapperClasses}>
+                        <div className="table-responsive">
+                            <table
+                                className={`table ${tableAdditionalClasses}`}
+                            >
+                                <thead>
+                                    <tr>
+                                        <th scope="col">{labelName}</th>
+                                        <th scope="col">{valueName}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {reportData.map((reportDataItem, index) => (
+                                        <tr key={index}>
+                                            <td>
+                                                {labelCallback &&
+                                                    labelCallback(
+                                                        reportDataItem
+                                                    )}
+                                                {!labelCallback &&
+                                                    reportDataItem[
+                                                        labelProperty
+                                                    ]}
+                                            </td>
+                                            <td>
+                                                {reportDataItem[valueProperty]}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

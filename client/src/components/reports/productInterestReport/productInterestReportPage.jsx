@@ -39,7 +39,13 @@ class ProductInterestReportPageBody extends ProductInterestReport {
                 this.getLabel
             );
 
-            this.setState({ product, options, data, reportData, loading: false });
+            this.setState({
+                product,
+                options,
+                data,
+                reportData,
+                loading: false,
+            });
         } catch (e) {
             if (e.response && e.response.status === 404)
                 this.props.replace("/not-found");
@@ -68,6 +74,8 @@ class ProductInterestReportPageBody extends ProductInterestReport {
                         this.valueProperty,
                         this.yAxisLabel,
                         this.xAxisLabel,
+                        "text-center",
+                        "w-75",
                         this.getLabel
                     )}
                 </div>
