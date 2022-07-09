@@ -5,8 +5,13 @@ import { Link } from "react-router-dom";
 import { elementToPdf } from "../../../utils/pdfUtils";
 
 class ProductInterestReportModal extends ProductInterestReport {
+    state = {
+        showTable: false,
+    }
+
     render() {
         const { product, reportData, loading, onClose } = this.props;
+        const { showTable } = this.state;
 
         let options = [];
         let data = [];
@@ -16,15 +21,15 @@ class ProductInterestReportModal extends ProductInterestReport {
         if (available) {
             options = this.getOptions(
                 "Product Interest Report",
-                "Orders Count",
-                "Month",
+                this.xAxisLabel,
+                this.yAxisLabel,
                 true
             );
             data = this.getData(
                 product.product_title,
                 reportData,
-                "",
-                "count",
+                this.labelProperty,
+                this.valueProperty,
                 this.getLabel
             );
         }
@@ -61,11 +66,39 @@ class ProductInterestReportModal extends ProductInterestReport {
                                             product.product_title
                                         )}
                                         {this.renderCanvas(options, data)}
+                                        {showTable && this.renderTable(
+                                                reportData,
+                                                "",
+                                                "count",
+                                                "Month",
+                                                "Orders Count",
+                                                this.getLabel
+                                            )}
                                     </div>
                                 )
                             )}
                         </div>
                         <div className="modal-footer">
+                            {available && !showTable && (
+                                <button
+                                    type="button"
+                                    className="btn btn-success"
+                                    onClick={() => this.setState({ showTable: true })}
+                                >
+                                    <span className="me-2">Show Table</span>
+                                    <i className="fa fa-table"></i>
+                                </button>
+                            )}
+                            {available && showTable && (
+                                <button
+                                    type="button"
+                                    className="btn btn-warning"
+                                    onClick={() => this.setState({ showTable: false })}
+                                >
+                                    <span className="me-2">Hide Table</span>
+                                    <i className="fa fa-table"></i>
+                                </button>
+                            )}
                             {available && (
                                 <button
                                     type="button"
