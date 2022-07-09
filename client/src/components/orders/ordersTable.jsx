@@ -88,6 +88,9 @@ class OrdersTable extends Component {
             loading,
             filterOnClick,
             filterOnClickDelivery,
+            filterOnClickPaymentMethod,
+            filterOnClickDeliveryMethod,
+            resetFilter,
             totalOrdersCount,
         } = this.props;
 
@@ -96,11 +99,12 @@ class OrdersTable extends Component {
                 <div className="container div-dark">
                     <div className="row">
                         <h3 className="mb-2 col-6">Manage Orders</h3>
-                        <div className="col-3">
+                        <div className="mb-2 col-3">
                             {" "}
                             Payment:
                             <select
                                 className="form-select"
+                                id="filterSelect1"
                                 aria-label=".form-select-sm example"
                                 onChange={filterOnClick}
                             >
@@ -109,11 +113,12 @@ class OrdersTable extends Component {
                                 <option value="PENDING">Pending</option>
                             </select>
                         </div>
-                        <div className="col-3">
+                        <div className="mb-2 col-3">
                             {" "}
                             Delivery:
                             <select
                                 className="form-select"
+                                id="filterSelect2"
                                 aria-label=".form-select-sm example"
                                 onChange={filterOnClickDelivery}
                             >
@@ -127,7 +132,58 @@ class OrdersTable extends Component {
                         </div>
                     </div>
                     <div className="row">
-                        <h5>Total: {totalOrdersCount}</h5>
+                        <div className="col-5"></div>
+                        <h5 className="mb-3 col-1 d-flex flex-row-reverse bd-highlight">
+                            Filters:
+                        </h5>
+                        <div className="col-3">
+                            {" "}
+                            Payment method:
+                            <select
+                                className="form-select"
+                                id="filterSelect3"
+                                aria-label=".form-select-sm example"
+                                onChange={filterOnClickPaymentMethod}
+                            >
+                                <option value="">All</option>
+                                <option value="CASH">Cash</option>
+                                <option value="CARD">Card</option>
+                            </select>
+                        </div>
+                        <div className="col-3">
+                            {" "}
+                            Delivery method:
+                            <select
+                                className="form-select"
+                                id="filterSelect4"
+                                aria-label=".form-select-sm example"
+                                onChange={filterOnClickDeliveryMethod}
+                            >
+                                <option value="">All</option>
+                                <option value="STORE-PICKUP">
+                                    Store pickup
+                                </option>
+                                <option value="DELIVERY">Home delivery</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div className="row mt-3">
+                        <h5 className="col-5">Total: {totalOrdersCount}</h5>
+                        <div className="col-6"></div>
+                        <div className="col-1 d-flex flex-row-reverse bd-highlight">
+                            <button
+                                className="btn btn-warning rounded-circle"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="left"
+                                title="Reset all filters"
+                                onClick={resetFilter}
+                            >
+                                <i
+                                    className="fa fa-refresh"
+                                    aria-hidden="true"
+                                ></i>
+                            </button>
+                        </div>
                     </div>
                     <div className="mt-5">
                         {loading && <Loading />}
