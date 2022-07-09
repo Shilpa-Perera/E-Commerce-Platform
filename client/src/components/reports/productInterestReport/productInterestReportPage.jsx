@@ -68,16 +68,7 @@ class ProductInterestReportPageBody extends ProductInterestReport {
                 <div id={elementId} className="mb-5 p-5">
                     {this.renderCanvasHeading(product.product_title)}
                     {this.renderCanvas(options, data)}
-                    {this.renderTable(
-                        reportData,
-                        this.labelProperty,
-                        this.valueProperty,
-                        this.yAxisLabel,
-                        this.xAxisLabel,
-                        "text-center",
-                        "w-75",
-                        this.getLabel
-                    )}
+                    {this.renderInterestTable(reportData)}
                 </div>
                 <div className="d-flex justify-content-center">
                     <button

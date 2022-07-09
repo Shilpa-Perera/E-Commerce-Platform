@@ -40,6 +40,19 @@ class ProductInterestReport extends Report {
             </div>
         );
     };
+
+    renderInterestTable(reportData) {
+        return this.renderTable(
+            reportData,
+            this.labelProperty,
+            this.valueProperty,
+            this.yAxisLabel,
+            this.xAxisLabel,
+            "text-center",
+            "w-75",
+            this.getLabel
+        );
+    }
 }
 
 export default ProductInterestReport;

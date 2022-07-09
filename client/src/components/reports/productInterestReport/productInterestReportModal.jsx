@@ -67,15 +67,8 @@ class ProductInterestReportModal extends ProductInterestReport {
                                         )}
                                         {this.renderCanvas(options, data)}
                                         {showTable &&
-                                            this.renderTable(
-                                                reportData,
-                                                "",
-                                                "count",
-                                                "Month",
-                                                "Orders Count",
-                                                "text-center",
-                                                "w-75",
-                                                this.getLabel
+                                            this.renderInterestTable(
+                                                reportData
                                             )}
                                     </div>
                                 )
