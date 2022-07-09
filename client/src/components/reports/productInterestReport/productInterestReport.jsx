@@ -49,7 +49,7 @@ class ProductInterestReport extends Report {
             this.yAxisLabel,
             this.xAxisLabel,
             "text-center",
-            "w-75",
+            "col-12 col-md-9",
             this.getLabel
         );
     }
