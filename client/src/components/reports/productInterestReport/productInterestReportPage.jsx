@@ -12,6 +12,7 @@ class ProductInterestReportPageBody extends ProductInterestReport {
         product: null,
         options: null,
         data: null,
+        reportData: null,
         loading: true,
     };
 
@@ -25,20 +26,20 @@ class ProductInterestReportPageBody extends ProductInterestReport {
 
             const options = this.getOptions(
                 "Product Interest Report",
-                "Orders Count",
-                "Month",
+                this.xAxisLabel,
+                this.yAxisLabel,
                 true
             );
 
             const data = this.getData(
                 product.product_title,
                 reportData,
-                "",
-                "count",
+                this.labelProperty,
+                this.valueProperty,
                 this.getLabel
             );
 
-            this.setState({ product, options, data, loading: false });
+            this.setState({ product, options, data, reportData, loading: false });
         } catch (e) {
             if (e.response && e.response.status === 404)
                 this.props.replace("/not-found");
@@ -49,7 +50,7 @@ class ProductInterestReportPageBody extends ProductInterestReport {
     }
 
     render() {
-        const { product, options, data, loading } = this.state;
+        const { product, options, data, reportData, loading } = this.state;
         const elementId = "p-i-report-page";
 
         if (loading) return <Loading />;
@@ -61,6 +62,14 @@ class ProductInterestReportPageBody extends ProductInterestReport {
                 <div id={elementId} className="mb-5 p-5">
                     {this.renderCanvasHeading(product.product_title)}
                     {this.renderCanvas(options, data)}
+                    {this.renderTable(
+                        reportData,
+                        this.labelProperty,
+                        this.valueProperty,
+                        this.yAxisLabel,
+                        this.xAxisLabel,
+                        this.getLabel
+                    )}
                 </div>
                 <div className="d-flex justify-content-center">
                     <button

@@ -17,6 +17,11 @@ class ProductInterestReport extends Report {
         "Dec",
     ];
 
+    xAxisLabel = "Orders Count";
+    yAxisLabel = "Month";
+    labelProperty = "";
+    valueProperty = "count";
+
     getLabel = (reportDataItem) => {
         return `${this.months[reportDataItem.month - 1]} ${
             reportDataItem.year
