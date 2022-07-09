@@ -16,6 +16,8 @@ class Orders extends Component {
         searchQuery: "",
         filterBy: null,
         filterBy2: null,
+        filterBy3: null,
+        filterBy4: null,
         totalOrdersCount: null,
         currentPage: 1,
         pageSize: 24,
@@ -69,6 +71,8 @@ class Orders extends Component {
             searchQuery,
             filterBy,
             filterBy2,
+            filterBy3,
+            filterBy4,
         } = this.state;
 
         let filtered = allOrders;
@@ -88,6 +92,16 @@ class Orders extends Component {
                 return ele.delivery_state === filterBy2;
             });
         }
+        if (filterBy3) {
+            filtered = filtered.filter((ele) => {
+                return ele.payment_method === filterBy3;
+            });
+        }
+        if (filterBy4) {
+            filtered = filtered.filter((ele) => {
+                return ele.delivery_method === filterBy4;
+            });
+        }
         const sorted = _.orderBy(
             filtered,
             (order) => {
@@ -95,11 +109,12 @@ class Orders extends Component {
             },
             [sortBy.order]
         );
-        
+
         const orders = paginate(sorted, currentPage, pageSize);
         return { totalCount: sorted.length, data: orders };
     };
 
+    // Payment State
     setFilter = (event) => {
         const filtertype = event.target.value;
 
@@ -110,6 +125,8 @@ class Orders extends Component {
         this.setState({ filterBy: filtertype, currentPage: 1 });
         this.getPagedData();
     };
+
+    // Delivery State
     setFilter2 = (event) => {
         const filtertype = event.target.value;
         if (filtertype === "") {
@@ -118,6 +135,45 @@ class Orders extends Component {
         }
         this.setState({ filterBy2: filtertype, currentPage: 1 });
         this.getPagedData();
+    };
+
+    // Payment Method
+    setFilter3 = (event) => {
+        const filtertype = event.target.value;
+        if (filtertype === "") {
+            this.setState({ filterBy3: null });
+            return;
+        }
+        this.setState({ filterBy3: filtertype, currentPage: 1 });
+        this.getPagedData();
+    };
+
+    // Delivery Method
+    setFilter4 = (event) => {
+        const filtertype = event.target.value;
+        if (filtertype === "") {
+            this.setState({ filterBy4: null });
+            return;
+        }
+        this.setState({ filterBy4: filtertype, currentPage: 1 });
+        this.getPagedData();
+    };
+    resetFilter = (event) => {
+        this.setState({
+            filterBy: null,
+            filterBy2: null,
+            filterBy3: null,
+            filterBy4: null,
+        });
+        let element1 = document.getElementById("filterSelect1");
+        element1.value = "";
+        let element2 = document.getElementById("filterSelect2");
+        element2.value = "";
+        let element3 = document.getElementById("filterSelect3");
+        element3.value = "";
+        let element4 = document.getElementById("filterSelect4");
+        element4.value = "";
+        return this.getPagedData();
     };
 
     render() {
@@ -151,6 +207,9 @@ class Orders extends Component {
                             searchQuery={this.state.searchQuery}
                             filterOnClick={this.setFilter}
                             filterOnClickDelivery={this.setFilter2}
+                            filterOnClickPaymentMethod={this.setFilter3}
+                            filterOnClickDeliveryMethod={this.setFilter4}
+                            resetFilter={this.resetFilter}
                             totalOrdersCount={totalCount}
                         />
                     ) : (
