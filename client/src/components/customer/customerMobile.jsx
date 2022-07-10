@@ -1,5 +1,6 @@
 import React from "react";
 import Input from "../common/input";
+import { FiTrash } from "react-icons/fi";
 
 const CustomerMobile = ({
     index,
@@ -9,8 +10,8 @@ const CustomerMobile = ({
     handleDeleteMobile,
 }) => {
     return (
-        <div className="row" key={index}>
-            <div className="col">
+        <>
+            <div className="col-md-3">
                 <Input
                     data-array-name="mobiles"
                     data-element-id={mobile.index}
@@ -36,11 +37,11 @@ const CustomerMobile = ({
                         className="btn btn-danger mb-3"
                         onClick={(e) => handleDeleteMobile(e, mobile)}
                     >
-                        Delete
+                        <FiTrash style={{ fill: "red" }}></FiTrash>
                     </button>
                 )}
             </div>
-        </div>
+        </>
     );
 };
 

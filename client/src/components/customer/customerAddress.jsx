@@ -9,8 +9,8 @@ const CustomerAddress = ({
     handleDeleteAddress,
 }) => {
     return (
-        <div className="row card mb-3 dark" key={index}>
-            <div className="col ">
+        <>
+            <div className="col-md-3 ">
                 <Input
                     data-array-name="addresses"
                     data-element-id={address.index}
@@ -60,19 +60,19 @@ const CustomerAddress = ({
                     onChange={handleChange}
                     error={addressError.postal_code}
                 />
+                <div className="">
+                    {index > 0 && (
+                        <button
+                            key={"address-btn-" + address.index}
+                            onClick={(e) => handleDeleteAddress(e, address)}
+                            className="btn btn-danger mb-3"
+                        >
+                            Delete
+                        </button>
+                    )}
+                </div>
             </div>
-            <div className="col-2">
-                {index > 0 && (
-                    <button
-                        key={"address-btn-" + address.index}
-                        onClick={(e) => handleDeleteAddress(e, address)}
-                        className="btn btn-danger mb-3"
-                    >
-                        Delete
-                    </button>
-                )}
-            </div>
-        </div>
+        </>
     );
 };
 

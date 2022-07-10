@@ -313,45 +313,62 @@ class CustomerFormBody extends Form {
             this.state.errors;
 
         return (
-            <div className="container  mb-5">
-                <div className="p-4">
-                    <h1>
-                        {customerId === -1
-                            ? "Register"
-                            : `${profile.first_name} ${profile.last_name}'s Profile`}
+            <div className="container mb-5 shadow bg-body rounded">
+                <div className="p-4 text-center">
+                    <h1 className="text-muted u">
+                        <u>
+                            {customerId === -1
+                                ? "Register"
+                                : `${profile.first_name} ${profile.last_name}'s Profile`}
+                        </u>
                     </h1>
                 </div>
-                <div className="row  div-dark">
-                    <div className="col mb-3">
+                <div className="row mt-5  ">
+                    <div className="col mb-3 ">
                         <form onSubmit={this.handleSubmit}>
-                            <div className="row">
-                                <div className="col">
-                                    {this.renderInput(
-                                        "first_name",
-                                        "First Name"
-                                    )}
-                                </div>
-                                <div className="col">
-                                    {this.renderInput("last_name", "Last Name")}
+                            <div className=" card mb-3 content ">
+                                <h1 className="text-muted m-3 p-3">About</h1>
+                                <div className=" card-body mb-3 div-dark">
+                                    <div className="row ">
+                                        <div className="col">
+                                            {this.renderInput(
+                                                "first_name",
+                                                "First Name"
+                                            )}
+                                        </div>
+                                        <div className="col">
+                                            {this.renderInput(
+                                                "last_name",
+                                                "Last Name"
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {customerId === -1
+                                        ? this.renderInput("email", "Email")
+                                        : this.renderInput(
+                                              "email",
+                                              "Email",
+                                              "text",
+                                              true
+                                          )}
+                                    {customerId === -1
+                                        ? this.renderInput(
+                                              "password",
+                                              "Password",
+                                              "password"
+                                          )
+                                        : ""}
                                 </div>
                             </div>
 
-                            {customerId === -1
-                                ? this.renderInput("email", "Email")
-                                : ""}
-                            {customerId === -1
-                                ? this.renderInput(
-                                      "password",
-                                      "Password",
-                                      "password"
-                                  )
-                                : ""}
-                            <div className="row">
-                                <div className="mt-2">
-                                    <h3>Addresses</h3>
-                                </div>
-                                <div className="">
-                                    <div className="container   p-5 ">
+                            <div className="card mb-3 content">
+                                <h1 className="text-muted m-3 p-3">
+                                    Addresses
+                                </h1>
+
+                                <div className=" card-body mb-3 div-dark">
+                                    <div className="row">
                                         {addresses.map((address, index) => (
                                             <CustomerAddress
                                                 index={index}
@@ -367,38 +384,41 @@ class CustomerFormBody extends Form {
                                                 }
                                             />
                                         ))}
-                                        <button
-                                            className="btn btn-warning mb-3"
-                                            onClick={this.handleAddMoreAddress}
-                                        >
-                                            Add another Address
-                                        </button>
                                     </div>
                                 </div>
+                                <button
+                                    className="btn btn-warning mb-3"
+                                    onClick={this.handleAddMoreAddress}
+                                >
+                                    Add another Address
+                                </button>
                             </div>
-                            <div className="row">
-                                <div className="mt-3">
-                                    <h3>Mobiles</h3>
+
+                            <div className="card mb-3 content">
+                                <h1 className="text-muted m-3 p-3">Mobiles</h1>
+                                <div className=" card-body mb-3 div-dark">
+                                    <div className="row">
+                                        {mobiles.map((mobile, index) => (
+                                            <CustomerMobile
+                                                index={index}
+                                                mobile={mobile}
+                                                mobileError={
+                                                    mobilesErrors[index]
+                                                }
+                                                handleChange={this.handleChange}
+                                                handleDeleteMobile={
+                                                    this.handleDeleteMobile
+                                                }
+                                            />
+                                        ))}
+                                    </div>
                                 </div>
-                                <div className="container mb-5  p-5 div-dark">
-                                    {mobiles.map((mobile, index) => (
-                                        <CustomerMobile
-                                            index={index}
-                                            mobile={mobile}
-                                            mobileError={mobilesErrors[index]}
-                                            handleChange={this.handleChange}
-                                            handleDeleteMobile={
-                                                this.handleDeleteMobile
-                                            }
-                                        />
-                                    ))}
-                                    <button
-                                        className="btn btn-warning mb-3"
-                                        onClick={this.handleAddMoreMboile}
-                                    >
-                                        Add another Mobile
-                                    </button>
-                                </div>
+                                <button
+                                    className="btn btn-warning mb-3"
+                                    onClick={this.handleAddMoreMboile}
+                                >
+                                    Add another Mobile
+                                </button>
                             </div>
 
                             {customerId === -1
