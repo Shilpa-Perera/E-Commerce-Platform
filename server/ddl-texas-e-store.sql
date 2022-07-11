@@ -43,49 +43,55 @@ DELIMITER $$
 --
 -- Procedures
 --
-drop PROCEDURE if exists `order_transaction`$$
-CREATE PROCEDURE `order_transaction` (IN `orderCartId` INT(10), IN `orderDate` DATETIME, IN `orderName` VARCHAR(255), IN `orderAddress` VARCHAR(255), IN `orderZipcode` VARCHAR(10), IN `orderPhoneNumber` VARCHAR(255), IN `orderDeliveryMethod` ENUM('STORE-PICKUP','DELIVERY'), IN `orderPaymentMethod` ENUM('CASH','CARD'), IN `orderCustomerId` INT(10), IN `sellDateTime` DATETIME, IN `sellPaymentStatus` ENUM('PENDING','PAID'), OUT `orderIdOutput` INT(10))  BEGIN
+drop PROCEDURE if exists order_transaction $$
+CREATE PROCEDURE order_transaction (IN orderCartId INT(10), IN orderDate DATETIME, IN orderName VARCHAR(255), IN orderAddress VARCHAR(255), IN orderZipcode VARCHAR(10), IN orderPhoneNumber VARCHAR(255), IN orderDeliveryMethod ENUM('STORE-PICKUP','DELIVERY'), IN orderPaymentMethod ENUM('CASH','CARD'), IN orderCustomerId INT(10), IN sellDateTime DATETIME, IN sellPaymentStatus ENUM('PENDING','PAID'), OUT orderIdOutput INT(10))  BEGIN
  
- DECLARE exit handler for sqlexception
+DECLARE exit handler for sqlexception
    BEGIN
      -- ERROR
    ROLLBACK;
- END;
+END;
    
- START TRANSACTION;
-   INSERT INTO `order` (`customer_id`, `cart_id`, `date`, `order_name`, `delivery_address`, `zip_code`, `phone_number`, `delivery_method`, `payment_method`) VALUES (orderCustomerId, orderCartId, orderDate, orderName, orderAddress, orderZipCode, orderPhoneNumber, orderDeliveryMethod, orderPaymentMethod);
-   SELECT @newOrder :=order_id FROM `order` WHERE cart_id = orderCartId;
-   INSERT INTO `sell` (`date_time`, `order_id`, `delivery_state`, `payment_state`) VALUES (sellDateTime, @newOrder, 'PROCESSING', sellPaymentStatus);
-   CALL update_product_variants_quantity_from_cart(orderCartId);
-   UPDATE `cart` SET `state` = 'INACTIVE', customer_id = orderCustomerId WHERE `cart`.`cart_id` = orderCartId;
- SET orderIdOutput = @newOrder;
- COMMIT;
- SELECT orderIdOutput;
- END$$
+START TRANSACTION;
+    INSERT INTO `order` (customer_id, cart_id, date, order_name, delivery_address, zip_code, phone_number, delivery_method, payment_method) VALUES (orderCustomerId, orderCartId, orderDate, orderName, orderAddress, orderZipCode, orderPhoneNumber, orderDeliveryMethod, orderPaymentMethod);
+    SELECT @newOrder := order_id FROM `order` WHERE cart_id = orderCartId;
+    INSERT INTO sell (date_time, order_id, delivery_state, payment_state) VALUES (sellDateTime, @newOrder, 'PROCESSING', sellPaymentStatus);
+    CALL update_product_variants_quantity_from_cart(orderCartId);
+    UPDATE cart SET state = 'INACTIVE', customer_id = orderCustomerId WHERE cart.cart_id = orderCartId;
+    SET orderIdOutput = @newOrder;
+COMMIT;
+SELECT orderIdOutput;
+END$$
 
-drop PROCEDURE if exists `order_transaction_guest`$$
-CREATE PROCEDURE `order_transaction_guest` (IN `orderCartId` INT(10), IN `orderDate` DATETIME, IN `orderName` VARCHAR(255), IN `orderAddress` VARCHAR(255), IN `orderZipcode` VARCHAR(10), IN `orderPhoneNumber` VARCHAR(255), IN `orderDeliveryMethod` ENUM('STORE-PICKUP','DELIVERY'), IN `orderPaymentMethod` ENUM('CASH','CARD'), IN `orderCustomerId` INT(10), IN `sellDateTime` DATETIME, IN `sellPaymentStatus` ENUM('PENDING','PAID'), OUT `orderIdOutput` INT(10))  BEGIN
+drop PROCEDURE if exists order_transaction_guest $$
+CREATE PROCEDURE order_transaction_guest (IN orderCartId INT(10), IN orderDate DATETIME, IN orderName VARCHAR(255), IN orderAddress VARCHAR(255), IN orderZipcode VARCHAR(10), IN orderPhoneNumber VARCHAR(255), IN orderDeliveryMethod ENUM('STORE-PICKUP','DELIVERY'), IN orderPaymentMethod ENUM('CASH','CARD'), IN orderCustomerId INT(10), IN sellDateTime DATETIME, IN sellPaymentStatus ENUM('PENDING','PAID'), OUT orderIdOutput INT(10))  BEGIN
  
- START TRANSACTION;
-   INSERT INTO `order` (`customer_id`, `cart_id`, `date`, `order_name`, `delivery_address`,`zip_code`, `phone_number`, `delivery_method`, `payment_method`) VALUES (NULL, orderCartId, orderDate, orderName, orderAddress, orderZipcode, orderPhoneNumber, orderDeliveryMethod, orderPaymentMethod);
-   SELECT @newOrder :=order_id FROM `order` WHERE cart_id = orderCartId;
-   INSERT INTO `sell` (`date_time`, `order_id`, `delivery_state`, `payment_state`) VALUES (sellDateTime, @newOrder, 'PROCESSING', sellPaymentStatus);
-   CALL update_product_variants_quantity_from_cart(orderCartId);
-   UPDATE `cart` SET `state` = 'INACTIVE' WHERE `cart`.`cart_id` = orderCartId;
- SET orderIdOutput = @newOrder;
- COMMIT;
- SELECT orderIdOutput;
- END$$
+DECLARE exit handler for sqlexception
+    BEGIN
+     -- ERROR
+   ROLLBACK;
+END;
 
-drop PROCEDURE if exists `update_product_variants_quantity_from_cart`$$
-CREATE PROCEDURE `update_product_variants_quantity_from_cart` (IN `cartId` INT)  BEGIN  
+START TRANSACTION;
+    INSERT INTO `order` (customer_id, cart_id, date, order_name, delivery_address,zip_code, phone_number, delivery_method, payment_method) VALUES (NULL, orderCartId, orderDate, orderName, orderAddress, orderZipcode, orderPhoneNumber, orderDeliveryMethod, orderPaymentMethod);
+    SELECT @newOrder := order_id FROM `order` WHERE cart_id = orderCartId;
+    INSERT INTO sell (date_time, order_id, delivery_state, payment_state) VALUES (sellDateTime, @newOrder, 'PROCESSING', sellPaymentStatus);
+    CALL update_product_variants_quantity_from_cart(orderCartId);
+    UPDATE cart SET state = 'INACTIVE' WHERE cart.cart_id = orderCartId;
+    SET orderIdOutput = @newOrder;
+COMMIT;
+SELECT orderIdOutput;
+END$$
+
+drop PROCEDURE if exists update_product_variants_quantity_from_cart $$
+CREATE update_product_variants_quantity_from_cart(IN cartId INT)
+BEGIN  
 	DECLARE i INT DEFAULT 0;
-	SELECT @n:=COUNT(*) FROM `variant` NATURAL JOIN cart_product WHERE cart_id=cartId;
+	SELECT @n := COUNT(*) FROM variant NATURAL JOIN cart_product WHERE cart_id=cartId;
 	SET i=0;
 	WHILE i<@n DO 
-  		SELECT @variantId := variant_id FROM (SELECT ROW_NUMBER()OVER(ORDER BY variant_id)-1 as e , variant_id,quantity-CAST( number_of_items AS SIGNED ) remainder  FROM `variant` NATURAL JOIN cart_product WHERE cart_id=cartId) as A WHERE A.e=i LIMIT 1;
-        SELECT @qval := number_of_items FROM (SELECT ROW_NUMBER()OVER(ORDER BY variant_id)-1 as e , variant_id, number_of_items FROM `variant` NATURAL JOIN cart_product WHERE cart_id=cartId) as A WHERE A.e=i LIMIT 1;
-        UPDATE `variant` SET `quantity` = quantity-CAST( @qval AS SIGNED ) WHERE `variant`.`variant_id` = @variantId;
+  		SELECT @variantId := variant_id, @qval := updated_quantity FROM (SELECT ROW_NUMBER()OVER(ORDER BY variant_id)-1 AS element_id, variant_id, quantity-number_of_items AS updated_quantity FROM variant NATURAL JOIN cart_product WHERE cart_id = cartId) as A WHERE A.element_id = i LIMIT 1;
+        UPDATE variant SET quantity = @qval WHERE variant.variant_id = @variantId;
   		SET i = i + 1;
 	END WHILE;
 END$$
@@ -270,7 +276,7 @@ create table if not exists cart(
 create table if not exists cart_product(
     cart_id int unsigned,
     variant_id int unsigned,
-    number_of_items int unsigned,
+    number_of_items int,
     primary key (cart_id, variant_id),
     foreign key (cart_id) references cart(cart_id) on delete cascade,
     foreign key (variant_id) references variant(variant_id) on delete cascade
