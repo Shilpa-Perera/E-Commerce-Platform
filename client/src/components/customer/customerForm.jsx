@@ -13,6 +13,8 @@ import Input from "../common/input";
 import { getCurrentUser } from "../../services/authService";
 import ROLE from "../../utils/roles.json";
 import Table from "./../common/table";
+import CustomerAddress from "./customerAddress";
+import CustomerMobile from "./customerMobile";
 
 class CustomerFormBody extends Form {
     state = {
@@ -307,271 +309,116 @@ class CustomerFormBody extends Form {
         const { addresses, mobiles, customer_id: customerId } = this.state.data;
 
         const profile = this.state.profile;
+        const { addresses: addressesErrors, mobiles: mobilesErrors } =
+            this.state.errors;
 
         return (
-            <div className="container  mb-5">
-                <div className="p-4">
-                    <h1>
-                        {customerId === -1
-                            ? "Register"
-                            : `${profile.first_name} ${profile.last_name}'s Profile`}
+            <div className="container mb-5 shadow bg-body rounded">
+                <div className="p-4 text-center">
+                    <h1 className="text-muted u">
+                        <u>
+                            {customerId === -1
+                                ? "Register"
+                                : `${profile.first_name} ${profile.last_name}'s Profile`}
+                        </u>
                     </h1>
                 </div>
-                <div className="row  div-dark">
-                    <div className="col mb-3">
+                <div className="row mt-5  ">
+                    <div className="col mb-3 ">
                         <form onSubmit={this.handleSubmit}>
-                            <div className="row">
-                                <div className="col">
-                                    {this.renderInput(
-                                        "first_name",
-                                        "First Name"
-                                    )}
-                                </div>
-                                <div className="col">
-                                    {this.renderInput("last_name", "Last Name")}
+                            <div className=" card mb-3 content ">
+                                <h1 className="text-muted m-3 p-3">About</h1>
+                                <div className=" card-body mb-3 div-dark">
+                                    <div className="row ">
+                                        <div className="col">
+                                            {this.renderInput(
+                                                "first_name",
+                                                "First Name"
+                                            )}
+                                        </div>
+                                        <div className="col">
+                                            {this.renderInput(
+                                                "last_name",
+                                                "Last Name"
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {customerId === -1
+                                        ? this.renderInput("email", "Email")
+                                        : this.renderInput(
+                                              "email",
+                                              "Email",
+                                              "text",
+                                              true
+                                          )}
+                                    {customerId === -1
+                                        ? this.renderInput(
+                                              "password",
+                                              "Password",
+                                              "password"
+                                          )
+                                        : ""}
                                 </div>
                             </div>
 
-                            {customerId === -1
-                                ? this.renderInput("email", "Email")
-                                : ""}
-                            {customerId === -1
-                                ? this.renderInput(
-                                      "password",
-                                      "Password",
-                                      "password"
-                                  )
-                                : ""}
-                            <div className="row">
-                                <div className="mt-2">
-                                    <h3>Addresses</h3>
-                                </div>
-                                <div className="">
-                                    <div className="container   p-5 ">
+                            <div className="card mb-3 content">
+                                <h1 className="text-muted m-3 p-3">
+                                    Addresses
+                                </h1>
+
+                                <div className=" card-body mb-3 div-dark">
+                                    <div className="row">
                                         {addresses.map((address, index) => (
-                                            <div
-                                                className="row card mb-3 dark"
-                                                key={index}
-                                            >
-                                                <div className="col ">
-                                                    <Input
-                                                        data-array-name="addresses"
-                                                        data-element-id={
-                                                            address.index
-                                                        }
-                                                        key={
-                                                            "po_box" +
-                                                            address.index
-                                                        }
-                                                        id={
-                                                            "po_box" +
-                                                            address.index
-                                                        }
-                                                        type="text"
-                                                        label="Po Box"
-                                                        name="po_box"
-                                                        value={
-                                                            addresses[
-                                                                address.index
-                                                            ].po_box
-                                                        }
-                                                        onChange={
-                                                            this.handleChange
-                                                        }
-                                                        error={
-                                                            this.state.errors
-                                                                .addresses[
-                                                                address.index
-                                                            ].po_box
-                                                        }
-                                                    />
-                                                    <Input
-                                                        data-array-name="addresses"
-                                                        data-element-id={
-                                                            address.index
-                                                        }
-                                                        id={
-                                                            "street_name" +
-                                                            address.index
-                                                        }
-                                                        key={
-                                                            "street_name" +
-                                                            address.index
-                                                        }
-                                                        type="text"
-                                                        label="Street Name"
-                                                        name="street_name"
-                                                        value={
-                                                            addresses[
-                                                                address.index
-                                                            ].street_name
-                                                        }
-                                                        onChange={
-                                                            this.handleChange
-                                                        }
-                                                        error={
-                                                            this.state.errors
-                                                                .addresses[
-                                                                address.index
-                                                            ].street_name
-                                                        }
-                                                    />
-                                                    <Input
-                                                        data-array-name="addresses"
-                                                        data-element-id={
-                                                            address.index
-                                                        }
-                                                        id={
-                                                            "city" +
-                                                            address.index
-                                                        }
-                                                        key={
-                                                            "city" +
-                                                            address.index
-                                                        }
-                                                        type="text"
-                                                        label="City"
-                                                        name="city"
-                                                        value={
-                                                            addresses[
-                                                                address.index
-                                                            ].city
-                                                        }
-                                                        onChange={
-                                                            this.handleChange
-                                                        }
-                                                        error={
-                                                            this.state.errors
-                                                                .addresses[
-                                                                address.index
-                                                            ].city
-                                                        }
-                                                    />
-                                                    <Input
-                                                        data-array-name="addresses"
-                                                        data-element-id={
-                                                            address.index
-                                                        }
-                                                        id={
-                                                            "postal_code" +
-                                                            address.index
-                                                        }
-                                                        key={
-                                                            "postal_code" +
-                                                            address.index
-                                                        }
-                                                        type="number"
-                                                        label="Postal Code"
-                                                        name="postal_code"
-                                                        value={
-                                                            addresses[
-                                                                address.index
-                                                            ].postal_code
-                                                        }
-                                                        onChange={
-                                                            this.handleChange
-                                                        }
-                                                        error={
-                                                            this.state.errors
-                                                                .addresses[
-                                                                address.index
-                                                            ].postal_code
-                                                        }
-                                                    />
-                                                </div>
-                                                <div className="col-2">
-                                                    {index > 0 && (
-                                                        <button
-                                                            key={
-                                                                "address-btn-" +
-                                                                address.index
-                                                            }
-                                                            onClick={(e) =>
-                                                                this.handleDeleteAddress(
-                                                                    e,
-                                                                    address
-                                                                )
-                                                            }
-                                                            className="btn btn-danger mb-3"
-                                                        >
-                                                            Delete
-                                                        </button>
-                                                    )}
-                                                </div>
-                                            </div>
+                                            <CustomerAddress
+                                                index={index}
+                                                address={address}
+                                                addressError={
+                                                    addressesErrors[
+                                                        address.index
+                                                    ]
+                                                }
+                                                handleChange={this.handleChange}
+                                                handleDeleteAddress={
+                                                    this.handleDeleteAddress
+                                                }
+                                            />
                                         ))}
-                                        <button
-                                            className="btn btn-warning mb-3"
-                                            onClick={this.handleAddMoreAddress}
-                                        >
-                                            Add another Address
-                                        </button>
                                     </div>
                                 </div>
+                                <button
+                                    className="btn btn-warning mb-3"
+                                    onClick={this.handleAddMoreAddress}
+                                >
+                                    Add another Address
+                                </button>
                             </div>
-                            <div className="row">
-                                <div className="mt-3">
-                                    <h3>Mobiles</h3>
+
+                            <div className="card mb-3 content">
+                                <h1 className="text-muted m-3 p-3">Mobiles</h1>
+                                <div className=" card-body mb-3 div-dark">
+                                    <div className="row">
+                                        {mobiles.map((mobile, index) => (
+                                            <CustomerMobile
+                                                index={index}
+                                                mobile={mobile}
+                                                mobileError={
+                                                    mobilesErrors[index]
+                                                }
+                                                handleChange={this.handleChange}
+                                                handleDeleteMobile={
+                                                    this.handleDeleteMobile
+                                                }
+                                            />
+                                        ))}
+                                    </div>
                                 </div>
-                                <div className="container mb-5  p-5 div-dark">
-                                    {mobiles.map((mobile, index) => (
-                                        <div className="row" key={index}>
-                                            <div className="col">
-                                                <Input
-                                                    data-array-name="mobiles"
-                                                    data-element-id={
-                                                        mobile.index
-                                                    }
-                                                    id={"mobile" + mobile.index}
-                                                    key={
-                                                        "mobile" + mobile.index
-                                                    }
-                                                    type="tel"
-                                                    label="Contact No"
-                                                    name="mobile"
-                                                    value={mobile.mobile}
-                                                    onChange={this.handleChange}
-                                                    error={
-                                                        this.state.errors
-                                                            .mobiles[
-                                                            mobile.index
-                                                        ].mobile
-                                                    }
-                                                />
-                                            </div>
-                                            <div
-                                                className="col"
-                                                style={{
-                                                    marginTop: "25px",
-                                                }}
-                                            >
-                                                {index > 0 && (
-                                                    <button
-                                                        key={
-                                                            "mobile-btn-" +
-                                                            mobile.index
-                                                        }
-                                                        className="btn btn-danger mb-3"
-                                                        onClick={(e) =>
-                                                            this.handleDeleteMobile(
-                                                                e,
-                                                                mobile
-                                                            )
-                                                        }
-                                                    >
-                                                        Delete
-                                                    </button>
-                                                )}
-                                            </div>
-                                        </div>
-                                    ))}
-                                    <button
-                                        className="btn btn-warning mb-3"
-                                        onClick={this.handleAddMoreMboile}
-                                    >
-                                        Add another Mobile
-                                    </button>
-                                </div>
+                                <button
+                                    className="btn btn-warning mb-3"
+                                    onClick={this.handleAddMoreMboile}
+                                >
+                                    Add another Mobile
+                                </button>
                             </div>
 
                             {customerId === -1
