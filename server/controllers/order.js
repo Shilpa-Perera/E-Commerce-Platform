@@ -2,6 +2,7 @@ const _ = require("lodash");
 const { Order } = require("../models/Order");
 const { DateTime } = require("../util/dateTime");
 const { Delivery } = require("../util/delivery");
+const { EmailUtil } = require("../util/emailModule");
 
 class OrderController {
     static async getAllOrders(req, res) {
@@ -139,6 +140,7 @@ class OrderController {
         }
 
         let newOrderId = error[0].at(-2)[0].orderIdOutput;
+        EmailUtil.sendEmail();
         return res.status(200).send([orderDetails, newOrderId]);
     }
 
