@@ -6,7 +6,7 @@ class EmailUtil {
             service: "gmail",
             auth: {
                 user: senderEmail,
-                pass: "mimfs123",
+                pass: "",
             },
         });
         return transporter;
