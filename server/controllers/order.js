@@ -140,7 +140,7 @@ class OrderController {
         }
 
         let newOrderId = error[0].at(-2)[0].orderIdOutput;
-        EmailController.emailOrderConfirmation(finalDataFormat);
+        EmailController.emailOrderConfirmation(finalDataFormat, newOrderId);
 
         return res.status(200).send([orderDetails, newOrderId]);
     }
