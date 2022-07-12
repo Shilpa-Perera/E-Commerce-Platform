@@ -3,11 +3,10 @@ const { DateTime } = require("../util/dateTime");
 const { EmailUtil } = require("../util/emailModule");
 
 class EmailController {
-    static async emailOrderConfirmation(orderData, orderId) {
+    static async emailOrderConfirmation(orderData, orderId, customerEmail) {
         const style = `style="
         border: 1px solid black;
         border-collapse: collapse;"`;
-
         let orderTotal = 0;
         const cartItems = await Order.getOrderCart(orderId);
         const orderDetails = await Order.getOrderById(orderId);
@@ -50,7 +49,7 @@ class EmailController {
             </table>
         </div>`;
 
-        let test = `
+        let emailBody = `
         <div style="width: 100%;">
             <div style="border-style: solid; padding: 15px; margin-left: auto; margin-right: auto; width:50%; overflow: auto;"> 
                 <div>
@@ -152,7 +151,7 @@ class EmailController {
             </div> 
         </div>`;
 
-        EmailUtil.sendEmail("test@email.com", "Subject", test, true);
+        EmailUtil.sendEmail(customerEmail, "TEXAS E STORES Order Report", emailBody, true);
     }
 }
 
