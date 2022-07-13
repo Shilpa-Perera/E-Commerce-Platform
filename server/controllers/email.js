@@ -3,7 +3,13 @@ const { DateTime } = require("../util/dateTime");
 const { EmailUtil } = require("../util/emailModule");
 
 class EmailController {
-    static async emailOrderConfirmation(orderData, orderId, customerEmail) {
+    static async emailOrderConfirmation(
+        orderData,
+        orderId,
+        customerEmail,
+        orderBodyTextOptional = "",
+        orderOptionalSubject = ""
+    ) {
         const style = `style="
         border: 1px solid black;
         border-collapse: collapse;"`;
@@ -49,7 +55,7 @@ class EmailController {
             </table>
         </div>`;
 
-        let emailBody = `
+        let emailBody = `${orderBodyTextOptional}
         <div style="width: 100%;">
             <div style="border-style: solid; padding: 15px; margin-left: auto; margin-right: auto; width:50%; overflow: auto;"> 
                 <div>
@@ -93,13 +99,10 @@ class EmailController {
                     <div style="padding-top: 5px;">
                         <table style="border:1px solid black;"> 
                             <tr> 
-                                <td>TOTAL: ${new Intl.NumberFormat(
-                                    "en-LK",
-                                    {
-                                        style: "currency",
-                                        currency: "LKR",
-                                    }
-                                ).format(orderTotal)}</td> 
+                                <td>TOTAL: ${new Intl.NumberFormat("en-LK", {
+                                    style: "currency",
+                                    currency: "LKR",
+                                }).format(orderTotal)}</td> 
                             </tr> 
                         </table> 
                     </div> 
@@ -150,8 +153,35 @@ class EmailController {
                 </div> 
             </div> 
         </div>`;
+        EmailUtil.sendEmail(
+            customerEmail,
+            orderOptionalSubject === ""
+                ? "TEXAS E STORES Order Report"
+                : orderOptionalSubject,
+            emailBody,
+            true
+        );
+    }
 
-        EmailUtil.sendEmail(customerEmail, "TEXAS E STORES Order Report", emailBody, true);
+    static async emailOrderUpdate(data) {
+        const { deliveryStatus, paymentStatus, orderId } = data;
+        const orderDetails = await Order.getOrderById(orderId);
+        const orderData = {
+            orderDateTime: orderDetails[0].date,
+            orderName: orderDetails[0].order_name,
+            orderDeliveryAddress: orderDetails[0].delivery_address,
+            zipCode: orderDetails[0].zip_code,
+            orderTelephone: orderDetails[0].phone_number,
+        };
+        const bodyText = `<p>Your order of order number: ${orderId} is ${data.deliveryStatus}. The Order Report is displayed below.</p>`;
+        const subjectText = `TEXAS E STORES: YOUR ORDER IS ${data.deliveryStatus}`;
+        EmailController.emailOrderConfirmation(
+            orderData,
+            orderId,
+            orderDetails[0].order_email,
+            bodyText,
+            subjectText
+        );
     }
 }
 
