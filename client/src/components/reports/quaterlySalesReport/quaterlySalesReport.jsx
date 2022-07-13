@@ -11,6 +11,7 @@ import {
     Button,
 } from "react-bootstrap";
 import BarChart from "../../common/barChart";
+import { Bar } from "react-chartjs-2";
 import QuaterlySalesReportTable from "./quaterlySalesReportTable";
 import { elementToPdf } from "../../../utils/pdfUtils";
 import QuaterlySalesReportModal from "./quaterlySalesReportModal";
@@ -23,6 +24,22 @@ class QuaterlySalesReport extends Component {
         showReports: [],
         dataSource: [],
         barChartInputs: {},
+        barChartOptions: {
+            plugins: {
+                title: {
+                    display: false,
+                },
+            },
+            responsive: true,
+            scales: {
+                x: {
+                    stacked: true,
+                },
+                y: {
+                    stacked: true,
+                },
+            },
+        },
     };
 
     componentDidMount() {
@@ -63,7 +80,11 @@ class QuaterlySalesReport extends Component {
         const dataSource = [];
         const barChartInputs = {
             labels: [],
-            data: [],
+            quater1: [],
+            quater2: [],
+            quater3: [],
+            quater4: [],
+            total: [],
         };
 
         const data = {};
@@ -78,14 +99,17 @@ class QuaterlySalesReport extends Component {
                     q4: 0,
                 };
             }
-            data[item.item_name]["q".concat(item.quater.toString())] = parseInt(
-                item.sell_total
-            );
+            data[item.item_name]["q".concat(item.quater.toString())] +=
+                parseInt(item.sell_total);
         });
 
         Object.keys(data).forEach((key) => {
             barChartInputs.labels.push(key);
-            barChartInputs.data.push(
+            barChartInputs.quater1.push(data[key].q1);
+            barChartInputs.quater2.push(data[key].q2);
+            barChartInputs.quater3.push(data[key].q3);
+            barChartInputs.quater4.push(data[key].q4);
+            barChartInputs.total.push(
                 data[key].q1 + data[key].q2 + data[key].q3 + data[key].q4
             );
 
@@ -122,6 +146,7 @@ class QuaterlySalesReport extends Component {
             showReports,
             dataSource,
             barChartInputs,
+            barChartOptions,
         } = this.state;
 
         const elementId = `quaterly-sales-report`;
@@ -147,17 +172,6 @@ class QuaterlySalesReport extends Component {
                             </Card>
 
                             {report.length !== 0 && (
-                                // <QuaterlySalesReportModal
-                                //     key={index}
-                                //     show={showReports[index]}
-                                //     handleHide={this.closeReport}
-                                //     handleDownloadReport={this.downloadReport}
-                                //     elementId={elementId}
-                                //     dataSource={dataSource}
-                                //     year={startYear + index}
-                                //     index={index}
-                                //     barChartInputs={barChartInputs}
-                                // />
                                 <Modal
                                     key={index}
                                     show={showReports[index]}
@@ -190,24 +204,45 @@ class QuaterlySalesReport extends Component {
                                                     Sales Report
                                                 </h3>
                                                 <Row>
-                                                    <Col md={4}>
-                                                        <QuaterlySalesReportTable
-                                                            dataSource={
-                                                                dataSource
-                                                            }
-                                                        />
-                                                    </Col>
-
-                                                    <Col md={8}>
-                                                        <BarChart
-                                                            labels={
-                                                                barChartInputs.labels
-                                                            }
-                                                            data={
-                                                                barChartInputs.data
-                                                            }
-                                                        />
-                                                    </Col>
+                                                    <Bar
+                                                        options={
+                                                            barChartOptions
+                                                        }
+                                                        data={{
+                                                            labels: barChartInputs.labels,
+                                                            datasets: [
+                                                                {
+                                                                    label: "Quater 1",
+                                                                    data: barChartInputs.quater1,
+                                                                    backgroundColor:
+                                                                        "rgb(255, 99, 132)",
+                                                                },
+                                                                {
+                                                                    label: "Quater 2",
+                                                                    data: barChartInputs.quater2,
+                                                                    backgroundColor:
+                                                                        "rgb(75, 192, 192)",
+                                                                },
+                                                                {
+                                                                    label: "Quater 3",
+                                                                    data: barChartInputs.quater3,
+                                                                    backgroundColor:
+                                                                        "rgb(53, 162, 235)",
+                                                                },
+                                                                {
+                                                                    label: "Quater 4",
+                                                                    data: barChartInputs.quater4,
+                                                                    backgroundColor:
+                                                                        "rgb(255, 159, 64)",
+                                                                },
+                                                            ],
+                                                        }}
+                                                    />
+                                                </Row>
+                                                <Row>
+                                                    <QuaterlySalesReportTable
+                                                        dataSource={dataSource}
+                                                    />
                                                 </Row>
                                             </Container>
                                         </div>
