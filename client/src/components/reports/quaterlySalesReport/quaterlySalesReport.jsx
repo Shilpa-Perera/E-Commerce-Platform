@@ -10,16 +10,16 @@ import {
     Card,
     Button,
 } from "react-bootstrap";
-import BarChart from "../../common/barChart";
 import { Bar } from "react-chartjs-2";
 import QuaterlySalesReportTable from "./quaterlySalesReportTable";
 import { elementToPdf } from "../../../utils/pdfUtils";
 import QuaterlySalesReportModal from "./quaterlySalesReportModal";
+import { getYearPeriodOfSoldOrders } from "../../../services/orderService";
 
 class QuaterlySalesReport extends Component {
     state = {
-        startYear: 2020,
-        currentYear: 2022,
+        startYear: "",
+        endYear: "",
         reports: [],
         showReports: [],
         dataSource: [],
@@ -42,15 +42,24 @@ class QuaterlySalesReport extends Component {
         },
     };
 
-    componentDidMount() {
-        const { startYear, currentYear } = { ...this.state };
+    async componentDidMount() {
+        // const { startYear, endYear } = { ...this.state };
+        const { data: soldOrdersPeriod } = await getYearPeriodOfSoldOrders();
+        console.log(soldOrdersPeriod);
+        const { min_year: startYear, max_year: endYear } = soldOrdersPeriod;
+
         const reports = [];
         const showReports = [];
-        for (let i = 0; i < currentYear - startYear + 1; i++) {
+        for (let i = 0; i < endYear - startYear + 1; i++) {
             reports.push([]);
             showReports.push(false);
         }
-        this.setState({ reports, showReports });
+        this.setState({
+            reports,
+            showReports,
+            startYear,
+            endYear,
+        });
     }
 
     async loadReport(index) {
@@ -141,7 +150,7 @@ class QuaterlySalesReport extends Component {
     render() {
         const {
             startYear,
-            currentYear,
+            endYear,
             reports,
             showReports,
             dataSource,

@@ -19,6 +19,10 @@ export function getOrder(id) {
     return http.get(apiEndpoint + "/" + id);
 }
 
+export function getYearPeriodOfSoldOrders() {
+    return http.get(apiEndpoint + "/year-period-of-sold");
+}
+
 export function setOrderDetails(details) {
     return http.post(
         apiUrl + "/orders/checkout",
@@ -41,6 +45,9 @@ export function validateAndConfirmOrder(details) {
     );
 }
 
-export function updateOrderStatus(orderDetails){
-    return http.put(`${apiEndpoint}/update`, _.pick(orderDetails, ["data", "orderId", "initialPaymentState"]));
+export function updateOrderStatus(orderDetails) {
+    return http.put(
+        `${apiEndpoint}/update`,
+        _.pick(orderDetails, ["data", "orderId", "initialPaymentState"])
+    );
 }

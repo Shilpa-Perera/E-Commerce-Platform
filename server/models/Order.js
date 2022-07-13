@@ -36,6 +36,13 @@ class Order {
         return result;
     }
 
+    static async getYearPeriodOfSold() {
+        const query =
+            "select Year(min(date_time)) as min_year, Year(max(date_time)) as max_year from sell where delivery_state='DELIVERED' and payment_state='PAID';";
+        const [result, _] = await db.execute(query);
+        return result[0];
+    }
+
     static async updateOrderStatus(data) {
         const update_status_query =
             "UPDATE `sell` SET `delivery_state`=?, `payment_state`=? WHERE `order_id`=?";

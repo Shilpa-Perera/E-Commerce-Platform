@@ -15,6 +15,12 @@ class OrderController {
         return res.send(allOrders[0]);
     }
 
+    static async getYearPeriodOfSold(req, res) {
+        const period = await Order.getYearPeriodOfSold();
+
+        return res.send(period);
+    }
+
     static async getCustomerOrders(req, res) {
         const { id: customerId } = req.params;
         const allCustomerOrders = await Order.getCustomerOrders(customerId);
@@ -140,7 +146,11 @@ class OrderController {
         }
 
         let newOrderId = error[0].at(-2)[0].orderIdOutput;
-        EmailController.emailOrderConfirmation(finalDataFormat, newOrderId, orderDetails.data.email);
+        EmailController.emailOrderConfirmation(
+            finalDataFormat,
+            newOrderId,
+            orderDetails.data.email
+        );
 
         return res.status(200).send([orderDetails, newOrderId]);
     }
