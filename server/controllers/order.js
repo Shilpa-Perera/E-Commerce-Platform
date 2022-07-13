@@ -141,7 +141,11 @@ class OrderController {
         }
 
         let newOrderId = error[0].at(-2)[0].orderIdOutput;
-        EmailController.emailOrderConfirmation(finalDataFormat, newOrderId, orderDetails.data.email);
+        EmailController.emailOrderConfirmation(
+            finalDataFormat,
+            newOrderId,
+            orderDetails.data.email
+        );
 
         return res.status(200).send([orderDetails, newOrderId]);
     }
@@ -169,7 +173,9 @@ class OrderController {
         } catch (error) {
             error = "Error Try Again !";
         }
-        req.body.initialDeliveryState === data.deliveryStatus?error=error:EmailController.emailOrderUpdate(data);
+        req.body.initialDeliveryState === data.deliveryStatus
+            ? (error = error)
+            : EmailController.emailOrderUpdate(data);
         return res.status(200).send([error]);
     }
 }
