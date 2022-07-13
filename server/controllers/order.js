@@ -126,6 +126,7 @@ class OrderController {
                 orderDetails.data.city,
             zipCode: orderDetails.data.zipcode,
             orderTelephone: orderDetails.data.telephone,
+            customerEmail: orderDetails.data.email,
             deliveryMethod: orderDetails.deliveryMethod,
             paymentMethod: orderDetails.paymentMethod,
             customerId: orderDetails.customerId,
