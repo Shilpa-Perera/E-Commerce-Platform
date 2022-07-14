@@ -132,6 +132,7 @@ class OrderController {
                 orderDetails.data.city,
             zipCode: orderDetails.data.zipcode,
             orderTelephone: orderDetails.data.telephone,
+            customerEmail: orderDetails.data.email,
             deliveryMethod: orderDetails.deliveryMethod,
             paymentMethod: orderDetails.paymentMethod,
             customerId: orderDetails.customerId,
@@ -163,7 +164,6 @@ class OrderController {
             paymentStatus: req.body.data.payment_status,
             orderId: req.body.orderId,
         };
-
         req.body.initialPaymentState === "PENDING" &&
         data.paymentStatus === "PAID"
             ? (time = await DateTime.getDBreadyCurrentDateTime())
@@ -172,7 +172,6 @@ class OrderController {
         req.body.initialPaymentState === data.paymentStatus
             ? (time = false)
             : (time = time);
-
         try {
             time === false
                 ? await Order.updateOrderStatus(data)
@@ -180,6 +179,9 @@ class OrderController {
         } catch (error) {
             error = "Error Try Again !";
         }
+        req.body.initialDeliveryState === data.deliveryStatus
+            ? (error = error)
+            : EmailController.emailOrderUpdate(data);
         return res.status(200).send([error]);
     }
 }

@@ -6,6 +6,7 @@ import Form from "../common/form";
 export class OrderStatus extends Form {
     state = {
         initialPaymentState: null,
+        initialDeliveryState: null,
         orderId: null,
         data: {
             payment_status: "",
@@ -30,6 +31,7 @@ export class OrderStatus extends Form {
             orderId: this.props.orderId,
             paymentMethod: this.props.orderPaymentMethod,
             initialPaymentState: this.props.status.paymentState,
+            initialDeliveryState: this.props.status.deliveryState,
         });
     }
 
@@ -45,6 +47,7 @@ export class OrderStatus extends Form {
         } else {
             this.setState({
                 initialPaymentState: this.state.data.payment_status,
+                initialDeliveryState: this.state.data.delivery_state,
             });
             toast.success(result[0], {
                 theme: "dark",

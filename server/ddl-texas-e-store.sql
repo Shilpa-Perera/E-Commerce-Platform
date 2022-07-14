@@ -44,7 +44,7 @@ DELIMITER $$
 -- Procedures
 --
 drop PROCEDURE if exists order_transaction $$
-CREATE PROCEDURE order_transaction (IN orderCartId INT(10), IN orderDate DATETIME, IN orderName VARCHAR(255), IN orderAddress VARCHAR(255), IN orderZipcode VARCHAR(10), IN orderPhoneNumber VARCHAR(255), IN orderDeliveryMethod ENUM('STORE-PICKUP','DELIVERY'), IN orderPaymentMethod ENUM('CASH','CARD'), IN orderCustomerId INT(10), IN sellDateTime DATETIME, IN sellPaymentStatus ENUM('PENDING','PAID'), OUT orderIdOutput INT(10))  BEGIN
+CREATE PROCEDURE order_transaction (IN orderCartId INT(10), IN orderDate DATETIME, IN orderName VARCHAR(255), IN orderAddress VARCHAR(255), IN orderZipcode VARCHAR(10), IN orderPhoneNumber VARCHAR(255), IN orderEmail VARCHAR(255), IN orderDeliveryMethod ENUM('STORE-PICKUP','DELIVERY'), IN orderPaymentMethod ENUM('CASH','CARD'), IN orderCustomerId INT(10), IN sellDateTime DATETIME, IN sellPaymentStatus ENUM('PENDING','PAID'), OUT orderIdOutput INT(10))  BEGIN
     DECLARE exit handler for sqlexception
         BEGIN
         -- ERROR
@@ -52,7 +52,7 @@ CREATE PROCEDURE order_transaction (IN orderCartId INT(10), IN orderDate DATETIM
         END;
     
     START TRANSACTION;
-        INSERT INTO `order` (customer_id, cart_id, date, order_name, delivery_address, zip_code, phone_number, delivery_method, payment_method) VALUES (orderCustomerId, orderCartId, orderDate, orderName, orderAddress, orderZipCode, orderPhoneNumber, orderDeliveryMethod, orderPaymentMethod);
+        INSERT INTO `order` (customer_id, cart_id, date, order_name, delivery_address, zip_code, phone_number, order_email, delivery_method, payment_method) VALUES (orderCustomerId, orderCartId, orderDate, orderName, orderAddress, orderZipCode, orderPhoneNumber, orderEmail, orderDeliveryMethod, orderPaymentMethod);
         SELECT @newOrder := order_id FROM `order` WHERE cart_id = orderCartId;
         INSERT INTO sell (date_time, order_id, delivery_state, payment_state) VALUES (sellDateTime, @newOrder, 'PROCESSING', sellPaymentStatus);
         CALL update_product_variants_quantity_from_cart(orderCartId);
@@ -63,7 +63,7 @@ CREATE PROCEDURE order_transaction (IN orderCartId INT(10), IN orderDate DATETIM
 END$$
 
 drop PROCEDURE if exists order_transaction_guest $$
-CREATE PROCEDURE order_transaction_guest (IN orderCartId INT(10), IN orderDate DATETIME, IN orderName VARCHAR(255), IN orderAddress VARCHAR(255), IN orderZipcode VARCHAR(10), IN orderPhoneNumber VARCHAR(255), IN orderDeliveryMethod ENUM('STORE-PICKUP','DELIVERY'), IN orderPaymentMethod ENUM('CASH','CARD'), IN orderCustomerId INT(10), IN sellDateTime DATETIME, IN sellPaymentStatus ENUM('PENDING','PAID'), OUT orderIdOutput INT(10))  BEGIN
+CREATE PROCEDURE order_transaction_guest (IN orderCartId INT(10), IN orderDate DATETIME, IN orderName VARCHAR(255), IN orderAddress VARCHAR(255), IN orderZipcode VARCHAR(10), IN orderPhoneNumber VARCHAR(255), IN orderEmail VARCHAR(255), IN orderDeliveryMethod ENUM('STORE-PICKUP','DELIVERY'), IN orderPaymentMethod ENUM('CASH','CARD'), IN orderCustomerId INT(10), IN sellDateTime DATETIME, IN sellPaymentStatus ENUM('PENDING','PAID'), OUT orderIdOutput INT(10))  BEGIN
  
 DECLARE exit handler for sqlexception
     BEGIN
@@ -72,7 +72,7 @@ DECLARE exit handler for sqlexception
 END;
 
 START TRANSACTION;
-    INSERT INTO `order` (customer_id, cart_id, date, order_name, delivery_address,zip_code, phone_number, delivery_method, payment_method) VALUES (NULL, orderCartId, orderDate, orderName, orderAddress, orderZipcode, orderPhoneNumber, orderDeliveryMethod, orderPaymentMethod);
+    INSERT INTO `order` (customer_id, cart_id, date, order_name, delivery_address,zip_code, phone_number, order_email, delivery_method, payment_method) VALUES (NULL, orderCartId, orderDate, orderName, orderAddress, orderZipcode, orderPhoneNumber, orderEmail, orderDeliveryMethod, orderPaymentMethod);
     SELECT @newOrder := order_id FROM `order` WHERE cart_id = orderCartId;
     INSERT INTO sell (date_time, order_id, delivery_state, payment_state) VALUES (sellDateTime, @newOrder, 'PROCESSING', sellPaymentStatus);
     CALL update_product_variants_quantity_from_cart(orderCartId);
@@ -292,6 +292,7 @@ create table if not exists `order`(
     delivery_address varchar(255),
     zip_code varchar(10),
     phone_number varchar(255),
+    order_email varchar(255),
     delivery_method enum('STORE-PICKUP', 'DELIVERY') not null,
     payment_method enum('CASH', 'CARD') not null,
     foreign key (cart_id) references cart(cart_id) on delete cascade,

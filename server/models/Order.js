@@ -85,10 +85,10 @@ class Order {
 
         if (details.customerId === null) {
             insertOrder =
-                "CALL order_transaction_guest(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
+                "CALL order_transaction_guest(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
         } else {
             insertOrder =
-                "CALL order_transaction(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
+                "CALL order_transaction(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
         }
 
         const result = await db.execute(insertOrder, [
@@ -98,6 +98,7 @@ class Order {
             details.orderDeliveryAddress,
             details.zipCode,
             details.orderTelephone,
+            details.customerEmail,
             details.deliveryMethod,
             details.paymentMethod,
             details.customerId,
