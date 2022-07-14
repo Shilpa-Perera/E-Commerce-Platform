@@ -21,11 +21,11 @@ export default function CartCanvas({ show, handleClose }) {
 	return (
 		<>
 			<Offcanvas
-				style={
-					getTheme()
-						? { backgroundColor: "black" }
-						: { backgroundColor: "white" }
-				}
+				// style={
+				// 	getTheme()
+				// 		? { backgroundColor: "black" }
+				// 		: { backgroundColor: "white" }
+				// }
 				show={show}
 				onHide={handleClose}
 				placement="end"
