@@ -45,6 +45,7 @@ import QuaterlySalesReport from "./components/reports/quaterlySalesReport/quater
 import MaxSaleProducts from "./components/reports/maxSaleProductsReport/maxSaleProductsReport";
 
 import MostOrderCategories from "./components/reports/mostOrderCategoriesReport/mostOrderCategories";
+import CartCanvas from "./components/cartCanvas";
 function App() {
 	const [theme, setTheme] = useState(getTheme());
 	const [item_count, setItemCount] = useState();
