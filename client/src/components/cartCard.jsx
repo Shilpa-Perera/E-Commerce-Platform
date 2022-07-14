@@ -22,7 +22,7 @@ class CartCard extends Component {
 				: productImageUrl(image_name);
 
 		return (
-			<div className="card rounded-3 mb-4 bg-light">
+			<div className="card rounded-3 mb-4">
 				<div className="card-body p-4">
 					<div className="row d-flex justify-content-between align-items-center">
 						<div className="col-md-2 col-lg-2 col-xl-2">
