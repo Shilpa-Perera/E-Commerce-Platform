@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { getCartProducts } from "../services/cartService";
+import { getCartProducts } from "../../services/cartService";
 import CartCard from "./cartCard";
 import { MdAddShoppingCart } from "react-icons/md";
 import { IoArrowForward } from "react-icons/io5";
@@ -9,7 +9,7 @@ import {
 	updateItemCount,
 	deletedProduct,
 	getCartId,
-} from "../services/cartService";
+} from "../../services/cartService";
 
 class Cart extends Component {
 	state = {

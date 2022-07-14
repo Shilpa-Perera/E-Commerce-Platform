@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Offcanvas } from "react-bootstrap";
-import { getCartProducts, getCartId } from "../services/cartService";
-import { getTheme } from "../utils/theme";
+import { getCartProducts, getCartId } from "../../services/cartService";
+
 import CartCanvasCard from "./cartCanvasCard";
 import { BsFillArrowUpRightCircleFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
@@ -20,16 +20,7 @@ export default function CartCanvas({ show, handleClose }) {
 	}, []);
 	return (
 		<>
-			<Offcanvas
-				// style={
-				// 	getTheme()
-				// 		? { backgroundColor: "black" }
-				// 		: { backgroundColor: "white" }
-				// }
-				show={show}
-				onHide={handleClose}
-				placement="end"
-			>
+			<Offcanvas show={show} onHide={handleClose} placement="end">
 				<Offcanvas.Header closeButton>
 					<Offcanvas.Title>
 						<h3 className="text-center">Shopping Cart</h3>

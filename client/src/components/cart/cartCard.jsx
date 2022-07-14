@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { productImageUrl } from "../services/imageService";
+import { productImageUrl } from "../../services/imageService";
 import { MdDelete } from "react-icons/md";
 
 class CartCard extends Component {

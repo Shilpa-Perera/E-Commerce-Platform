@@ -1,5 +1,5 @@
 import React from "react";
-import { productImageUrl } from "../services/imageService";
+import { productImageUrl } from "../../services/imageService";
 const CartCanvasCard = (props) => {
 	const { key, title, variant_name, price, image_name, number_of_items } =
 		props;
