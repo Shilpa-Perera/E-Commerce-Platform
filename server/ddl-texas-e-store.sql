@@ -89,7 +89,7 @@ BEGIN
 	SELECT @n := COUNT(*) FROM variant NATURAL JOIN cart_product WHERE cart_id = cartId;
 	SET i=0;
 	WHILE i<@n DO 
-  		SELECT @variantId := variant_id, @qval := updated_quantity FROM (SELECT ROW_NUMBER()OVER(ORDER BY variant_id)-1 AS element_id, variant_id, quantity-number_of_items AS updated_quantity FROM variant NATURAL JOIN cart_product WHERE cart_id = cartId) as A WHERE A.element_id = i LIMIT 1;
+  		SELECT @variantId := variant_id, @qval := updated_quantity FROM (SELECT ROW_NUMBER()OVER(ORDER BY variant_id)-1 AS element_id, variant_id, quantity-number_of_items AS updated_quantity FROM variant NATURAL JOIN cart_product WHERE cart_id = cartId ORDER BY variant_id) as A WHERE A.element_id = i LIMIT 1;
         UPDATE variant SET quantity = @qval WHERE variant.variant_id = @variantId;
   		SET i = i + 1;
 	END WHILE;
