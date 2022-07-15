@@ -5,7 +5,10 @@ class CheckoutCartCard extends Component {
         let block = null;
         block = variantObj.map((e) => {
             return (
-                <li key={e.variant_id} className="list-group-item d-flex justify-content-between lh-condensed checkout-cart-list">
+                <li
+                    key={e.variant_id}
+                    className="list-group-item d-flex justify-content-between lh-condensed checkout-cart-list"
+                >
                     <div className="row">
                         <div className="col-11">
                             <h5 className="my-0 fw-normal fs-6">
@@ -19,7 +22,9 @@ class CheckoutCartCard extends Component {
                             </h6>
                         </div>
                     </div>
-                    <span className="text-muted">{e.price}</span>
+                    <span className="text-muted">
+                        {e.price * e.number_of_items}
+                    </span>
                 </li>
             );
         });

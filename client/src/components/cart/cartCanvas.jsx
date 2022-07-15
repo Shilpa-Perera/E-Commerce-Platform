@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Offcanvas } from "react-bootstrap";
-import { getCartProducts, getCartId } from "../services/cartService";
-import { getTheme } from "../utils/theme";
+import { getCartProducts, getCartId } from "../../services/cartService";
+
 import CartCanvasCard from "./cartCanvasCard";
 import { BsFillArrowUpRightCircleFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
@@ -20,16 +20,7 @@ export default function CartCanvas({ show, handleClose }) {
 	}, []);
 	return (
 		<>
-			<Offcanvas
-				// style={
-				// 	getTheme()
-				// 		? { backgroundColor: "black" }
-				// 		: { backgroundColor: "white" }
-				// }
-				show={show}
-				onHide={handleClose}
-				placement="end"
-			>
+			<Offcanvas show={show} onHide={handleClose} placement="end">
 				<Offcanvas.Header closeButton>
 					<Offcanvas.Title>
 						<h3 className="text-center">Shopping Cart</h3>
@@ -48,13 +39,7 @@ export default function CartCanvas({ show, handleClose }) {
 									number_of_items={product.number_of_items}
 								/>
 							))}
-							<div
-								style={{
-									display: "flex",
-									justifyContent: "center",
-									padding: "50px",
-								}}
-							>
+							<div className="d-flex justify-content-center p-50">
 								<Link to="/cart">
 									<button
 										type="button"
@@ -75,25 +60,13 @@ export default function CartCanvas({ show, handleClose }) {
 							<p className="fs-5 text-center fw-bold mt-5">
 								Currently no items in the cart
 							</p>
-							<div
-								style={{
-									display: "flex",
-									justifyContent: "center",
-									padding: "50px",
-								}}
-							>
+							<div className="d-flex justify-content-center p-50">
 								<MdAddShoppingCart
 									size={100}
 									style={{ color: "grey" }}
 								/>
 							</div>
-							<div
-								style={{
-									display: "flex",
-									justifyContent: "center",
-									padding: "50px",
-								}}
-							>
+							<div className="d-flex justify-content-center p-50">
 								<Link to="/products">
 									<button
 										type="button"

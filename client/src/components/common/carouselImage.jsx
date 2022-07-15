@@ -13,7 +13,6 @@ function CarouselImage({ img, defaultImg }) {
             src={image}
             className="d-block w-100"
             alt="..."
-            style={{ maxHeight: "75vh" }}
             onError={() => {
                 if (!error) {
                     setImage(defaultImg);
