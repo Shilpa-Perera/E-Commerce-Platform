@@ -114,7 +114,7 @@ class Cart extends Component {
 									/>
 								))}
 								<div>
-									<div className="card mb-5">
+									<div className="card rounded-3 mb-5 hover-focus">
 										<div className="card-body p-4">
 											<div className="float-end">
 												<p className="mb-0 me-5 d-flex align-items-center">
@@ -130,7 +130,7 @@ class Cart extends Component {
 										</div>
 									</div>
 
-									<div className="card">
+									<div className="card rounded-3 mb-4 hover-focus">
 										<div className="card-body">
 											<Link
 												to={`/cart/checkout`}
@@ -167,25 +167,13 @@ class Cart extends Component {
 								<p className="fs-3 text-center fw-bold">
 									Currently no items in the cart
 								</p>
-								<div
-									style={{
-										display: "flex",
-										justifyContent: "center",
-										padding: "50px",
-									}}
-								>
+								<div className="d-flex justify-content-center p-50">
 									<MdAddShoppingCart
 										size={100}
 										style={{ color: "grey" }}
 									/>
 								</div>
-								<div
-									style={{
-										display: "flex",
-										justifyContent: "center",
-										padding: "50px",
-									}}
-								>
+								<div className="d-flex justify-content-center p-50">
 									<Link to="/products">
 										<button
 											type="button"

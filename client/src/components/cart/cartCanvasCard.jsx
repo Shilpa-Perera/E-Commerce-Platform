@@ -1,8 +1,7 @@
 import React from "react";
 import { productImageUrl } from "../../services/imageService";
 const CartCanvasCard = (props) => {
-	const { key, title, variant_name, price, image_name, number_of_items } =
-		props;
+	const { title, variant_name, price, image_name, number_of_items } = props;
 	const image =
 		image_name === null
 			? "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE4QWs8?ver=95ec&q=90&m=6&h=270&w=270&b=%23FFFFFFFF&f=jpg&o=f&aim=true"

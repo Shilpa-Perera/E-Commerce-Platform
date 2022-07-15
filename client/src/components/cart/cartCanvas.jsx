@@ -39,13 +39,7 @@ export default function CartCanvas({ show, handleClose }) {
 									number_of_items={product.number_of_items}
 								/>
 							))}
-							<div
-								style={{
-									display: "flex",
-									justifyContent: "center",
-									padding: "50px",
-								}}
-							>
+							<div className="d-flex justify-content-center p-50">
 								<Link to="/cart">
 									<button
 										type="button"
@@ -66,25 +60,13 @@ export default function CartCanvas({ show, handleClose }) {
 							<p className="fs-5 text-center fw-bold mt-5">
 								Currently no items in the cart
 							</p>
-							<div
-								style={{
-									display: "flex",
-									justifyContent: "center",
-									padding: "50px",
-								}}
-							>
+							<div className="d-flex justify-content-center p-50">
 								<MdAddShoppingCart
 									size={100}
 									style={{ color: "grey" }}
 								/>
 							</div>
-							<div
-								style={{
-									display: "flex",
-									justifyContent: "center",
-									padding: "50px",
-								}}
-							>
+							<div className="d-flex justify-content-center p-50">
 								<Link to="/products">
 									<button
 										type="button"

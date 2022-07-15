@@ -55,7 +55,6 @@ function App() {
 		setUser(getCurrentUser());
 		const fetchCount = async () => {
 			const count = await getItemCount(getCartId());
-			console.log(count);
 			setItemCount(count);
 		};
 		fetchCount();
@@ -393,14 +392,6 @@ function App() {
 							</ProtectedRoute>
 						}
 					></Route>
-					{/* <Route
-						path="/reports/max-sale-products-report/download"
-						element={
-							<ProtectedRoute permissions={[ROLE.ADMIN]}>
-								<MaxSaleProductReportDownload />
-							</ProtectedRoute>
-						}
-					></Route> */}
 				</Route>
 
 				<Route path="/" element={<Home />}></Route>

@@ -22,8 +22,8 @@ class CartCard extends Component {
 				: productImageUrl(image_name);
 
 		return (
-			<div className="card rounded-3 mb-4">
-				<div className="card-body p-4">
+			<div className="card rounded-3 mb-4 hover-focus">
+				<div className="card-body p-4 ">
 					<div className="row d-flex justify-content-between align-items-center">
 						<div className="col-md-2 col-lg-2 col-xl-2">
 							<img
@@ -56,7 +56,7 @@ class CartCard extends Component {
 								min="0"
 								name="quantity"
 								type="number"
-								className="form-control form-control-sm "
+								className="form-control form-control-sm text-center "
 							>
 								{number_of_items}
 							</span>
