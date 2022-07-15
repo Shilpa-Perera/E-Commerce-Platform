@@ -22,7 +22,7 @@ const CustomerMobile = ({
                     name="mobile"
                     value={mobile.mobile}
                     onChange={handleChange}
-                    error={mobileError.mobile}
+                    error={mobileError.mobile && "Invalid Contact No"}
                 />
             </div>
             <div

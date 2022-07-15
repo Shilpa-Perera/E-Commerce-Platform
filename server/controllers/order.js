@@ -15,6 +15,12 @@ class OrderController {
         return res.send(allOrders[0]);
     }
 
+    static async getYearPeriodOfSold(req, res) {
+        const period = await Order.getYearPeriodOfSold();
+
+        return res.send(period);
+    }
+
     static async getCustomerOrders(req, res) {
         const { id: customerId } = req.params;
         const allCustomerOrders = await Order.getCustomerOrders(customerId);
