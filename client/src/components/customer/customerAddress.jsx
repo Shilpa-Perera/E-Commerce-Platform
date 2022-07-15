@@ -58,7 +58,7 @@ const CustomerAddress = ({
                     name="postal_code"
                     value={address.postal_code}
                     onChange={handleChange}
-                    error={addressError.postal_code}
+                    error={addressError.postal_code && "Postal Code invalid"}
                 />
                 <div className="">
                     {index > 0 && (
