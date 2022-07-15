@@ -20,7 +20,7 @@ class Orders extends Component {
         filterBy4: null,
         totalOrdersCount: null,
         currentPage: 1,
-        pageSize: 24,
+        pageSize: 10,
         sortBy: { path: "order_id", order: "asc" },
     };
 
