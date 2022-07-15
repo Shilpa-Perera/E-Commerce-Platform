@@ -51,7 +51,6 @@ class Report {
     }
 
     static async getQuaterlySalesReport(year) {
-        // sample sql
         const sql = `
         select concat(p.product_title, ' ',v.variant_name) as item_name, sum(v.price) as sell_total,
         case 
@@ -66,7 +65,7 @@ class Report {
         join cart_product cp on o.cart_id=cp.cart_id
         join variant v on cp.variant_id=v.variant_id
         join product p on v.product_id=p.product_id
-        where year(s.date_time) = ?
+        where year(s.date_time) = ? and s.payment_state='PAID' and s.delivery_state='DELIVERED'
         group by  quater, p.product_id, v.variant_id; `;
 
         const [report, _] = await db.execute(sql, [year]);

@@ -1,4 +1,4 @@
-insert into customer (email, password, first_name, last_name) values ('hiruni@gmail.com', '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka', 'Hiruni', 'Silva');
+insert into customer (email, password, first_name, last_name) values ('hiruni@email.com', '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka', 'Hiruni', 'Silva');
 insert into customer (email, password, first_name, last_name) values ('paughton0@google.fr', '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka', 'Patrice', 'Aughton');
 insert into customer (email, password, first_name, last_name) values ('pbartozzi1@exblog.jp', '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka', 'Pat', 'Bartozzi');
 insert into customer (email, password, first_name, last_name) values ('scockayme2@squarespace.com', '$2b$10$T98uZ8xm/c7GACggl/w5Re3KwBTwISbpBYYG1p9MyXi1A6njuc9ka', 'Shandie', 'Cockayme');

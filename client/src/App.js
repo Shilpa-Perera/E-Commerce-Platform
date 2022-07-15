@@ -15,7 +15,7 @@ import Order from "./components/orders/order";
 import LoginForm from "./components/loginForm";
 import CustomerForm from "./components/customer/customerForm";
 import Logout from "./components/logout";
-import Cart from "./components/cart";
+import Cart from "./components/cart/cart";
 import VariantImages from "./components/variants/variantImages";
 import ScrollToTop from "./components/scrollToTop";
 import DeletedProduct from "./components/products/deletedProduct";
@@ -45,7 +45,7 @@ import QuaterlySalesReport from "./components/reports/quaterlySalesReport/quater
 import MaxSaleProducts from "./components/reports/maxSaleProductsReport/maxSaleProductsReport";
 
 import MostOrderCategories from "./components/reports/mostOrderCategoriesReport/mostOrderCategories";
-import CartCanvas from "./components/cartCanvas";
+
 function App() {
 	const [theme, setTheme] = useState(getTheme());
 	const [item_count, setItemCount] = useState();
@@ -55,7 +55,6 @@ function App() {
 		setUser(getCurrentUser());
 		const fetchCount = async () => {
 			const count = await getItemCount(getCartId());
-			console.log(count);
 			setItemCount(count);
 		};
 		fetchCount();
@@ -393,14 +392,6 @@ function App() {
 							</ProtectedRoute>
 						}
 					></Route>
-					{/* <Route
-						path="/reports/max-sale-products-report/download"
-						element={
-							<ProtectedRoute permissions={[ROLE.ADMIN]}>
-								<MaxSaleProductReportDownload />
-							</ProtectedRoute>
-						}
-					></Route> */}
 				</Route>
 
 				<Route path="/" element={<Home />}></Route>

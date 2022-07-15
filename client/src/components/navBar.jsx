@@ -5,8 +5,7 @@ import { MdManageAccounts, MdLogin, MdLogout } from "react-icons/md";
 import { FaAddressBook, FaRegUser } from "react-icons/fa";
 import { BsMoonStarsFill } from "react-icons/bs";
 import { MdShoppingCart } from "react-icons/md";
-
-import CartCanvas from "./cartCanvas";
+import CartCanvas from "./cart/cartCanvas";
 
 export default function NavBar({ theme, toggleTheme, item_count, user }) {
 	const nextTheme = theme ? "light" : "dark";
