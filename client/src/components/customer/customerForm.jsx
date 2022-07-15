@@ -93,7 +93,11 @@ class CustomerFormBody extends Form {
         po_box: Joi.string().label("Po Box"),
         street_name: Joi.string().label("Street Name"),
         city: Joi.string().label("City"),
-        postal_code: Joi.number().label("Postal Code"),
+        postal_code: Joi.string()
+            .regex(/(^\d{5}$)|(^\d{5}-\d{4}$)/)
+            .min(5)
+            .max(5)
+            .label("Postal Code"),
 
         telephone_id: Joi.number(),
         mobile: Joi.string()
