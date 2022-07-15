@@ -20,9 +20,11 @@ class ProductBody extends Component {
 
     defaultImages = [`${process.env.PUBLIC_URL}/logo512.png`];
 
-    async populateVariant() {
+    async populateVariant(productArg = null) {
         const { id: product_id } = this.props;
         let { selectedOptions: options, product } = this.state;
+
+        if (product === null) product = productArg;
 
         let variant = null;
         try {
@@ -114,11 +116,14 @@ class ProductBody extends Component {
                 images,
                 defaultVariantImages,
             });
+
+            await this.populateVariant(product);
         } catch (e) {
             if (e.response && e.response.status === 404)
                 this.props.replace("/not-found");
+
+            await this.populateVariant();
         }
-        await this.populateVariant();
         this.setState({ loading: false });
     }
 
