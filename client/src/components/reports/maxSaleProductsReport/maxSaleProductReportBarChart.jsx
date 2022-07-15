@@ -13,7 +13,7 @@ class MaxSaleBarChart extends Report {
 			"Max sale products",
 			"Number of products",
 			"Product",
-			true
+			false
 		);
 		const data = this.getData(
 			"Max sale products",

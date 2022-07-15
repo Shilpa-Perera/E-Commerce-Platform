@@ -25,19 +25,17 @@ export default function MaxSaleProductsModal(props) {
 				{props.report.length > 0 && (
 					<div id="max-sales">
 						<Container>
-							<Row>
-								<Col xs={6}>
-									<MaxSaleBarChart
-										key="bar-chart"
-										report={props.report}
-									/>
-								</Col>
-								<Col xs={6}>
-									<MaxSalesProductsReportTable
-										key="table"
-										data={props.report}
-									></MaxSalesProductsReportTable>
-								</Col>
+							<Row className="justify-content-md-center ">
+								<MaxSaleBarChart
+									key="bar-chart"
+									report={props.report}
+								/>
+							</Row>
+							<Row className="justify-content-md-center mt-5">
+								<MaxSalesProductsReportTable
+									key="table"
+									data={props.report}
+								></MaxSalesProductsReportTable>
 							</Row>
 						</Container>
 					</div>
