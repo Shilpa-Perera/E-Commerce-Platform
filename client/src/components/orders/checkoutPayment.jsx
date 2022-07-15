@@ -340,7 +340,7 @@ class CheckoutPayment extends Form {
                                                 type="button"
                                                 className="btn btn-danger hover-focus"
                                             >
-                                                Cancle
+                                                Cancel
                                             </button>
                                         </Link>
                                     </div>
